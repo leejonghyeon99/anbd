@@ -12,14 +12,31 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class SecurityConfig {
 
 
-
-    //비활성화
+    // ↓ Security 를 동작시키지 않기.
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
-        return web -> web.ignoring().anyRequest();
+        return web -> web.ignoring().anyRequest();   // 어떠한 request 도 security 가 무시함
     }
 
-
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+//        return http
+//                .csrf(csrf -> csrf.disable())
+//                .authorizeHttpRequests(auth -> auth
+//                        .anyRequest().permitAll()
+//                )
+//                .formLogin(form -> form
+//                        .loginPage("/user/login")
+//                        .loginProcessingUrl("/user/login")
+//                        .defaultSuccessUrl("/")
+//                )
+//                .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
+//                        .logoutUrl("/user/logout")
+//                        .invalidateHttpSession(false)
+//                )
+//
+//                .build();
+//    }
 
 
 }

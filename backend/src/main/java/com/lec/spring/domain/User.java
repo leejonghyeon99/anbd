@@ -47,7 +47,8 @@ public class User extends BaseEntity{
     @Column(nullable = false, columnDefinition = "decimal(2,1) default 0.0")
     private Double star;
 
-    @Column(nullable = false, columnDefinition = "varchar(10) default 'user'")
+    @Column(nullable = false, columnDefinition = "varchar(10) default 'ROLE_USER'")
+    @Enumerated(EnumType.STRING)
     private Auth auth;
 
     @Column(nullable = false, columnDefinition = "boolean default 0")
