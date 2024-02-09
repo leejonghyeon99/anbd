@@ -1,5 +1,6 @@
-#header {
-  border: solid 1px black;
+#mypagebtn {
+  width: 30px;
+  float: right;
 }
 /* .App {
   text-align: center;
