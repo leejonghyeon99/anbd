@@ -1,4 +1,4 @@
-create database anbd;
+# create database anbd;
 
 show tables;
 

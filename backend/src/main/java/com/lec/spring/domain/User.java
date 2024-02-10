@@ -41,7 +41,8 @@ public class User extends BaseEntity{
 
     private String provider_id;
 
-    @Column(nullable = false, length = 200)
+    // 이메일 인증을 위해 unique 추가
+    @Column(nullable = false, length = 200, unique = true)
     private String email;
 
     @Column(nullable = false, columnDefinition = "decimal(2,1) default 0.0")
