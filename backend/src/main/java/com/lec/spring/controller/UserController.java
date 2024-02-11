@@ -1,7 +1,6 @@
 package com.lec.spring.controller;
 
-import com.lec.spring.dto.TokenDTO;
-import com.lec.spring.dto.UserDTO;
+import com.lec.spring.dto.*;
 import com.lec.spring.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,18 +17,18 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDTO> signup(@RequestBody UserDTO userDTO){
-        return ResponseEntity.ok(userService.signup(userDTO));
+    public ResponseEntity<UserResponseDTO> signup(@RequestBody UserRequestDTO userRequestDTO){
+        return ResponseEntity.ok(userService.signup(userRequestDTO));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDTO> login(@RequestBody UserDTO userDTO){
-        return ResponseEntity.ok(userService.login(userDTO));
+    public ResponseEntity<TokenDTO> login(@RequestBody UserRequestDTO userRequestDTO){
+        return ResponseEntity.ok(userService.login(userRequestDTO));
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity<TokenDTO> reissue(@RequestBody TokenDTO tokenDTO){
-        return ResponseEntity.ok(userService.reissue(tokenDTO));
+    public ResponseEntity<TokenDTO> reissue(@RequestBody TokenRequestDTO tokenRequestDTO){
+        return ResponseEntity.ok(userService.reissue(tokenRequestDTO));
     }
 
 }

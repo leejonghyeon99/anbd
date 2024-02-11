@@ -1,16 +1,17 @@
 package com.lec.spring.config;
 
 
-import com.lec.spring.jwt.JwtAccessDeniedHandler;
-import com.lec.spring.jwt.JwtAuthenticationEntryPoint;
-import com.lec.spring.jwt.JwtSecurityConfig;
-import com.lec.spring.jwt.TokenProvider;
+import com.lec.spring.jwt.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
@@ -25,7 +26,10 @@ public class SecurityConfig {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
-
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
 
     // ↓ Security 를 동작시키지 않기.
 //    @Bean
@@ -53,26 +57,32 @@ public class SecurityConfig {
 //                .build();
 //    }
 
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//
-//        return http.csrf(csrf -> csrf.disable())
-//                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-//                .exceptionHandling((exceptionHandling) -> exceptionHandling
-//                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-//                        .accessDeniedHandler(jwtAccessDeniedHandler))
-//                .headers()
-//                .frameOptions()
-//                .sameOrigin()
-//
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//
-//                .authorizeHttpRequest()
-//                .requestMatchers("/auth/**").permitAll()
-//                .anyRequest().authenticated()
-//
-//                .apply(new JwtSecurityConfig(tokenProvider))
-//                .build();
-//    }
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        http.csrf((csrf) -> csrf.disable());
+        http.cors(Customizer.withDefaults());
+
+        // 세션 생성 or 사용 x
+        http.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        // 폼로그인, 베이직http 비활성화
+        http.formLogin((form)-> form.disable());
+        http.httpBasic(AbstractHttpConfigurer::disable);
+
+        http.exceptionHandling((exceptionHandling) -> exceptionHandling
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler));
+
+        // 권한 규칙 작성
+        http.authorizeHttpRequests((authorize)-> authorize
+                .requestMatchers("/auth/**").permitAll()
+                .anyRequest().authenticated()
+                );
+
+        http.apply(new JwtSecurityConfig(tokenProvider));
+
+        return http.build();
+
+    }
 }
