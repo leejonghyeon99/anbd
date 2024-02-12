@@ -26,20 +26,22 @@ public class ProductDTO {
     private String middleCategory;
     private LocalDateTime refreshedAt;
     private CategoryDTO category;
-    private UserDTO user;
+    private String user;
+    private String userProfile;
 
-    public static ProductDTO toDto(Product product) {
+    public static ProductDTO toDto(Product entity) {
         return ProductDTO.builder()
-                .id(product.getId())
-                .title(product.getTitle())
-                .description(product.getDescription())
-                .price(product.getPrice())
-                .status(product.getStatus())
-                .location(product.getLocation())
-                .middleCategory(product.getMiddleCategory())
-                .refreshedAt(product.getRefreshedAt())
-                .category(CategoryDTO.toDto(product.getCategory()))
-                .user(UserDTO.toDto(product.getUser()))
+                .id(entity.getId())
+                .title(entity.getTitle())
+                .description(entity.getDescription())
+                .price(entity.getPrice())
+                .status(entity.getStatus())
+                .location(entity.getLocation())
+                .middleCategory(entity.getMiddleCategory())
+                .refreshedAt(entity.getRefreshedAt())
+                .category(CategoryDTO.toDto(entity.getCategory()))
+                .user(UserDTO.toDto(entity.getUser()).getNickname())
+                .userProfile("profile/"+UserDTO.toDto(entity.getUser()).getId())
                 .build();
     }
 

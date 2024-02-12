@@ -15,7 +15,8 @@ insert into product(category_id, price, status, user_id, created_at, title, desc
 VALUES (1,20000,'SOLD',1, now(), '테스트 상품2', '테스트 상품입니다2.', '0000, 0000', '상의');
 insert into product(category_id, price, status, user_id, created_at, title, description, location, middle_category)
 VALUES (2,20000,'SALE',1, now(), '테스트 상품3', '테스트 상품입니다3.', '0000, 0000', '냉장고');
-
+insert into product(category_id, price, status, user_id, created_at, title, description, location, middle_category)
+VALUES (2,25500,'SALE',5, now(), '테스트 상품5', '테스트 상품입니다3.', '0000, 0000', '냉장고');
 
 select * from information_schema.KEY_COLUMN_USAGE where TABLE_NAME = 'product';
 
@@ -25,4 +26,4 @@ select * from category;
 select * from product;
 
 
-
+insert into report(user_id, reason) VALUES (6,'그냥1');

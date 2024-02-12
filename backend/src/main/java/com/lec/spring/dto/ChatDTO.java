@@ -21,15 +21,17 @@ public class ChatDTO {
 
     private Integer id;
     private String message;
-    private User user;
-    private ChatRoom chatRoom;
+    private String user;
+    private String userProfile;
+    private ChatRoomDTO chatRoom;
 
     public static ChatDTO toDto(Chat entity) {
         return ChatDTO.builder()
                 .id(entity.getId())
                 .message(entity.getMessage())
-                .user(entity.getUser())
-                .chatRoom(entity.getChatRoom())
+                .user(UserDTO.toDto(entity.getUser()).getNickname())
+                .userProfile("profile/"+UserDTO.toDto(entity.getUser()).getId())
+                .chatRoom(ChatRoomDTO.toDto(entity.getChatRoom()))
                 .build();
     }
 

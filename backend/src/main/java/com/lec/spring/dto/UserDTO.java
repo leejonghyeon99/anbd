@@ -18,8 +18,6 @@ public class UserDTO {
 
     private Integer id;
     private String username;
-    private String password;
-    private String rePassword;
     private String name;
     private String phone_number;
     private String nickname;
@@ -35,8 +33,6 @@ public class UserDTO {
         return UserDTO.builder()
                 .id(user.getId())
                 .username(user.getUsername())
-                .password(user.getPassword())
-                .rePassword(user.getRePassword())
                 .name(user.getName())
                 .phone_number(user.getPhone_number())
                 .nickname(user.getNickname())
