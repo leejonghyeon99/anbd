@@ -29,6 +29,7 @@ public class Product extends BaseEntity{
     private int price;
 
     @Column(nullable = false, columnDefinition = "varchar(10) default 'sale'")
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     private String location;
