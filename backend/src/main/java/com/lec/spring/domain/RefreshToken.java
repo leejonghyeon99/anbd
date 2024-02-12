@@ -1,6 +1,7 @@
 package com.lec.spring.domain;
 
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,10 +16,12 @@ public class RefreshToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    private Integer id;
+
+    @Column(name = "`key`", nullable = false, length = 128)
     private String key;
 
-    @Column
+    @Column(nullable = false, length = 150)
     private String value;
 
     public RefreshToken updateValue(String token){

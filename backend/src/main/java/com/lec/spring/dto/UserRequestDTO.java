@@ -14,10 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @AllArgsConstructor
 @Builder
 public class UserRequestDTO {
+    private Integer id;
     private String username;
     private String password;
-
-
     private String name;
     private String phone_number;
     private String nickname;
