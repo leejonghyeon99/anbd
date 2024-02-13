@@ -16,9 +16,9 @@ const App = () => {
 
   const navigate = useNavigate();
 
-//   useEffect(() => {
-//       navigate('/home');
-//   },[]);
+  useEffect(() => {
+      navigate('/home');
+  },[]);
 
   return (
 
