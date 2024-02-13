@@ -8,32 +8,27 @@ import Login from "./user/Login";
 import { Container } from "react-bootstrap";
 import Admin from "./admin/Admin";
 
-
 const Home = () => {
-
-
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
   return (
-
-      <div className="home">
-        <Header className="header" />
-        <div className="content">
-          {!isMobile && (
-            <div className="menu">
-              <Sidebar />
-            </div>
-          )}
-          <div className="main-content">
-            <Routes>
-            <Route path='/' element={<Navigate to="/home"></Navigate>}></Route>
-              <Route path="/login" Component={Login}></Route>
-              <Route path="/admin" Component={Admin}></Route>
-            </Routes>
+    <div className="home">
+      <Header className="header" />
+      <div className="content">
+        {!isMobile && (
+          <div className="menu">
+            <Sidebar />
           </div>
+        )}
+        <div className="main-content">
+          <Routes>
+            <Route path="/" element={<Navigate to="/home"></Navigate>}></Route>
+            <Route path="/login" Component={Login}></Route>
+            <Route path="/admin" Component={Admin}></Route>
+          </Routes>
         </div>
       </div>
-
+    </div>
   );
 };
 

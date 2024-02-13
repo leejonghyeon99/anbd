@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import "./CSS/Header.css";
+import { MypagebarList } from "../components/MypagebarList";
+import "./CSS/Mypagebar.css";
+// icon import
+import { FaUserCircle } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
 
 const StyledHeader = styled.header`
   /* 다른 스타일들... */
@@ -29,34 +34,6 @@ const NavMenu = styled.ul`
   }
 `;
 
-const StyledMypage = styled.div`
-  img {
-    max-width: 50vw; /* 최대 너비를 화면의 50px로 설정 */
-    height: auto; /* 이미지의 가로 세로 비율 유지 */
-  }
-`;
-
-const StyledMypagebar = styled.div`
-  display: ${(props) => (props.isOpen ? "block" : "none")};
-  position: fixed;
-  top: 0;
-  right: ${(props) =>
-    props.isOpen
-      ? "0"
-      : "-300px"}; /* isOpen 상태에 따라 오른쪽에서 나타나거나 사라짐 */
-  height: 100vh;
-  width: 300px;
-  background-color: #ffffff;
-  transition: right 0.3s ease; /* 부드럽게 이동되도록 트랜지션 설정 */
-`;
-
-const CloseButton = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
-`;
-
 const Header = () => {
   const navigate = useNavigate();
 
@@ -65,8 +42,8 @@ const Header = () => {
   const [isBclothingOpen, setIsBclothingOpen] = useState(false);
   const [isBfoodOpen, setIsBfoodOpen] = useState(false);
   const [isBlivingOpen, setIsBlivingOpen] = useState(false);
-  // 마이페이지 버튼 토글
-  const [isMypageOpen, setIsMypageOpen] = useState(false);
+  // Mypage 버튼
+  const [mypageSidebar, setMypageSidebar] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -97,20 +74,8 @@ const Header = () => {
     setIsBfoodOpen(false);
   };
 
-  const toggleMypage = () => {
-    // 마이페이지 사이드바 열기
-    setIsMypageOpen(!isMypageOpen);
-  };
-
-  const closeMypage = () => {
-    setIsMypageOpen(false);
-  };
-
-  const handleOutsideClick = (event) => {
-    if (!event.target.closest("#mypagebar")) {
-      closeMypage();
-    }
-  };
+  // mypage show/hide
+  const showSidebar = () => setMypageSidebar(!mypageSidebar);
 
   return (
     <div className="header">
@@ -121,22 +86,30 @@ const Header = () => {
             <img src="icon/menu.png" id="menuIcon" onClick={toggleMenu} />
             AH!NaBaDa
           </div>
-          <StyledMypage className="mypage">
-            <img
-              src="icon/usericon.png"
-              id="mypagebtn"
-              onClick={toggleMypage}
-            />
-          </StyledMypage>
-          {isMypageOpen && (
-            <div onClick={handleOutsideClick}>
-              <StyledMypagebar id="mypagebar" isOpen={isMypageOpen}>
-                <CloseButton onClick={closeMypage}>X</CloseButton>
-                {/* 사이드바 내용 */}
-                <li onClick={toggleClothing}>대시보드</li>
-              </StyledMypagebar>
-            </div>
-          )}
+          <div className="navbar"> {/*mypage toggle */}
+            <Link to="#" className="menu-bars">
+            <FaUserCircle  onClick={showSidebar}/>
+            </Link>
+            <nav className={mypageSidebar ? "nav-menu.active" : "nav-menu"}> 
+              <ul className="nav-menu-items"onClick={showSidebar}>
+                <li className="navbar-toggle">
+                  <Link to="#" className="menu-bars">
+                  <IoClose />
+                  </Link>
+                </li>
+                {MypagebarList.map((item, index) => {
+                  return (
+                    <li key={index} className="item.cName">
+                      <Link to={item.path}>
+                        {item.icon}
+                        <sapn>{item.title}</sapn>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav> {/*mypage toggle*/}
+          </div>
         </div>
 
         <NavMenu isMenuOpen={isMenuOpen}>

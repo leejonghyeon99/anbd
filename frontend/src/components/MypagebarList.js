@@ -1,28 +1,30 @@
 import React from 'react';
+import { BiBarChart } from "react-icons/bi";
+import { BiBarChartAlt2 } from "react-icons/bi";
 
-export default const MypagebarList = [
+export const MypagebarList = [
     {
         title: '1',
         path: '/',
-        // icon: ,
+        icon: <BiBarChartAlt2 /> ,
         cName: 'nav-text'
     },
     {
         title: '2',
         path: '/',
-        // icon: ,
+        icon: <BiBarChart /> ,
         cName: 'nav-text'
     },
     {
         title: '3',
         path: '/',
-        // icon: ,
+        icon: <BiBarChart /> ,
         cName: 'nav-text'
     },
     {
         title: '4',
         path: '/',
-        // icon: ,
+        icon: <BiBarChart /> ,
         cName: 'nav-text'
     },
 ];
