@@ -20,7 +20,9 @@ insert into product(category_id, price, status, user_id, created_at, title, desc
 VALUES (2,25500,'SALE',5, now(), '테스트 상품5', '테스트 상품입니다3.', '0000, 0000', '냉장고');
 
 select * from information_schema.KEY_COLUMN_USAGE where TABLE_NAME = 'product';
-
+UPDATE user
+SET created_at = DATE_SUB(created_at, INTERVAL 2 YEAR )
+WHERE id = 4;
 
 select * from user;
 select * from category;
@@ -33,4 +35,6 @@ insert into report(user_id, reason) VALUES (6,'그냥1');
 select count(*) from user;
 
 select * from user;
+
+# $2a$10$jsEuJ4.Mc/iMGHRa7kB04.9t6PmuGaYKKWfomTgyGcFmfntRtFv0q
 
