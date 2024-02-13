@@ -13,7 +13,10 @@ const WritePage = () => {
     status: "-- 판매 상태를 선택해주세요 --",
     middleCategory: "-- 중분류 카테고리를 선택해주세요 --",
     createdAt: "",
-    category: ""
+    category: {
+      id:"",
+      name:""
+    }
   });
 
   // const [productImg, setProductImg] = useState({
