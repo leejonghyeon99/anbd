@@ -42,6 +42,7 @@ public class AdminController {
     public ResponseEntity<Page<UserDTO>> userList(
             @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size
     ){
+        System.out.println(page +"  /  "+ size);
         return new ResponseEntity<>(adminService.userList(page,size), HttpStatus.OK);
     }
 

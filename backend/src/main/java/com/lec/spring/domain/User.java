@@ -51,8 +51,8 @@ public class User extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private Auth auth;
 
-    @Column(nullable = false, columnDefinition = "boolean default 0")
-    private boolean certification;
+    @Column(nullable = false, columnDefinition = "varchar(10) default 'DENIED'")
+    private String certification;
 
     private String thumbnail;
 

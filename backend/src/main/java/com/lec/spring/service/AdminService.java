@@ -46,13 +46,13 @@ public class AdminService {
 
     //유저 목록
     public Page<UserDTO> userList(int page, int size){
-        PageRequest pageRequest = PageRequest.of(page-1,size);
+        PageRequest pageRequest = PageRequest.of(page,size);
         return userRepository.findAll(pageRequest).map(UserDTO::toDto);
     }
 
     //신고 목록
     public Page<ReportDTO> reportList(int page, int size){
-        PageRequest pageRequest = PageRequest.of(page-1,size);
+        PageRequest pageRequest = PageRequest.of(page,size);
         return reportRepository.findAll(pageRequest).map(ReportDTO::toDto);
     }
 
@@ -81,7 +81,7 @@ public class AdminService {
     }
 
     public Page<ProductDTO> productList(int page, int size){
-        PageRequest pageRequest = PageRequest.of(page-1, size);
+        PageRequest pageRequest = PageRequest.of(page, size);
         return productRepository.findAll(pageRequest).map(ProductDTO::toDto);
     }
 

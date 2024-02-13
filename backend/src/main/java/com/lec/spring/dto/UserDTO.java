@@ -26,7 +26,7 @@ public class UserDTO {
     private String email;
     private Double star;
     private Auth auth;
-    private boolean certification;
+    private String certification;
     private String thumbnail;
 
     public static UserDTO toDto(User user) {
@@ -41,7 +41,7 @@ public class UserDTO {
                 .email(user.getEmail())
                 .star(user.getStar())
                 .auth(user.getAuth())
-                .certification(user.isCertification())
+                .certification(user.getCertification())
                 .thumbnail(user.getThumbnail())
                 .build();
     }
