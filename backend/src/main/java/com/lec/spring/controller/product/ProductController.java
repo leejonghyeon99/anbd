@@ -1,6 +1,7 @@
 package com.lec.spring.controller.product;
 
 import com.lec.spring.domain.Product;
+import com.lec.spring.domain.Status;
 import com.lec.spring.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,10 +20,19 @@ public class ProductController {
 
     // 등록
     @PostMapping("/write")
-    public ResponseEntity<?> write(@RequestBody Map<String,Object> product){
-        System.out.println(product);
+    public ResponseEntity<?> write(@RequestBody Map<String,String> product){
 //        Product product1 = productService.write(product);
-        return new ResponseEntity<>(null, HttpStatus.CREATED);  //201
+        Product pd = new Product();
+        pd.setTitle(product.get("title"));
+        pd.setMiddleCategory(product.get("middleCategory"));
+        pd.setPrice(Integer.parseInt(product.get("price")));
+        pd.setDescription(product.get("description"));
+        pd.setStatus(Status.valueOf(product.get("status")));
+
+        System.out.println(pd.toString());
+
+
+        return new ResponseEntity<>(productService.write(pd,product.get("category")), HttpStatus.CREATED);  //201
     }
     // 목록
     @GetMapping("/list")

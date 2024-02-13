@@ -1,10 +1,14 @@
 package com.lec.spring.service.product;
 
+import com.lec.spring.domain.Category;
 import com.lec.spring.domain.Product;
 import com.lec.spring.domain.ProductImage;
+import com.lec.spring.dto.ProductDTO;
+import com.lec.spring.repository.CategoryRepository;
 import com.lec.spring.repository.product.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,12 +17,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductService {
 
+    @Autowired
     private final ProductRepository productRepository;
+    @Autowired
+    private final CategoryRepository categoryRepository;
 
     // 등록
     @Transactional
-    public Product write(Product product){
-        return productRepository.save(product);
+    public ProductDTO write(Product product, String category){
+        System.out.println(category);
+        Category category1 = categoryRepository.findById(Integer.parseInt(category)).orElse(null);
+        product.setCategory(category1);
+        return ProductDTO.toDto(productRepository.save(product));
     }
     // 목록
     @Transactional
