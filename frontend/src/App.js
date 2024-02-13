@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './CSS/App.css';
 import React, { useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
@@ -8,6 +7,7 @@ import Login from './user/Login';
 import SignUp from './user/SignUp';
 import Update from './user/Update';
 import Header from './common/Header';
+
 
 
 const App = () => {
@@ -22,7 +22,7 @@ const App = () => {
 
       <div>
           <Container className='mt-3'>
-            <Header/>
+            {/* <Header/> */}
               <Routes>
                   <Route>
                       <Route path='/'></Route> 
@@ -30,7 +30,6 @@ const App = () => {
                       <Route path='/api/user/login' Component={Login}></Route>
                       <Route path='/api/user/signup' Component={SignUp}></Route>
                       <Route path='/api/user/update' Component={Update}></Route> 
-
                   </Route>
               </Routes>
           </Container>
