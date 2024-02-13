@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Admin = () => {
+const Update = () => {
     return (
         <div>
-            관리자 페이지
+            
         </div>
     );
 };
 
-export default Admin
+export default Update;
