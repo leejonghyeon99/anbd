@@ -3,15 +3,14 @@ import "./common/CSS/Home.css";
 import Header from "./common/Header";
 import Sidebar from "./common/Sidebar";
 import { useMediaQuery } from "react-responsive";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import Login from "./user/Login";
+import { Container } from "react-bootstrap";
+import Admin from "./admin/Admin";
+
 
 const Home = () => {
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    navigate("/home");
-  }, []);
 
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
@@ -27,8 +26,9 @@ const Home = () => {
           )}
           <div className="main-content">
             <Routes>
-              <Route path="/"></Route>
+            <Route path='/' element={<Navigate to="/home"></Navigate>}></Route>
               <Route path="/login" Component={Login}></Route>
+              <Route path="/admin" Component={Admin}></Route>
             </Routes>
           </div>
         </div>
