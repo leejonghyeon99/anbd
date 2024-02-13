@@ -1,7 +1,9 @@
 package com.lec.spring.dto;
 
+import com.lec.spring.domain.Report;
 import com.lec.spring.domain.Review;
 import com.lec.spring.domain.User;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,25 +16,23 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReviewDTO {
+public class ReportDTO {
 
     private Integer id;
-    private String comment;
-    private ProductDTO product;
+    private String reason;
     private UserDTO user;
 
-    private static ReviewDTO toDto(Review entity){
-        return ReviewDTO.builder()
+    public static ReportDTO toDto(Report entity){
+        return ReportDTO.builder()
                 .id(entity.getId())
-                .comment(entity.getComment())
+                .reason(entity.getReason())
                 .user(UserDTO.toDto(entity.getUser()))
-                .product(ProductDTO.toDto(entity.getProduct()))
                 .build();
     }
 
-    public static List<ReviewDTO> toDtoList(List<Review> reviews) {
-        return reviews.stream()
-                .map(ReviewDTO::toDto)
+    public static List<ReportDTO> toDtoList(List<Report> reports) {
+        return reports.stream()
+                .map(ReportDTO::toDto)
                 .collect(Collectors.toList());
     }
 }

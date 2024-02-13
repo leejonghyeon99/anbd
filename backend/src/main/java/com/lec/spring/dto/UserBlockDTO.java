@@ -1,5 +1,6 @@
 package com.lec.spring.dto;
 
+import com.lec.spring.domain.UserBlock;
 import com.lec.spring.domain.UserBlockId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -17,4 +18,11 @@ public class UserBlockDTO {
 
     private Integer userId;
     private Integer targetId;
+
+    public static UserBlockDTO toDto(UserBlock entity){
+        return UserBlockDTO.builder()
+                .userId(entity.getUserId())
+                .targetId(entity.getTargetId())
+                .build();
+    }
 }
