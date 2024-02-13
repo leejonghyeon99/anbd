@@ -6,6 +6,7 @@ import { Container } from 'react-bootstrap';
 import Home from './Home';
 import Login from './user/Login';
 import Header from './common/Header';
+import Admin from './admin/Admin';
 
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
                       <Route path='/'></Route> 
                       <Route path='/home' Component={Home}></Route> 
                       <Route path='/login' Component={Login}></Route> 
+                      <Route path='/admin' Component={Admin}></Route> 
                   </Route>
               </Routes>
           </Container>
