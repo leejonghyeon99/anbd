@@ -17,7 +17,7 @@ const Home = () => {
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
   return (
-    <Container>
+
       <div className="home">
         <Header className="header" />
         <div className="content">
@@ -34,7 +34,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-    </Container>
+
   );
 };
 
