@@ -1,7 +1,6 @@
 package com.lec.spring.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 

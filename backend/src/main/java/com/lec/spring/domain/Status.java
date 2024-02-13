@@ -1,12 +1,21 @@
 package com.lec.spring.domain;
 
+import lombok.Data;
+import lombok.Getter;
+
+
+@Getter
 public enum Status {
 
-    SALE("판매중"),
-    RESERVED("예약중"),
-    SOLD("판매완료");
+    SALE("SALE"),
+    RESERVED("RESERVED"),
+    SOLD("SOLD");
+
+    private final String status;
 
     Status(String status) {
-
+        this.status = status;
     }
+
 }
+

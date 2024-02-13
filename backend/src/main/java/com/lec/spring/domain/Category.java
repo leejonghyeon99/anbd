@@ -21,5 +21,5 @@ public class Category {
 
     @OneToMany
     @JoinColumn(name = "category_id")
-    private List<Product> product;
+    private List<Product> products;
 }

@@ -1,25 +1,36 @@
 import logo from './logo.svg';
-import './App.css';
+import './CSS/App.css';
+import React, { useEffect } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Container } from 'react-bootstrap';
+import Home from './Home';
+import Login from './user/Login';
+import Header from './common/Header';
 
-function App() {
+
+const App = () => {
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+      navigate('/home');
+  },[]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+      <div>
+          <Container className='mt-3'>
+            <Header/>
+              <Routes>
+                  <Route>
+                      <Route path='/'></Route> 
+                      <Route path='/home' Component={Home}></Route> 
+                      <Route path='/login' Component={Login}></Route> 
+                  </Route>
+              </Routes>
+          </Container>
+      </div>
   );
-}
+};
 
 export default App;
