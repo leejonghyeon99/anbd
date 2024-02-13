@@ -1,6 +1,7 @@
 package com.lec.spring.service.admin;
 
 import com.lec.spring.domain.Category;
+import com.lec.spring.domain.Product;
 import com.lec.spring.domain.Report;
 import com.lec.spring.domain.User;
 import com.lec.spring.dto.CategoryDTO;
