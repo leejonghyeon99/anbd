@@ -72,4 +72,6 @@ public class AdminController {
     public ResponseEntity<Page<ProductDTO>> productList(int page, int size){
         return new ResponseEntity<>(adminService.productList(page, size),HttpStatus.OK);
     }
+
+
 }
