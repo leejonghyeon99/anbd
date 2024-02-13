@@ -1,0 +1,26 @@
+.header {
+    background-color: aqua;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.header_fix{
+    flex: 1;
+    display: flex;
+}
+
+.nav_logo {
+    flex-basis: 80%;
+    background-color: lightgray;
+}
+
+#menuIcon {
+    padding: 4px;
+    margin-right: 5px;
+}
+
+.mypage {
+    flex-grow: 1;
+    background-color: rgb(253, 0, 0);
+}
