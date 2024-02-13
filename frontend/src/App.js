@@ -27,9 +27,6 @@ const App = () => {
                   <Route>
                       <Route path='/'></Route> 
                       <Route path='/home' Component={Home}></Route> 
-                      <Route path='/api/user/login' Component={Login}></Route>
-                      <Route path='/api/user/signup' Component={SignUp}></Route>
-                      <Route path='/api/user/update' Component={Update}></Route> 
                   </Route>
               </Routes>
           </Container>
