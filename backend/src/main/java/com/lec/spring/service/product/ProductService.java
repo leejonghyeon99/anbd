@@ -1,6 +1,7 @@
 package com.lec.spring.service.product;
 
 import com.lec.spring.domain.Product;
+import com.lec.spring.domain.ProductImage;
 import com.lec.spring.repository.product.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
@@ -17,10 +19,10 @@ public class ProductController {
 
     // 등록
     @PostMapping("/write")
-    public ResponseEntity<?> write(@RequestBody Product product){
-        Product product1 = productService.write(product);
-        System.out.println(product1);
-        return new ResponseEntity<>(product1, HttpStatus.CREATED);  //201
+    public ResponseEntity<?> write(@RequestBody Map<String,Object> product){
+        System.out.println(product);
+//        Product product1 = productService.write(product);
+        return new ResponseEntity<>(null, HttpStatus.CREATED);  //201
     }
     // 목록
     @GetMapping("/list")

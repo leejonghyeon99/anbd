@@ -51,7 +51,7 @@ public class Product extends BaseEntity{
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<WishList> wishList;
 
-    @OneToMany(mappedBy = "product",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Review> reviews;
 
     @OneToMany(mappedBy = "product",cascade = CascadeType.REMOVE)
