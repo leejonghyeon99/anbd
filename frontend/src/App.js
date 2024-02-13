@@ -5,6 +5,8 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import Home from './Home';
 import Login from './user/Login';
+import SignUp from './user/SignUp';
+import Update from './user/Update';
 import Header from './common/Header';
 
 
@@ -12,9 +14,9 @@ const App = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-      navigate('/home');
-  },[]);
+//   useEffect(() => {
+//       navigate('/home');
+//   },[]);
 
   return (
 
@@ -25,7 +27,10 @@ const App = () => {
                   <Route>
                       <Route path='/'></Route> 
                       <Route path='/home' Component={Home}></Route> 
-                      <Route path='/login' Component={Login}></Route> 
+                      <Route path='/api/user/login' Component={Login}></Route>
+                      <Route path='/api/user/signup' Component={SignUp}></Route>
+                      <Route path='/api/user/update' Component={Update}></Route> 
+
                   </Route>
               </Routes>
           </Container>
