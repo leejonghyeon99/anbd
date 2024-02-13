@@ -24,3 +24,7 @@
     flex-grow: 1;
     background-color: rgb(253, 0, 0);
 }
+
+#mypagebtn { 
+    padding: 8px;
+}
