@@ -27,6 +27,7 @@ WHERE id = 4;
 select * from user;
 select * from category;
 select * from product;
+desc product;
 
 
 insert into report(user_id, reason) VALUES (6,'그냥1');
