@@ -5,7 +5,6 @@ import Sidebar from "./common/Sidebar";
 import { useMediaQuery } from "react-responsive";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import Login from "./user/Login";
-import { Container } from "react-bootstrap";
 
 const Home = () => {
   const navigate = useNavigate();
