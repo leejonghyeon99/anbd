@@ -8,6 +8,7 @@ import com.lec.spring.dto.ProductDTO;
 import com.lec.spring.dto.ReportDTO;
 import com.lec.spring.dto.UserDTO;
 import com.lec.spring.repository.*;
+import com.lec.spring.repository.product.ProductRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
