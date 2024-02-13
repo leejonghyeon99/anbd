@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import "./CSS/Header.css";
 import { MypagebarList } from "../components/MypagebarList";
-import "./CSS/Mypagebar.css";
+import "./CSS/Header.css";
+import "./CSS/Mypagebar.css"
 // icon import
 import { FaUserCircle } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
@@ -34,6 +34,11 @@ const NavMenu = styled.ul`
   }
 `;
 
+const Navbar = styled.div`
+  /* 다른 스타일들... */
+  display: ${(props) => (props.isVisible ? "block" : "none")};
+`;
+
 const Header = () => {
   const navigate = useNavigate();
 
@@ -43,7 +48,7 @@ const Header = () => {
   const [isBfoodOpen, setIsBfoodOpen] = useState(false);
   const [isBlivingOpen, setIsBlivingOpen] = useState(false);
   // Mypage 버튼
-  const [mypageSidebar, setMypageSidebar] = useState(false);
+  const [isMypageVisible, setIsMypageVisible] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -51,6 +56,8 @@ const Header = () => {
     setIsBclothingOpen(false);
     setIsBfoodOpen(false);
     setIsBlivingOpen(false);
+    // 메뉴를 열 때 mypage는 닫힘
+    setIsMypageVisible(false); 
   };
 
   const toggleClothing = () => {
@@ -75,7 +82,9 @@ const Header = () => {
   };
 
   // mypage show/hide
-  const showSidebar = () => setMypageSidebar(!mypageSidebar);
+  const toggleMypage = () => {
+    setIsMypageVisible(!isMypageVisible);
+  };
 
   return (
     <div className="header">
@@ -83,17 +92,15 @@ const Header = () => {
         <div className="header_fix">
           <div className="nav_logo">
             {/* 아이콘 클릭 시 메뉴 토글 */}
-            <img src="icon/menu.png" id="menuIcon" onClick={toggleMenu} />
-            AH!NaBaDa
-          </div>
-          <div className="navbar"> {/*mypage toggle */}
+            {/*
             <Link to="#" className="menu-bars">
-            <FaUserCircle  onClick={showSidebar}/>
+            <FaUserCircle  onClick={toggleMypage}/>
             </Link>
+          <div className="navbar"> 
             <nav className={mypageSidebar ? "nav-menu.active" : "nav-menu"}> 
-              <ul className="nav-menu-items"onClick={showSidebar}>
+              <ul className="nav-menu-items">
                 <li className="navbar-toggle">
-                  <Link to="#" className="menu-bars">
+                  <Link to="#" className="menu-bars" onClick={toggleMypage}>
                   <IoClose />
                   </Link>
                 </li>
@@ -108,8 +115,36 @@ const Header = () => {
                   );
                 })}
               </ul>
-            </nav> {/*mypage toggle*/}
+            </nav>
           </div>
+        </div> */}
+        <img src="icon/menu.png" id="menuIcon" onClick={toggleMenu} />
+            AH!NaBaDa
+          </div>
+
+          <div className="mypageToggle" id="menu-bars">
+            <FaUserCircle onClick={toggleMypage} />
+          </div>
+
+          <Navbar isVisible={isMypageVisible}>
+            <nav className="nav-menu">
+              <ul className="nav-menu-items">
+                <li className="navbar-toggle">
+                  <Link to="#" id="menu-bars" onClick={toggleMypage}>
+                    <IoClose />
+                  </Link>
+                </li>
+                {MypagebarList.map((item, index) => (
+                  <li key={index} className={item.cName} id="menuTitle">
+                    <Link to={item.path}>
+                      {item.icon}
+                      <span>{item.title}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </Navbar>
         </div>
 
         <NavMenu isMenuOpen={isMenuOpen}>

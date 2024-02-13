@@ -15,11 +15,11 @@ const Home = () => {
     <div className="home">
       <Header className="header" />
       <div className="content">
-        {!isMobile && (
-          <div className="menu">
-            <Sidebar />
-          </div>
-        )}
+          {!isMobile && (
+            <div className="menu">
+              <Sidebar />
+            </div>
+          )}
         <div className="main-content">
           <Routes>
             <Route path="/" element={<Navigate to="/home"></Navigate>}></Route>

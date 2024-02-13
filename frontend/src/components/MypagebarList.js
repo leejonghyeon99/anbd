@@ -4,25 +4,25 @@ import { BiBarChartAlt2 } from "react-icons/bi";
 
 export const MypagebarList = [
     {
-        title: '1',
+        title: '안녕하쇼',
         path: '/',
         icon: <BiBarChartAlt2 /> ,
         cName: 'nav-text'
     },
     {
-        title: '2',
+        title: '이것은',
         path: '/',
         icon: <BiBarChart /> ,
         cName: 'nav-text'
     },
     {
-        title: '3',
+        title: '메뉴입니다',
         path: '/',
         icon: <BiBarChart /> ,
         cName: 'nav-text'
     },
     {
-        title: '4',
+        title: 'ㅇㅇㅇㅇㄴㄹㅇㄴㅇㅇ',
         path: '/',
         icon: <BiBarChart /> ,
         cName: 'nav-text'
