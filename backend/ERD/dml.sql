@@ -1,3 +1,4 @@
+
 create database db_anbd;
 use db_anbd;
 show tables;
@@ -28,22 +29,8 @@ select * from product;
 
 insert into report(user_id, reason) VALUES (6,'그냥1');
 
-select
-    u1_0.id,
-    u1_0.auth,
-    u1_0.certification,
-    u1_0.created_at,
-    u1_0.email,
-    u1_0.name,
-    u1_0.nickname,
-    u1_0.password,
-    u1_0.phone_number,
-    u1_0.provider,
-    u1_0.provider_id,
-    u1_0.star,
-    u1_0.thumbnail,
-    u1_0.username
-from
-    user u1_0
-limit
-    1,10;
+
+select count(*) from user;
+
+select * from user;
+
