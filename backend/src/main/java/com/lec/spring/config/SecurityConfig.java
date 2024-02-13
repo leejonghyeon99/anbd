@@ -33,10 +33,10 @@ public class SecurityConfig {
     }
 
     // ↓ Security 를 동작시키지 않기.
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer(){
-        return web -> web.ignoring().anyRequest();   // 어떠한 request 도 security 가 무시함
-    }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer(){
+//        return web -> web.ignoring().anyRequest();   // 어떠한 request 도 security 가 무시함
+//    }
 
 //    @Bean
 //    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -86,4 +86,6 @@ public class SecurityConfig {
         return http.build();
 
     }
+
+
 }
