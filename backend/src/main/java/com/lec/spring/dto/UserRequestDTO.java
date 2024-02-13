@@ -23,7 +23,7 @@ public class UserRequestDTO {
     private String email;
     private Double star;
     private Auth auth;
-    private boolean certification;
+    private String certification;
 
     public User toUser(PasswordEncoder passwordEncoder) {
         return User.builder()
