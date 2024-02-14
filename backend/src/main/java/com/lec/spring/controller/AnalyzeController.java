@@ -2,12 +2,10 @@ package com.lec.spring.controller;
 
 import com.lec.spring.service.admin.AnalyzeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.Map;
@@ -25,19 +23,17 @@ public class AnalyzeController {
 
 
     //월, 일별 회원가입자 수 통계
-    @GetMapping("/analyze/signup")
+    @GetMapping("/signup")
     public ResponseEntity<Object> dailySignUp(
-            @RequestBody Map<String, String> map
+            @RequestParam String sort,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
     ){
-        String sort = map.get("sort");
-        LocalDate startDate = LocalDate.parse(map.get("start"));
-        LocalDate endDate = LocalDate.parse(map.get("end"));
-
         return new ResponseEntity<>(analyzeService.analyzeDate(sort, startDate, endDate), HttpStatus.OK);
     }
 
     //총 회원수
-    @GetMapping("/analuze/user/total")
+    @GetMapping("/user/total")
     public ResponseEntity<Integer> totalUsers(){
         return new ResponseEntity<>(analyzeService.totalUsersCount(),HttpStatus.OK);
     }

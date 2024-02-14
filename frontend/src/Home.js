@@ -29,7 +29,7 @@ const Home = () => {
             <Routes>
             <Route path='/' element={<Navigate to="/home"></Navigate>}></Route>
               <Route path="/login" Component={Login}></Route>
-              <Route path="/admin" Component={Admin}></Route>
+              
               <Route path="/product/write" Component={WritePage}></Route>
             </Routes>
           </div>

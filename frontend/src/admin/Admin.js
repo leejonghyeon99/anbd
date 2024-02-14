@@ -1,4 +1,6 @@
 import React from 'react';
+import UserList from './component/UserList';
+import './css/admin.css';
 
 const Admin = () => {
 
@@ -6,9 +8,15 @@ const Admin = () => {
 
 
     return (
-        <div>
-            관리자 페이지
-        </div>
+        <>
+            <div className='bucket'>
+                <UserList/>
+            </div>
+            <div>
+
+            </div>
+          
+        </>
     );
 };
 
