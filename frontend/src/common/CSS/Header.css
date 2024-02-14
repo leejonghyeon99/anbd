@@ -5,22 +5,28 @@
     flex-direction: column;
 }
 
-.header_fix{
-    flex: 1;
+.headerFix{
     display: flex;
+
+    justify-content: space-between;
+    background-color: brown;
 }
 
-.nav_logo {
-    flex-basis: 80%;
+.hiddenMenu {
     background-color: lightgray;
 }
 
 #menuIcon {
-    padding: 4px;
     margin-right: 5px;
 }
 
-.mypage {
-    flex-grow: 1;
-    background-color: rgb(253, 0, 0);
+.mypageToggle {
+    right: 0;
+    background-color: beige;
+    padding: 20px;
 }
+
+.logo {
+    background-color: rgb(156, 150, 150);
+}
+

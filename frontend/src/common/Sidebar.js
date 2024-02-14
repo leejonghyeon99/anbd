@@ -9,9 +9,24 @@ const Styledsidebar = styled.div`
   background-color: blueviolet;
   position: sticky;
   top: 50px;
+  padding: 15px;
 
   @media screen and (min-width: 768px) {
     display: block;
+  }
+`;
+
+const SidebarMenu = styled.div`
+  ul {
+    list-style: none;
+    font-size: calc(8px + 0.8vw); /* vw 단위를 사용하여 글꼴 크기를 동적으로 변경 */
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    font-size: calc(8px + 0.5vw); /* vw 단위를 사용하여 글꼴 크기를 동적으로 변경 */
+    cursor: pointer;
   }
 `;
 
@@ -56,42 +71,42 @@ function Sidebar() {
     setIsFoodOpen(false);
   };
   return (
-      <Styledsidebar>
-        <div className="sidebarWrapper">
-          <div className="sidebarMenu">
+    <Styledsidebar>
+      <div className="sidebarWrapper">
+        <SidebarMenu className="sidebarMenu">
           <ul onClick={toggleClothing}>
-                        의류
-                        {isClothingOpen && (
-                            <ul className="submenu">
-                                <li onClick={() => navigate()}>여성의류</li>
-                                <li onClick={() => navigate()}>남성의류</li>
-                                <li onClick={() => navigate()}>아동의류</li>
-                            </ul>
-                        )}
-                    </ul>
-                    <ul onClick={toggleFood}>
-                        식품
-                        {isFoodOpen && (
-                            <ul className="submenu">
-                                <li onClick={() => navigate()}>1</li>
-                                <li onClick={() => navigate()}>2</li>
-                                <li onClick={() => navigate()}>3</li>
-                            </ul>
-                        )}
-                    </ul>
-                    <ul onClick={toggleLiving}>
-                        생활용품
-                        {isLivingOpen && (
-                            <ul className="submenu">
-                                <li onClick={() => navigate()}>1</li>
-                                <li onClick={() => navigate()}>2</li>
-                                <li onClick={() => navigate()}>3</li>
-                            </ul>
-                        )}
-                    </ul>
-          </div>
-        </div>
-      </Styledsidebar>
+            의류
+            {isClothingOpen && (
+              <ul className="submenu">
+                <li onClick={() => navigate()}>여성의류</li>
+                <li onClick={() => navigate()}>남성의류</li>
+                <li onClick={() => navigate()}>아동의류</li>
+              </ul>
+            )}
+          </ul>
+          <ul onClick={toggleFood}>
+            식품
+            {isFoodOpen && (
+              <ul className="submenu">
+                <li onClick={() => navigate()}>1</li>
+                <li onClick={() => navigate()}>2</li>
+                <li onClick={() => navigate()}>3</li>
+              </ul>
+            )}
+          </ul>
+          <ul onClick={toggleLiving}>
+            생활용품
+            {isLivingOpen && (
+              <ul className="submenu">
+                <li onClick={() => navigate()}>1</li>
+                <li onClick={() => navigate()}>2</li>
+                <li onClick={() => navigate()}>3</li>
+              </ul>
+            )}
+          </ul>
+        </SidebarMenu>
+      </div>
+    </Styledsidebar>
   );
 }
 

@@ -1,36 +1,27 @@
-import './CSS/App.css';
-import React, { useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
-import { Container } from 'react-bootstrap';
-import Home from './Home';
-import Login from './user/Login';
-import SignUp from './user/SignUp';
-import Update from './user/Update';
-import Header from './common/Header';
-
-
+import React from "react";
+import "./App.css";
+import Header from "./common/Header";
+import Sidebar from "./common/Sidebar";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import Login from "./user/Login";
+import Admin from "./admin/Admin";
 
 const App = () => {
 
-  const navigate = useNavigate();
-
-//   useEffect(() => {
-//       navigate('/home');
-//   },[]);
-
   return (
-
-      <div>
-          <Container className='mt-3'>
-            {/* <Header/> */}
-              <Routes>
-                  <Route>
-                      <Route path='/'></Route> 
-                      <Route path='/home' Component={Home}></Route> 
-                  </Route>
-              </Routes>
-          </Container>
+    <>
+      <Header className="header" />
+      <div className="menu">
+        <Sidebar />
       </div>
+      <div className="content">content
+          <Routes>
+            <Route path="/" element={<Navigate to="/home"></Navigate>}></Route>
+            <Route path="/login" Component={Login}></Route>
+            <Route path="/admin" Component={Admin}></Route>
+          </Routes>
+      </div>
+    </>
   );
 };
 
