@@ -9,6 +9,7 @@ import Update from "./user/Update";
 import SignUp from "./user/SignUp";
 import Home from "./common/Home";
 import { Container } from "react-bootstrap";
+import PasswordCheck from "./user/PasswordCheck";
 
 const App = () => {
   return (
@@ -22,9 +23,10 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Navigate to="/home"></Navigate>}></Route>
             <Route path="/home" Component={Home}></Route>
-            <Route path="/login" Component={Login}></Route>
-            <Route path="/signup" Component={SignUp}></Route>
-            <Route path="/update" Component={Update}></Route>
+            <Route path="user/login" Component={Login}></Route>
+            <Route path="user/signup" Component={SignUp}></Route>
+            <Route path="user/passwordcheck" Component={PasswordCheck}></Route>
+            <Route path="user/update" Component={Update}></Route>
 
             <Route path="/admin" Component={Admin}></Route>
           </Routes>

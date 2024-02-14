@@ -2,27 +2,22 @@ package com.lec.spring.service;
 
 import com.lec.spring.domain.Auth;
 import com.lec.spring.domain.RefreshToken;
-import com.lec.spring.domain.Status;
 import com.lec.spring.domain.User;
-import com.lec.spring.dto.*;
+import com.lec.spring.dto.TokenDTO;
+import com.lec.spring.dto.TokenRequestDTO;
+import com.lec.spring.dto.UserRequestDTO;
+import com.lec.spring.dto.UserResponseDTO;
 import com.lec.spring.jwt.TokenProvider;
 import com.lec.spring.repository.RefreshTokenRepository;
 import com.lec.spring.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.time.Duration;
-import java.util.Optional;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
