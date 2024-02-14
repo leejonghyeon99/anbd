@@ -63,7 +63,7 @@ const SignUp = () => {
                 <Form>핸드폰번호 : <input/></Form>
                 <Form>email : <input/><Button>이메일인증</Button></Form>
                 <Form>주소 :<input/></Form>
-                <Button onClick={validateUser}>회원 가입</Button>
+                <Button>회원 가입</Button>
             </div>
         );
     
