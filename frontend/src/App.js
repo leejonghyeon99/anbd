@@ -5,6 +5,8 @@ import Sidebar from "./common/Sidebar";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import Login from "./user/Login";
 import Admin from "./admin/Admin";
+import Update from "./user/Update";
+import SignUp from "./user/SignUp";
 
 const App = () => {
 
@@ -18,6 +20,9 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Navigate to="/home"></Navigate>}></Route>
             <Route path="/login" Component={Login}></Route>
+            <Route path="/signup" Component={SignUp}></Route>
+            <Route path="/update" Component={Update}></Route>
+
             <Route path="/admin" Component={Admin}></Route>
           </Routes>
       </div>

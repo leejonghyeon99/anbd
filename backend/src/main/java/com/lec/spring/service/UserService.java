@@ -1,6 +1,8 @@
 package com.lec.spring.service;
 
+import com.lec.spring.domain.Auth;
 import com.lec.spring.domain.RefreshToken;
+import com.lec.spring.domain.Status;
 import com.lec.spring.domain.User;
 import com.lec.spring.dto.*;
 import com.lec.spring.jwt.TokenProvider;
@@ -39,10 +41,15 @@ public class UserService {
         if (userRepository.existsByUsername(userRequestDTO.getUsername())){
             throw new RuntimeException("이미 가입되어 있는 유저입니다.");
         }
+        // 이메일 인증이 되면 자격증명을 승인됨으로 바꿈
 
         User user = userRequestDTO.toUser(passwordEncoder);
+        user.setAuth(Auth.ROLE_USER);
+        user.setCertification("approved");
+        user.setStar(0.0);
         return UserResponseDTO.of(userRepository.save(user));
     }
+
 
     @Transactional
     public TokenDTO login(UserRequestDTO userRequestDTO){
