@@ -106,18 +106,19 @@ const WritePage = () => {
         <span>대분류</span>
         <div className="mb-3">
           <select
-            className="form-select"
-            id="category"
-            name="category"
-            onChange={WriteValue}
-          >
-            <option value="-- 대분류 카테고리를 선택해주세요 --">
-              -- 대분류 카테고리를 선택해주세요 --
-            </option>
-            <option value="1">의류</option>
-            <option value="2">식품</option>
-            <option value="3">생활용품</option>
-          </select>
+          className="form-select"
+          id="category"
+          name="category"  // name 속성 추가
+          onChange={WriteValue}
+          value={product.category} // 선택된 값 설정
+        >
+          <option value="-- 대분류 카테고리를 선택해주세요 --">
+            -- 대분류 카테고리를 선택해주세요 --
+          </option>
+          <option value="의류">의류</option>
+          <option value="식품">식품</option>
+          <option value="생활용품">생활용품</option>
+      </select>
           <span>중분류</span>
           <select
             className="form-select"
