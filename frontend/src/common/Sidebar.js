@@ -5,7 +5,7 @@ import { styled } from "styled-components";
 const Styledsidebar = styled.div`
   display: ${(props) => (props.isMenuOpen ? "block" : "none")};
   flex: 1;
-  height: calc(100vh - 50px);
+  height: calc(100vh - 120px);
   background-color: blueviolet;
   position: sticky;
   top: 50px;
@@ -29,18 +29,6 @@ const SidebarMenu = styled.div`
     cursor: pointer;
   }
 `;
-
-// const SideMenu = styled.ul`
-//   /* 다른 스타일들... */
-//   display: ${(props) => (props.isMenuOpen ? "block" : "none")};
-//   flex-direction: column;
-//   align-items: center;
-//   width: 100%;
-
-//   @media screen and (min-width: 768px) {
-//     display: ${(props) => (props.isMenuOpen ? "block" : "none")};
-//   }
-// `;
 
 function Sidebar() {
   const navigate = useNavigate();

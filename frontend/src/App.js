@@ -5,21 +5,25 @@ import Sidebar from "./common/Sidebar";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import Login from "./user/Login";
 import Admin from "./admin/Admin";
+import Home from "./common/Home";
+import { Container } from "react-bootstrap";
 
 const App = () => {
-
   return (
     <>
-      <Header className="header" />
-      <div className="menu">
-        <Sidebar />
-      </div>
-      <div className="content">content
+      <div className="AppBox">
+        <Header className="header" />
+        <div className="menu">
+          <Sidebar />
+        </div>
+        <div className="content">
           <Routes>
             <Route path="/" element={<Navigate to="/home"></Navigate>}></Route>
+            <Route path="/home" Component={Home}></Route>
             <Route path="/login" Component={Login}></Route>
             <Route path="/admin" Component={Admin}></Route>
           </Routes>
+        </div>
       </div>
     </>
   );
