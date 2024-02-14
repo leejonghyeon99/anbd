@@ -44,7 +44,7 @@ const SignUp = () => {
         })
         .then(response => {
             if(response.ok){
-                return response.JSON();
+                return response.json();
             } else {
                 throw new Error("회원가입 실패")
             }
@@ -58,6 +58,8 @@ const SignUp = () => {
         });
     };
 
+    const validateEmail = () => {};
+
 
         return (
             <div>
@@ -67,7 +69,7 @@ const SignUp = () => {
                 <Form>이름 : <input name = "name" value={user.name} onChange={formChange}/></Form>
                 <Form>닉네임 : <input name = "nickname" value={user.nickname} onChange={formChange}/></Form>
                 <Form>핸드폰번호 : <input name = "phone_number" value={user.phone_number} onChange={formChange}/></Form>
-                <Form>email : <input name = "email" value={user.email} onChange={formChange}/><Button>이메일인증</Button></Form>
+                <Form>email : <input name = "email" value={user.email} onChange={formChange}/><Button onClick={validateEmail}>이메일인증</Button></Form>
                 <Form>주소 :<input name = "address" value={user.address} onChange={formChange}/></Form>
                 <Button onClick={validateUser}>회원 가입</Button>
             </div>
