@@ -3,6 +3,7 @@ package com.lec.spring.service.admin;
 import com.lec.spring.domain.ClickRank;
 import com.lec.spring.domain.SearchRank;
 import com.lec.spring.domain.User;
+import com.lec.spring.dto.analyze.SignupAnalyze;
 import com.lec.spring.repository.ClickRankRepository;
 import com.lec.spring.repository.SearchRankRepository;
 import com.lec.spring.repository.UserRepository;
@@ -38,43 +39,41 @@ public class AnalyzeService {
 
 
     //사용자 일자별 회원가입 통계
-    public Map<LocalDate, Long> getDailySignUp(LocalDate startDate, LocalDate endDate) {
+    public List<SignupAnalyze> getDailySignUp(LocalDate startDate, LocalDate endDate) {
         List<User> allUsers = userRepository.findAll();
 
-        // 특정 기간 내의 데이터 필터링
+
         List<User> usersInPeriod = allUsers.stream()
                 .filter(user -> !user.getCreatedAt().toLocalDate().isBefore(startDate) &&
                         !user.getCreatedAt().toLocalDate().isAfter(endDate))
                 .toList();
 
-        // Java 8 Stream API를 사용하여 일자별 회원가입 통계 생성 및 날짜별로 정렬, 역순으로 정렬
+
         Map<LocalDate, Long> dailySignUpStatistics = usersInPeriod.stream()
                 .collect(Collectors.groupingBy(
                         user -> user.getCreatedAt().toLocalDate(),
                         Collectors.counting()
                 ));
 
-        // 날짜별로 정렬, 역순으로 정렬된 LinkedHashMap 반환
-        return dailySignUpStatistics.entrySet()
-                .stream()
-                .sorted(Map.Entry.comparingByKey(Comparator.reverseOrder()))
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (e1, e2) -> e1,
-                        LinkedHashMap::new
-                ));
+
+        return dailySignUpStatistics.entrySet().stream()
+                .map(entry -> SignupAnalyze.builder()
+                        .date(entry.getKey())
+                        .count(entry.getValue())
+                        .build())
+                .collect(Collectors.toList());
     }
-    public Map<String, Long> getMonthSignUp(LocalDate startDate, LocalDate endDate) {
+
+    //사용자 월별 통계
+    public List<SignupAnalyze> getMonthSignUp(LocalDate startDate, LocalDate endDate) {
         List<User> allUsers = userRepository.findAll();
 
-        // 특정 기간 내의 데이터 필터링
+
         List<User> usersInPeriod = allUsers.stream()
                 .filter(user -> !user.getCreatedAt().toLocalDate().isBefore(startDate) &&
                         !user.getCreatedAt().toLocalDate().isAfter(endDate))
                 .toList();
 
-        // Java 8 Stream API를 사용하여 월별 회원가입 통계 생성 및 날짜별로 정렬, 역순으로 정렬
         Map<String, Long> monthSignUpStatistics = usersInPeriod.stream()
                 .collect(Collectors.groupingBy(
                         user -> user.getCreatedAt().toLocalDate().getYear() + "-" +
@@ -82,16 +81,14 @@ public class AnalyzeService {
                         Collectors.counting()
                 ));
 
-        // 날짜별로 정렬, 역순으로 정렬된 LinkedHashMap 반환
-        return monthSignUpStatistics.entrySet()
-                .stream()
-                .sorted(Map.Entry.comparingByKey(Comparator.reverseOrder()))
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (e1, e2) -> e1,
-                        LinkedHashMap::new
-                ));
+
+        return monthSignUpStatistics.entrySet().stream()
+                .map(entry -> SignupAnalyze.builder()
+                        .date(LocalDate.parse(entry.getKey() + "-01")) // 해당 월의 첫 날짜로 설정
+                        .count(entry.getValue())
+                        .build())
+                .sorted(Comparator.comparing(SignupAnalyze::getDate).reversed()) // 역순으로 정렬
+                .collect(Collectors.toList());
     }
 
 

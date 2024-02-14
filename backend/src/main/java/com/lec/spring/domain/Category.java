@@ -22,4 +22,6 @@ public class Category {
     @OneToMany
     @JoinColumn(name = "category_id")
     private List<Product> products;
+
+
 }

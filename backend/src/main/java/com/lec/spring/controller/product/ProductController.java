@@ -20,19 +20,12 @@ public class ProductController {
 
     // 등록
     @PostMapping("/write")
-    public ResponseEntity<?> write(@RequestBody Map<String,String> product){
-//        Product product1 = productService.write(product);
-        Product pd = new Product();
-        pd.setTitle(product.get("title"));
-        pd.setMiddleCategory(product.get("middleCategory"));
-        pd.setPrice(Integer.parseInt(product.get("price")));
-        pd.setDescription(product.get("description"));
-        pd.setStatus(Status.valueOf(product.get("status")));
+    public ResponseEntity<?> write(@RequestBody Product product){
 
-        System.out.println(pd.toString());
+        System.out.println(product.toString());
 
 
-        return new ResponseEntity<>(productService.write(pd,product.get("category")), HttpStatus.CREATED);  //201
+        return new ResponseEntity<>(null, HttpStatus.CREATED);  //201
     }
     // 목록
     @GetMapping("/list")
