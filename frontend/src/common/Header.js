@@ -3,10 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { MypagebarList } from "../components/MypagebarList";
 import "./CSS/Header.css";
-import "./CSS/Mypagebar.css"
+import "./CSS/Mypagebar.css";
 // icon import
 import { FaUserCircle } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
+import { Container } from "react-bootstrap";
 
 const StyledHeader = styled.header`
   /* 다른 스타일들... */
@@ -57,7 +58,7 @@ const Header = () => {
     setIsBfoodOpen(false);
     setIsBlivingOpen(false);
     // 메뉴를 열 때 mypage는 닫힘
-    setIsMypageVisible(false); 
+    setIsMypageVisible(false);
   };
 
   const toggleClothing = () => {
@@ -89,44 +90,19 @@ const Header = () => {
   return (
     <div className="header">
       <StyledHeader>
-        <div className="header_fix">
-          <div className="nav_logo">
-            {/* 아이콘 클릭 시 메뉴 토글 */}
-            {/*
-            <Link to="#" className="menu-bars">
-            <FaUserCircle  onClick={toggleMypage}/>
-            </Link>
-          <div className="navbar"> 
-            <nav className={mypageSidebar ? "nav-menu.active" : "nav-menu"}> 
-              <ul className="nav-menu-items">
-                <li className="navbar-toggle">
-                  <Link to="#" className="menu-bars" onClick={toggleMypage}>
-                  <IoClose />
-                  </Link>
-                </li>
-                {MypagebarList.map((item, index) => {
-                  return (
-                    <li key={index} className="item.cName">
-                      <Link to={item.path}>
-                        {item.icon}
-                        <sapn>{item.title}</sapn>
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </nav>
-          </div>
-        </div> */}
-        <img src="icon/menu.png" id="menuIcon" onClick={toggleMenu} />
-            AH!NaBaDa
+        <div className="headerBox">
+          <div className="headerFix">
+            <div className="hiddenMenu">
+              {/* 아이콘 클릭 시 메뉴 토글 */}
+              <img src="icon/menu.png" id="menuIcon" onClick={toggleMenu} />
+            </div>
+            <div className="logo">AH!NaBaDa</div>
+            <div className="mypageToggle" id="menu-bars">
+              <img src="icon/usericon.png" id="userIcon" onClick={toggleMypage} />
+            </div>
           </div>
 
-          <div className="mypageToggle" id="menu-bars">
-            <FaUserCircle onClick={toggleMypage} />
-          </div>
-
-          <Navbar isVisible={isMypageVisible}>
+          <Navbar isVisible={isMypageVisible}> {/* user아이콘 토글하면 나오는 메뉴 */}
             <nav className="nav-menu">
               <ul className="nav-menu-items">
                 <li className="navbar-toggle">
