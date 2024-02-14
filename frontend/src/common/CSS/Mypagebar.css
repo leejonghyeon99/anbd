@@ -1,4 +1,4 @@
-.navbar {
+/* Navbar {
   background-color: #8f93a7;
   height: 80px;
   display: flex;
@@ -20,7 +20,6 @@
   justify-content: center;
   position: fixed;
   top: 0;
-  /* right: -100%; */
   transition: 850ms;
 }
 
@@ -63,8 +62,8 @@
 
 span {
     margin-left: 16px;
-}
+} */
 
-.Xicon {
-  width: 20px;
+#userIcon {
+  width: 2rem;
 }
