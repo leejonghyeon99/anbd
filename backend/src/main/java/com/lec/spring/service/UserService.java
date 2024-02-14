@@ -44,6 +44,7 @@ public class UserService {
         // 이메일 인증이 되면 자격증명을 승인됨으로 바꿈
 
         User user = userRequestDTO.toUser(passwordEncoder);
+
         user.setAuth(Auth.ROLE_USER);
         user.setCertification("approved");
         user.setStar(0.0);

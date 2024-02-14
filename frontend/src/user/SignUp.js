@@ -44,7 +44,7 @@ const SignUp = () => {
         })
         .then(response => {
             if(response.ok){
-                return response.JSON();
+                return response.json();
             } else {
                 throw new Error("회원가입 실패")
             }

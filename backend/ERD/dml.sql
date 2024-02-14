@@ -27,7 +27,7 @@ WHERE id = 4;
 select * from user;
 select * from category;
 select * from product;
-select * from auth;
+
 
 
 insert into report(user_id, reason) VALUES (6,'그냥1');
@@ -36,6 +36,7 @@ insert into report(user_id, reason) VALUES (6,'그냥1');
 select count(*) from user;
 
 select * from user;
+desc user;
 
 # $2a$10$jsEuJ4.Mc/iMGHRa7kB04.9t6PmuGaYKKWfomTgyGcFmfntRtFv0q
 
