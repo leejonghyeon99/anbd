@@ -7,6 +7,8 @@ import com.lec.spring.jwt.TokenProvider;
 import com.lec.spring.repository.RefreshTokenRepository;
 import com.lec.spring.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -14,8 +16,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.time.Duration;
+import java.util.Optional;
+import java.util.Random;
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
+@Transactional
 public class UserService {
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
