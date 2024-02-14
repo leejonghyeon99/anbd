@@ -45,6 +45,7 @@ public class ProductController {
     }
 
     // 수정
+    // Map이 아니라 Product 타입을 사용하는 이유는 배열타입인 변수들 때문에
     @PutMapping("/update")
     public ResponseEntity<?> update(@RequestBody Product product){
         return new ResponseEntity<>(productService.update(product), HttpStatus.OK);
