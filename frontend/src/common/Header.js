@@ -40,7 +40,9 @@ const Navbar = styled.div`
   display: ${(props) => (props.isVisible ? "block" : "none")};
 `;
 
-const Header = () => {
+const Header = () => {  
+  const [user, setUser] = useState(null); // 로그인 유무 상태(useEffect로 상태 확인해야함)
+
   const navigate = useNavigate();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -96,10 +98,18 @@ const Header = () => {
               {/* 아이콘 클릭 시 메뉴 토글 */}
               <img src="icon/menu.png" id="menuIcon" onClick={toggleMenu} />
             </div>
-            <div className="logo">AH!NaBaDa</div>
-            <div className="mypageToggle" id="menu-bars">
+            <Link to='/home' className="logo">AH!NaBaDa</Link>
+
+            {/* 로그인한 유저와 비회원의 mypage아이콘 다르게 나오도록 */}
+            {user ?
+             <div className="mypageToggle" id="menu-bars">
               <img src="icon/usericon.png" id="userIcon" onClick={toggleMypage} />
             </div>
+            :
+            <div className="mypageToggle" id="menu-bars">
+              <Link to='/login'>LOGIN</Link> <Link to='/signup'>JOIN</Link>
+            </div>}
+
           </div>
 
           <Navbar isVisible={isMypageVisible}> {/* user아이콘 토글하면 나오는 메뉴 */}
