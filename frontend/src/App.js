@@ -29,10 +29,10 @@ const App = () => {
             <Route path="/home" Component={Home}></Route>
             <Route path="/login" Component={Login}></Route>
 
-            <Route path="/api/product/list" Component={ListPage}></Route>
-            <Route path="/api/product/write" Component={WritePage}></Route>
-            <Route path="/api/product/detail:id" Component={DetailPage}></Route>
-            <Route path="/api/product/update:id" Component={UpdatePage}></Route>
+            <Route path="/product/list" Component={ListPage}></Route>
+            <Route path="/product/write" Component={WritePage}></Route>
+            <Route path="/product/detail:id" Component={DetailPage}></Route>
+            <Route path="/product/update:id" Component={UpdatePage}></Route>
           </Route>
         </Routes>
       </Container>

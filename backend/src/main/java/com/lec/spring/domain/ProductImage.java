@@ -18,10 +18,10 @@ public class ProductImage {
     private Integer id;
 
     @Column(nullable = false)
-    private String originName;
+    private String originName;  // 원본파일명
 
     @Column(nullable = false)
-    private String photoName;
+    private String photoName;   //
 
     @ManyToOne
     @JoinColumn(name = "product_id")

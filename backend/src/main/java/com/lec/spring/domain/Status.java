@@ -6,7 +6,6 @@ import lombok.Getter;
 
 @Getter
 public enum Status {
-
     SALE("SALE"),
     RESERVED("RESERVED"),
     SOLD("SOLD");
@@ -16,6 +15,4 @@ public enum Status {
     Status(String status) {
         this.status = status;
     }
-
 }
-

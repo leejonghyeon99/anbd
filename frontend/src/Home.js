@@ -8,6 +8,9 @@ import Login from "./user/Login";
 import { Container } from "react-bootstrap";
 import Admin from "./admin/Admin";
 import WritePage from "./product/page/WritePage";
+import ListPage from "./product/page/ListPage";
+import DetailPage from "./product/page/DetailPage";
+import UpdatePage from "./product/page/UpdatePage";
 
 
 const Home = () => {
@@ -30,7 +33,11 @@ const Home = () => {
             <Route path='/' element={<Navigate to="/home"></Navigate>}></Route>
               <Route path="/login" Component={Login}></Route>
               <Route path="/admin" Component={Admin}></Route>
+
               <Route path="/product/write" Component={WritePage}></Route>
+              <Route path="/product/list" Component={ListPage}></Route>
+              <Route path="/product/detail/:id" Component={DetailPage}></Route>
+              <Route path="/product/update/:id" Component={UpdatePage}></Route>
             </Routes>
           </div>
         </div>

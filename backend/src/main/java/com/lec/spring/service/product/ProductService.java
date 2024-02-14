@@ -17,9 +17,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductService {
 
-    @Autowired
+
     private final ProductRepository productRepository;
-    @Autowired
+
     private final CategoryRepository categoryRepository;
 
     // 등록
@@ -28,7 +28,8 @@ public class ProductService {
         System.out.println(category);
         Category category1 = categoryRepository.findById(Integer.parseInt(category)).orElse(null);
         product.setCategory(category1);
-        return ProductDTO.toDto(productRepository.save(product));
+
+        return ProductDTO.toDto(productRepository.saveAndFlush(product));
     }
     // 목록
     @Transactional
@@ -48,6 +49,7 @@ public class ProductService {
             productEntity.setTitle(product.getTitle()); // 제목
             productEntity.setDescription(product.getDescription()); // 내용
             productEntity.setPrice(product.getPrice()); // 가격
+            productEntity.setMiddleCategory(product.getMiddleCategory());   // 중분류
             productEntity.setStatus(product.getStatus());   // 상태
             productEntity.setRefreshedAt(product.getRefreshedAt()); // 끌올 날짜
             productRepository.save(productEntity);

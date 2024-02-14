@@ -31,7 +31,6 @@ public class ProductController {
 
         System.out.println(pd.toString());
 
-
         return new ResponseEntity<>(productService.write(pd,product.get("category")), HttpStatus.CREATED);  //201
     }
     // 목록

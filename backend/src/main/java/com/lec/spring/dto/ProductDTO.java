@@ -40,8 +40,8 @@ public class ProductDTO {
                 .middleCategory(entity.getMiddleCategory())
                 .refreshedAt(entity.getRefreshedAt())
                 .category(CategoryDTO.toDto(entity.getCategory()))
-                .user(UserDTO.toDto(entity.getUser()).getNickname())
-                .userProfile("profile/"+UserDTO.toDto(entity.getUser()).getId())
+//                .user(UserDTO.toDto(entity.getUser()).getNickname())
+//                .userProfile("profile/"+UserDTO.toDto(entity.getUser()).getId())
                 .build();
     }
 
