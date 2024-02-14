@@ -1,8 +1,5 @@
 package com.lec.spring.service;
 
-import com.lec.spring.config.BusinessLogicException;
-import com.lec.spring.config.EmailVerificationResult;
-import com.lec.spring.domain.ExceptionCode;
 import com.lec.spring.domain.RefreshToken;
 import com.lec.spring.domain.User;
 import com.lec.spring.dto.*;
@@ -36,12 +33,6 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
-    private static final String AUTH_CODE_PREFIX = "AuthCode";
-    private final MailService mailService;
-    private final RedisService redisService;
-
-    @Value("${spring.mail.auth-code-expiration-millis}")
-    private long authCodeExpirationMillis;
 
     @Transactional
     public UserResponseDTO signup(UserRequestDTO userRequestDTO){
@@ -94,58 +85,5 @@ public class UserService {
 
         return tokenDTO;
 
-    }
-
-    public void sendCodeToEmail(String toEmail) {
-        this.checkDuplicateEmail(toEmail);
-        String title = "ANDB 이메일 인증 번호";
-        String authCode = this.createCode();
-        mailService.sendEmail(toEmail, title, authCode);
-        redisService.setValue(AUTH_CODE_PREFIX + toEmail, authCode, Duration.ofMillis(this.authCodeExpirationMillis));
-    }
-
-    private void checkDuplicateEmail(String email) {
-        Optional<User> user = userRepository.findByEmail(email);
-        if (user.isPresent()) {
-            log.debug("UserServiceImpl.checkDuplicatedEmail exception occur email: {}", email);
-            throw new BusinessLogicException(ExceptionCode.USER_EXISTS);
-        }
-    }
-
-    private String createCode() {
-        int lenth = 6;
-        try {
-            Random random = SecureRandom.getInstanceStrong();
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < lenth; i++) {
-                builder.append(random.nextInt(10));
-            }
-            return builder.toString();
-        } catch (NoSuchAlgorithmException e) {
-            log.debug("UserService.createCode() exception occur");
-            throw new BusinessLogicException(ExceptionCode.NO_SUCH_ALGORITHM);
-        }
-
-    }
-
-
-//    public EmailVerificationResult verifiedCode(String email, String authCode) {
-//        this.checkDuplicateEmail(email);
-//        String redisAuthCode = redisService.getValues(AUTH_CODE_PREFIX + email);
-//        boolean authResult = redisAuthCode.checkExistValue(redisAuthCode) && redisAuthCode.equals(authCode);
-//
-//        return EmailVerificationResult.of(authResult);
-//    }
-
-    public EmailVerificationResult verifiedCode(String email, String authCode) {
-        this.checkDuplicateEmail(email);
-        String key = AUTH_CODE_PREFIX + email;
-        // Redis에서 키의 존재 여부를 확인
-        boolean keyExists = redisService.checkExistValue(key);
-        String redisAuthCode = redisService.getValues(key);
-        // 키가 존재하면 가져온 값과 입력된 authCode를 비교
-        boolean authResult = keyExists && redisAuthCode != null && redisAuthCode.equals(authCode);
-
-        return EmailVerificationResult.of(authResult);
     }
 }

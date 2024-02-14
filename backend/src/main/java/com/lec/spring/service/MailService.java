@@ -1,45 +1,50 @@
 package com.lec.spring.service;
 
-import com.lec.spring.config.BusinessLogicException;
-import com.lec.spring.domain.ExceptionCode;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
 @Service
-@Transactional
+@Slf4j
 @RequiredArgsConstructor
 public class MailService {
 
     private final JavaMailSender javaMailSender;
+    private static final String senderEmail = "goun3596@gmail.com";
 
-    public void sendEmail(String toEmail, String title, String content){
-        SimpleMailMessage simpleMailMessage = createEmailForm(toEmail, title, content);
+    private static int number;
 
-        try {
-            javaMailSender.send(simpleMailMessage);
-        } catch (RuntimeException e) {
-            log.debug("MailService.sendEmail exception occur toEmail : {}, " +
-                    "title: {}, text: {}", toEmail, title, content);
-            throw new BusinessLogicException(ExceptionCode.UNABLE_TO_SEND_EMAIL);
-        }
-
-
+    public static void createNumber(){
+        number = (int)(Math.random()*9000) + 100000;
     }
 
-    private SimpleMailMessage createEmailForm(String toEmail, String title, String content) {
+    public MimeMessage CreateMail(String email){
+        createNumber();
+        MimeMessage message = javaMailSender.createMimeMessage();
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(toEmail);
-        message.setSubject(title);
-        message.setText(content);
-
+        try {
+            message.setFrom(senderEmail);
+            message.setRecipients(MimeMessage.RecipientType.TO, email);
+            message.setSubject("ANDB EMAIL 인증");
+            String body = "";
+            body += "<h3>" + "요청하신 인증 번호입니다." + "</h3>";
+            body += "<h1>" + number + "</h1>";
+            body += "<h3>" + "감사합니다." + "</h3>";
+            message.setText(body,"UTF-8", "html");
+        } catch (MessagingException e) {
+            log.debug("인증이메일 제작 에러");
+            throw new RuntimeException(e);
+        }
         return message;
+    }
 
+    public int sendMail(String email){
+        MimeMessage message = CreateMail(email);
+        javaMailSender.send(message);
+
+        return number;
     }
 }
