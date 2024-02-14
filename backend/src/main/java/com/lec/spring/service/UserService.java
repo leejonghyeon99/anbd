@@ -1,12 +1,16 @@
 package com.lec.spring.service;
 
+import com.lec.spring.domain.Auth;
 import com.lec.spring.domain.RefreshToken;
+import com.lec.spring.domain.Status;
 import com.lec.spring.domain.User;
 import com.lec.spring.dto.*;
 import com.lec.spring.jwt.TokenProvider;
 import com.lec.spring.repository.RefreshTokenRepository;
 import com.lec.spring.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -14,8 +18,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.time.Duration;
+import java.util.Optional;
+import java.util.Random;
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
+@Transactional
 public class UserService {
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -29,10 +41,15 @@ public class UserService {
         if (userRepository.existsByUsername(userRequestDTO.getUsername())){
             throw new RuntimeException("이미 가입되어 있는 유저입니다.");
         }
+        // 이메일 인증이 되면 자격증명을 승인됨으로 바꿈
 
         User user = userRequestDTO.toUser(passwordEncoder);
+        user.setAuth(Auth.ROLE_USER);
+        user.setCertification("approved");
+        user.setStar(0.0);
         return UserResponseDTO.of(userRepository.save(user));
     }
+
 
     @Transactional
     public TokenDTO login(UserRequestDTO userRequestDTO){
