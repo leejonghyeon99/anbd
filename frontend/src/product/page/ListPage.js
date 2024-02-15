@@ -36,7 +36,7 @@ const ListPage = () => {
         </ListGroup>
       </Card> */}
       {products.map(product => <ProductItem key={product.id} product={product}/>)}
-      <Button variant='outline-dark' onClick={WriteOk}>상품 등록</Button>
+      <Button variant='outline-dark mt-3' onClick={WriteOk}>상품 등록</Button>
     </div>
   );
 };

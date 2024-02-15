@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Image, Col } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -21,25 +21,32 @@ const DetailPage = () => {
     
   }
   const UpdateOk = () => {
-    navigate('/product/update');
+    navigate('/product/update/'+id);
   }
+  
+  const ListOk = () => {
+    navigate('/product/list');
+  }
+  useEffect(() => {
+    fetch("http://localhost:8080/api/product/detail/" + id)
+    .then(response => response.json())
+    .then(data => setProduct(data));
+  }, []);
+
   const DeleteOk = () => {
-    if(!window.confirm("정말 삭제하시겠습니까?"))
+    if(!window.confirm("정말 삭제하시겠습니까?")) return;
     fetch("http://localhost:8080/api/product/delete/" + id, {
       method:"DELETE",
     })
     .then(response => response.text())
     .then(data => {
-      if(data != 'FAIL'){
+      if(data !== 'FAIL'){
         alert("삭제 성공");
         navigate('/product/list');
       } else{
         alert("삭제 실패");
       }
-    })
-  }
-  const ListOk = () => {
-    navigate('/product/list');
+    });
   }
 
   return (
@@ -59,15 +66,16 @@ const DetailPage = () => {
       <div className='mb-3'>
         <span className='form-control'>{product.user}</span>
       </div>
-      <span>title</span>
+      <span>카테고리</span>
       <div className='mb-3'>
         <span className='form-control'>{product.middleCategory}</span>
         <span className='form-control'>{product.createdAt}</span>
       </div>
-      <span>description</span>
+      <span>내용</span>
       <div className='mb-3'>
        <span className='form-control'>{product.description}</span>
       </div>
+      <span>가격</span>
       <div className='mb-3'>
         <span className='form-control'>{product.price}</span>
       </div>
