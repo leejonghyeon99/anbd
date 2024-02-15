@@ -25,7 +25,6 @@ const App = () => {
             <Route path="/login" Component={Login}></Route>
             <Route path="/signup" Component={SignUp}></Route>
             <Route path="/update" Component={Update}></Route>
-
             <Route path="/admin" Component={Admin}></Route>
           </Routes>
         </div>
