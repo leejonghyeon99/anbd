@@ -19,13 +19,16 @@ spring:
       hibernate.format_sql: true   # ?? ??? ??
 
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 
   # security
   security:
     user:
       name: user
       password: 1234
+
+#  image:
+#    path: ./upload/product
 
   mail:
     host: smtp.gmail.com

@@ -1,6 +1,5 @@
 package com.lec.spring.domain;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -40,7 +39,6 @@ public class Product extends BaseEntity{
     private LocalDateTime refreshedAt;
 
     @ManyToOne
-    @ToString.Exclude
     private Category category;
 
     @ManyToOne
@@ -56,6 +54,4 @@ public class Product extends BaseEntity{
 
     @OneToMany(mappedBy = "product",cascade = CascadeType.REMOVE)
     private List<ChatRoom> chatRooms;
-
-
 }
