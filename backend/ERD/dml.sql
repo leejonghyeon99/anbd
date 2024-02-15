@@ -37,6 +37,10 @@ desc product;
 
 insert into report(user_id, reason) VALUES (6,'그냥1');
 
+# 카테고리 테스트
+insert into category(id, name) values (1, '의류'), (2, '식품'), (3, '생활용품'),(4, '잡화'), (5, '가구/인테리어'), (6, '가전'), (7, '도서'), (8, '기타');
+
+insert into product(id, title, category_id, middle_category, price, description, status) values(1, '임시저장', 1, '남성의류', 52000, '임시저장테스트', 'SALE');
 
 select count(*) from user;
 

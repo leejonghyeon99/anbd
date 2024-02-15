@@ -13,26 +13,19 @@ const WritePage = () => {
     status: "-- 판매 상태를 선택해주세요 --",
     middleCategory: "-- 중분류 카테고리를 선택해주세요 --",
     createdAt: "",
-    category: {
-      id:"",
-      name:""
-    }
+    category: "",
+  });
+  const [productImg, setProductImg] = useState({
+    originName:"",
+    photoName:""
   });
 
-  // const [productImg, setProductImg] = useState({
-  //   originName:"",
-  //   photoName:"",
-  //   product:"",
-  //   user:""
-  // });
-
-  // const uploadFile = (e) => {
-  //   let fileArr = e.target.files;
-  //   setProductImg(Array.from(fileArr));
-  //   console.log(fileArr);
-  //   let file
-  // }
-  // const [previewImg, setPreviewImg] = useState([]);
+  const uploadFile = (e) => {
+    let fileArr = e.target.files;
+    setProductImg(Array.from(fileArr));
+    console.log(fileArr);
+    let file
+  }
 
   const WriteValue = (e) => {
     setProduct({
@@ -67,29 +60,29 @@ const WritePage = () => {
         if (data !== null) {
           console.log(`작성해라`, data);
           alert("상품이 등록되었어요!");
-          navigate(`/api/product/detail/${data.id}`); // 상세로 이동
+          navigate(`/product/detail/${data.id}`); // 상세로 이동
         } else {
           alert("등록 실패");
         }
       });
   };
   const ListOk = () => {
-    navigate("/api/product/list");
+    navigate("/product/list");
   };
 
   return (
     <div>
-      <h2>상품 등록</h2>
+      <h2>글쓰기</h2>
       <span>이미지 첨부</span>
-      {/* <div className="mb-3">
-        <input type="file" accept="image/jpg,impage/png, image/jpeg, image/gif" name='img' onChange={WriteValue} multiple/>
-      </div> */}
+      <div className="mb-3">
+        <input type="file" accept="image/jpg,impage/png, image/jpeg, image/gif" name='productImage' onChange={WriteValue} multiple/>
+      </div>
       <span>위치</span>
       <div className="mb-3">
-        {/* <input type=""></input> */}
-        <select className="form-select" onChange={WriteValue}>
+        <Button variant="outline-dark ">위치 선택</Button>
+        {/* <select className="form-select" onChange={WriteValue}>
           <option value></option>
-        </select>
+        </select> */}
       </div>
       <span>제목</span>
       <div className="mb-3">
@@ -102,36 +95,56 @@ const WritePage = () => {
           onChange={WriteValue}
         />
       </div>
+      {/* 대분류 선택후 중분류 선택 */}
       <div>
         <span>대분류</span>
         <div className="mb-3">
-          <select
-          className="form-select"
-          id="category"
-          name="category"  // name 속성 추가
-          onChange={WriteValue}
-          value={product.category} // 선택된 값 설정
-        >
-          <option value="-- 대분류 카테고리를 선택해주세요 --">
-            -- 대분류 카테고리를 선택해주세요 --
-          </option>
-          <option value="의류">의류</option>
-          <option value="식품">식품</option>
-          <option value="생활용품">생활용품</option>
-      </select>
+        <select className="form-select" name='category' value={product.category} onChange={WriteValue}>
+            <option value="null">-- 대분류 카테고리를 선택해주세요 --</option>
+            <option value="1">의류</option>
+            <option value="2">식품</option>
+            <option value="3">생활용품</option>
+            <option value="4">잡화</option>
+            <option value="5">가구/인테리어</option>
+            <option value="6">가전</option>
+            <option value="7">도서</option>
+            <option value="8">기타</option>
+          </select>
           <span>중분류</span>
-          <select
-            className="form-select"
-            id="middleCategory"
-            name="middleCategory"
-            onChange={WriteValue}
-          >
-            <option value="-- 중분류 카테고리를 선택해주세요 --">
-              -- 중분류 카테고리를 선택해주세요 --
-            </option>
+          <select className="form-select" name='middleCategory' value={product.middleCategory} onChange={WriteValue}>
+            {product.category === 'null' && (
+            <><option selected disabled>-- 대분류 먼저 선택해주세요 --</option></>)}
+            {product.category === '1' && (
+            <><option selected disabled>-- 중분류 카테고리를 선택해주세요 --</option>
             <option value="여성의류">여성의류</option>
             <option value="남성의류">남성의류</option>
-            <option value="아동의류">아동의류</option>
+            <option value="아동의류">아동의류</option></>)}
+            {product.category === '2' && (
+            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option>
+            <option value="가공식품">가공식품</option>
+            <option value="기타식품">기타식품</option></>)}
+            {product.category === '3' && (
+            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option>
+            <option value="주방용품">주방용품</option>
+            <option value="욕실용품">욕실용품</option></>)}
+            {product.category === '4' && (
+            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option>
+            <option value="남성잡화">남성잡화</option>
+            <option value="여성잡화">여성잡화</option>
+            <option value="아동잡화">아동잡화</option>
+            <option value="반려동물용품">반려동물용품</option></>)}
+            {product.category === '6' && (
+            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option>
+            <option value="디지털기기">디지털기기</option>
+            <option value="주방가전">주방가전</option>
+            <option value="리빙가전">리빙가전</option></>)}
+            {product.category === '7' && (
+            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option>
+            <option value="도서">도서</option>
+            <option value="유아도서">유아도서</option></>)}
+            {product.category === '8' && (
+            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option>
+            <option value="기타">기타</option></>)}
           </select>
         </div>
       </div>
@@ -165,9 +178,7 @@ const WritePage = () => {
           name="status"
           onChange={WriteValue}
         >
-          <option value="-- 판매 상태를 선택해주세요 --">
-            -- 판매 상태를 선택해주세요 --
-          </option>
+          <option disabled selected>-- 판매 상태를 선택해주세요 --</option >
           <option value="SALE">판매중</option>
           <option value="RESERVED">예약중</option>
           <option value="SOLD">판매완료</option>

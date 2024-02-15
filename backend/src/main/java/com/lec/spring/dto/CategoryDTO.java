@@ -21,7 +21,6 @@ public class CategoryDTO{
     private Integer id;
     private String name;
 
-
     public static CategoryDTO toDto(Category entity) {
         return CategoryDTO.builder()
                 .id(entity.getId())
