@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import '../css/chart.css';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -22,7 +23,7 @@ ChartJS.register(
     Legend
 );
 
-const UserList = () => {
+const DailySignUp = () => {
 
     const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
@@ -30,6 +31,7 @@ const UserList = () => {
     const currentDate = currentDateTime.date();
     const currentMonth = currentDateTime.month() + 1;
     const currentYear = currentDateTime.year();
+    
 
     const first = currentDateTime.clone().startOf('month');
     const last = currentDateTime.clone().endOf('month');
@@ -41,16 +43,12 @@ const UserList = () => {
     const [selectState, setSelectMonth] = useState("");
 
     const chartRef = useRef(null);
-    console.log(apiUrl)
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const url = `${apiUrl}/api/analyze/signup`;
-                const sort = 'daily';
-                const startDate = first.format('YYYY-MM-DD');
-                const endDate = last.format('YYYY-MM-DD');
-
-                const response = await fetch(`${url}?sort=${sort}&startDate=${startDate}&endDate=${endDate}`);
+                const url = `${apiUrl}/api/analyze/signup/month`;
+                const response = await fetch(`${url}?year=${currentYear}&month=${currentMonth}`);
 
                 const data = await response.json();
                 setChartData(data);
@@ -65,13 +63,7 @@ const UserList = () => {
         fetchData();
     }, []);  
 
-    useEffect(() => {
 
-        if (chartRef.current) {
-            const chartInstance = chartRef.current;
-            console.log(chartInstance)
-        }
-    }, []);
 
     const highlightToday = {
         weight: 'bold',
@@ -80,7 +72,7 @@ const UserList = () => {
 
 
     const options = {
-        responsive: true,
+        responsive: false,
         plugins: {
             legend: {
                 display : false,
@@ -96,10 +88,14 @@ const UserList = () => {
                 grid: {
                     display: false, // 선이 아예 안 그려지게 됩니다.
                 },
-                ticks: {             
+                ticks: {     
+                    
                     font: (context) => {
                         return context.tick.value + 1 === currentDate ? highlightToday : '';
-                    }                
+                    },
+                    color: (context) => {
+                        return context.tick.value + 1 === currentDate ? 'red' : '';
+                    },        
                     
                 }
             },
@@ -145,10 +141,11 @@ const UserList = () => {
     return (
         <div>
             <Line 
+                width={1200}
+                height={300}
                 options={options} 
                 data={data}
-                height={100} 
-                ref={chartRef}
+                ref={chartRef}            
             />
         </div>
     );
@@ -156,4 +153,4 @@ const UserList = () => {
 
     
 
-export default UserList;
+export default DailySignUp;
