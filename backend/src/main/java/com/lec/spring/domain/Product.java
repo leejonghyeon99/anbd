@@ -1,6 +1,5 @@
 package com.lec.spring.domain;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,7 +27,8 @@ public class Product extends BaseEntity{
     @Column(nullable = false)
     private int price;
 
-    @Column(nullable = false, columnDefinition = "varchar(10) default 'sale'")
+    @Column(nullable = false, columnDefinition = "varchar(10) default 'SALE'")
+    @Enumerated(value = EnumType.STRING)    //추가
     private Status status;
 
     private String location;
@@ -39,7 +39,6 @@ public class Product extends BaseEntity{
     private LocalDateTime refreshedAt;
 
     @ManyToOne
-    @ToString.Exclude
     private Category category;
 
     @ManyToOne
@@ -50,11 +49,9 @@ public class Product extends BaseEntity{
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<WishList> wishList;
 
-    @OneToMany(mappedBy = "product",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Review> reviews;
 
     @OneToMany(mappedBy = "product",cascade = CascadeType.REMOVE)
     private List<ChatRoom> chatRooms;
-
-
 }

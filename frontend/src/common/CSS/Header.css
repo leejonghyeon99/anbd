@@ -1,0 +1,33 @@
+.header {
+    background-color: aqua;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.headerFix{
+    display: flex;
+
+    justify-content: space-between;
+    background-color: brown;
+}
+
+.hiddenMenu {
+    background-color: lightgray;
+}
+
+#menuIcon {
+    margin-right: 5px;
+}
+
+.mypageToggle {
+    right: 0;
+    background-color: beige;
+    padding: 20px;
+}
+
+.logo {
+    background-color: rgb(156, 150, 150);
+    height: 72px;
+}
+

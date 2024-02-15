@@ -19,7 +19,7 @@ public class Category {
     @Column(nullable = false, length = 20)
     private String name;
 
-    @OneToMany
-    @JoinColumn(name = "category_id")
-    private List<Product> product;
+//    @OneToMany
+//    @JoinColumn(name = "category_id")
+//    private List<Product> products;
 }

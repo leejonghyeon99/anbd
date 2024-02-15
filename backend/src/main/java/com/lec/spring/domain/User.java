@@ -41,18 +41,19 @@ public class User extends BaseEntity{
 
     private String provider_id;
 
-    @Column(nullable = false, length = 200)
+    // 이메일 인증을 위해 unique 추가
+    @Column(nullable = false, length = 200, unique = true)
     private String email;
 
-    @Column(nullable = false, columnDefinition = "decimal(2,1) default 0.0")
-    private Double star;
+    @Column(nullable = false, columnDefinition = "decimal(2,1) default 0.0") //데이터베이스 레벨에서의 기본값 설정이며, 애플리케이션 레벨에서 객체를 생성할 때는 적용되지 않습니다.
+    private Double star = 0.0;
 
     @Column(nullable = false, columnDefinition = "varchar(10) default 'ROLE_USER'")
     @Enumerated(EnumType.STRING)
     private Auth auth;
 
-    @Column(nullable = false, columnDefinition = "boolean default 0")
-    private boolean certification;
+    @Column(nullable = false, columnDefinition = "varchar(10) default 'DENIED'")
+    private String certification;
 
     private String thumbnail;
 
@@ -68,6 +69,6 @@ public class User extends BaseEntity{
     @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
     private List<Review> reviews;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
+    @ManyToMany(mappedBy = "users")
     private List<ChatRoom> chatRooms;
 }

@@ -1,0 +1,15 @@
+.container {
+    background-color: rgb(219, 219, 219);
+    display: flex;
+    flex-wrap: wrap;  /* 한줄에 2칸씩 배치되도록 */
+    height: 100%; /* sidebar와 길이 맞춤 */
+}
+
+/* 관리자페이지 component 4분할 css */
+.no1 , .no2, .no3, .no4 { 
+    background-color: azure;
+    border: 1px solid black;
+    width: 50%;
+    height: 50%;    
+}
+
