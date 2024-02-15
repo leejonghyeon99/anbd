@@ -5,8 +5,7 @@ import "./CSS/Login.css";
 
 const Login = () => {
   const navigate = useNavigate();
-  //   const [username, setUsername] = useState("");
-  //   const [password, setPassword] = useState("");
+
   const [user, setUser] = useState({
     username: "",
     password: "",
@@ -40,7 +39,7 @@ const Login = () => {
         throw new Error("로그인 실패 : 아이디와 비밀번호를 확인해주세요.");
       })
       .then((data) => {
-        localStorage.setItem("token", data.token);
+        localStorage.setItem('accessToken', data.accessToken);
         navigate("/home");
       })
       .catch((error) => {
@@ -94,77 +93,3 @@ const Login = () => {
 
 export default Login;
 
-// const Login = () => {
-//   const [username, setUsername] = useState("");
-//   const [password, setPassword] = useState("");
-
-//   useEffect(() => {
-//     setLogin({
-//       ...login,
-//     });
-//   }, []);
-
-//   //   (e) => setLogin(e.target.value)
-
-//   const navigate = useNavigate();
-
-//   const validateLogin = (e) => {
-//     e.preventDefault(); // 폼 기본 제출 동작 방지
-
-//     fetch("http://localhost:8080/api/user/login", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json;charset=utf-8",
-//       },
-//       body: JSON.stringify({
-//         username,
-//         password,
-//       }),
-//     })
-//       .then((response) => {
-//         if (response.ok) {
-//           return response.json();
-//         }
-//         throw new Error("로그인 실패 : 아이디와 비밀번호를 확인해주세요.");
-//       })
-//       .then((data) => {
-//         localStorage.setItem("token", data.token);
-//         navigate("/home");
-//       })
-//       .catch((error) => {
-//         alert(error.message);
-//         setUsername("");
-//         setPassword("");
-//       });
-//   };
-
-//   return (
-//     <>
-//       <div className="loginBox">
-//         <h1>A N B D</h1>
-//         <Form>
-//           <div>
-//             <label htmlFor="username">id : </label>
-//             <input
-//               type="text"
-//               className="form-control"
-//               value={username}
-//               placeholder="아이디를 입력하세요"
-//               onChange={(e) => setUsername(e.target.value)}
-//             />
-//           </div>
-
-//           <div>
-//             password :{" "}
-//             <input
-//               type="password"
-//               value={password}
-//               onChange={(e) => setPassword(e.target.value)}
-//             />
-//           </div>
-//           <Button onClick={validateLogin}>Login</Button>
-//         </Form>
-//       </div>
-//     </>
-//   );
-// };
