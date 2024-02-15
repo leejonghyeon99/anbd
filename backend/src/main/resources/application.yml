@@ -33,8 +33,6 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: goun3596@gmail.com
-    password: xddrqmgsbvzcbjrb
     properties:
       mail:
         smtp:
@@ -50,7 +48,8 @@ spring:
 
 # 터미널에 입력 자동 생성 - openssl rand -hex 64
 jwt:
-  secret: 9ca36d45d87b126602f9ba031c9d5231ea704e8c22d9ffbebc0b7a3251b9dc6616c9c06165ad619e8b3b7a861250396629f82d3c53a09f3712c2c56ccc524c34
+  secret: c2d02f43172268a362005c0556d5b1dae3a6aa251e0efc8180ffb7e04cf6ad10a369751ff8b7e2f78d5d048eda490cd3d104ff5330fc5c84c13856da1246d7a2
+
 
 
 
