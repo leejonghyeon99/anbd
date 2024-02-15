@@ -30,6 +30,9 @@ select * from category;
 select * from product;
 desc product;
 
+show tables;
+
+desc chat_room_users;
 
 
 insert into report(user_id, reason) VALUES (6,'그냥1');
