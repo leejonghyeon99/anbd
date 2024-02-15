@@ -107,7 +107,7 @@ const Header = () => {
             </div>
             :
             <div className="mypageToggle" id="menu-bars">
-              <Link to='/login'>LOGIN</Link> <Link to='/signup'>JOIN</Link>
+              <Link to='user/login'>LOGIN</Link> <Link to='user/signup'>JOIN</Link>
             </div>}
 
           </div>
