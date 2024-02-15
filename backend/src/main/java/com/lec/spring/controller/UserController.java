@@ -39,6 +39,13 @@ public class UserController {
     }
 
 
+    // 유저 정보 조회 엔드포인트
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponseDTO> getUserInfo(@PathVariable Integer id) {
+        UserResponseDTO userInfo = userService.userInfo(id);
+        return ResponseEntity.ok(userInfo);
+    }
+
     @PostMapping("/reissue")
     public ResponseEntity<TokenDTO> reissue(@RequestBody TokenRequestDTO tokenRequestDTO){
         return ResponseEntity.ok(userService.reissue(tokenRequestDTO));
