@@ -41,29 +41,26 @@ const Navbar = styled.div`
 `;
 
 const Header = () => {
-  const [user, setUser] = useState(null); // 로그인 유무 상태(useEffect로 상태 확인해야함)
-
   const navigate = useNavigate();
 
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
+  const [user, setUser] = useState({});
+  // 로그인 유무 상태(useEffect로 상태 확인해야함)
+
   useEffect(() => {
-    // useEffect 훅 안에서 비동기 함수를 정의하고 로그인 상태를 확인하는 함수
-    const checkLoggedIn = async () => {
+    const userData = async () => {
       try {
-        // 서버에 로그인 상태를 확인하기 위한 요청 보냄
-        const response = await fetch("/api/user/checkLoggedIn");
-        // 서버에서 받은 응답 데이터를 JSON 형식으로 파싱합니다.
-        const userData = await response.json();
-        // 서버에서 받은 사용자 데이터로 상태를 설정합니다.
-        // setUser 함수를 호출하여 사용자 데이터를 user 상태에 저장합니다.
-        setUser(userData);
+        const url = `${apiUrl}/api/user/2`;
+        const response = await fetch(url);
+        const data = await response.json();
+        setUser(data); // 가져온 데이터를 상태값에 설정
+        console.log(data);
       } catch (error) {
-        // 오류가 발생한 경우 콘솔에 오류 메시지를 출력합니다.
-        console.error("Error checking logged in status:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
-    // 컴포넌트가 처음으로 렌더링될 때 한 번만 실행되도록 useEffect 안에서 checkLoggedIn 함수를 호출합니다.
-    checkLoggedIn();
+    userData();
   }, []);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -124,38 +121,28 @@ const Header = () => {
             </Link>
 
             {/* 로그인한 유저와 비회원의 mypage아이콘 다르게 나오도록 */}
-            {/* {user.auth !== "" ? (
-              user.auth === "ROLE_ADMIN" ?
-            (<div className="mypageToggle" id="menu-bars">
-              <img
-                src="icon/usericon.png"
-                id="userIcon"
-                onClick={toggleMypage}
-              />
-            </div>)
-            : 
-            (<div className="mypageToggle" id="menu-bars">
-              <img
-                src="icon/usericon.png"
-                id="userIcon"
-                onClick={toggleMypage}
-              />
-            </div>)
+            {user.auth === "ROLE_USER" ? (
+              <div className="mypageToggle" id="menu-bars">
+                <img
+                  src="icon/usericon.png"
+                  id="userIcon"
+                  onClick={toggleMypage}
+                />
+              </div>
+            ) : user.auth === "ROLE_ADMIN" ? (
+              <div className="mypageToggle" id="menu-bars">
+                <img
+                  src="icon/admin.png"
+                  id="adminIcon"
+                  onClick={toggleMypage}
+                />
+              </div>
             ) : (
               <div className="mypageToggle" id="menu-bars">
                 <Link to="user/login">LOGIN</Link>{" "}
                 <Link to="user/signup">JOIN</Link>
               </div>
             )}
-          </div> */}
-
-            <div className="mypageToggle" id="menu-bars">
-              <img
-                src="icon/usericon.png"
-                id="userIcon"
-                onClick={toggleMypage}
-              />
-            </div>
           </div>
 
           <Navbar isVisible={isMypageVisible}>
