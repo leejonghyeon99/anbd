@@ -11,7 +11,7 @@ const Login = () => {
     const validateLogin = (e) => {
         e.preventDefault(); // 폼 기본 제출 동작 방지
     
-        fetch('http://localhost:8080/api/user/login', {
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/login`, {
             method : "POST",
             headers : {
                 'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ const Login = () => {
           throw new Error("로그인 실패 : 아이디와 비밀번호를 확인해주세요.");
         })
         .then(Data => {
-            localStorage.setItem('token', Data.token);
+            localStorage.setItem('accessToken', Data.token);
             navigate("/home");
         })
         .catch(error => {
