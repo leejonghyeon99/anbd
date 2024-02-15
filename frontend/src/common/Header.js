@@ -53,7 +53,7 @@ const Header = () => {
         const response = await fetch("/api/user/checkLoggedIn");
         // 서버에서 받은 응답 데이터를 JSON 형식으로 파싱합니다.
         const userData = await response.json();
-        // 서버에서 받은 사용자 데이터로 상태를 설정합니다. 
+        // 서버에서 받은 사용자 데이터로 상태를 설정합니다.
         // setUser 함수를 호출하여 사용자 데이터를 user 상태에 저장합니다.
         setUser(userData);
       } catch (error) {
@@ -61,7 +61,7 @@ const Header = () => {
         console.error("Error checking logged in status:", error);
       }
     };
-  
+
     // 컴포넌트가 처음으로 렌더링될 때 한 번만 실행되도록 useEffect 안에서 checkLoggedIn 함수를 호출합니다.
     checkLoggedIn();
   }, []);
@@ -124,20 +124,38 @@ const Header = () => {
             </Link>
 
             {/* 로그인한 유저와 비회원의 mypage아이콘 다르게 나오도록 */}
-            {user ? (
-              <div className="mypageToggle" id="menu-bars">
-                <img
-                  src="icon/usericon.png"
-                  id="userIcon"
-                  onClick={toggleMypage}
-                />
-              </div>
+            {/* {user.auth !== "" ? (
+              user.auth === "ROLE_ADMIN" ?
+            (<div className="mypageToggle" id="menu-bars">
+              <img
+                src="icon/usericon.png"
+                id="userIcon"
+                onClick={toggleMypage}
+              />
+            </div>)
+            : 
+            (<div className="mypageToggle" id="menu-bars">
+              <img
+                src="icon/usericon.png"
+                id="userIcon"
+                onClick={toggleMypage}
+              />
+            </div>)
             ) : (
               <div className="mypageToggle" id="menu-bars">
                 <Link to="user/login">LOGIN</Link>{" "}
                 <Link to="user/signup">JOIN</Link>
               </div>
             )}
+          </div> */}
+
+            <div className="mypageToggle" id="menu-bars">
+              <img
+                src="icon/usericon.png"
+                id="userIcon"
+                onClick={toggleMypage}
+              />
+            </div>
           </div>
 
           <Navbar isVisible={isMypageVisible}>
