@@ -40,10 +40,28 @@ const Navbar = styled.div`
   display: ${(props) => (props.isVisible ? "block" : "none")};
 `;
 
-const Header = () => {  
-  const [user, setUser] = useState(null); // 로그인 유무 상태(useEffect로 상태 확인해야함)
-
+const Header = () => {
   const navigate = useNavigate();
+
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
+  const [user, setUser] = useState({});
+  // 로그인 유무 상태(useEffect로 상태 확인해야함)
+
+  useEffect(() => {
+    const userData = async () => {
+      try {
+        const url = `${apiUrl}/api/user/2`;
+        const response = await fetch(url);
+        const data = await response.json();
+        setUser(data); // 가져온 데이터를 상태값에 설정
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    userData();
+  }, []);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   // 모든 대분류의 중분류가 따로따로 토글되도록 아래 상태함수들 줌
@@ -98,21 +116,38 @@ const Header = () => {
               {/* 아이콘 클릭 시 메뉴 토글 */}
               <img src="icon/menu.png" id="menuIcon" onClick={toggleMenu} />
             </div>
-            <Link to='/home' className="logo">AH!NaBaDa</Link>
+            <Link to="/home" className="logo">
+              AH!NaBaDa
+            </Link>
 
             {/* 로그인한 유저와 비회원의 mypage아이콘 다르게 나오도록 */}
-            {user ?
-             <div className="mypageToggle" id="menu-bars">
-              <img src="icon/usericon.png" id="userIcon" onClick={toggleMypage} />
-            </div>
-            :
-            <div className="mypageToggle" id="menu-bars">
-              <Link to='user/login'>LOGIN</Link> <Link to='user/signup'>JOIN</Link>
-            </div>}
-
+            {user.auth === "ROLE_USER" ? (
+              <div className="mypageToggle" id="menu-bars">
+                <img
+                  src="icon/usericon.png"
+                  id="userIcon"
+                  onClick={toggleMypage}
+                />
+              </div>
+            ) : user.auth === "ROLE_ADMIN" ? (
+              <div className="mypageToggle" id="menu-bars">
+                <img
+                  src="icon/admin.png"
+                  id="adminIcon"
+                  onClick={toggleMypage}
+                />
+              </div>
+            ) : (
+              <div className="mypageToggle" id="menu-bars">
+                <Link to="user/login">LOGIN</Link>{" "}
+                <Link to="user/signup">JOIN</Link>
+              </div>
+            )}
           </div>
 
-          <Navbar isVisible={isMypageVisible}> {/* user아이콘 토글하면 나오는 메뉴 */}
+          <Navbar isVisible={isMypageVisible}>
+            {" "}
+            {/* user아이콘 토글하면 나오는 메뉴 */}
             <nav className="nav-menu">
               <ul className="nav-menu-items">
                 <li className="navbar-toggle">
