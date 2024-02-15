@@ -29,32 +29,30 @@ public class AnalyzeService {
     }
 
 
-    public Object analyzeDate(String sort, LocalDate startDate, LocalDate endDate){
-        if(sort.equals("daily")){
-            return getDailySignUp(startDate, endDate);
-        }
-        return getMonthSignUp(startDate, endDate);
-    }
 
 
 
     //사용자 일자별 회원가입 통계
-    public List<SignupAnalyze> getDailySignUp(LocalDate startDate, LocalDate endDate) {
+    public List<SignupAnalyze> getMonthSignUp(int year, int month) {
+        LocalDate startDate = LocalDate.of(year, month, 1);
+        LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
+        System.out.println(startDate + " / " + endDate);
+
         List<User> allUsers = userRepository.findAll();
 
+        // 해당 기간 동안의 날짜 목록 생성
+        List<LocalDate> dateRange = startDate.datesUntil(endDate.plusDays(1)).toList();
 
-        List<User> usersInPeriod = allUsers.stream()
+        Map<LocalDate, Long> dailySignUpStatistics = allUsers.stream()
                 .filter(user -> !user.getCreatedAt().toLocalDate().isBefore(startDate) &&
                         !user.getCreatedAt().toLocalDate().isAfter(endDate))
-                .toList();
-
-
-        Map<LocalDate, Long> dailySignUpStatistics = usersInPeriod.stream()
                 .collect(Collectors.groupingBy(
                         user -> user.getCreatedAt().toLocalDate(),
                         Collectors.counting()
                 ));
 
+        // 날짜 목록에 포함되지 않은 날짜는 가입자 수가 0으로 추가
+        dateRange.forEach(date -> dailySignUpStatistics.putIfAbsent(date, 0L));
 
         return dailySignUpStatistics.entrySet().stream()
                 .map(entry -> SignupAnalyze.builder()
@@ -64,32 +62,45 @@ public class AnalyzeService {
                 .collect(Collectors.toList());
     }
 
-    //사용자 월별 통계
-    public List<SignupAnalyze> getMonthSignUp(LocalDate startDate, LocalDate endDate) {
+
+    // 사용자 1년치 월별 통계
+    public List<SignupAnalyze> getYearSignUp(int year) {
+        LocalDate startDate = LocalDate.of(year, 1, 1);
+        LocalDate endDate = LocalDate.of(year, 12, 31);
+        System.out.println(startDate + " / " + endDate);
+
         List<User> allUsers = userRepository.findAll();
 
+        // 해당 기간 동안의 월 목록 생성
+        List<String> monthRange = startDate.datesUntil(endDate)
+                .map(date -> date.getYear() + "-" + date.getMonthValue()).distinct().toList();
 
-        List<User> usersInPeriod = allUsers.stream()
+        Map<String, Long> monthSignUpStatistics = allUsers.stream()
                 .filter(user -> !user.getCreatedAt().toLocalDate().isBefore(startDate) &&
                         !user.getCreatedAt().toLocalDate().isAfter(endDate))
-                .toList();
-
-        Map<String, Long> monthSignUpStatistics = usersInPeriod.stream()
                 .collect(Collectors.groupingBy(
                         user -> user.getCreatedAt().toLocalDate().getYear() + "-" +
                                 user.getCreatedAt().toLocalDate().getMonthValue(),
                         Collectors.counting()
                 ));
 
+        // 월 목록에 포함되지 않은 월은 가입자 수가 0으로 추가
+        monthRange.forEach(month -> monthSignUpStatistics.putIfAbsent(month, 0L));
 
         return monthSignUpStatistics.entrySet().stream()
                 .map(entry -> SignupAnalyze.builder()
-                        .date(LocalDate.parse(entry.getKey() + "-01")) // 해당 월의 첫 날짜로 설정
+                        .date(LocalDate.of(
+                                Integer.parseInt(entry.getKey().split("-")[0]),  // 년도
+                                Integer.parseInt(entry.getKey().split("-")[1]),  // 월
+                                1  // 첫째 날
+                        ).plusMonths(1).minusDays(1))  // 해당 월의 마지막 날짜
                         .count(entry.getValue())
                         .build())
-                .sorted(Comparator.comparing(SignupAnalyze::getDate).reversed()) // 역순으로 정렬
+                .sorted(Comparator.comparing(SignupAnalyze::getDate).reversed())  // 역순으로 정렬
                 .collect(Collectors.toList());
     }
+
+
 
 
     //검색순위
