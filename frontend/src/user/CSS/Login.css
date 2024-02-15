@@ -1,3 +1,70 @@
-.loginBox {
-    background-color: antiquewhite;
-}
+.loginMain {
+    background-color: #f89f98;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* 중앙 정렬을 위해 추가 */
+    height: 100vh; /* 화면 전체 높이를 차지하도록 설정 */
+  }
+  
+  .loginLogo {
+    border: solid 1px black;
+    font-size: 50px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .loginBox {
+    background-color: #d1d1d1;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px; /* 내부 여백 설정 */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 중앙 정렬을 위해 추가 */
+    width: 400px; /* 로그인 상자 너비를 조정합니다. */
+    border-radius: 8px;
+  }
+  
+  .idBox,
+  .passwordBox {
+    border: solid 1px black;
+    margin-bottom: 15px; /* 상자 아래 여백 설정 */
+    width: 100%; /* 상자 너비를 100%로 설정하여 가로 사이즈를 맞춤 */
+  }
+  
+  .loginBox label {
+    font-size: 16px;
+  }
+  
+  .loginBox input {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    width: calc(100% - 22px); /* 입력 필드 너비 조정 */
+  }
+  
+  .loginBox input:focus {
+    outline: none;
+    border-color: #cdd0d4;
+  }
+  
+  .loginBox Button {
+    padding: 10px;
+    background-color: #3e633dd3;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: calc(100% - 22px); /* 버튼 너비 조정 */
+  }
+  
+  .loginBox Button:hover {
+    background-color: #213d5c;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .loginBox {
+      width: 80%; /* 화면 작을 때 로그인 상자의 너비 조정 */
+    }
+  }
