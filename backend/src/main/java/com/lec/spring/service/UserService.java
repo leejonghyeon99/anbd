@@ -20,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -96,11 +98,30 @@ public class UserService {
         refreshTokenRepository.save(newRefreshToken);
 
         return tokenDTO;
-
     }
 
+    @Transactional(readOnly = true)
+    public UserResponseDTO userInfo(Integer id) {
+        // 유저 아이디로 유저 정보 조회
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
 
-//    public TokenDTO userInfo(UserRequestDTO userRequestDTO) {
-//
-//    }
+        // UserResponseDTO에 유저 정보와 권한 정보 설정
+        UserResponseDTO userResponseDTO = new UserResponseDTO();
+        userResponseDTO.setId(user.getId());
+        userResponseDTO.setUsername(user.getUsername());
+        userResponseDTO.setPassword(user.getPassword());
+        userResponseDTO.setName(user.getName());
+        userResponseDTO.setNickname(user.getNickname());
+        userResponseDTO.setEmail(user.getEmail());
+        userResponseDTO.setPhone_number(user.getPhone_number());
+        userResponseDTO.setStar(user.getStar());
+        userResponseDTO.setCertification(user.getCertification());
+        userResponseDTO.setRegions(user.getRegions());
+
+        // 유저의 권한 정보를 가져와서 설정
+        userResponseDTO.setAuth(user.getAuth());
+        return userResponseDTO;
+    }
+
 }

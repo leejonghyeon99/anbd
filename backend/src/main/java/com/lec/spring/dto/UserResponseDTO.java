@@ -1,11 +1,14 @@
 package com.lec.spring.dto;
 
 import com.lec.spring.domain.Auth;
+import com.lec.spring.domain.Region;
 import com.lec.spring.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -23,6 +26,8 @@ public class UserResponseDTO {
     private Double star;
     private Auth auth;
     private String certification;
+    private List<Region> regions;
+
 
     // User 엔티티를 인자로 받아 UserResponseDTO 객체를 생성하고 반환
     public static UserResponseDTO of(User user) {
@@ -38,6 +43,7 @@ public class UserResponseDTO {
                 .star(user.getStar())
                 .auth(user.getAuth()) // Auth 엔티티 전체를 포함시킬지, 아니면 특정 필드만 포함시킬지 결정 필요
                 .certification(user.getCertification()) // User 클래스의 해당 필드에 따라 조정 필요
+                .regions(user.getRegions())
                 .build();
     }
 }
