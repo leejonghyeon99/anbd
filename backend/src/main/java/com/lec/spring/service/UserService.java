@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,6 +67,14 @@ public class UserService {
         return tokenDTO;
     }
 
+    public boolean verifyPassword(String username, String inputPassword) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("일치하는 사용자 정보를 찾지 못했습니다."));
+        System.out.println(user);
+
+        return passwordEncoder.matches(inputPassword, user.getPassword());
+    }
+
     @Transactional
     public TokenDTO reissue(TokenRequestDTO tokenRequestDTO){
         if(!tokenProvider.tokenValidation(tokenRequestDTO.getRefreshToken())){
@@ -89,4 +98,9 @@ public class UserService {
         return tokenDTO;
 
     }
+
+
+//    public TokenDTO userInfo(UserRequestDTO userRequestDTO) {
+//
+//    }
 }
