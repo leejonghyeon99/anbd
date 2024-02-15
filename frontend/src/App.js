@@ -6,15 +6,16 @@ import { Container } from 'react-bootstrap';
 import Home from './Home';
 import Login from './user/Login';
 import Header from './common/Header';
+import ChatPage from './chat/page/ChatPage';
 
 
 const App = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-      navigate('/home');
-  },[]);
+//   useEffect(() => {
+//       navigate('/home');
+//   },[]);
 
   return (
 
@@ -26,6 +27,7 @@ const App = () => {
                       <Route path='/'></Route> 
                       <Route path='/home' Component={Home}></Route> 
                       <Route path='/login' Component={Login}></Route> 
+                      <Route path='/chat' Component={ChatPage}></Route> 
                   </Route>
               </Routes>
           </Container>
