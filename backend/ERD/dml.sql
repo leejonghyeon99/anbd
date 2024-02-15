@@ -20,7 +20,7 @@ insert into product(category_id, price, status, user_id, created_at, title, desc
 VALUES (2, 25500, 'SALE', 5, now(), '테스트 상품5', '테스트 상품입니다3.', '0000, 0000', '냉장고');
 
 
-select * from information_schema.KEY_COLUMN_USAGE where TABLE_NAME = 'product';
+select * from information_schema.KEY_COLUMN_USAGE where TABLE_NAME = 'user_block';
 UPDATE user
 SET created_at = DATE_SUB(created_at, INTERVAL 2 DAY )
 WHERE id = 17;
@@ -30,6 +30,10 @@ select * from category;
 select * from product;
 desc product;
 
+show tables;
+
+desc chat_room_users;
+desc user_block;
 
 
 insert into report(user_id, reason) VALUES (6,'그냥1');
