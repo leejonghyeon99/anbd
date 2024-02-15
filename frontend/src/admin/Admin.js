@@ -4,26 +4,26 @@ import "./Admin.css";
 import { Container } from "react-bootstrap";
 import DailySignUp from "./component/DailySignUp";
 import MonthSignUp from "./component/MonthSignUp";
+import UserList from "./component/UserList";
+import Menu from "./component/Menu";
 
 const Admin = () => {
   return (
     <>
-      {/* <div>
-        <DailySignUp/>
-        <MonthSignUp/>
-      </div> */}
-      <div className="container">
-        <div className="no1">
-          <DailySignUp />
+      <div className="admin-wrapper">
+        <div className="admin-menu">
+          <Menu/>
         </div>
-        <div className="no2">
-          <MonthSignUp />
+
+        <div className="admin-content">
+          <DailySignUp/>
+          <MonthSignUp/>
+          <UserList/>
         </div>
-        <div className="no3">3CC</div>
-        <div className="no4">4CC</div>
       </div>
     </>
   );
+
 };
 
 export default Admin;

@@ -1,7 +1,15 @@
-.bucket{
-    width: 100%;
-    height: 300px;
-    padding: 0 10px;
-    border: 1px solid black;
+.admin-wrapper{
+    display: flex;
+    height: 80vh;
+}
+
+.admin-menu{
+    width: 200px;
+    padding: 16px;
+}
+
+.admin-content{
+    flex: 1;
+    pad: 16px;
 }
 

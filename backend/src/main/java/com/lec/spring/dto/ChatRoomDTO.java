@@ -18,15 +18,12 @@ public class ChatRoomDTO {
 
 
     private Integer id;
-    private boolean confirm;
     private User user;
     private Product product;
 
     public static ChatRoomDTO toDto(ChatRoom entity) {
         return ChatRoomDTO.builder()
                 .id(entity.getId())
-                .confirm(entity.isConfirm())
-                .user(entity.getUser())
                 .product(entity.getProduct())
                 .build();
     }

@@ -69,6 +69,6 @@ public class User extends BaseEntity{
     @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
     private List<Review> reviews;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
+    @ManyToMany(mappedBy = "users")
     private List<ChatRoom> chatRooms;
 }

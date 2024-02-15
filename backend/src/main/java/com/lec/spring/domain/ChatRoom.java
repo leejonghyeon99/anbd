@@ -3,6 +3,8 @@ package com.lec.spring.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,13 +16,9 @@ public class ChatRoom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, columnDefinition = "boolean default 0")
-    private boolean confirm;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToMany
     @ToString.Exclude
-    private User user;
+    private List<User> users;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
