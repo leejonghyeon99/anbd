@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import '../css/chart.css';
+
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -9,8 +9,9 @@ import {
     Title,
     Tooltip,
     Legend,
+    BarElement,
 } from "chart.js";
-import { Line } from 'react-chartjs-2';
+import { Bar, Line } from 'react-chartjs-2';
 import moment from 'moment/moment';
 
 ChartJS.register(
@@ -18,6 +19,7 @@ ChartJS.register(
     LinearScale,
     PointElement,
     LineElement,
+    BarElement,
     Title,
     Tooltip,
     Legend
@@ -121,7 +123,7 @@ const MonthSignUp = () => {
 
     return (
         <div>
-            <Line 
+            <Bar 
                 width={1200}
                 height={300}
                 options={options} 

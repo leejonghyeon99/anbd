@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import '../css/chart.css';
+
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -9,6 +9,7 @@ import {
     Title,
     Tooltip,
     Legend,
+    BarElement,
 } from "chart.js";
 import { Bar, Line, getElementsAtEvent } from 'react-chartjs-2';
 import moment from 'moment/moment';
@@ -18,6 +19,7 @@ ChartJS.register(
     LinearScale,
     PointElement,
     LineElement,
+    BarElement,
     Title,
     Tooltip,
     Legend
@@ -80,8 +82,7 @@ const DailySignUp = () => {
             title: {
                 display: true,
                 text: currentMonth+"월 회원 가입수",
-            },
-            
+            },         
         },       
         scales: {
             x:{
@@ -130,7 +131,7 @@ const DailySignUp = () => {
             {
                 data: chartData.map((data) => data.count),
                 borderColor: "rgb(255, 99, 132)",
-                backgroundColor: "rgba(255, 99, 132, 0.5)",
+                backgroundColor: "rgba(255, 99, 132, 0.5)",                
             },
         ],
     };
@@ -140,7 +141,7 @@ const DailySignUp = () => {
     
     return (
         <div>
-            <Line 
+            <Bar 
                 width={1200}
                 height={300}
                 options={options} 
