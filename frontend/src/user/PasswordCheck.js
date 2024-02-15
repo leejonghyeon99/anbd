@@ -40,7 +40,7 @@ const PasswordCheck = () => {
         .then(response => response.json())
         .then(data => {
             if (data.isValid) { // 비밀번호 일치 (서버에서 이를 isValid로 반환한다고 가정)
-                navigate('user/update');
+                navigate('/user/update');
             } else {
                 alert('비밀번호가 일치하지 않습니다.');
             }
