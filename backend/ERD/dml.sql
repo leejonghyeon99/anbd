@@ -5,7 +5,7 @@ show tables;
 
 desc user;
 insert into user(auth, star, phone_number, nickname, name, username, password, email, thumbnail, created_at)
-values ('ROLE_USER',3.3,'01012341234','test_name','이종현','testid2','1234','3123456771@email.com','default.jpeg', now());
+values ('ROLE_USER',3.3,'01012341234','test_name','이종현','testid2','1234','aa1234451@email.com','default.jpeg', now());
 desc user;
 insert into category(name) value ('의류');
 insert into category(name) value ('가전');
@@ -22,8 +22,8 @@ VALUES (2, 25500, 'SALE', 5, now(), '테스트 상품5', '테스트 상품입니
 
 select * from information_schema.KEY_COLUMN_USAGE where TABLE_NAME = 'product';
 UPDATE user
-SET created_at = DATE_SUB(created_at, INTERVAL 2 DAY )
-WHERE id = 17;
+SET created_at = DATE_SUB(created_at, INTERVAL 1 YEAR )
+WHERE id = 20;
 
 select * from user;
 select * from category;
