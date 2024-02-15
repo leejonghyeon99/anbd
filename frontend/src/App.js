@@ -13,14 +13,6 @@ import ListPage from "./product/page/ListPage"
 import WritePage from "./product/page/WritePage"
 import DetailPage from "./product/page/DetailPage"
 import UpdatePage from "./product/page/UpdatePage"
-import logo from './logo.svg';
-import './CSS/App.css';
-import React, { useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
-import { Container } from 'react-bootstrap';
-import Home from './Home';
-import Login from './user/Login';
-import Header from './common/Header';
 import ChatPage from './chat/page/ChatPage';
 
 
