@@ -1,15 +1,17 @@
 .admin-wrapper{
     display: flex;
-    height: 80vh;
+    height: 100vh;
 }
 
 .admin-menu{
     width: 200px;
     padding: 16px;
+    border: 1px black solid;
 }
 
 .admin-content{
+    margin-left: 25px;
     flex: 1;
-    pad: 16px;
+    padding: 16px;
 }
 

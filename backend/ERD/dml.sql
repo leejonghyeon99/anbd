@@ -5,7 +5,7 @@ show tables;
 
 desc user;
 insert into user(auth, star, phone_number, nickname, name, username, password, email, thumbnail, created_at)
-values ('ROLE_USER',3.3,'01012341234','test_name','이종현','testid2','1234','aa1234451@email.com','default.jpeg', now());
+values ('ROLE_USER',3.3,'01012341234','test_name','이종현','testid2','1234','3123456771@email.com','default.jpeg', now());
 desc user;
 insert into category(name) value ('의류');
 insert into category(name) value ('가전');
@@ -20,10 +20,10 @@ insert into product(category_id, price, status, user_id, created_at, title, desc
 VALUES (2, 25500, 'SALE', 5, now(), '테스트 상품5', '테스트 상품입니다3.', '0000, 0000', '냉장고');
 
 
-select * from information_schema.KEY_COLUMN_USAGE where TABLE_NAME = 'product';
+select * from information_schema.KEY_COLUMN_USAGE where TABLE_NAME = 'user_block';
 UPDATE user
-SET created_at = DATE_SUB(created_at, INTERVAL 1 YEAR )
-WHERE id = 20;
+SET created_at = DATE_SUB(created_at, INTERVAL 2 DAY )
+WHERE id = 17;
 
 select * from user;
 select * from category;
@@ -33,6 +33,7 @@ desc product;
 show tables;
 
 desc chat_room_users;
+desc user_block;
 
 
 insert into report(user_id, reason) VALUES (6,'그냥1');
