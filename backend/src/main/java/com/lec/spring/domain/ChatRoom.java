@@ -25,5 +25,4 @@ public class ChatRoom {
     @ToString.Exclude
     private Product product;
 
-
 }
