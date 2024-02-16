@@ -5,7 +5,7 @@ show tables;
 
 desc user;
 insert into user(auth, star, phone_number, nickname, name, username, password, email, thumbnail, created_at)
-values ('ROLE_USER',3.3,'01012341234','test_name','이종현','testid2','1234','3123456771@email.com','default.jpeg', now());
+values ('ROLE_USER',3.3,'01012341234','test_name','이종현','가나다라','1234','1z122f7@email.com','default.jpeg', now());
 desc user;
 insert into category(name) value ('의류');
 insert into category(name) value ('가전');

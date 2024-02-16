@@ -7,12 +7,17 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from './common/Home';
 import Admin from './admin/Admin';
+import { Provider } from 'react-redux';
+import userStore from './redux/userStore';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
+  <Provider store={userStore}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>
+  
 );
 
 // If you want to start measuring performance in your app, pass a function

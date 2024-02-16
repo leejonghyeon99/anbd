@@ -25,7 +25,9 @@ ChartJS.register(
     Legend
 );
 
-const DailySignUp = () => {
+const DailySignUp = (props) => {
+    const chartX = props.width;
+    const chartY = props.height;
 
     const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
@@ -44,7 +46,8 @@ const DailySignUp = () => {
     const [chartData, setChartData] = useState([]);
     const [selectState, setSelectMonth] = useState("");
 
-    const chartRef = useRef(null);
+
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -63,7 +66,7 @@ const DailySignUp = () => {
         };
 
         fetchData();
-    }, []);  
+    }, []);
 
 
 
@@ -74,7 +77,8 @@ const DailySignUp = () => {
 
 
     const options = {
-        responsive: false,
+        responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: {
                 display : false,
@@ -136,19 +140,15 @@ const DailySignUp = () => {
         ],
     };
 
-    
 
-    
     return (
-        <div>
-            <Bar 
-                width={1200}
-                height={300}
+        <>
+            <Bar
                 options={options} 
                 data={data}
-                ref={chartRef}            
+                // ref={chartRef}
             />
-        </div>
+        </>
     );
 };
 

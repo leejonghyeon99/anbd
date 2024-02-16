@@ -1,5 +1,5 @@
 import React from "react";
-import './css/admin.css'
+import './Admin.css';
 import { Container } from "react-bootstrap";
 import DailySignUp from "./component/DailySignUp";
 import MonthSignUp from "./component/MonthSignUp";
@@ -15,9 +15,16 @@ const Admin = () => {
         </div>
 
         <div className="admin-content">
-          <DailySignUp/>
-          <MonthSignUp/>
-          <UserList/>
+          <div className="admin-chart">
+            <DailySignUp/>
+          </div>
+          <div className="admin-chart">
+            <MonthSignUp width={800} height={200}/>
+          </div>
+          <div className="admin-user-list">
+            <UserList/>
+          </div>
+
         </div>
       </div>
     </>

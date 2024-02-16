@@ -1,15 +1,36 @@
-.container {
-    background-color: rgb(219, 219, 219);
+.admin-wrapper{
     display: flex;
-    flex-wrap: wrap;  /* 한줄에 2칸씩 배치되도록 */
-    height: 100%; /* sidebar와 길이 맞춤 */
+    height: 100vh;
 }
 
-/* 관리자페이지 component 4분할 css */
-.no1 , .no2, .no3, .no4 { 
-    background-color: azure;
-    border: 1px solid black;
-    width: 50%;
-    height: 50%;    
+.admin-menu{
+    width: 200px;
+    padding: 16px;
+    border: 1px black solid;
+}
+
+.admin-content{
+    margin-left: 25px;
+    flex: 1;
+    padding: 16px;
+}
+
+.admin-chart{
+    border: 1px solid blue;
+    max-width: 1200px;
+    height: 300px;
+    margin: 20px;
+}
+
+.admin-user-list{
+    border: 1px solid blue;
+    margin: 20px;
+    width: 1000px;
+    height: 800px;
+    overflow: scroll;
+}
+
+canvas{
+    width: 100%;
 }
 
