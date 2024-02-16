@@ -7,6 +7,7 @@ const ListPage = () => {
 
   const navigate = useNavigate();
 
+
   const [products, setProducts] = useState([]);
 
   useEffect(() => {

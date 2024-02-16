@@ -38,6 +38,17 @@ const NavMenu = styled.ul`
 const Navbar = styled.div`
   /* 다른 스타일들... */
   display: ${(props) => (props.isVisible ? "block" : "none")};
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: calc(100vh - 24px);
+  background-color: #ffffff;
+  transition: right 0.3s ease-in-out;
+
+  @media screen and (max-width: 768px) {
+    width: 50%;
+  }
 `;
 
 const Header = () => {
@@ -50,7 +61,7 @@ const Header = () => {
   useEffect(() => {
     const userData = async () => {
       try {
-        const url = `${apiUrl}/api/user/2`;
+        const url = `${apiUrl}/api/user/${user.id}`;
         const response = await fetch(url);
         const data = await response.json();
         setUser(data); // 가져온 데이터를 상태값에 설정
@@ -105,6 +116,7 @@ const Header = () => {
   // mypage show/hide
   const toggleMypage = () => {
     setIsMypageVisible(!isMypageVisible);
+    setIsMenuOpen(false); // Navbar가 열려있는 경우 닫도록 설정
   };
 
   return (
@@ -121,50 +133,67 @@ const Header = () => {
             </Link>
 
             {/* 로그인한 유저와 비회원의 mypage아이콘 다르게 나오도록 */}
-            {user.auth === "ROLE_USER" ? (
-              <div className="mypageToggle" id="menu-bars">
+            <div className="mypageToggle" id="menu-bars">
+              <img
+                src="icon/usericon.png"
+                id="userIcon"
+                onClick={toggleMypage}
+              />
+              {/* {user.auth === "ROLE_USER" && (
                 <img
                   src="icon/usericon.png"
                   id="userIcon"
                   onClick={toggleMypage}
                 />
-              </div>
-            ) : user.auth === "ROLE_ADMIN" ? (
-              <div className="mypageToggle" id="menu-bars">
+              )} */}
+              {/* {user.auth === "ROLE_ADMIN" && (
                 <img
                   src="icon/admin.png"
                   id="adminIcon"
                   onClick={toggleMypage}
                 />
-              </div>
-            ) : (
-              <div className="mypageToggle" id="menu-bars">
-                <Link to="user/login">LOGIN</Link>{" "}
-                <Link to="user/signup">JOIN</Link>
-              </div>
-            )}
+              )}
+              {user.auth !== "ROLE_USER" && user.auth !== "ROLE_ADMIN" && (
+                <div>
+                  <Link to="user/login">LOGIN</Link>{" "}
+                  <Link to="user/signup">JOIN</Link>
+                </div>
+              )} */}
+            </div>
           </div>
 
           <Navbar isVisible={isMypageVisible}>
             {" "}
-            {/* user아이콘 토글하면 나오는 메뉴 */}
+            {/* Navbar의 isVisible 속성에 따라 보이거나 숨김 */}
             <nav className="nav-menu">
+              <li className="navbar-toggle">
+                <img
+                  src="icon/Xmark.png"
+                  className="closeMypage"
+                  onClick={toggleMypage}
+                />
+              </li>
+              <div className="profile">
+                <img src="icon/userIcon.png" className="profileImg"></img>
+              </div>
+              <li>
+                <Link to={"/"}>
+                  <img src="icon/chatting.png" className="chatIcon_mp"></img>
+                </Link>
+              </li>
               <ul className="nav-menu-items">
-                <li className="navbar-toggle">
-                  <Link to="#" id="menu-bars" onClick={toggleMypage}>
-                    <IoClose />
-                  </Link>
-                </li>
                 {MypagebarList.map((item, index) => (
                   <li key={index} className={item.cName} id="menuTitle">
-                    <Link to={item.path}>
-                      {item.icon}
-                      <span>{item.title}</span>
+                    <Link to={item.path} className="mypageList">
+                      {item.icon} <span>{item.title}</span>
                     </Link>
                   </li>
                 ))}
               </ul>
             </nav>
+            <Link to={"/"}>
+            <img src="icon/logout.png" className="logout"></img>
+            </Link>
           </Navbar>
         </div>
 
@@ -173,9 +202,9 @@ const Header = () => {
             의류
             {isBclothingOpen && (
               <ul className="submenu">
-                <li onClick={() => navigate()}>여성의류</li>
-                <li onClick={() => navigate()}>남성의류</li>
-                <li onClick={() => navigate()}>아동의류</li>
+                <li onClick={() => navigate("/product/list")}>여성의류</li>
+                <li onClick={() => navigate("/product/list")}>남성의류</li>
+                <li onClick={() => navigate("/product/list")}>아동의류</li>
               </ul>
             )}
           </ul>
@@ -183,9 +212,9 @@ const Header = () => {
             식품
             {isBfoodOpen && (
               <ul className="submenu">
-                <li onClick={() => navigate()}>1</li>
-                <li onClick={() => navigate()}>2</li>
-                <li onClick={() => navigate()}>3</li>
+                <li onClick={() => navigate("/product/list")}>1</li>
+                <li onClick={() => navigate("/product/list")}>2</li>
+                <li onClick={() => navigate("/product/list")}>3</li>
               </ul>
             )}
           </ul>
@@ -193,9 +222,9 @@ const Header = () => {
             생활용품
             {isBlivingOpen && (
               <ul className="submenu">
-                <li onClick={() => navigate()}>1</li>
-                <li onClick={() => navigate()}>2</li>
-                <li onClick={() => navigate()}>3</li>
+                <li onClick={() => navigate("/product/list")}>1</li>
+                <li onClick={() => navigate("/product/list")}>2</li>
+                <li onClick={() => navigate("/product/list")}>3</li>
               </ul>
             )}
           </ul>
