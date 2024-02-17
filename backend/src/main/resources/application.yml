@@ -29,6 +29,11 @@ spring:
 
 #  image:
 #    path: ./upload/product
+#  redis 사용이유 : 메모리에 데이터저장, database 저장보다 빠른 조회가 가능
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
   mail:
     host: smtp.gmail.com

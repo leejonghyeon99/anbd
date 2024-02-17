@@ -51,6 +51,17 @@ public class UserController {
         return ResponseEntity.ok(userService.getUser().get());
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<?> logoutUser(@RequestHeader(value = "Authorization") String tokenHeader){
+        if (tokenHeader != null && tokenHeader.startsWith("Bearer ")){
+            String accessToken = tokenHeader.substring(7);
+            String message = userService.logout(accessToken);
+            return ResponseEntity.ok().body(Map.of("message", message));
+        } else {
+            return ResponseEntity.badRequest().body(Map.of("error", "Invalid Authorization header."));
+        }
+    }
+
     @DeleteMapping("/deleteUser")
     public ResponseEntity<?> deleteUser(@RequestBody UserRequestDTO userRequestDTO){
         userService.deleteUser(userRequestDTO);

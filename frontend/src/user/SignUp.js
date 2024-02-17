@@ -14,7 +14,7 @@ const SignUp = () => {
     nickname: "",
     phone_number: "",
     email: "",
-    regions: "",
+    regions: [],
   });
 
   const [adr, setAdr] = useState([]);
@@ -89,7 +89,10 @@ const SignUp = () => {
 
   const handleAddressChange = (e) => {
     const addressArray = e.target.value.split(",");
-    setAdr(addressArray);
+    setUser({
+      ...user,
+      address: addressArray, // address 필드에 배열을 직접 할당
+    });
   };
 
   const validateEmail = () => {
@@ -162,7 +165,7 @@ const SignUp = () => {
             name="name"
             placeholder="이름을 입력하세요"
             value={user.name}
-            nChange={formChange}
+            onChange={formChange}
           />
         </div>
         <div>

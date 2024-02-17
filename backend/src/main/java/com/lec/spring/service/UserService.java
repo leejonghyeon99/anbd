@@ -34,6 +34,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final JwtBlacklistService jwtBlacklistService;
 
     @Transactional
     public UserResponseDTO signup(UserRequestDTO userRequestDTO){
@@ -134,4 +135,12 @@ public class UserService {
         // 사용자를 완전히 삭제하는 경우
         userRepository.delete(user);
     }
+
+    public String logout(String accessToken) {
+       jwtBlacklistService.blacklistToken(accessToken);
+        return accessToken;
+    }
+
+
+
 }
