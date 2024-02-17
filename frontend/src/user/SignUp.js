@@ -14,7 +14,7 @@ const SignUp = () => {
     nickname: "",
     phone_number: "",
     email: "",
-    address: "",
+    regions: "",
   });
 
   const [adr, setAdr] = useState([]);
@@ -45,6 +45,13 @@ const SignUp = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+  const addRegions = ((newRegions)=>{
+    setUser(suer => ({
+      ...user,
+      regions: [...user.regions, newRegions],
+    }));
+  })
 
   const submitJoin = (e) => {
     e.preventDefault();
@@ -226,6 +233,7 @@ const SignUp = () => {
               padding: "5px", // 패딩을 8px로 설정
             }}
           />
+
         </div>
         <Button type="submit">Join</Button>
       </Form>
