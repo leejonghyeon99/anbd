@@ -51,6 +51,12 @@ public class UserController {
         return ResponseEntity.ok(userService.getUser().get());
     }
 
+    @DeleteMapping("/deleteUser")
+    public ResponseEntity<?> deleteUser(@RequestBody UserRequestDTO userRequestDTO){
+        userService.deleteUser(userRequestDTO);
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/reissue")
     public ResponseEntity<TokenDTO> reissue(@RequestBody TokenRequestDTO tokenRequestDTO){
         return ResponseEntity.ok(userService.reissue(tokenRequestDTO));

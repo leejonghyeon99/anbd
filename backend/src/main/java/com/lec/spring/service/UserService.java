@@ -121,34 +121,17 @@ public class UserService {
         return tokenDTO;
     }
 
-    @Transactional(readOnly = true)
-    public UserResponseDTO userInfo(Integer id) {
-        // 유저 아이디로 유저 정보 조회
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
-
-        // UserResponseDTO에 유저 정보와 권한 정보 설정
-        UserResponseDTO userResponseDTO = new UserResponseDTO();
-        userResponseDTO.setId(user.getId());
-        userResponseDTO.setUsername(user.getUsername());
-        userResponseDTO.setPassword(user.getPassword());
-        userResponseDTO.setName(user.getName());
-        userResponseDTO.setNickname(user.getNickname());
-        userResponseDTO.setEmail(user.getEmail());
-        userResponseDTO.setPhone_number(user.getPhone_number());
-        userResponseDTO.setStar(user.getStar());
-        userResponseDTO.setCertification(user.getCertification());
-        userResponseDTO.setRegions(user.getRegions());
-
-        // 유저의 권한 정보를 가져와서 설정
-        userResponseDTO.setAuth(user.getAuth());
-        return userResponseDTO;
+    // 현재 유저 정보 가져오기
+    public Optional<User> getUser(){
+        return SecurityUtil.getCurrentUserId().flatMap(userRepository::findOneWithAuthoritiesByUsername);
     }
 
 
+    public void deleteUser(UserRequestDTO userRequestDTO) {
+        User user = userRepository.findByUsername(userRequestDTO.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + userRequestDTO.getUsername()));
 
-
-    public Optional<User> getUser(){
-        return SecurityUtil.getCurrentUserId().flatMap(userRepository::findOneWithAuthoritiesByUsername);
+        // 사용자를 완전히 삭제하는 경우
+        userRepository.delete(user);
     }
 }
