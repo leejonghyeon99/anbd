@@ -5,7 +5,7 @@ show tables;
 
 desc user;
 insert into user(auth, star, phone_number, nickname, name, username, password, email, thumbnail, created_at)
-values ('ROLE_USER',3.3,'01012341234','test_name','이종현','testid2','1234','3123456771@email.com','default.jpeg', now());
+values ('ROLE_USER',3.3,'01012341234','test_name','이종현','testid2','1234','31234a6771@email.com','default.jpeg', now());
 desc user;
 insert into category(name) value ('의류');
 insert into category(name) value ('가전');
@@ -29,10 +29,8 @@ select * from user;
 select * from category;
 select * from product;
 desc product;
-
+select * from region;
 show tables;
-
-desc chat_room_users;
 desc user_block;
 
 

@@ -40,19 +40,24 @@ public class TokenProvider {
     }
 
     public TokenDTO createTokenDto(Authentication authentication){
-
+        System.out.println("createTokenDto"+authentication);
         // 권한 가져오기
         String authority = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
+
+
         long now = (new Date()).getTime(); // 현재 시간을 밀리초 단위로 now 에 저장
+
 
         // accessToken 생성
         Date tokenExpireTime = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())   // payload "sub": "name"
                 .claim(AUTH_KEY, authority) // payload "auth": "ROLE_USER"
+                .claim("id",1)
+                .claim("username","goun")
                 .setExpiration(tokenExpireTime)
                 .signWith(key, SignatureAlgorithm.HS512)  // header "alg": "HS512"
                 .compact(); // 위에서 지정한 모든 설정을 기반으로 JWT를 생성하고, 이를 문자열로 압축하여 반환

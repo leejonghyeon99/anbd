@@ -13,7 +13,7 @@ const SignUp = () => {
     nickname: "",
     phone_number: "",
     email: "",
-    address: "",
+    regions: "",
   });
 
   const [adr, setAdr] = useState([]);
@@ -39,6 +39,13 @@ const SignUp = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+  const addRegions = ((newRegions)=>{
+    setUser(suer => ({
+      ...user,
+      regions: [...user.regions, newRegions],
+    }));
+  })
 
   const submitJoin = (e) => {
     e.preventDefault();
@@ -140,10 +147,10 @@ const SignUp = () => {
           <Button onClick={validateEmail}>이메일 인증</Button>
         </div>
         <div>
-        <label htmlFor="address">
+        <label htmlFor="regions">
             주소<small>* </small>
           </label>
-          <input name="address" value={user.address} onChange={formChange} />
+          <input name="regions" value={user.regions} onChange={formChange} />
         </div>
       </Form>
       <Button onClick={submitJoin}>Join</Button>
