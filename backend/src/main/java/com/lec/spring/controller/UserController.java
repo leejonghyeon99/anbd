@@ -4,6 +4,7 @@ import com.lec.spring.domain.User;
 import com.lec.spring.dto.*;
 import com.lec.spring.jwt.SecurityUtil;
 import com.lec.spring.service.UserService;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,9 +64,14 @@ public class UserController {
     }
 
     @DeleteMapping("/deleteUser")
-    public ResponseEntity<?> deleteUser(@RequestBody UserRequestDTO userRequestDTO){
-        userService.deleteUser(userRequestDTO);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> deleteUser(Authentication authentication){
+        String userId = authentication.getName();
+        try {
+            userService.deleteUser(userId);
+            return ResponseEntity.ok().body(Map.of("message", "Account deleted successfully."));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Failed to delete account."));
+        }
     }
 
     @PostMapping("/reissue")

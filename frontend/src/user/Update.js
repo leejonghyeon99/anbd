@@ -76,6 +76,34 @@ const Update = () => {
             });
         }
     }
+
+    // 회원탈퇴 기능
+    const deleteUser = () => {
+        const recheck = window.confirm("정말 탈퇴하시겠습니까?");
+
+        if(recheck){const token = localStorage.getItem('accessToken');
+
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/deleteUser`, {
+            method: 'DELETE',
+            headers:{
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+        })
+        .then(response => {
+            if(response.ok){
+                localStorage.removeItem('accessToken');
+                alert('회원탈퇴 성공');
+                navigate('/home')
+            } else {
+                alert('회원탈퇴 실패')
+            }
+        })
+        .catch(error => {
+            console.error('회원 탈퇴 중 에러 발생:', error);
+            alert('오류가 발생했습니다.');
+        })}
+    }
     return (
         <div>
             <Form>password : <input type='password' name='password' onChange={infoChange}/></Form>
@@ -86,6 +114,7 @@ const Update = () => {
             <Form>email : <input name='email' value={userInfo.email} onChange={infoChange}/></Form>
             <Form>주소 : <input name='regions' value={userInfo.regions} onChange={infoChange}/></Form>
             <Button onClick={updateUser}>회원 수정</Button>
+            <Button onClick={deleteUser}>회원 탈퇴</Button>
         </div>
     );
 };

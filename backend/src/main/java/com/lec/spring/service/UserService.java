@@ -128,19 +128,15 @@ public class UserService {
     }
 
 
-    public void deleteUser(UserRequestDTO userRequestDTO) {
-        User user = userRepository.findByUsername(userRequestDTO.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + userRequestDTO.getUsername()));
-
-        // 사용자를 완전히 삭제하는 경우
-        userRepository.delete(user);
-    }
-
     public String logout(String accessToken) {
        jwtBlacklistService.blacklistToken(accessToken);
         return accessToken;
     }
 
 
+    public void deleteUser(String userId) {
+        User user = userRepository.findByUsername(userId).orElseThrow(() -> new RuntimeException("유저정보가 없습니다."));
+        userRepository.delete(user);
 
+    }
 }
