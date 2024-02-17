@@ -13,6 +13,8 @@ import ListPage from "./product/page/ListPage"
 import WritePage from "./product/page/WritePage"
 import DetailPage from "./product/page/DetailPage"
 import UpdatePage from "./product/page/UpdatePage"
+import ChatPage from './chat/page/ChatPage';
+
 
 const App = () => {
   return (
@@ -21,8 +23,9 @@ const App = () => {
     // <Header className="header" />
     // <Routes>
     // <Route path="/admin" Component={Admin}></Route>
+    //     <Route path='/chat' Component={ChatPage}></Route>
     // </Routes>
-  
+    //
     // </>
     <>
       <div className="AppBox">
@@ -32,7 +35,7 @@ const App = () => {
         </div>
         <div className="content">
           <Routes>
-            <Route path="/" element={<Navigate to="/home"></Navigate>}></Route>
+            <Route path="/" element={<Navigate to="/home"></Navigate>}/>
             <Route path="/home" Component={Home}></Route>
             <Route path="user/login" Component={Login}></Route>
             <Route path="user/signup" Component={SignUp}></Route>

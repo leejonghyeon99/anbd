@@ -1,10 +1,8 @@
 package com.lec.spring.dto;
 
-import com.lec.spring.domain.Chat;
 import com.lec.spring.domain.ChatRoom;
 import com.lec.spring.domain.Product;
 import com.lec.spring.domain.User;
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
