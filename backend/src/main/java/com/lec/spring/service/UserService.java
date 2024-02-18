@@ -7,6 +7,7 @@ import com.lec.spring.dto.TokenDTO;
 import com.lec.spring.dto.TokenRequestDTO;
 import com.lec.spring.dto.UserRequestDTO;
 import com.lec.spring.dto.UserResponseDTO;
+import com.lec.spring.jwt.SecurityUtil;
 import com.lec.spring.jwt.TokenProvider;
 import com.lec.spring.repository.RefreshTokenRepository;
 import com.lec.spring.repository.UserRepository;
@@ -20,7 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +47,8 @@ public class UserService {
         user.setAuth(Auth.ROLE_USER);
         user.setCertification("approved");
         user.setStar(0.0);
+        user.setRegions(user.getRegions());
+
         return UserResponseDTO.of(userRepository.save(user));
     }
 
@@ -56,7 +59,7 @@ public class UserService {
         UsernamePasswordAuthenticationToken authenticationToken = userRequestDTO.toAuthentication();
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-
+        System.out.println("------------------------"+authentication);
         TokenDTO tokenDTO = tokenProvider.createTokenDto(authentication);
 
         RefreshToken refreshToken = RefreshToken.builder()
@@ -75,6 +78,24 @@ public class UserService {
         System.out.println(user);
 
         return passwordEncoder.matches(inputPassword, user.getPassword());
+    }
+
+    public UserResponseDTO update(UserRequestDTO userRequestDTO) {
+        User user = userRepository.findById(userRequestDTO.getId()).orElseThrow(()->new RuntimeException("you need to update id check"));
+
+        user.setName(userRequestDTO.getName());
+        user.setNickname(userRequestDTO.getNickname());
+        user.setEmail(userRequestDTO.getEmail());
+        user.setPhone_number(userRequestDTO.getPhone_number());
+
+        if (userRequestDTO.getPassword() != null && !userRequestDTO.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
+        }
+
+        User updateUser = userRepository.save(user);
+
+        return UserResponseDTO.of(updateUser);
+
     }
 
     @Transactional
@@ -124,4 +145,10 @@ public class UserService {
         return userResponseDTO;
     }
 
+
+
+
+    public Optional<User> getUser(){
+        return SecurityUtil.getCurrentUserId().flatMap(userRepository::findOneWithAuthoritiesByUsername);
+    }
 }
