@@ -12,7 +12,7 @@ const ListPage = () => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/product/list")
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/list`)
     .then(response => response.json())
     .then(data => {
       setProducts(data)
