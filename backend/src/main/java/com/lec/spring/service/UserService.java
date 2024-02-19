@@ -47,7 +47,7 @@ public class UserService {
         user.setAuth(Auth.ROLE_USER);
         user.setCertification("approved");
         user.setStar(0.0);
-        user.setRegions(user.getRegions());
+        user.setRegion(user.getRegion());
 
         return UserResponseDTO.of(userRepository.save(user));
     }
@@ -138,7 +138,7 @@ public class UserService {
         userResponseDTO.setPhone_number(user.getPhone_number());
         userResponseDTO.setStar(user.getStar());
         userResponseDTO.setCertification(user.getCertification());
-        userResponseDTO.setRegions(user.getRegions());
+        userResponseDTO.setRegion(user.getRegion());
 
         // 유저의 권한 정보를 가져와서 설정
         userResponseDTO.setAuth(user.getAuth());

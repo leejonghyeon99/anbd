@@ -26,7 +26,7 @@ public class UserRequestDTO {
     private String email;
     private Double star;
     private Auth auth;
-    private List<Region> regions;
+    private String region;
 
     public User toUser(PasswordEncoder passwordEncoder) {
         return User.builder()
@@ -36,7 +36,7 @@ public class UserRequestDTO {
                 .phone_number(this.phone_number)
                 .nickname(this.nickname)
                 .email(this.email)
-                .regions(this.regions)
+                .region(this.region)
                 .build();
     }
 
