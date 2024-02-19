@@ -59,6 +59,8 @@ const Header = () => {
   // 로그인 유무 상태(useEffect로 상태 확인해야함)
 
   useEffect(() => {
+    const token = localStorage.getItem('accessToken'); 
+    
     const userData = async () => {
       try {
         const url = `${apiUrl}/api/user/${user.id}`;

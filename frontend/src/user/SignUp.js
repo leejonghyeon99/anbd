@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./CSS/SignUp.css";
+import regionsData from "../api/regionsData.json";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -14,10 +15,10 @@ const SignUp = () => {
     nickname: "",
     phone_number: "",
     email: "",
-    regions: [],
+    region: "",
   });
 
-  const [regs, setRegs] = useState([]);
+  // valdation
   const [usernameErr, setUsernameErr] = useState(false);
   const [passwordErr, setPasswordErr] = useState(false);
   const [rerswdErr, setRepswdErr] = useState(false);
@@ -25,7 +26,7 @@ const SignUp = () => {
   const [nicknameErr, setNicknameErr] = useState(false);
   const [phoneErr, setPhoneErr] = useState(false);
   const [emailErr, setEmailErr] = useState(false);
-  const [adrError, setAdrError] = useState(false);
+  const [regError, setRegError] = useState(false);
 
   // 인증번호 입력란 가시성 상태 변수
   const [isVerificationVisible, setIsVerificationVisible] = useState(false);
@@ -33,12 +34,10 @@ const SignUp = () => {
   const [verificationCode, setVerificationCode] = useState("");
 
   useEffect(() => {
-    setUser({
-      ...user,
-      regions: regs.toString(),
-    });
-  }, [regs]);
+    console.log(user);
+  }, [user]);
 
+  // onChange에 적용될 formChange
   const formChange = (e) => {
     setUser({
       ...user,
@@ -46,23 +45,8 @@ const SignUp = () => {
     });
   };
 
-  const addRegions = ((newRegions) => { // 필요한지 확인
-    setUser(user => ({
-      ...user,
-      regions: [...user.regions, newRegions],
-    }));
-  })
-
-
   const submitJoin = (e) => {
     e.preventDefault();
-
-    const { repassword, ...signupdata } = user;
-
-    if (user.password !== user.repassword) {
-      alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
-      return;
-    }
 
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/signup`, {
       method: "POST",
@@ -86,12 +70,19 @@ const SignUp = () => {
       .catch((Error) => {
         alert(Error.message);
       });
-  };
 
-  // const handleRegionsChange = (e) => {
-  //   const regionsArray = e.target.value.split(",");
-  //   setRegs(regionsArray);
-  // };
+    if (!user.region) {
+      alert("거주지역을 선택해 주세요.");
+      return;
+    }
+
+    const { repassword, ...signupdata } = user;
+
+    if (user.password !== user.repassword) {
+      alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+      return;
+    }
+  };
 
   const validateEmail = () => {
     // 이메일이 비어 있는지 확인
@@ -109,19 +100,6 @@ const SignUp = () => {
     setVerificationCode(e.target.value);
   };
 
-  // 주소 다중 선택 ---> 수정중!!
-  const handleRegionsChange = (e) => {
-    const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
-
-    // 선택된 옵션의 개수를 확인하고, 최대 3개까지만 선택되도록
-    if (selectedOptions.length <= 3) {
-      setUser((prevUser) => ({
-        ...prevUser,
-        regions: selectedOptions,
-      }));
-    }
-  };
-
   return (
     <div className="signUpMain">
       <div className="joinTitle">
@@ -131,7 +109,7 @@ const SignUp = () => {
         {/* 아이디 입력란 */}
         <div>
           <label htmlFor="username">
-            ID<small>* </small>
+            ID <small>* </small>
           </label>
           <input
             type="text"
@@ -144,7 +122,7 @@ const SignUp = () => {
         <div>
           {/* 비밀번호 입력란 */}
           <label htmlFor="password">
-            비밀번호<small>(필수)</small>
+            비밀번호 <small>(필수)</small>
           </label>
           <input
             type="password"
@@ -157,7 +135,7 @@ const SignUp = () => {
         <div>
           {/* 비밀번호 확인 입력란 */}
           <label htmlFor="repassword">
-            비밀번호 확인<small>* </small>
+            비밀번호 확인 <small>* </small>
           </label>
           <input
             type="password"
@@ -170,19 +148,19 @@ const SignUp = () => {
         <div>
           {/* 이름 입력란 */}
           <label htmlFor="name">
-            이름<small>* </small>
+            이름 <small>* </small>
           </label>
           <input
             name="name"
             placeholder="이름을 입력하세요"
             value={user.name}
-            nChange={formChange}
+            onChange={formChange}
           />
         </div>
         <div>
           {/* 닉네임 입력란 */}
           <label htmlFor="nickname">
-            닉네임<small>* </small>
+            닉네임 <small>* </small>
           </label>
           <input
             name="nickname"
@@ -194,7 +172,7 @@ const SignUp = () => {
         <div>
           {/* 연락처 입력란 */}
           <label htmlFor="phone_number">
-            연락처<small>* </small>
+            연락처 <small>* </small>
           </label>
           <input
             name="phone_number"
@@ -206,7 +184,7 @@ const SignUp = () => {
         <div>
           {/* 이메일 입력란 */}
           <label htmlFor="email">
-            이메일<small>* </small>
+            이메일 <small>* </small>
           </label>
           <input
             name="email"
@@ -214,13 +192,20 @@ const SignUp = () => {
             value={user.email}
             onChange={formChange}
           />
-          <Button onClick={validateEmail} variant="light" size="sm" className="rounded">이메일 인증</Button>
+          <Button
+            onClick={validateEmail}
+            variant="light"
+            size="sm"
+            className="rounded"
+          >
+            이메일 인증
+          </Button>
         </div>
         {/* 인증번호 입력란 */}
         {isVerificationVisible && (
           <div>
             <label htmlFor="verificationCode">
-              인증번호<small>* </small>
+              인증번호 <small>* </small>
             </label>
             <input
               type="text"
@@ -228,59 +213,43 @@ const SignUp = () => {
               name="verificationCode"
               value={verificationCode}
               onChange={handleVerificationCodeChange}
-            /> {/* onClick 수정해야함*/}
-            <Button onClick={validateEmail} variant="light" size="sm">인증번호 확인</Button>
+            />{" "}
+            {/* onClick 수정해야함*/}
+            <Button onClick={validateEmail} variant="light" size="sm">
+              인증번호 확인
+            </Button>
           </div>
         )}
-         <div>
-        {/* 주소 입력란 */}
-        {/* 주소 수정중 */}
-        <label htmlFor="regions">
-          주소<small>* </small>
-        </label>
-        <select
-          className="form-select"
-          name="regions"
-          onChange={handleRegionsChange}
-          value={user.regions}
-        >
-          <option value="" disabled>
-            -- 거주지역을 선택해 주세요 -- (최대 3개)
-          </option>
-          <option value="서울">서울</option>
-          <option value="경기도">경기도</option>
-          <option value="기타">기타</option>
-        </select>
+        <div>
+          {/* 주소 입력란 */}
+          <label htmlFor="region">
+            주소 <small>* (최대 3개) </small>
+          </label>
 
-        <select
-          className="form-select"
-          name="regions"
-          onChange={handleRegionsChange}
-          value={user.regions}
-        >
-          <option value="" disabled>
-            -- 거주지역을 선택해 주세요 -- (최대 3개)
-          </option>
-          <option value="서울">서울</option>
-          <option value="경기도">경기도</option>
-          <option value="기타">기타</option>
-        </select>
+          {/*
+        regionsData.features.map()을 사용하여 JSON 파일의 "SIG_KOR_NM"을 옵션으로 동적으로 추가합니다.
+      */}
+          <select
+            className="form-select"
+            name="region"
+            onChange={formChange}
+            value={user.region}
+          >
+            <option value="" disabled>
+              -- 거주지역을 선택해 주세요 --
+            </option>
 
-
-        <select
-          className="form-select"
-          name="regions"
-          onChange={handleRegionsChange}
-          value={user.regions}
-        >
-          <option value="" disabled>
-            -- 거주지역을 선택해 주세요 -- (최대 3개)
-          </option>
-          <option value="서울">서울</option>
-          <option value="경기도">경기도</option>
-          <option value="기타">기타</option>
-        </select>
-      </div>
+            {/* 거주지역 select option을 regionsData에서 map으로 가져온다. */}
+            {regionsData[0].features.map((feature) => (
+              <option
+                key={feature.properties.SIG_CD}
+                value={feature.properties.SIG_KOR_NM}
+              >
+                {feature.properties.SIG_KOR_NM}
+              </option>
+            ))}
+          </select>
+        </div>
         <Button type="submit">Join</Button>
       </Form>
     </div>

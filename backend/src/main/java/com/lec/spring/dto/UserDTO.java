@@ -1,6 +1,7 @@
 package com.lec.spring.dto;
 
 import com.lec.spring.domain.Auth;
+import com.lec.spring.domain.Region;
 import com.lec.spring.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,6 +29,8 @@ public class UserDTO {
     private Auth auth;
     private String certification;
     private String thumbnail;
+    private List<Region> regions;
+
 
     public static UserDTO toDto(User user) {
         return UserDTO.builder()
