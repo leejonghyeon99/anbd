@@ -1,3 +1,42 @@
+.signUpMain {
+    background-color: #f89f98;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .joinTitle {
     background-color: rgba(255, 3, 3, 0.856);
 }
+
+label {
+    margin-right: 10px;
+}
+
+input {
+    width: 70%;
+    font-size: 15px;
+    padding: 5px;
+    border: solid 0.5px rgb(173, 173, 173);
+    border-radius: 10px;
+}
+
+input:focus {
+    border-color: #617080;
+    outline: none;
+    /* 포커스 시 그림자 효과 변경 */
+    box-shadow: 0 0 10px rgba(39, 61, 85, 0.4);
+    /* 다른 포커스 시 스타일 변경 */
+}
+
+Form div {
+    margin: 10px;
+}
+
+.emailBtn {
+    margin-left: 15px;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+

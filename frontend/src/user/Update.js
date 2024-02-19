@@ -28,7 +28,7 @@ const Update = () => {
         })
                 .then(response => response.json())
                 .then(data => setUserInfo(data))
-                .catch(error => console.error("userinfo error", error));
+                .catch(error => console.error("userinfo error", error)); 
         }
     }, []);
 
