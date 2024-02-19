@@ -12,11 +12,10 @@ spring:
     username: root
     password: 1234
 
-  #JPA ??
   jpa:
-    show-sql: true  # JPA ?? ???? SQL? ?? ??
+    show-sql: true
     properties:
-      hibernate.format_sql: true   # ?? ??? ??
+      hibernate.format_sql: true
 
     hibernate:
       ddl-auto: create
@@ -29,6 +28,7 @@ spring:
 
 #  image:
 #    path: ./upload/product
+
 #  redis 사용이유 : 메모리에 데이터저장, database 저장보다 빠른 조회가 가능
   data:
     redis:

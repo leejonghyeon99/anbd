@@ -18,6 +18,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findOneWithAuthoritiesByUsername(String username);
 
+    Optional<User> findByProviderAndProviderId(String provider, String provider_id);
+
 
 
 
