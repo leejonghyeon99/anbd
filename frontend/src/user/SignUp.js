@@ -14,10 +14,10 @@ const SignUp = () => {
     nickname: "",
     phone_number: "",
     email: "",
-    regions: "",
+    regions: [],
   });
 
-  const [adr, setAdr] = useState([]);
+  const [regs, setRegs] = useState([]);
   const [usernameErr, setUsernameErr] = useState(false);
   const [passwordErr, setPasswordErr] = useState(false);
   const [rerswdErr, setRepswdErr] = useState(false);
@@ -35,9 +35,9 @@ const SignUp = () => {
   useEffect(() => {
     setUser({
       ...user,
-      address: adr.toString(),
+      regions: regs.toString(),
     });
-  }, [adr]);
+  }, [regs]);
 
   const formChange = (e) => {
     setUser({
@@ -46,12 +46,13 @@ const SignUp = () => {
     });
   };
 
-  const addRegions = ((newRegions)=>{
-    setUser(suer => ({
+  const addRegions = ((newRegions) => { // 필요한지 확인
+    setUser(user => ({
       ...user,
       regions: [...user.regions, newRegions],
     }));
   })
+
 
   const submitJoin = (e) => {
     e.preventDefault();
@@ -87,17 +88,17 @@ const SignUp = () => {
       });
   };
 
-  const handleAddressChange = (e) => {
-    const addressArray = e.target.value.split(",");
-    setAdr(addressArray);
-  };
+  // const handleRegionsChange = (e) => {
+  //   const regionsArray = e.target.value.split(",");
+  //   setRegs(regionsArray);
+  // };
 
   const validateEmail = () => {
-        // 이메일이 비어 있는지 확인
-        if (user.email.trim() === "") {
-          alert("이메일을 입력하세요.");
-          return;
-        }
+    // 이메일이 비어 있는지 확인
+    if (user.email.trim() === "") {
+      alert("이메일을 입력하세요.");
+      return;
+    }
     // 이메일 검증 코드 추가
     // 이메일 검증이 성공하면 인증번호 입력란을 보여줍니다.
     setIsVerificationVisible(true);
@@ -108,8 +109,21 @@ const SignUp = () => {
     setVerificationCode(e.target.value);
   };
 
+  // 주소 다중 선택 ---> 수정중!!
+  const handleRegionsChange = (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
+
+    // 선택된 옵션의 개수를 확인하고, 최대 3개까지만 선택되도록
+    if (selectedOptions.length <= 3) {
+      setUser((prevUser) => ({
+        ...prevUser,
+        regions: selectedOptions,
+      }));
+    }
+  };
+
   return (
-    <div>
+    <div className="signUpMain">
       <div className="joinTitle">
         <h1>JOIN US</h1>
       </div>
@@ -200,7 +214,7 @@ const SignUp = () => {
             value={user.email}
             onChange={formChange}
           />
-          <Button onClick={validateEmail}>이메일 인증</Button>
+          <Button onClick={validateEmail} variant="light" size="sm" className="rounded">이메일 인증</Button>
         </div>
         {/* 인증번호 입력란 */}
         {isVerificationVisible && (
@@ -214,27 +228,59 @@ const SignUp = () => {
               name="verificationCode"
               value={verificationCode}
               onChange={handleVerificationCodeChange}
-            />
+            /> {/* onClick 수정해야함*/}
+            <Button onClick={validateEmail} variant="light" size="sm">인증번호 확인</Button>
           </div>
         )}
-        <div>
+         <div>
         {/* 주소 입력란 */}
-          <label htmlFor="address">
-            주소<small>* </small>
-          </label>
-          <input
-            name="address"
-            placeholder="주소를 입력하세요"
-            value={user.address}
-            onChange={handleAddressChange}
-            style={{
-              width: "80%",
-              fontSize: "10px",
-              padding: "5px", // 패딩을 8px로 설정
-            }}
-          />
+        {/* 주소 수정중 */}
+        <label htmlFor="regions">
+          주소<small>* </small>
+        </label>
+        <select
+          className="form-select"
+          name="regions"
+          onChange={handleRegionsChange}
+          value={user.regions}
+        >
+          <option value="" disabled>
+            -- 거주지역을 선택해 주세요 -- (최대 3개)
+          </option>
+          <option value="서울">서울</option>
+          <option value="경기도">경기도</option>
+          <option value="기타">기타</option>
+        </select>
 
-        </div>
+        <select
+          className="form-select"
+          name="regions"
+          onChange={handleRegionsChange}
+          value={user.regions}
+        >
+          <option value="" disabled>
+            -- 거주지역을 선택해 주세요 -- (최대 3개)
+          </option>
+          <option value="서울">서울</option>
+          <option value="경기도">경기도</option>
+          <option value="기타">기타</option>
+        </select>
+
+
+        <select
+          className="form-select"
+          name="regions"
+          onChange={handleRegionsChange}
+          value={user.regions}
+        >
+          <option value="" disabled>
+            -- 거주지역을 선택해 주세요 -- (최대 3개)
+          </option>
+          <option value="서울">서울</option>
+          <option value="경기도">경기도</option>
+          <option value="기타">기타</option>
+        </select>
+      </div>
         <Button type="submit">Join</Button>
       </Form>
     </div>

@@ -63,6 +63,10 @@
     background-color: #213d5c;
   }
   
+  .kakaoBtn, .naverBtn {
+    width: 40px;
+  }
+
   @media screen and (max-width: 768px) {
     .loginBox {
       width: 80%; /* 화면 작을 때 로그인 상자의 너비 조정 */

@@ -126,7 +126,7 @@ const Header = () => {
           <div className="headerFix">
             <div className="hiddenMenu">
               {/* 아이콘 클릭 시 메뉴 토글 */}
-              <img src="icon/menu.png" id="menuIcon" onClick={toggleMenu} />
+              <img src="/icon/menu.png" id="menuIcon" onClick={toggleMenu} />
             </div>
             <Link to="/home" className="logo">
               AH!NaBaDa
@@ -135,20 +135,20 @@ const Header = () => {
             {/* 로그인한 유저와 비회원의 mypage아이콘 다르게 나오도록 */}
             <div className="mypageToggle" id="menu-bars">
               <img
-                src="icon/usericon.png"
+                src="/icon/usericon.png"
                 id="userIcon"
                 onClick={toggleMypage}
               />
               {/* {user.auth === "ROLE_USER" && (
                 <img
-                  src="icon/usericon.png"
+                  src="/icon/usericon.png"
                   id="userIcon"
                   onClick={toggleMypage}
                 />
               )} */}
               {/* {user.auth === "ROLE_ADMIN" && (
                 <img
-                  src="icon/admin.png"
+                  src="/icon/admin.png"
                   id="adminIcon"
                   onClick={toggleMypage}
                 />
@@ -168,17 +168,17 @@ const Header = () => {
             <nav className="nav-menu">
               <li className="navbar-toggle">
                 <img
-                  src="icon/Xmark.png"
+                  src="/icon/Xmark.png"
                   className="closeMypage"
                   onClick={toggleMypage}
                 />
               </li>
               <div className="profile">
-                <img src="icon/userIcon.png" className="profileImg"></img>
+                <img src="/icon/userIcon.png" className="profileImg"></img>
               </div>
               <li>
                 <Link to={"/"}>
-                  <img src="icon/chatting.png" className="chatIcon_mp"></img>
+                  <img src="/icon/chatting.png" className="chatIcon_mp"></img>
                 </Link>
               </li>
               <ul className="nav-menu-items">
@@ -192,7 +192,7 @@ const Header = () => {
               </ul>
             </nav>
             <Link to={"/"}>
-            <img src="icon/logout.png" className="logout"></img>
+            <img src="/icon/logout.png" className="logout"></img>
             </Link>
           </Navbar>
         </div>

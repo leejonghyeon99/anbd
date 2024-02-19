@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Button, Card, Form, ListGroup, ListGroupItem } from 'react-bootstrap';
 import ProductItem from '../components/ProductItem';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -9,6 +9,7 @@ const ListPage = () => {
 
 
   const [products, setProducts] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:8080/api/product/list")
@@ -22,10 +23,20 @@ const ListPage = () => {
     navigate("/product/write");
   }
 
+  const submitSearch = (e) => {
+    setSearch(e.target.value)
+}
+
   return (
     <div>
       <h2>판매 목록</h2>
       <hr/>
+      <Form>
+      <input
+      type="text" 
+      value={search} 
+      onChange={submitSearch} />
+      </Form>
       {/* <Card.Title>판매자ID</Card.Title>
       <Card>
         <Card.Body>
