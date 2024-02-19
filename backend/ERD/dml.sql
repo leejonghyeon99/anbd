@@ -29,6 +29,8 @@ select * from user;
 select * from category;
 select * from product;
 
+select * from product_image;
+
 
 desc product;
 

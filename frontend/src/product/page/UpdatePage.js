@@ -1,12 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 const UpdatePage = () => {
 
   let {id} = useParams();
 
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const [selectedLocation, setSelectedLocation] = useState("37.49943, 127.0359"); // 기본 선택
+
+  useEffect(() => {
+    if (location.state && location.state.location) {
+      const{lat, lng} = location.state.location;
+      setSelectedLocation(`${lat}, ${lng}`);
+      console.log("위경도: "+setSelectedLocation(`${lat}, ${lng}`)); // 위도, 경도형식으로 문자열 저장
+    }
+  }, [location.state]);
 
   const [product, setProduct] = useState({
     title:"",
@@ -18,9 +29,10 @@ const UpdatePage = () => {
     category:{
       id:"",
       name:""
-    }
+    },
+    refreshedAt:"",
+    location: setSelectedLocation
   });
-  
   const UpdateValue = (e) => {
     setProduct({
       ...product,
@@ -30,7 +42,7 @@ const UpdatePage = () => {
     console.log(product);
   }
 
-  // 대분류 카테고리만 
+  // 대분류 카테고리만
   const categoryValue = (e) => {
     setProduct({
       ...product,
@@ -42,8 +54,22 @@ const UpdatePage = () => {
     console.log(product);
   }
 
+  const MapOk = () => {
+    navigate("/product/map");
+  }
+
+  // 끌어올리기
+  const refreshedAtValue = () => {
+    const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleDateString(); // 현재시간을 문자열로 변환
+    setProduct({
+      ...product,
+      refreshedAt: formattedDate
+    }); // 상태 업데이트
+  }
+  
   useEffect(() => {
-    fetch("http://localhost:8080/api/product/detail/" + id)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/detail/` + id)
     .then(response => response.json())
     .then(data => setProduct(data));
   }, []);
@@ -52,7 +78,7 @@ const UpdatePage = () => {
     e.preventDefault();
     console.log(product);
 
-    fetch("http://localhost:8080/api/product/update", {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/update`, {
       method:"PUT",
       headers: {
         "Content-Type": "application/json;charset-utf-8",
@@ -76,6 +102,7 @@ const UpdatePage = () => {
       }
     })
   }
+
   return (
     <div>
       <h2>상품 수정</h2>
@@ -84,9 +111,12 @@ const UpdatePage = () => {
         <input type="file" name='productImage' />
       </div>
       <span>위치</span>
+      {selectedLocation && (
       <div className="mb-3">
-        <Button variant='outline-dark' name='location'>위치찾기</Button>
+        <Button variant="outline-dark" onClick={MapOk}>위치 선택</Button>
+        <span>선택된 위치 Lat:{selectedLocation.lat} Lng: {selectedLocation.lng}</span>
       </div>
+      )}
       <span>제목</span>
       <div className="mb-3">
         <input
@@ -173,7 +203,8 @@ const UpdatePage = () => {
         </select>
       </div>
       <div className='mt-3'>
-        <Button variant='outline-dark' name='refreshedAt' onChange={UpdateValue}>끌어올리기</Button>
+        <Button variant='outline-dark' name='refreshedAt' onClick={refreshedAtValue}>끌어올리기</Button>
+        <span>끌어올린 시간 : {product.refreshedAt}</span>
       </div>
       <Button variant='outline-dark mt-2 me-2' onClick={UpdateOk}>완료</Button>
       <Button variant='outline-dark mt-2' onClick={() => navigate(-1)}>이전으로</Button>

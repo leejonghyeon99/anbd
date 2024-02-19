@@ -10,6 +10,11 @@ import SignUp from "./user/SignUp";
 import Home from "./common/Home";
 import { Container } from "react-bootstrap";
 import PasswordCheck from "./user/PasswordCheck";
+import ListPage from "./product/page/ListPage";
+import WritePage from "./product/page/WritePage";
+import DetailPage from "./product/page/DetailPage";
+import UpdatePage from "./product/page/UpdatePage";
+import GoogleMaps from "./product/page/GoogleMaps";
 
 const App = () => {
   return (
@@ -30,9 +35,12 @@ const App = () => {
 
             <Route path="/product/list" Component={ListPage}></Route>
             <Route path="/product/write" Component={WritePage}></Route>
-            <Route path="/product/detail:id" Component={DetailPage}></Route>
-            <Route path="/product/update:id" Component={UpdatePage}></Route>
+            <Route path="/product/detail/:id" Component={DetailPage}></Route>
+            <Route path="/product/update/:id" Component={UpdatePage}></Route>
             <Route path="/admin" Component={Admin}></Route>
+
+
+            <Route path="/product/map" Component={GoogleMaps}></Route>
           </Routes>
         </div>
       </div>

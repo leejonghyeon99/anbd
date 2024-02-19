@@ -21,7 +21,7 @@ public class ProductImage {
     private String originName;  // 원본파일명
 
     @Column(nullable = false)
-    private String photoName;   //
+    private String photoName;   // 저장된 파일명
 
     @ManyToOne
     @JoinColumn(name = "product_id")
