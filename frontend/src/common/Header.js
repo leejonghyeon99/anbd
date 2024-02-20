@@ -55,24 +55,45 @@ const Header = () => {
   const navigate = useNavigate();
 
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({
+    username: "",
+    password: "",
+    repassword: "",
+    name: "",
+    nickname: "",
+    phone_number: "",
+    email: "",
+    region: "",
+    auth: "", // 추가: 사용자 권한 정보
+  });
   // 로그인 유무 상태(useEffect로 상태 확인해야함)
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken'); 
-    
+  
+    // 함수: JWT 디코딩하여 사용자 정보 추출
+    const getUserInfoFromToken = (token) => {
+      // JWT는 Base64로 인코딩된 세 부분으로 나뉨: Header, Payload, Signature
+      // 여기서는 Payload의 두 번째 부분을 디코딩하여 JSON 객체로 파싱
+      const decodedToken = atob(token.split('.')[1]);
+      const userInfo = JSON.parse(decodedToken);
+      // 디코딩된 Payload에서 사용자 정보를 반환
+      return userInfo;
+    };
+  
     const userData = async () => {
       try {
-        const url = `${apiUrl}/api/user/${user.id}`;
-        const response = await fetch(url);
-        const data = await response.json();
-        setUser(data); // 가져온 데이터를 상태값에 설정
-        console.log(data);
+        // accessToken에서 사용자 정보를 추출
+        const userInfo = getUserInfoFromToken(token);
+        // 사용자 정보를 상태값에 설정
+        setUser(userInfo);
+        console.log(userInfo);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
+  
+    // userData 함수 실행 (컴포넌트가 마운트될 때 한 번만 실행하도록 빈 배열 전달)
     userData();
   }, []);
 
@@ -136,19 +157,19 @@ const Header = () => {
 
             {/* 로그인한 유저와 비회원의 mypage아이콘 다르게 나오도록 */}
             <div className="mypageToggle" id="menu-bars">
-              <img
+              {/* <img
                 src="/icon/usericon.png"
                 id="userIcon"
                 onClick={toggleMypage}
-              />
-              {/* {user.auth === "ROLE_USER" && (
+              /> */}
+              {user.auth === "ROLE_USER" && (
                 <img
                   src="/icon/usericon.png"
                   id="userIcon"
                   onClick={toggleMypage}
                 />
-              )} */}
-              {/* {user.auth === "ROLE_ADMIN" && (
+              )}
+              {user.auth === "ROLE_ADMIN" && (
                 <img
                   src="/icon/admin.png"
                   id="adminIcon"
@@ -160,7 +181,7 @@ const Header = () => {
                   <Link to="user/login">LOGIN</Link>{" "}
                   <Link to="user/signup">JOIN</Link>
                 </div>
-              )} */}
+              )}
             </div>
           </div>
 
@@ -194,7 +215,7 @@ const Header = () => {
               </ul>
             </nav>
             <Link to={"/"}>
-            <img src="/icon/logout.png" className="logout"></img>
+              <img src="/icon/logout.png" className="logout"></img>
             </Link>
           </Navbar>
         </div>
