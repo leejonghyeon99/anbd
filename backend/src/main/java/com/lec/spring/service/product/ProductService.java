@@ -62,9 +62,9 @@ public class ProductService {
         productEntity.setDescription(product.getDescription());
         productEntity.setMiddleCategory(product.getMiddleCategory());
 
-        productEntity.setRefreshedAt(LocalDateTime.now());  // 끌어올리기
-
-        productEntity.setLocation(product.getLocation());   // 위치
+        productEntity.setRefreshedAt(product.getRefreshedAt());  // 끌어올리기
+//        System.out.println("productEntity.setRefreshedAt(); = " + productEntity.setRefreshedAt(product.getRefreshedAt()));
+//        productEntity.setLocation(product.getLocation());   // 위치
 
         productRepository.save(productEntity);
 
