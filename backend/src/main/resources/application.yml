@@ -5,6 +5,8 @@ spring:
   output:
     ansi:
       enabled: always
+  profiles:
+    active: secret
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
