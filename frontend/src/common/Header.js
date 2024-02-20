@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { MypagebarList } from "../components/MypagebarList";
+import { AdminpagebarList } from "../components/AdminpagebarList";
 import "./CSS/Header.css";
 import "./CSS/Mypagebar.css";
+import handleLogout from "../user/Logout";
 // icon import
 import { FaUserCircle } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
@@ -54,7 +56,6 @@ const Navbar = styled.div`
 const Header = () => {
   const navigate = useNavigate();
 
-  const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const [user, setUser] = useState({
     username: "",
     password: "",
@@ -69,20 +70,17 @@ const Header = () => {
   // 로그인 유무 상태(useEffect로 상태 확인해야함)
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken'); 
+    const token = localStorage.getItem("accessToken");
 
     // 함수: JWT 디코딩하여 사용자 정보 추출
     const getUserInfoFromToken = (token) => {
       // JWT는 Base64로 인코딩된 세 부분으로 나뉨: Header, Payload, Signature
       // 여기서는 Payload의 두 번째 부분을 디코딩하여 JSON 객체로 파싱
-      const decodedToken = atob(token.split('.')[1]);
+      const decodedToken = atob(token.split(".")[1]);
       const userInfo = JSON.parse(decodedToken);
       // 디코딩된 Payload에서 사용자 정보를 반환
       return userInfo;
     };
-
-
-
 
     const userData = async () => {
       try {
@@ -145,42 +143,10 @@ const Header = () => {
     setIsMenuOpen(false); // Navbar가 열려있는 경우 닫도록 설정
   };
 
-  // 로그아웃
-  const handleLogout = ()=> {
-    const token = localStorage.getItem('accessToken');
-    console.log(token);
-
-    if (!token) {
-      console.log('No token found, user is probably not logged in');
-      // 추가 처리: 사용자가 이미 로그아웃 상태임을 알림 or 로그인 페이지로 리디렉션
-      return;
-    }
-
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/logout`,{
-      method: 'POST',
-      headers:{
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json;charset=utf-8',
-      },
-    })
-    .then(response => {
-      if (response.ok) {
-        return response.json(); // 서버로부터의 응답을 JSON으로 파싱
-      } else {
-        throw new Error('로그아웃 실패');
-      }
-    })
-    .then(data => {
-      console.log('로그아웃 성공', data.message);
-      localStorage.removeItem('accessToken');
-      navigate('')
-    })
-    .catch(error => {
-      console.error(error); // 오류 처리
-    });
-
-
-  }
+  //Logout component 가져옴
+  const onLogoutClick = () => {
+    handleLogout();
+  };
 
   return (
     <div className="header">
@@ -239,24 +205,51 @@ const Header = () => {
               <div className="profile">
                 <img src="/icon/userIcon.png" className="profileImg"></img>
               </div>
-              <li>
-                <Link to={"/"}>
-                  <img src="/icon/chatting.png" className="chatIcon_mp"></img>
-                </Link>
-              </li>
-              <ul className="nav-menu-items">
-                {MypagebarList.map((item, index) => (
-                  <li key={index} className={item.cName} id="menuTitle">
-                    <Link to={item.path} className="mypageList">
-                      {item.icon} <span>{item.title}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+
+              <div>
+                {user.auth === "ROLE_USER" && (
+                  <div className="userbar">
+                    <li>
+                      <Link to={"/"}>
+                        <img
+                          src="/icon/chatting.png"
+                          className="chatIcon_mp"
+                        ></img>
+                      </Link>
+                    </li>
+
+                    <ul className="nav-menu-items">
+                      {MypagebarList.map((item, index) => (
+                        <li key={index} className={item.cName} id="menuTitle">
+                          <Link to={item.path} className="mypageList">
+                            {item.icon} <span>{item.title}</span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {user.auth === "ROLE_ADMIN" && (
+                  <div className="adminbar">
+                    <ul>
+                      {AdminpagebarList.map((item, index) => (
+                        <li key={index} className={item.cName} id="menuTitle">
+                          <Link to={item.path} className="mypageList">
+                            {item.icon} <span>{item.title}</span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
             </nav>
-
-            <img src="icon/logout.png" className="logout" onClick={handleLogout}></img>
-
+            <img
+              src="icon/logout.png"
+              className="logout"
+              onClick={onLogoutClick}
+            ></img>
           </Navbar>
         </div>
 
