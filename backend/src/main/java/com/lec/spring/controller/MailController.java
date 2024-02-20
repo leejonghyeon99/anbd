@@ -1,27 +1,38 @@
 package com.lec.spring.controller;
 
+import com.lec.spring.dto.email.EmailVerificationResult;
 import com.lec.spring.service.MailService;
+import com.lec.spring.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/api")
+import java.security.NoSuchAlgorithmException;
+
+@RestController
+@RequestMapping("/api/email")
 @RequiredArgsConstructor
 public class MailController {
 
-    private final MailService mailService;
+    private final UserService userService;
 
-    @ResponseBody
-    @PostMapping("/email")
-    public String MailSend(String email){
+    @PostMapping("/verification-requests")
+    public ResponseEntity sendMessage(@RequestParam("email") String email){
+        userService.sendCodeToEmail(email);
 
-        int number = mailService.sendMail(email);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
-        String num = "" + number;
+    @GetMapping("/verifications")
+    public ResponseEntity verificationEmail(
+            @RequestParam("email") String email,
+            @RequestParam("code") String code
+    ) {
+        EmailVerificationResult response = userService.verifiedCode(email, code);
 
-        return num;
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
