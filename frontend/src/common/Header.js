@@ -5,7 +5,6 @@ import { MypagebarList } from "../components/MypagebarList";
 import { AdminpagebarList } from "../components/AdminpagebarList";
 import "./CSS/Header.css";
 import "./CSS/Mypagebar.css";
-import handleLogout from "../user/Logout";
 // icon import
 import { FaUserCircle } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
@@ -67,8 +66,8 @@ const Header = () => {
     region: "",
     auth: "", // 추가: 사용자 권한 정보
   });
-  // 로그인 유무 상태(useEffect로 상태 확인해야함)
 
+  // 로그인 유무 상태(useEffect로 상태 확인해야함)
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
 
@@ -143,9 +142,41 @@ const Header = () => {
     setIsMenuOpen(false); // Navbar가 열려있는 경우 닫도록 설정
   };
 
-  //Logout component 가져옴
-  const onLogoutClick = () => {
-    handleLogout();
+  //Logout
+  const handleLogout = () => {
+    const token = localStorage.getItem("accessToken");
+    console.log(token);
+
+    if (!token) {
+      console.log("No token found, user is probably not logged in");
+      // 추가 처리: 사용자가 이미 로그아웃 상태임을 알림 or 로그인 페이지로 리디렉션
+      return;
+    }
+
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/logout`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json;charset=utf-8",
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json(); // 서버로부터의 응답을 JSON으로 파싱
+        } else {
+          throw new Error("로그아웃 실패");
+        }
+      })
+      .then((data) => {
+        console.log("로그아웃 성공", data.message);
+        localStorage.removeItem("accessToken");
+        // 페이지 새로고침
+        navigate("/");
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error(error); // 오류 처리
+      });
   };
 
   return (
@@ -191,7 +222,7 @@ const Header = () => {
             </div>
           </div>
 
-          <Navbar isVisible={isMypageVisible}>
+          <Navbar isVisible={isMypageVisible} id="mypageNavbar">
             {" "}
             {/* Navbar의 isVisible 속성에 따라 보이거나 숨김 */}
             <nav className="nav-menu">
@@ -210,7 +241,7 @@ const Header = () => {
                 {user.auth === "ROLE_USER" && (
                   <div className="userbar">
                     <li>
-                      <Link to={"/"}>
+                      <Link to={"/"} onClick={toggleMypage}>
                         <img
                           src="/icon/chatting.png"
                           className="chatIcon_mp"
@@ -221,7 +252,7 @@ const Header = () => {
                     <ul className="nav-menu-items">
                       {MypagebarList.map((item, index) => (
                         <li key={index} className={item.cName} id="menuTitle">
-                          <Link to={item.path} className="mypageList">
+                          <Link to={item.path} className="mypageList" onClick={toggleMypage}>
                             {item.icon} <span>{item.title}</span>
                           </Link>
                         </li>
@@ -235,7 +266,7 @@ const Header = () => {
                     <ul>
                       {AdminpagebarList.map((item, index) => (
                         <li key={index} className={item.cName} id="menuTitle">
-                          <Link to={item.path} className="mypageList">
+                          <Link to={item.path} className="mypageList" onClick={toggleMypage}>
                             {item.icon} <span>{item.title}</span>
                           </Link>
                         </li>
@@ -245,10 +276,11 @@ const Header = () => {
                 )}
               </div>
             </nav>
+            {/*로그아웃 버튼!! */}
             <img
               src="icon/logout.png"
               className="logout"
-              onClick={onLogoutClick}
+              onClick={handleLogout}
             ></img>
           </Navbar>
         </div>
