@@ -1,71 +1,102 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import '../css/UserList.css'
+import styles from '../css/userList.module.css'
+import logoImage from '../image/logo192.png';
+
+
 
 const UserList = () => {
 
     const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
-    const [usersData, setUsersData] = useState({
-        content: [],
-        pageable: {},
-        last: false,
+    const [usersData, setUsersData] = useState([]);
+    const [pageInfo, setPageInfo] = useState({
+        pageNumber: 0,
+        pageSize: 10,
         totalPages: 0,
         totalElements: 0,
-        size: 0,
-        number: 0,
-        sort: {},
-        first: false,
-        numberOfElements: 0,
-        empty: true,
-      });
-    const [userTotal, setUserTotal] = useState("");
+    });
 
     useEffect(() => {
-        const usersData = async () => {
+        const userList = async () => {
             try {
-                const url = `${apiUrl}/api/admin/user/list`;
-              const response = await fetch(url);
-              const data = await response.json();
-              setUsersData(data); // 가져온 데이터를 상태값에 설정
-            } catch (error) {
-              console.error('Error fetching data:', error);
-            }
-          };
-      
-          
-
-        const userTotal = async () => {
-            try {                
-                const url = `${apiUrl}/api/analyze/user/total`;
+                const url = `${apiUrl}/api/admin/user/list?page=${pageInfo.pageNumber}`;
                 const response = await fetch(url);
-
                 const data = await response.json();
-                setUserTotal(data);
-                console.log(data);
+
+                setUsersData(data.content);
+                if (data.pageable) {
+                    setPageInfo({
+                        pageNumber: data.pageable.pageNumber,
+                        pageSize: data.pageable.pageSize,
+                        totalPages: data.totalPages,
+                        totalElements: data.totalElements,
+                    });
+                }
+
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
-        usersData();
-        userTotal();
-    }, []);
+        userList();
+    }, [pageInfo.pageNumber, pageInfo.pageSize]);
+
+    const renderPageNumbers = () => {
+        const pages = [];
+        for (let i = 1; i <= pageInfo.totalPages; i++) {
+            pages.push(
+                <button
+                    key={i}
+                    onClick={() => handlePageChange(i - 1)}
+                    className={pageInfo.pageNumber === i - 1 ? 'active' : ''}
+                >
+                    {i}
+                </button>
+            );
+        }
+        return pages;
+    };
+
+    const handlePageChange = (newPageNumber) => {
+        setPageInfo({ ...pageInfo, pageNumber: newPageNumber });
+    };
+
 
     return (
-        <div>        
-            <p>총 회원수: {userTotal}명</p>
-            <h1>User List</h1>
-            <ul>
-
-                {usersData.content.map(user => (
-                <li key={user.id}>{user.name}</li>
-                ))}
-            </ul>
-
-
-            <div>
-                Page {usersData.number + 1} of {usersData.totalPages}
+        <>
+            <div className={styles.userList}>
+                <ul>
+                    {usersData.map((user) => (
+                        <li key={user.id}>
+                            <div className={`${styles.userBox}`}>
+                                <img className={`${styles.userIcon}`} src={logoImage} alt="Logo" />
+                                <span className={`${styles.nickname}`}>{user.nickname}</span>
+                                <span className={`${styles.userEmail}`}>이메일 {user.email}</span>
+                                <span className={`${styles.signupDate}`}>가입일시 {user.createdAt}</span>
+                            </div>
+                            <hr />
+                        </li>
+                    ))}
+                </ul>
             </div>
-        </div>
+
+            <div className="pagination">
+                <button
+                    onClick={() => handlePageChange(pageInfo.pageNumber - 1)}
+                    disabled={pageInfo.pageNumber === 0}
+                >
+                    Prev
+                </button>
+                {renderPageNumbers()}
+                <button
+                    onClick={() => handlePageChange(pageInfo.pageNumber + 1)}
+                    disabled={pageInfo.pageNumber === pageInfo.totalPages - 1}
+                >
+                    Next
+                </button>
+            </div>
+        </>
     );
 };
 

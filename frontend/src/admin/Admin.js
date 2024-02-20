@@ -1,11 +1,11 @@
 import React from "react";
-import "./css/admin.css";
-import "./Admin.css";
+import './Admin.css';
 import { Container } from "react-bootstrap";
 import DailySignUp from "./component/DailySignUp";
 import MonthSignUp from "./component/MonthSignUp";
 import UserList from "./component/UserList";
 import Menu from "./component/Menu";
+import Category from "./component/Category";
 
 const Admin = () => {
   return (
@@ -16,9 +16,19 @@ const Admin = () => {
         </div>
 
         <div className="admin-content">
-          <DailySignUp/>
-          <MonthSignUp/>
-          <UserList/>
+          {/* <div className="admin-chart">
+            <DailySignUp/>
+          </div>
+          <div className="admin-chart">
+            <MonthSignUp width={800} height={200}/>
+          </div>
+          <div className="admin-user-list">
+            <UserList/>
+          </div> */}
+          <div className="admin-category">
+            <Category/>
+          </div>
+
         </div>
       </div>
     </>

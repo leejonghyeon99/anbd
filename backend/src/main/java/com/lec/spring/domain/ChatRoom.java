@@ -3,6 +3,7 @@ package com.lec.spring.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
@@ -11,6 +12,7 @@ import java.util.List;
 @Builder
 @Entity
 public class ChatRoom {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,4 +35,6 @@ public class ChatRoom {
     private List<Chat> chats;
 
 
+    @OneToMany(mappedBy = "chatRoom")
+    private List<Chat> chat;
 }
