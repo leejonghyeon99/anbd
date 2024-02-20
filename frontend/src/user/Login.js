@@ -64,6 +64,11 @@ const Login = () => {
       });
   };
 
+  // 소셜로그인
+  const handleLogin = (providerUrl) => {
+    window.location.href = providerUrl;
+  };
+
   return (
     <>
       <div className="loginMain">
@@ -97,9 +102,15 @@ const Login = () => {
             </div>
             <Button type="submit">Login</Button>
             <div className="oauthLoginBtn">
-            <Link> <img src="/icon/Google.png" className="googleBtn"></img></Link>
-            <Link> <img src="/icon/kakao.png" className="kakaoBtn"></img></Link>
-            <Link> <img src="/icon/naver.png" className="naverBtn"></img></Link>
+            <a href="/oauth2/authorization/google">
+        <img src="/icon/Google.png" alt="Google login" className="googleBtn" />
+      </a>
+      <a href="/oauth2/authorization/kakao">
+        <img src="/icon/kakao.png" alt="Kakao login" className="kakaoBtn" />
+      </a>
+      <a href="/oauth2/authorization/naver">
+        <img src="/icon/naver.png" alt="Naver login" className="naverBtn" />
+      </a>
             </div>
           </Form>
         </div>
