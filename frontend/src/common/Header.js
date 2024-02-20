@@ -81,6 +81,9 @@ const Header = () => {
       return userInfo;
     };
 
+
+
+
     const userData = async () => {
       try {
         // accessToken에서 사용자 정보를 추출
