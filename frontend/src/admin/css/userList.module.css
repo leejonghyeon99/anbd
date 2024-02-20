@@ -1,0 +1,36 @@
+.userList{
+    margin-top: 50px;
+}
+
+.userBox {
+    display: flex;
+    position: relative;
+    align-items: center;
+}
+
+.userIcon {
+    width: 25px;
+    height: 25px;
+}
+
+.nickname {
+    margin-left: 8px;
+}
+
+.userEmail{
+    color: rgb(128, 128, 128,0.8);
+    font-size: 0.8em;
+}
+
+.signupDate{
+    position: absolute;
+    right: 10px;
+    font-size: 0.8em;
+    color: rgb(128, 128, 128,0.8);
+}
+
+
+
+
+
+

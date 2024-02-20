@@ -61,7 +61,8 @@ const MonthSignUp = () => {
     };
 
     const options = {
-        responsive: false,
+        responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: {
                 display: false,
@@ -122,15 +123,13 @@ const MonthSignUp = () => {
     };
 
     return (
-        <div>
-            <Bar 
-                width={1200}
-                height={300}
+        <>
+            <Bar
                 options={options} 
                 data={data}
                 ref={chartRef}            
             />
-        </div>
+        </>
     );
 };
 

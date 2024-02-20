@@ -42,11 +42,11 @@ public class AdminController {
     //유저 목록
     @GetMapping("/user/list")
     public ResponseEntity<Page<UserDTO>> userList(
-            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "0") int page
     ){
-        System.out.println(page +"  /  "+ size);
-        return new ResponseEntity<>(adminService.userList(page,size), HttpStatus.OK);
+        return new ResponseEntity<>(adminService.userList(page), HttpStatus.OK);
     }
+
 
     //신고 목록
     @GetMapping("/report/list")

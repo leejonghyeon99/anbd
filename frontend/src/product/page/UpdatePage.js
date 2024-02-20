@@ -71,7 +71,8 @@ const UpdatePage = () => {
   // 끌어올리기
   const refreshedAtValue = () => {
     const currentDate = new Date();
-    const formattedDate = currentDate.toISOString(); // 현재시간을 문자열로 변환
+    const formattedDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}T${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}:${currentDate.getSeconds().toString().padStart(2, '0')}.${currentDate.getMilliseconds().toString().padStart(3, '0')}`; // 현재시간을 문자열로 변환
+    console.log(formattedDate);
     setProduct({
       ...product,
       refreshedAt: formattedDate

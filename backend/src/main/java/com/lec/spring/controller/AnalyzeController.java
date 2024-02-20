@@ -1,8 +1,10 @@
 package com.lec.spring.controller;
 
+import com.lec.spring.dto.ReportDTO;
 import com.lec.spring.dto.analyze.SignupAnalyze;
 import com.lec.spring.service.admin.AnalyzeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,4 +50,5 @@ public class AnalyzeController {
     public ResponseEntity<Integer> totalUsers(){
         return new ResponseEntity<>(analyzeService.totalUsersCount(),HttpStatus.OK);
     }
+
 }
