@@ -16,7 +16,7 @@ const Admin = () => {
         </div>
 
         <div className="admin-content">
-          {/* <div className="admin-chart">
+          <div className="admin-chart">
             <DailySignUp/>
           </div>
           <div className="admin-chart">
@@ -24,7 +24,7 @@ const Admin = () => {
           </div>
           <div className="admin-user-list">
             <UserList/>
-          </div> */}
+          </div>
           <div className="admin-category">
             <Category/>
           </div>
