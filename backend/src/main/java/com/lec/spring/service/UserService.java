@@ -7,12 +7,14 @@ import com.lec.spring.dto.TokenDTO;
 import com.lec.spring.dto.TokenRequestDTO;
 import com.lec.spring.dto.UserRequestDTO;
 import com.lec.spring.dto.UserResponseDTO;
+import com.lec.spring.dto.email.EmailVerificationResult;
 import com.lec.spring.jwt.SecurityUtil;
 import com.lec.spring.jwt.TokenProvider;
 import com.lec.spring.repository.RefreshTokenRepository;
 import com.lec.spring.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -21,7 +23,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.time.Duration;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -29,12 +35,17 @@ import java.util.Optional;
 @Transactional
 public class UserService {
 
+    private static final String AUTH_CODE_PREFIX = "CODE";
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtBlacklistService jwtBlacklistService;
+    private final MailService mailService;
+    private final RedisService redisService;
+    @Value("${spring.mail.auth-code-expiration-millis}")
+    private long authCodeExpirationMillis;
 
     @Transactional
     public UserResponseDTO signup(UserRequestDTO userRequestDTO){
@@ -139,4 +150,54 @@ public class UserService {
         userRepository.delete(user);
 
     }
+
+
+
+
+
+
+
+    //이메일 인증
+    public void sendCodeToEmail(String toEmail) {
+        this.checkDuplicatedEmail(toEmail);
+        String title = "ANBD 이메일 인증 번호";
+        String code = null;
+        try {
+            code = this.createCode();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        mailService.sendEmail(toEmail, title, code);
+        System.out.println(AUTH_CODE_PREFIX + toEmail);
+        redisService.setValues(AUTH_CODE_PREFIX + toEmail,
+                code, Duration.ofMillis(this.authCodeExpirationMillis));
+    }
+
+    private void checkDuplicatedEmail(String email) {
+        Optional<User> member = userRepository.findByEmail(email);
+        if (member.isPresent()) {
+            System.out.println("이미 존재하는 이메일");
+        }
+    }
+
+    private String createCode() throws NoSuchAlgorithmException {
+        int lenth = 6;
+        Random random = SecureRandom.getInstanceStrong();
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < lenth; i++) {
+            builder.append(random.nextInt(10));
+        }
+        return builder.toString();
+    }
+
+    public EmailVerificationResult verifiedCode(String email, String code) {
+        this.checkDuplicatedEmail(email);
+        String key = AUTH_CODE_PREFIX + email;
+        String redisCode = (String) redisService.getValues(key);
+        boolean authResult = redisService.checkExistsValue(key) && redisCode.equals(code);
+
+        return EmailVerificationResult.of(authResult);
+    }
+
+
 }
