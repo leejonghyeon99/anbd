@@ -36,6 +36,9 @@ public class User extends BaseEntity{
     @Column(nullable = false, length = 30)
     private String nickname;
 
+    @Column(nullable = false, length = 100)
+    private String region;
+
     @Column(length = 20)
     private String provider;
 
@@ -60,8 +63,6 @@ public class User extends BaseEntity{
     @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
     private List<Product> products;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
-    private List<Region> regions;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
     private List<WishList> wishList;

@@ -48,7 +48,7 @@ public class UserService {
         user.setAuth(Auth.ROLE_USER);
         user.setCertification("approved");
         user.setStar(0.0);
-        user.setRegions(user.getRegions());
+        user.setRegion(user.getRegion());
 
         return UserResponseDTO.of(userRepository.save(user));
     }

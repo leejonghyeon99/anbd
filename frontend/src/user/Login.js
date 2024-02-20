@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./CSS/Login.css";
 
 const Login = () => {
@@ -84,6 +84,11 @@ const Login = () => {
               />
             </div>
             <Button type="submit">Login</Button>
+            <div className="oauthLoginBtn">
+            <Link> <img src="/icon/Google.png" className="googleBtn"></img></Link>
+            <Link> <img src="/icon/kakao.png" className="kakaoBtn"></img></Link>
+            <Link> <img src="/icon/naver.png" className="naverBtn"></img></Link>
+            </div>
           </Form>
         </div>
       </div>
