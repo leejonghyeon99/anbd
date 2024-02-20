@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./CSS/SignUp.css";
+import regionsData from "../api/regionsData.json"
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ const SignUp = () => {
       alert("거주지역을 선택해 주세요.");
       return;
     }
-
+    console.log(signupdata);
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/signup`, {
       method: "POST",
       headers: {
@@ -239,7 +240,7 @@ const SignUp = () => {
             </option>
 
             {/* 거주지역 select option을 regionsData에서 map으로 가져온다. */}
-            {regionsData[0].features.map((feature) => (
+            {regionsData.features.map((feature) => (
               <option
                 key={feature.properties.SIG_CD}
                 value={feature.properties.SIG_KOR_NM}
