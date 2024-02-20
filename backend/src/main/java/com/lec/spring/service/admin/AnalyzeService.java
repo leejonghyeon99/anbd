@@ -3,11 +3,16 @@ package com.lec.spring.service.admin;
 import com.lec.spring.domain.ClickRank;
 import com.lec.spring.domain.SearchRank;
 import com.lec.spring.domain.User;
+import com.lec.spring.dto.ReportDTO;
 import com.lec.spring.dto.analyze.SignupAnalyze;
 import com.lec.spring.repository.ClickRankRepository;
+import com.lec.spring.repository.ReportRepository;
 import com.lec.spring.repository.SearchRankRepository;
 import com.lec.spring.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,12 +25,14 @@ public class AnalyzeService {
     private final UserRepository userRepository;
     private final SearchRankRepository searchRankRepository;
     private final ClickRankRepository clickRankRepository;
+    private final ReportRepository reportRepository;
 
     @Autowired
-    public AnalyzeService(UserRepository userRepository, SearchRankRepository searchRankRepository, ClickRankRepository clickRankRepository) {
+    public AnalyzeService(UserRepository userRepository, SearchRankRepository searchRankRepository, ClickRankRepository clickRankRepository, ReportRepository reportRepository) {
         this.userRepository = userRepository;
         this.searchRankRepository = searchRankRepository;
         this.clickRankRepository = clickRankRepository;
+        this.reportRepository = reportRepository;
     }
 
 
@@ -146,5 +153,5 @@ public class AnalyzeService {
         return userRepository.findAll().size();
     }
 
-
+    
 }

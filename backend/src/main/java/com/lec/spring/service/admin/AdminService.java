@@ -52,8 +52,9 @@ public class AdminService {
     }
 
     //유저 목록
-    public Page<UserDTO> userList(int page, int size){
-        PageRequest pageRequest = PageRequest.of(page,size);
+    public Page<UserDTO> userList(int page) {
+        PageRequest pageRequest = PageRequest.of(page, 10);
+
         return userRepository.findAll(pageRequest).map(UserDTO::toDto);
     }
 
@@ -120,7 +121,7 @@ public class AdminService {
     //대분류 카테고리 삭제
     @Transactional
     public String deleteCategory(int id){
-        if(!categoryRepository.findById(id).isPresent()){
+        if(categoryRepository.findById(id).isEmpty()){
             return "삭제할 데이터가 없습니다.";
         }
         categoryRepository.deleteById(id);
@@ -137,6 +138,7 @@ public class AdminService {
         return CategoryDTO.toDto(category);
 
     }
+
 
 
 

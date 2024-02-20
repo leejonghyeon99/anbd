@@ -9,6 +9,5 @@ import java.io.Serializable;
 public class UserBlockId implements Serializable {
 
     private User userId;
-
     private User targetId;
 }
