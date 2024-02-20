@@ -48,7 +48,7 @@ public class UserService {
         user.setAuth(Auth.ROLE_USER);
         user.setCertification("approved");
         user.setStar(0.0);
-        user.setRegions(user.getRegions());
+        user.setRegion(user.getRegion());
 
         return UserResponseDTO.of(userRepository.save(user));
     }
@@ -125,6 +125,7 @@ public class UserService {
     // 현재 유저 정보 가져오기
     public Optional<User> getUser(){
         return SecurityUtil.getCurrentUserId().flatMap(userRepository::findOneWithAuthoritiesByUsername);
+
     }
 
 

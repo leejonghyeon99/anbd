@@ -44,8 +44,8 @@ const App = () => {
             <Route path="/user/:id" element={<Update />} />
             <Route path="/product/list" Component={ListPage}></Route>
             <Route path="/product/write" Component={WritePage}></Route>
-            <Route path="/product/detail:id" Component={DetailPage}></Route>
-            <Route path="/product/update:id" Component={UpdatePage}></Route>
+            <Route path="/product/detail/:id" Component={DetailPage}></Route>
+            <Route path="/product/update/:id" Component={UpdatePage}></Route>
             <Route path="/admin" Component={Admin}></Route>
           </Routes>
         </div>
