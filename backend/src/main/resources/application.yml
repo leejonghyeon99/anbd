@@ -27,9 +27,6 @@ spring:
       name: user
       password: 1234
 
-#  image:
-#    path: ./upload/product
-
   mail:
     host: smtp.gmail.com
     port: 587
@@ -45,7 +42,11 @@ spring:
           writetimeout: 5000
     auth-code-expiration-millis: 1800000  # 30 * 60 * 1000 == 30분
 
-
+app:
+  # 파일 업로드 경로
+  upload:
+    product:
+      path: upload
 # 터미널에 입력 자동 생성 - openssl rand -hex 64
 jwt:
   header: Authorization
