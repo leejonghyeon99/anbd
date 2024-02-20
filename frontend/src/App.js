@@ -47,6 +47,7 @@ const App = () => {
             <Route path="/product/detail:id" Component={DetailPage}></Route>
             <Route path="/product/update:id" Component={UpdatePage}></Route>
             <Route path="/admin" Component={Admin}></Route>
+            <Route path="/chat" Component={ChatPage}></Route>
           </Routes>
         </div>
       </div>

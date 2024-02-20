@@ -43,5 +43,9 @@ select count(*) from user;
 
 select * from user;
 
+drop database db_anbd;
+create database db_anbd;
 # $2a$10$jsEuJ4.Mc/iMGHRa7kB04.9t6PmuGaYKKWfomTgyGcFmfntRtFv0q
 
+show tables;
+select * from chat_room_users;

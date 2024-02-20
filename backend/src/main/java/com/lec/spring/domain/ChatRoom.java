@@ -16,13 +16,21 @@ public class ChatRoom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToMany
-    @ToString.Exclude
-    private List<User> users;
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private User seller;
+
+    @ManyToOne
+    @JoinColumn(name = "buyer_id")
+    private User buyer;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
     @ToString.Exclude
     private Product product;
+
+    @OneToMany(mappedBy = "chatRoom")
+    private List<Chat> chats;
+
 
 }

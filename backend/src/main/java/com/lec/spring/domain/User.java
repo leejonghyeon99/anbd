@@ -69,6 +69,9 @@ public class User extends BaseEntity{
     @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
     private List<Review> reviews;
 
-    @ManyToMany(mappedBy = "users")
-    private List<ChatRoom> chatRooms;
+    @OneToMany(mappedBy = "buyer")
+    private List<ChatRoom> boughtRooms;
+
+    @OneToMany(mappedBy = "seller")
+    private List<ChatRoom> soldRooms;
 }
