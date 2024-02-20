@@ -95,6 +95,7 @@ const Update = () => {
                 localStorage.removeItem('accessToken');
                 alert('회원탈퇴 성공');
                 navigate('/home')
+                window.location.reload();
             } else {
                 alert('회원탈퇴 실패')
             }
