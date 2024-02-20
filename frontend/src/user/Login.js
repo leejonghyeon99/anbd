@@ -23,7 +23,7 @@ const Login = () => {
 
   const submitLogin = (e) => {
     e.preventDefault(); // 폼 기본 제출 동작 방지
-
+  
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/login`, {
       method: "POST",
       headers: {
@@ -33,21 +33,33 @@ const Login = () => {
     })
       .then((response) => {
         if (response.ok) {
-          console.log("로그인성공"); /* 로그인됐는지 확인 좀 하겠습니다 */
+          console.log("로그인 성공");
           return response.json();
+        } else {
+          throw new Error("로그인 실패 : 아이디와 비밀번호를 확인해주세요.");
         }
-        throw new Error("로그인 실패 : 아이디와 비밀번호를 확인해주세요.");
       })
       .then((data) => {
         localStorage.setItem('accessToken', data.accessToken);
+  
+        // 사용자 정보 가져오기 없이 직접 토큰으로 디코딩하여 사용자 정보를 추출
+        const decodedToken = atob(data.accessToken.split('.')[1]);
+        const userInfo = JSON.parse(decodedToken);
+  
+        // 사용자 정보 업데이트
+        setUser(userInfo);
+  
+        // 홈 화면으로 이동
         navigate("/home");
+  
+        // 페이지 새로고침
+        window.location.reload();
       })
       .catch((error) => {
         alert(error.message);
         setUser({
           username: "",
           password: "",
-
         });
       });
   };

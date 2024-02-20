@@ -1,50 +1,125 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const WritePage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [selectedLocation, setSelectedLocation] = useState(""); // 기본 선택, 나중에 현재위치로 불러오기
 
+  useEffect(() => {
+    if (location.state && location.state.location) {
+      const {lat, lng} = location.state.location;
+      const newLocation = `${lat}, ${lng}`;
+      console.log("nl: " + newLocation);
+      setSelectedLocation(newLocation); // 위도, 경도형식으로 문자열 저장 undefined
+      // let a = setSelectedLocation(newLocation); 
+      // console.log("위경도" + a);  // undefined가 뜨는 이유는 set~은 상태값을 설정하며, 아무 것도 반환하지 않기 때문에
+    }
+  }, [location.state]);
+
+  // 상품
   const [product, setProduct] = useState({
     id: "",
     title: "",
-    price: 0,
+    price: "",
     description: "",
-    status: "-- 판매 상태를 선택해주세요 --",
-    middleCategory: "-- 중분류 카테고리를 선택해주세요 --",
+    status: "",
+    middleCategory: "",
     createdAt: "",
     category: "",
-  });
-  const [productImg, setProductImg] = useState({
-    originName:"",
-    photoName:""
+    location: "",
   });
 
+  // 위치
+  useEffect(() => {
+    setProduct((prevProduct) => ({
+      ...prevProduct, 
+      location: selectedLocation  // 선택된 위치 업데이트
+    }));
+    console.log('::' + selectedLocation);
+  }, [selectedLocation]);
+
+  // 이미지
+  const [files, setFiles] = useState([]);
+
+  // 이미지 첨부
   const uploadFile = (e) => {
     let fileArr = e.target.files;
-    setProductImg(Array.from(fileArr));
-    console.log(fileArr);
-    let file
+    setFiles(Array.from(fileArr)); // 업로드한 files를 배열로
+    console.log("fileArr" + fileArr);
+    console.log("fileArr[0]" + fileArr[0].name);
+
+    // let fileUrl = [];
+    // let fileKeys = [];
+
+    // for (let i = 0; i < fileArr.length; i++) {
+    //   let fileRead = new FileReader();
+    //   fileRead.onload = function(){
+    //     let url = fileRead.result;
+    //     let key = i.toString();
+
+    //     fileUrl.push(url);
+    //     fileKeys.push(key);
+
+    //     console.log("File Url i" , i, ":", url);
+    //     console.log("File Key i" , i, ":", key);
+    //   }
+    //   fileRead.readAsDataURL(fileArr[i]);
+    // }
+    // let fileUrl = [];
+    // let fileKeys = [];
+    // for (let i = 0; i < fileArr.length; i++) {
+    //   let fileRead = new FileReader();
+    //   fileRead.onload = function(){
+    //     fileUrl[i] = fileRead.result;
+    //     console.log("fileUrl[i] : " + fileUrl[i]);
+    //     console.log("fileKeys[i] : " + fileKeys[i]);
+    //   }
+    //   // 파일 key값을 가져오기 위해 파일명 사용
+    //   let fileName = fileArr[i].name;
+    //   fileKeys.push(fileName);
+    //   console.log("파일key : " + fileKeys.push(fileName));
+    //   // 파일 읽기
+    //   fileRead.readAsDataURL(fileArr[i]);
+    // }
+
+    let fileData = [];  // 파일의 URL과 키를 담을 배열
+    const uploadAndSave = (file, index) => {
+      let fileRead = new FileReader();
+      fileRead.onload = function(){
+        let url = fileRead.result;
+        let key = index.toString();
+        fileData.push({url, key});
+        console.log("file Url", index, ":", url);
+        console.log("file Key", index, ":", key);
+      }
+      fileRead.readAsDataURL(file);
+    }
+    for (let i = 0; i < fileArr.length; i++) {
+      uploadAndSave(fileArr[i], i);
+    }
+    console.log("fileData", fileData);
   }
 
   const WriteValue = (e) => {
     setProduct({
       ...product,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
     console.log(e.target.value);
   };
 
   const WriteOk = (e) => {
-    console.log(product);
+    console.log(product, files);
     e.preventDefault();
 
-    fetch("http://localhost:8080/api/product/write", {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
       },
-      body: JSON.stringify(product),
+      body: JSON.stringify(product),  // JSON 형식으로 데이터 전송
     })
       .then((response) => {
         console.log(`응답하라`, response);
@@ -66,24 +141,29 @@ const WritePage = () => {
         }
       });
   };
+
   const ListOk = () => {
     navigate("/product/list");
   };
-
+  const MapOk = () => {
+    navigate("/product/map");
+  }
   return (
     <div>
       <h2>글쓰기</h2>
       <span>이미지 첨부</span>
       <div className="mb-3">
-        <input type="file" accept="image/jpg,impage/png, image/jpeg, image/gif" name='productImage' onChange={WriteValue} multiple/>
+        <input type="file" accept="image/jpg,impage/png, image/jpeg, image/gif" name='files' id='files' onChange={uploadFile} multiple/>
       </div>
       <span>위치</span>
+      {/* {selectedLocation !== "" && (
       <div className="mb-3">
-        <Button variant="outline-dark ">위치 선택</Button>
-        {/* <select className="form-select" onChange={WriteValue}>
-          <option value></option>
-        </select> */}
-      </div>
+        <Button variant="outline-dark" onClick={MapOk} >위치 선택</Button>
+        <input type="button" name="location" id="location" value={product.location} onChange={WriteValue} onClick={MapOk}/>위치 선택
+        <span>선택된 위치 location: {selectedLocation}</span>
+        </div>
+      )} */}
+      <input type="button" name="location" id="location" value={product.location} onClick={MapOk}></input><br/>
       <span>제목</span>
       <div className="mb-3">
         <input
@@ -133,6 +213,10 @@ const WritePage = () => {
             <option value="여성잡화">여성잡화</option>
             <option value="아동잡화">아동잡화</option>
             <option value="반려동물용품">반려동물용품</option></>)}
+            {product.category === '5' && (
+            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option>
+            <option value="가구">가구</option>
+            <option value="인테리어">인테리어</option></>)}
             {product.category === '6' && (
             <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option>
             <option value="디지털기기">디지털기기</option>
@@ -148,7 +232,6 @@ const WritePage = () => {
           </select>
         </div>
       </div>
-
       <span>가격</span>
       <div className="mb-3">
         <input
@@ -184,10 +267,10 @@ const WritePage = () => {
           <option value="SOLD">판매완료</option>
         </select>
       </div>
-      <Button variant="outline-dark mt-2 me-2" onClick={WriteOk}>
+      <Button variant="outline-dark me-2" onClick={WriteOk}>
         완료
       </Button>
-      <Button variant="outline-dark mt-2" onClick={ListOk}>
+      <Button variant="outline-dark" onClick={ListOk}>
         취소
       </Button>
     </div>

@@ -20,7 +20,7 @@ insert into product(category_id, price, status, user_id, created_at, title, desc
 VALUES (2, 25500, 'SALE', 5, now(), '테스트 상품5', '테스트 상품입니다3.', '0000, 0000', '냉장고');
 
 
-select * from information_schema.KEY_COLUMN_USAGE where TABLE_NAME = 'user_block';
+select * from information_schema.KEY_COLUMN_USAGE where TABLE_NAME = 'product';
 UPDATE user
 SET created_at = DATE_SUB(created_at, INTERVAL 2 DAY )
 WHERE id = 17;
@@ -28,6 +28,10 @@ WHERE id = 17;
 select * from user;
 select * from category;
 select * from product;
+
+select * from product_image;
+
+
 desc product;
 select * from region;
 show tables;
@@ -36,10 +40,15 @@ desc user_block;
 
 insert into report(user_id, reason) VALUES (6,'그냥1');
 
+# 카테고리 테스트
+insert into category(id, name) values (1, '의류'), (2, '식품'), (3, '생활용품'),(4, '잡화'), (5, '가구/인테리어'), (6, '가전'), (7, '도서'), (8, '기타');
+
+insert into product(id, title, category_id, middle_category, price, description, status) values(1, '임시저장', 1, '남성의류', 52000, '임시저장테스트', 'SALE');
 
 select count(*) from user;
 
 select * from user;
+desc user;
 
 # $2a$10$jsEuJ4.Mc/iMGHRa7kB04.9t6PmuGaYKKWfomTgyGcFmfntRtFv0q
 

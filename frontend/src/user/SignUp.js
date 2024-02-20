@@ -47,6 +47,18 @@ const SignUp = () => {
   const submitJoin = (e) => {
     e.preventDefault();
 
+    const { repassword, ...signupdata } = user;
+
+    if (user.password !== user.repassword) {
+      alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+      return;
+    }
+
+    if (!user.region) {
+      alert("거주지역을 선택해 주세요.");
+      return;
+    }
+
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/signup`, {
       method: "POST",
       headers: {
@@ -69,18 +81,6 @@ const SignUp = () => {
       .catch((Error) => {
         alert(Error.message);
       });
-
-    if (!user.region) {
-      alert("거주지역을 선택해 주세요.");
-      return;
-    }
-
-    const { repassword, ...signupdata } = user;
-
-    if (user.password !== user.repassword) {
-      alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
-      return;
-    }
   };
 
   const validateEmail = () => {
