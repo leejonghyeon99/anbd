@@ -1,5 +1,6 @@
 import React from "react";
-import './css/admin.css'
+import "./css/admin.css";
+import "./Admin.css";
 import { Container } from "react-bootstrap";
 import DailySignUp from "./component/DailySignUp";
 import MonthSignUp from "./component/MonthSignUp";

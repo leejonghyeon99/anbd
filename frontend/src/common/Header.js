@@ -38,12 +38,64 @@ const NavMenu = styled.ul`
 const Navbar = styled.div`
   /* 다른 스타일들... */
   display: ${(props) => (props.isVisible ? "block" : "none")};
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: calc(100vh - 24px);
+  background-color: #ffffff;
+  transition: right 0.3s ease-in-out;
+
+  @media screen and (max-width: 768px) {
+    width: 50%;
+  }
 `;
 
-const Header = () => {  
-  const [user, setUser] = useState(null); // 로그인 유무 상태(useEffect로 상태 확인해야함)
-
+const Header = () => {
   const navigate = useNavigate();
+
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
+  const [user, setUser] = useState({
+    username: "",
+    password: "",
+    repassword: "",
+    name: "",
+    nickname: "",
+    phone_number: "",
+    email: "",
+    region: "",
+    auth: "", // 추가: 사용자 권한 정보
+  });
+  // 로그인 유무 상태(useEffect로 상태 확인해야함)
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken'); 
+  
+    // 함수: JWT 디코딩하여 사용자 정보 추출
+    const getUserInfoFromToken = (token) => {
+      // JWT는 Base64로 인코딩된 세 부분으로 나뉨: Header, Payload, Signature
+      // 여기서는 Payload의 두 번째 부분을 디코딩하여 JSON 객체로 파싱
+      const decodedToken = atob(token.split('.')[1]);
+      const userInfo = JSON.parse(decodedToken);
+      // 디코딩된 Payload에서 사용자 정보를 반환
+      return userInfo;
+    };
+  
+    const userData = async () => {
+      try {
+        // accessToken에서 사용자 정보를 추출
+        const userInfo = getUserInfoFromToken(token);
+        // 사용자 정보를 상태값에 설정
+        setUser(userInfo);
+        console.log(userInfo);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+    // userData 함수 실행 (컴포넌트가 마운트될 때 한 번만 실행하도록 빈 배열 전달)
+    userData();
+  }, []);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   // 모든 대분류의 중분류가 따로따로 토글되도록 아래 상태함수들 줌
@@ -87,6 +139,7 @@ const Header = () => {
   // mypage show/hide
   const toggleMypage = () => {
     setIsMypageVisible(!isMypageVisible);
+    setIsMenuOpen(false); // Navbar가 열려있는 경우 닫도록 설정
   };
 
   return (
@@ -96,40 +149,74 @@ const Header = () => {
           <div className="headerFix">
             <div className="hiddenMenu">
               {/* 아이콘 클릭 시 메뉴 토글 */}
-              <img src="icon/menu.png" id="menuIcon" onClick={toggleMenu} />
+              <img src="/icon/menu.png" id="menuIcon" onClick={toggleMenu} />
             </div>
-            <Link to='/home' className="logo">AH!NaBaDa</Link>
+            <Link to="/home" className="logo">
+              AH!NaBaDa
+            </Link>
 
             {/* 로그인한 유저와 비회원의 mypage아이콘 다르게 나오도록 */}
-            {user ?
-             <div className="mypageToggle" id="menu-bars">
-              <img src="icon/usericon.png" id="userIcon" onClick={toggleMypage} />
-            </div>
-            :
             <div className="mypageToggle" id="menu-bars">
-              <Link to='user/login'>LOGIN</Link> <Link to='user/signup'>JOIN</Link>
-            </div>}
-
+              {/* <img
+                src="/icon/usericon.png"
+                id="userIcon"
+                onClick={toggleMypage}
+              /> */}
+              {user.auth === "ROLE_USER" && (
+                <img
+                  src="/icon/usericon.png"
+                  id="userIcon"
+                  onClick={toggleMypage}
+                />
+              )}
+              {user.auth === "ROLE_ADMIN" && (
+                <img
+                  src="/icon/admin.png"
+                  id="adminIcon"
+                  onClick={toggleMypage}
+                />
+              )}
+              {user.auth !== "ROLE_USER" && user.auth !== "ROLE_ADMIN" && (
+                <div>
+                  <Link to="user/login">LOGIN</Link>{" "}
+                  <Link to="user/signup">JOIN</Link>
+                </div>
+              )}
+            </div>
           </div>
 
-          <Navbar isVisible={isMypageVisible}> {/* user아이콘 토글하면 나오는 메뉴 */}
+          <Navbar isVisible={isMypageVisible}>
+            {" "}
+            {/* Navbar의 isVisible 속성에 따라 보이거나 숨김 */}
             <nav className="nav-menu">
+              <li className="navbar-toggle">
+                <img
+                  src="/icon/Xmark.png"
+                  className="closeMypage"
+                  onClick={toggleMypage}
+                />
+              </li>
+              <div className="profile">
+                <img src="/icon/userIcon.png" className="profileImg"></img>
+              </div>
+              <li>
+                <Link to={"/"}>
+                  <img src="/icon/chatting.png" className="chatIcon_mp"></img>
+                </Link>
+              </li>
               <ul className="nav-menu-items">
-                <li className="navbar-toggle">
-                  <Link to="#" id="menu-bars" onClick={toggleMypage}>
-                    <IoClose />
-                  </Link>
-                </li>
                 {MypagebarList.map((item, index) => (
                   <li key={index} className={item.cName} id="menuTitle">
-                    <Link to={item.path}>
-                      {item.icon}
-                      <span>{item.title}</span>
+                    <Link to={item.path} className="mypageList">
+                      {item.icon} <span>{item.title}</span>
                     </Link>
                   </li>
                 ))}
               </ul>
             </nav>
+            <Link to={"/"}>
+              <img src="/icon/logout.png" className="logout"></img>
+            </Link>
           </Navbar>
         </div>
 
@@ -138,9 +225,9 @@ const Header = () => {
             의류
             {isBclothingOpen && (
               <ul className="submenu">
-                <li onClick={() => navigate()}>여성의류</li>
-                <li onClick={() => navigate()}>남성의류</li>
-                <li onClick={() => navigate()}>아동의류</li>
+                <li onClick={() => navigate("/product/list")}>여성의류</li>
+                <li onClick={() => navigate("/product/list")}>남성의류</li>
+                <li onClick={() => navigate("/product/list")}>아동의류</li>
               </ul>
             )}
           </ul>
@@ -148,9 +235,9 @@ const Header = () => {
             식품
             {isBfoodOpen && (
               <ul className="submenu">
-                <li onClick={() => navigate()}>1</li>
-                <li onClick={() => navigate()}>2</li>
-                <li onClick={() => navigate()}>3</li>
+                <li onClick={() => navigate("/product/list")}>1</li>
+                <li onClick={() => navigate("/product/list")}>2</li>
+                <li onClick={() => navigate("/product/list")}>3</li>
               </ul>
             )}
           </ul>
@@ -158,9 +245,9 @@ const Header = () => {
             생활용품
             {isBlivingOpen && (
               <ul className="submenu">
-                <li onClick={() => navigate()}>1</li>
-                <li onClick={() => navigate()}>2</li>
-                <li onClick={() => navigate()}>3</li>
+                <li onClick={() => navigate("/product/list")}>1</li>
+                <li onClick={() => navigate("/product/list")}>2</li>
+                <li onClick={() => navigate("/product/list")}>3</li>
               </ul>
             )}
           </ul>

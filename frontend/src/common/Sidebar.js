@@ -66,9 +66,9 @@ function Sidebar() {
             의류
             {isClothingOpen && (
               <ul className="submenu">
-                <li onClick={() => navigate()}>여성의류</li>
-                <li onClick={() => navigate()}>남성의류</li>
-                <li onClick={() => navigate()}>아동의류</li>
+                <li onClick={() => navigate("/product/list")}>여성의류</li>
+                <li onClick={() => navigate("/product/list")}>남성의류</li>
+                <li onClick={() => navigate("/product/list")}>아동의류</li>
               </ul>
             )}
           </ul>
@@ -76,9 +76,9 @@ function Sidebar() {
             식품
             {isFoodOpen && (
               <ul className="submenu">
-                <li onClick={() => navigate()}>1</li>
-                <li onClick={() => navigate()}>2</li>
-                <li onClick={() => navigate()}>3</li>
+                <li onClick={() => navigate("/product/list")}>1</li>
+                <li onClick={() => navigate("/product/list")}>2</li>
+                <li onClick={() => navigate("/product/list")}>3</li>
               </ul>
             )}
           </ul>
@@ -86,9 +86,9 @@ function Sidebar() {
             생활용품
             {isLivingOpen && (
               <ul className="submenu">
-                <li onClick={() => navigate()}>1</li>
-                <li onClick={() => navigate()}>2</li>
-                <li onClick={() => navigate()}>3</li>
+                <li onClick={() => navigate("/product/list")}>1</li>
+                <li onClick={() => navigate("/product/list")}>2</li>
+                <li onClick={() => navigate("/product/list")}>3</li>
               </ul>
             )}
           </ul>

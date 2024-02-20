@@ -2,12 +2,16 @@ package com.lec.spring.controller.product;
 
 import com.lec.spring.domain.Product;
 import com.lec.spring.domain.Status;
+import com.lec.spring.service.product.ProductImageService;
 import com.lec.spring.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin
@@ -17,20 +21,24 @@ import java.util.Map;
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductImageService productImageService;
 
     // 등록
     @PostMapping("/write")
     public ResponseEntity<?> write(@RequestBody Map<String,String> product){
 //        Product product1 = productService.write(product);
+        System.out.println("ProductController.write");
+        System.out.println("product = " + product.toString());
+//        System.out.println("::"+product.toString());
         Product pd = new Product();
         pd.setTitle(product.get("title"));
         pd.setMiddleCategory(product.get("middleCategory"));
         pd.setPrice(Integer.parseInt(product.get("price")));
         pd.setDescription(product.get("description"));
         pd.setStatus(Status.valueOf(product.get("status")));
-
+        pd.setLocation(product.get("location"));
+//        System.out.println(files.toString());
         System.out.println(pd.toString());
-
 
         return new ResponseEntity<>(productService.write(pd,product.get("category")), HttpStatus.CREATED);  //201
     }
@@ -56,5 +64,10 @@ public class ProductController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
         return new ResponseEntity<>(productService.delete(id), HttpStatus.OK);
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder){
+        System.out.println("initBinder() 호출");
     }
 }

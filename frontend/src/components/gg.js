@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Product = () => {
+const gg = () => {
     return (
         <div>
             
@@ -8,4 +8,4 @@ const Product = () => {
     );
 };
 
-export default Product;
+export default gg;
