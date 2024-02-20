@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +29,7 @@ public class UserDTO {
     private String email;
     private Double star;
     private Auth auth;
+    private String createdAt;
     private String certification;
     private String thumbnail;
     private List<Region> regions;
@@ -44,6 +47,7 @@ public class UserDTO {
                 .email(user.getEmail())
                 .star(user.getStar())
                 .auth(user.getAuth())
+                .createdAt(user.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH시 mm분")))
                 .certification(user.getCertification())
                 .thumbnail(user.getThumbnail())
                 .build();

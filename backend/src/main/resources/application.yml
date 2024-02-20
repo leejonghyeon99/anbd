@@ -63,6 +63,12 @@ jwt:
   header: Authorization
   secret: c2d02f43172268a362005c0556d5b1dae3a6aa251e0efc8180ffb7e04cf6ad10a369751ff8b7e2f78d5d048eda490cd3d104ff5330fc5c84c13856da1246d7a2
 
+logging:
+  level:
+    root: INFO
+    org.springframework.web.socket: DEBUG
+
+
 
 
 

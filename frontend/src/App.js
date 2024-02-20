@@ -43,6 +43,7 @@ const App = () => {
 
 
             <Route path="/product/map" Component={GoogleMaps}></Route>
+            <Route path="/chat" Component={ChatPage}></Route>
           </Routes>
         </div>
       </div>
