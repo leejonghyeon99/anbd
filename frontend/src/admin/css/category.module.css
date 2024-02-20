@@ -1,7 +1,8 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR&display=swap');
 
 .container{
-    background-color: #f8f8f8c4;
+    background-color: #fdfdfdc4;
    position: relative;
    width: 100%;
    height: 100%;
@@ -82,17 +83,23 @@
     padding: 5px 0 0 0;
 }
 
-.content div{
-    border: 1px solid black;
-    flex: 1;
-}
 
 .categoryList{
-    padding-left: 10px;
+    border: 1px solid black;
+    flex: 50%;
+    font-family: "IBM Plex Sans KR", sans-serif;
+    font-weight: bold;
+    font-style: normal;
+    font-size: 1.3em;
+    color: black;
 }
 
 .categoryList div{
     height: 50px;
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+
 }
 .categoryList div:hover{
     cursor: pointer;
@@ -100,12 +107,66 @@
 
 .active{
     background-color: aquamarine;
+    color: rgb(43, 143, 236);
 }
 
 
 
 .categoryWrite{
-
+    border: 1px solid black;
+    flex: 50%;
+    padding: 0 40px 0 40px;
 }
+
+.categoryNameBox{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.categoryNameBox > label{
+    position: absolute;
+    bottom: 60px;
+    font-size: small;
+    color: lightgray;
+}
+
+.categoryName{
+    height: 100px;
+    border-bottom: 2px solid lightgray;
+
+    font-family: "IBM Plex Sans KR", sans-serif;
+    font-weight: bold;
+    font-style: normal;
+    font-size: 1.3em;
+    color: black;
+
+    display: flex;
+    align-items: flex-end;
+}
+
+.categoryName > input {
+    margin-bottom: 4px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    width: 100%;
+}
+
+.categoryName > input:focus{
+    box-shadow: none;
+}
+
+
+
+.txt{
+    margin-top: 20px;
+    height: 400px;
+    outline: 1px solid black;
+}
+
 
 

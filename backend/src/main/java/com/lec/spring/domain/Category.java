@@ -16,10 +16,9 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 20, unique = true)
     private String name;
 
-//    @OneToMany
-//    @JoinColumn(name = "category_id")
-//    private List<Product> products;
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
 }
