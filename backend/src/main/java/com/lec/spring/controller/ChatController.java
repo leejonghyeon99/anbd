@@ -4,6 +4,7 @@ import com.lec.spring.domain.Chat;
 import com.lec.spring.domain.ChatRoom;
 import com.lec.spring.domain.User;
 import com.lec.spring.dto.ChatDTO;
+import com.lec.spring.dto.ChatRoomDTO;
 import com.lec.spring.repository.ChatRoomRepository;
 import com.lec.spring.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
@@ -36,17 +38,33 @@ public class ChatController {
         this.simpMessagingTemplate.convertAndSend("/queue/addChatToClient/"+ id, chatDTO);
     }
 
+//    @MessageMapping("/join")
+//    public void joinUser(@Payload Integer userId) {
+//        userList.add(userId);
+////        userList.forEach(user -> System.out.println(user));
+//        userList.forEach(System.out::println);
+//
+//        // 채팅방 생성 및 사용자 추가
+//        ChatRoom chatRoom = new ChatRoom();
+//        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found")); // userId로 사용자 검색
+//
+//        chatRoom.setUsers(Collections.singletonList(user)); // 단일 사용자로 설정
+//        chatRoomRepository.saveAndFlush(chatRoom); // 채팅방 저장
+//    }
+
     @MessageMapping("/join")
-    public void joinUser(@Payload Integer userId) {
-        userList.add(userId);
-        userList.forEach(user -> System.out.println(user));
+    public void joinUser(@Payload Integer id) {
+        userList.add(id);
+        userList.forEach(System.out::println);
 
         // 채팅방 생성 및 사용자 추가
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         ChatRoom chatRoom = new ChatRoom();
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found")); // userId로 사용자 검색
+//        chatRoom.setUsers(Collections.singletonList(user));
+        chatRoomRepository.saveAndFlush(chatRoom);
 
-        chatRoom.setUsers(Collections.singletonList(user)); // 단일 사용자로 설정
-        chatRoomRepository.saveAndFlush(chatRoom); // 채팅방 저장
+        // 채팅방 생성 후 채팅방 ID를 클라이언트로 보냄
+        ChatRoomDTO chatRoomDTO = ChatRoomDTO.toDto(chatRoom);
+        this.simpMessagingTemplate.convertAndSend("/queue/sendChatRoomIdToClient/" + id, chatRoomDTO.getId());
     }
-
 }

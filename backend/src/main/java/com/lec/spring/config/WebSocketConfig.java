@@ -10,8 +10,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/chat")     // 서버의 엔드포인트 "/chat" 로 지정
-                .setAllowedOrigins("http://localhost:8080")         // 모든 origin 허용
+        registry.addEndpoint("/ws")     // 서버의 엔드포인트 "/chat" 로 지정
+//                .setAllowedOrigins("*")         // 모든 origin 허용
+                .setAllowedOriginPatterns("*")         // 모든 origin 허용
                 .withSockJS();
     }
 
