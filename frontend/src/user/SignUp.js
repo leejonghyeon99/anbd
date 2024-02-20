@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./CSS/SignUp.css";
-import regionsData from "../api/regionsData.json"
+import regionsData from "../api/regionsData.json";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -18,10 +18,8 @@ const SignUp = () => {
     region: "",
   });
 
-
   const [usernameErr, setUsernameErr] = useState(false);
   const [passwordErr, setPasswordErr] = useState(false);
-  const [rerswdErr, setRepswdErr] = useState(false);
   const [nameErr, setNameErr] = useState(false);
   const [nicknameErr, setNicknameErr] = useState(false);
   const [phoneErr, setPhoneErr] = useState(false);
@@ -33,8 +31,9 @@ const SignUp = () => {
   // 인증번호 상태 변수
   const [verificationCode, setVerificationCode] = useState("");
 
+  // user의 상태값이 변경될때마다 호출! cosole 확인
   useEffect(() => {
-    console.log(user);
+    console.log("User 정보가 변경되었습니다:", user);
   }, [user]);
 
   // onChange에 적용될 formChange
@@ -45,10 +44,36 @@ const SignUp = () => {
     });
   };
 
+  // join버튼을 누르면 submit되는 동작
+  const validateForm = () => {
+    const isUsernameErr = user.username === '';
+    const isPasswordErr = user.password === '';
+    const isNameErr = user.name === '';
+    const isNicknameErr = user.nickname === '';
+    const isPhoneErr = user.phone === '';
+    const isEmailErr = user.email === '';
+    const isRegError = user.reg === '';
+
+    setUsernameErr(isUsernameErr);
+    setPasswordErr(isPasswordErr);
+    setNameErr(isNameErr);
+    setNicknameErr(isNicknameErr);
+    setPhoneErr(isPhoneErr);
+    setEmailErr(isEmailErr);
+    setRegError(isRegError);
+
+    return !(isUsernameErr || isPasswordErr || isNameErr || isNicknameErr || isPhoneErr || isEmailErr || isRegError);
+  };
+
   const submitJoin = (e) => {
     e.preventDefault();
-
     const { repassword, ...signupdata } = user;
+
+    if(validateForm()) {
+      setUser({
+        ...user,
+      })
+    }
 
     if (user.password !== user.repassword) {
       alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
@@ -72,7 +97,8 @@ const SignUp = () => {
           console.log("회원가입");
           return response.json();
         } else {
-          throw new Error("회원가입 실패");
+          // throw new Error("회원가입 실패");
+          return null;
         }
       })
       .then((data) => {
@@ -83,6 +109,7 @@ const SignUp = () => {
         alert(Error.message);
       });
   };
+
 
   const validateEmail = () => {
     // 이메일이 비어 있는지 확인
@@ -119,6 +146,12 @@ const SignUp = () => {
             onChange={formChange}
           />
         </div>
+        {usernameErr && (
+          <div>
+            <small className="text-danger">ID은 필수입니다</small>
+          </div>
+        )}
+
         <div>
           {/* 비밀번호 입력란 */}
           <label htmlFor="password">
@@ -132,6 +165,11 @@ const SignUp = () => {
             onChange={formChange}
           />
         </div>
+        {passwordErr && (
+          <div>
+            <small className="text-danger">비밀번호는 필수입니다</small>
+          </div>
+        )}
         <div>
           {/* 비밀번호 확인 입력란 */}
           <label htmlFor="repassword">
@@ -157,6 +195,11 @@ const SignUp = () => {
             onChange={formChange}
           />
         </div>
+        {nameErr && (
+          <div>
+            <small className="text-danger">이름은 필수입니다</small>
+          </div>
+        )}
         <div>
           {/* 닉네임 입력란 */}
           <label htmlFor="nickname">
@@ -169,6 +212,11 @@ const SignUp = () => {
             onChange={formChange}
           />
         </div>
+        {nicknameErr && (
+          <div>
+            <small className="text-danger">닉네임은 필수입니다</small>
+          </div>
+        )}
         <div>
           {/* 연락처 입력란 */}
           <label htmlFor="phone_number">
@@ -181,6 +229,11 @@ const SignUp = () => {
             onChange={formChange}
           />
         </div>
+        {phoneErr && (
+          <div>
+            <small className="text-danger">연락처는 필수입니다</small>
+          </div>
+        )}
         <div>
           {/* 이메일 입력란 */}
           <label htmlFor="email">
@@ -201,6 +254,11 @@ const SignUp = () => {
             이메일 인증
           </Button>
         </div>
+        {emailErr && (
+          <div>
+            <small className="text-danger">메일은 필수입니다</small>
+          </div>
+        )}
         {/* 인증번호 입력란 */}
         {isVerificationVisible && (
           <div>
