@@ -89,6 +89,12 @@ public class SecurityConfig {
 
         http.apply(new JwtSecurityConfig(tokenProvider, customOAuth2UserService));
 
+        http.oauth2Login(oauth2Login -> oauth2Login
+                        .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
+                                .userService(customOAuth2UserService)
+                        )
+                );
+
         return http.build();
 
     }

@@ -1,7 +1,9 @@
 package com.lec.spring.repository;
 
 import com.lec.spring.domain.User;
+import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
@@ -18,7 +20,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findOneWithAuthoritiesByUsername(String username);
 
-    Optional<User> findByProviderAndProviderId(String provider, String provider_id);
+    @Query("SELECT u FROM User u WHERE u.provider = :provider AND u.provider_id = :provider_id")
+    Optional<User> findByProviderAndProvider_id(@Param("provider") String provider, @Param("provider_id") String provider_id);
 
 
 

@@ -2,16 +2,20 @@ package com.lec.spring.OAuth2;
 
 import com.lec.spring.domain.Auth;
 import com.nimbusds.oauth2.sdk.Role;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 
 import java.util.Collection;
 import java.util.Map;
 
+
 public class CustomOAuth2User extends DefaultOAuth2User {
 
     private String email;
-    private Role role;
+    private Auth auth;
 
     /**
      * Constructs a {@code DefaultOAuth2User} using the provided parameters.
@@ -24,6 +28,7 @@ public class CustomOAuth2User extends DefaultOAuth2User {
     public CustomOAuth2User(Collection<? extends GrantedAuthority> authorities, Map<String, Object> attributes, String provider_id) {
         super(authorities, attributes, provider_id);
         this.email = email;
-        this.role = role;
+        this.auth = auth;
     }
+
 }

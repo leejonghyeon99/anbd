@@ -16,38 +16,38 @@ import java.util.UUID;
 @Builder
 public class OAuthAttributes {
 
-    private String provider_id;
+    private String nameAttributeKey; // 사용자 정보에서 고유 사용자 ID 값을 참조하는 데 사용되는 키(필드)의 이름입니다.
     private OAuth2UserInfo oAuth2UserInfo;
 
     public static OAuthAttributes of(String provider,
-                                     String provider_id, Map<String, Object> attributes) {
+                                     String nameAttributeKey, Map<String, Object> attributes) {
 
         if (provider.equals("Naver")) {
-            return ofNaver(provider_id, attributes);
+            return ofNaver(nameAttributeKey, attributes);
         }
         if (provider.equals("Kakao")) {
-            return ofKakao(provider_id, attributes);
+            return ofKakao(nameAttributeKey, attributes);
         }
-        return ofGoogle(provider_id, attributes);
+        return ofGoogle(nameAttributeKey, attributes);
     }
 
-    private static OAuthAttributes ofNaver(String provider_id, Map<String, Object> attributes) {
+    private static OAuthAttributes ofNaver(String nameAttributeKey, Map<String, Object> attributes) {
         return OAuthAttributes.builder()
-                .provider_id(provider_id)
+                .nameAttributeKey(nameAttributeKey)
                 .oAuth2UserInfo(new NaverOAuth2UserInfo(attributes))
                 .build();
     }
 
-    private static OAuthAttributes ofKakao(String provider_id, Map<String, Object> attributes) {
+    private static OAuthAttributes ofKakao(String nameAttributeKey, Map<String, Object> attributes) {
         return OAuthAttributes.builder()
-                .provider_id(provider_id)
+                .nameAttributeKey(nameAttributeKey)
                 .oAuth2UserInfo(new KakaoOAuth2UserInfo(attributes))
                 .build();
     }
 
-    private static OAuthAttributes ofGoogle(String provider_id, Map<String, Object> attributes) {
+    private static OAuthAttributes ofGoogle(String nameAttributeKey, Map<String, Object> attributes) {
         return OAuthAttributes.builder()
-                .provider_id(provider_id)
+                .nameAttributeKey(nameAttributeKey)
                 .oAuth2UserInfo(new GoogleOAuth2UserInfo(attributes))
                 .build();
     }

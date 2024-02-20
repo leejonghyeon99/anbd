@@ -18,16 +18,6 @@ public class JwtSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurity
 
     @Override
     public void configure(HttpSecurity httpSecurity){
-        try {
-            httpSecurity
-                    .oauth2Login(oauth2Login -> oauth2Login
-                    .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
-                    .userService(customOAuth2UserService)
-                    )
-                    );
-        } catch (Exception e) {
-            throw new RuntimeException("OAUTH2 로그인 오류",e);
-        }
 
         JwtFilter customFilter = new JwtFilter(tokenProvider);
         httpSecurity.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class);

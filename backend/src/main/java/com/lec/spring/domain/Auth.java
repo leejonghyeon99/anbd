@@ -10,13 +10,13 @@ public enum Auth {
     ROLE_BLOCK("ROLE_BLOCK");
 
     private final String auth;
-//    private final String key;
 
     Auth(String auth) {
         this.auth = auth;
     }
 
-//    public String getKey() {
-//        return key;
-//    }
+
+    public String getKey() {
+        return null;
+    }
 }

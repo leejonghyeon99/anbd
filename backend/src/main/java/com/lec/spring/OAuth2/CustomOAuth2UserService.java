@@ -23,7 +23,7 @@ import static org.springframework.messaging.simp.SimpMessageHeaderAccessor.getUs
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CustomOAuth2UserService implements OAuth2UserService {
+public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
     private static final String NAVER = "Naver";
@@ -46,13 +46,15 @@ public class CustomOAuth2UserService implements OAuth2UserService {
 
         // DefaultOAuth2User를 구현한 CustomOAuth2User 객체를 생성해서 반환
         return new CustomOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority(createdUser.getAuth().getKey())),
+                Collections.singleton(new SimpleGrantedAuthority(createdUser.getAuth().name())),
                 attributes,
-                createdUser.getProvider_id()
+                extractAttributes.getNameAttributeKey()
         );
     }
+
+
     private User getUser(OAuthAttributes attributes, String provider) {
-        User findUser = userRepository.findByProviderAndProviderId(provider,
+        User findUser = userRepository.findByProviderAndProvider_id(provider,
                 attributes.getOAuth2UserInfo().getId()).orElse(null);
 
         if(findUser == null) {
