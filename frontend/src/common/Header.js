@@ -81,7 +81,8 @@ const Header = () => {
       return userInfo;
     };
 
-    const token = localStorage.getItem('accessToken');
+
+
 
     const userData = async () => {
       try {
