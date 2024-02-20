@@ -1,3 +1,4 @@
+
 .admin-wrapper{
     display: flex;
     height: 100vh;
@@ -22,12 +23,23 @@
     margin: 20px;
 }
 
+.admin-category{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 800px;
+    height: 700px;
+    border: 1px solid blue;
+    max-width: 800px;
+    margin: 20px;
+}
+
 .admin-user-list{
     border: 1px solid blue;
     margin: 20px;
-    width: 1000px;
-    height: 800px;
-    overflow: scroll;
+    width: 800px;
+    height: 700px;
 }
 
 canvas{

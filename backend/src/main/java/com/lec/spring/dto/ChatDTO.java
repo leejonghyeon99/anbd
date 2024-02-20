@@ -29,9 +29,9 @@ public class ChatDTO {
         return ChatDTO.builder()
                 .id(entity.getId())
                 .message(entity.getMessage())
-                .user(UserDTO.toDto(entity.getUser()).getNickname())
-                .userProfile("profile/"+UserDTO.toDto(entity.getUser()).getId())
-                .chatRoom(ChatRoomDTO.toDto(entity.getChatRoom()))
+//                .user(UserDTO.toDto(entity.getUser()).getNickname())
+//                .userProfile("profile/"+UserDTO.toDto(entity.getUser()).getId())
+//                .chatRoom(ChatRoomDTO.toDto(entity.getChatRoom()))
                 .build();
     }
 

@@ -52,16 +52,10 @@ public class AdminService {
     }
 
     //유저 목록
-    public Page<UserDTO> userList(int page, String search) {
+    public Page<UserDTO> userList(int page) {
         PageRequest pageRequest = PageRequest.of(page, 10);
 
-        if (search != null && !search.isEmpty()) {
-            // 검색어가 제공된 경우 부분 일치 검색을 수행
-            return userRepository.findByUsernameContainingIgnoreCase(search, pageRequest).map(UserDTO::toDto);
-        } else {
-            // 검색어가 없는 경우 전체 목록 조회
-            return userRepository.findAll(pageRequest).map(UserDTO::toDto);
-        }
+        return userRepository.findAll(pageRequest).map(UserDTO::toDto);
     }
 
     //신고 목록

@@ -26,15 +26,20 @@ SET created_at = DATE_SUB(created_at, INTERVAL 2 DAY )
 WHERE id = 17;
 
 select * from user;
+desc user;
 select * from category;
 select * from product;
 desc product;
-
+desc user_block;
 show tables;
 
+desc chat_room;
 desc chat_room_users;
 desc user_block;
+desc product;
+create database db_anbd;
 
+select * from chat_room;
 
 insert into report(user_id, reason) VALUES (6,'그냥1');
 

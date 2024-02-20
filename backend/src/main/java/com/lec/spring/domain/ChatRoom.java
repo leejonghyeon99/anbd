@@ -3,6 +3,7 @@ package com.lec.spring.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
@@ -12,13 +13,18 @@ import java.util.List;
 @Entity
 public class ChatRoom {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToMany
-    @ToString.Exclude
-    private List<User> users;
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private User seller;
+
+    @ManyToOne
+    @JoinColumn(name = "buyer_id")
+    private User buyer;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
@@ -26,4 +32,6 @@ public class ChatRoom {
     private Product product;
 
 
+    @OneToMany(mappedBy = "chatRoom")
+    private List<Chat> chat;
 }

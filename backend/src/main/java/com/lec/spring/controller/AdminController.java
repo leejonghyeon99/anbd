@@ -42,10 +42,9 @@ public class AdminController {
     //유저 목록
     @GetMapping("/user/list")
     public ResponseEntity<Page<UserDTO>> userList(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(required = false) String search
+            @RequestParam(defaultValue = "0") int page
     ){
-        return new ResponseEntity<>(adminService.userList(page, search), HttpStatus.OK);
+        return new ResponseEntity<>(adminService.userList(page), HttpStatus.OK);
     }
 
 

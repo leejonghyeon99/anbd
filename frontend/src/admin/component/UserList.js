@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import '../css/UserList.css'
+import styles from '../css/userList.module.css'
+import logoImage from '../image/logo192.png';
+
+
+
 const UserList = () => {
 
     const apiUrl = process.env.REACT_APP_API_BASE_URL;
@@ -11,12 +16,11 @@ const UserList = () => {
         totalPages: 0,
         totalElements: 0,
     });
-    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         const userList = async () => {
             try {
-                const url = `${apiUrl}/api/admin/user/list?page=${pageInfo.pageNumber}&search=${searchTerm}`;
+                const url = `${apiUrl}/api/admin/user/list?page=${pageInfo.pageNumber}`;
                 const response = await fetch(url);
                 const data = await response.json();
 
@@ -36,7 +40,7 @@ const UserList = () => {
         };
 
         userList();
-    }, [pageInfo.pageNumber, pageInfo.pageSize, searchTerm]);
+    }, [pageInfo.pageNumber, pageInfo.pageSize]);
 
     const renderPageNumbers = () => {
         const pages = [];
@@ -58,37 +62,24 @@ const UserList = () => {
         setPageInfo({ ...pageInfo, pageNumber: newPageNumber });
     };
 
-    const handleSearchChange = (event) => {
-        setSearchTerm(event.target.value);
-    };
-
 
     return (
-        <div>
-            <h5>사용자 목록</h5>
-
-            <input
-                type="text"
-                placeholder="검색어를 입력하세요"
-                value={searchTerm}
-                onChange={handleSearchChange}
-            />
-            <ul>
-                {usersData.map((user) => (
-                    <li key={user.id}>
-                        ID: {user.id}
-                        Username: {user.username}
-                        Name: {user.name}
-                        Phone Number: {user.phone_number}
-                        Nickname: {user.nickname}
-                        Email: {user.email}
-                        Star: {user.star}
-                        Certification: {user.certification}
-                        Thumbnail: {user.thumbnail}
-                        <hr />
-                    </li>
-                ))}
-            </ul>
+        <>
+            <div className={styles.userList}>
+                <ul>
+                    {usersData.map((user) => (
+                        <li key={user.id}>
+                            <div className={`${styles.userBox}`}>
+                                <img className={`${styles.userIcon}`} src={logoImage} alt="Logo" />
+                                <span className={`${styles.nickname}`}>{user.nickname}</span>
+                                <span className={`${styles.userEmail}`}>이메일 {user.email}</span>
+                                <span className={`${styles.signupDate}`}>가입일시 {user.createdAt}</span>
+                            </div>
+                            <hr />
+                        </li>
+                    ))}
+                </ul>
+            </div>
 
             <div className="pagination">
                 <button
@@ -105,7 +96,7 @@ const UserList = () => {
                     Next
                 </button>
             </div>
-        </div>
+        </>
     );
 };
 
