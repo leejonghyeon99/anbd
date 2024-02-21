@@ -5,13 +5,15 @@ use db_anbd;
 
 show tables;
 desc user;
-insert into user(auth, star, phone_number, nickname, name, username, password, email, thumbnail, created_at)
-values ('ROLE_USER',3.3,'01012341234','test_name','이종현','가나다라','1234','1z122f7@email.com','default.jpeg', now());
+insert into user(auth, star, phone_number, nickname, name, username, password, email,region, thumbnail, created_at)
+values ('ROLE_USER',3.3,'01012341234','test_name','이종현','가나다라','1234','1z122f7@email.com','송파구','default.jpeg', now());
 desc user;
 insert into category(name) value ('의류');
 
 insert into category(name) value ('가전');
-insert into product(category_id, price, status, user_id, created_at, title, description, location, middle_category)
+insert into category(name) value ('가전2');
+insert into category(name) value ('가전1');
+insert into category(name) value ('가전3');
 VALUES (1,20000,'SALE',1, now(), '테스트 상품1', '테스트 상품입니다.', '0000, 0000', '신발');
 insert into product(category_id, price, status, user_id, created_at, title, description, location, middle_category)
 VALUES (1,20000,'SOLD',1, now(), '테스트 상품2', '테스트 상품입니다2.', '0000, 0000', '상의');
@@ -35,7 +37,7 @@ desc user_block;
 
 show tables;
 desc chat_room;
-desc chat_room_users;
+# desc chat_room_users;
 desc user_block;
 desc product;
 
@@ -46,6 +48,10 @@ insert into report(user_id, reason) VALUES (6,'그냥1');
 select count(*) from user;
 
 select * from user;
+
+
+insert into category(id, name) values(1, '의류'), (2, '식품'), (3, '생활용품'), (4, '잡화'), (5, '가구/인테리어'), (6, '가전'), (7, '도서'), (8, '기타')
+
 
 # $2a$10$jsEuJ4.Mc/iMGHRa7kB04.9t6PmuGaYKKWfomTgyGcFmfntRtFv0q
 

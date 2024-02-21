@@ -2,6 +2,7 @@ package com.lec.spring.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -40,8 +41,10 @@ public class Product extends BaseEntity{
     private LocalDateTime refreshedAt;
 
     @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     @ToString.Exclude

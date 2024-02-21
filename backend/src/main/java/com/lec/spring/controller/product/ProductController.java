@@ -1,5 +1,6 @@
 package com.lec.spring.controller.product;
 
+import com.lec.spring.domain.Category;
 import com.lec.spring.domain.Product;
 import com.lec.spring.domain.Status;
 import com.lec.spring.service.product.ProductImageService;
@@ -25,22 +26,22 @@ public class ProductController {
 
     // 등록
     @PostMapping("/write")
-    public ResponseEntity<?> write(@RequestBody Map<String,String> product){
+    public ResponseEntity<?> write(@RequestBody Map<String,Object> product){
 //        Product product1 = productService.write(product);
         System.out.println("ProductController.write");
         System.out.println("product = " + product.toString());
 //        System.out.println("::"+product.toString());
         Product pd = new Product();
-        pd.setTitle(product.get("title"));
-        pd.setMiddleCategory(product.get("middleCategory"));
-        pd.setPrice(Integer.parseInt(product.get("price")));
-        pd.setDescription(product.get("description"));
-        pd.setStatus(Status.valueOf(product.get("status")));
-        pd.setLocation(product.get("location"));
+        pd.setTitle((String) product.get("title"));
+        pd.setMiddleCategory((String) product.get("middleCategory"));
+        pd.setPrice(Integer.parseInt((String) product.get("price")));
+        pd.setDescription((String) product.get("description"));
+        pd.setStatus(Status.valueOf((String) product.get("status")));
+        pd.setLocation((String) product.get("location"));
 //        System.out.println(files.toString());
         System.out.println(pd.toString());
 
-        return new ResponseEntity<>(productService.write(pd,product.get("category")), HttpStatus.CREATED);  //201
+        return new ResponseEntity<>(productService.write(pd, (String) product.get("category")), HttpStatus.CREATED);  //201
     }
     // 목록
     @GetMapping("/list")
@@ -64,6 +65,11 @@ public class ProductController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
         return new ResponseEntity<>(productService.delete(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/category")
+    public ResponseEntity<?> category(){
+        return new ResponseEntity<>(productService.findByCategory(), HttpStatus.OK);
     }
 
     @InitBinder

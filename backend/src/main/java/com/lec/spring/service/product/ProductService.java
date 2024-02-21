@@ -3,8 +3,11 @@ package com.lec.spring.service.product;
 import com.lec.spring.domain.Category;
 import com.lec.spring.domain.Product;
 import com.lec.spring.domain.ProductImage;
+import com.lec.spring.domain.User;
+import com.lec.spring.dto.CategoryDTO;
 import com.lec.spring.dto.ProductDTO;
 import com.lec.spring.repository.CategoryRepository;
+import com.lec.spring.repository.UserRepository;
 import com.lec.spring.repository.product.ProductImageRepository;
 import com.lec.spring.repository.product.ProductRepository;
 import jakarta.transaction.Transactional;
@@ -13,7 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -26,6 +28,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
     private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
 
     // 등록
     @Transactional
@@ -33,6 +36,8 @@ public class ProductService {
         System.out.println(category);
         Category category1 = categoryRepository.findById(Integer.parseInt(category)).orElse(null);
         product.setCategory(category1);
+        User user = userRepository.findById(2).orElse(null);
+        product.setUser(user);
         return ProductDTO.toDto(productRepository.saveAndFlush(product));
     }
 
@@ -44,11 +49,15 @@ public class ProductService {
 
     // 상세
     @Transactional
-    public Product detail(Long id){
+    public ProductDTO detail(Long id){
         Product product = productRepository.findById(id).orElse(null);
-        List<ProductImage> fileList = productImageRepository.findByProduct(product);
-        product.setFileList(fileList);
-        return product;
+        User user = userRepository.findById(2).orElse(null);
+//        product.getUser().getId()
+        product.setUser(user);
+
+//        List<ProductImage> fileList = productImageRepository.findByProduct(product);
+//        product.setFileList(fileList);
+        return ProductDTO.toDto(product);
     }
 
     // 수정
@@ -78,5 +87,12 @@ public class ProductService {
         if (!isexists) return "FAIL";
         productRepository.deleteById(id);
         return "OK";
+    }
+
+    // 카테고리
+    public List<CategoryDTO> findByCategory (){
+
+        return CategoryDTO.toDtoList(categoryRepository.findAll());
+
     }
 }

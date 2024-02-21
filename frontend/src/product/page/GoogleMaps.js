@@ -1,26 +1,32 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const GoogleMaps = () => {
   const navigate = useNavigate();
-
+  const {id} = useParams();
+  const location = useLocation();
   const [selectedLocation, setSelectedLocation] = useState(""); // 선택된 좌표 상태변수 추가
   
-  const GoWrite = (pageType) => {
-    if (selectedLocation) {
-        let path = '/product/write';
-        if (pageType === 'update') {
-            path = '/product/update';
-        }
-        navigate(path, { state: {
-            location: selectedLocation
-        }});  // 선택된 좌표와 함께 적절한 페이지로 이동
-    } else {
-        alert("위치를 선택해주세요!");
+  useEffect(() => {
+    if (location.state && location.state.location) {
+      setSelectedLocation(location.state.location);
     }
-};
+  }, [location.state]);
 
+  // 수정시 지도에서 수정페이지로 이동이 되지않음, 작성페이지로 이동됨
+  const GoWrite = useCallback(() => {
+    if (selectedLocation) {
+      console.log(`sssssssssssssssssssssssssssss: ${id}`);
+      if (id) {
+        navigate(`/product/update/${id}`, { state: { location: selectedLocation } });
+      } else {
+        navigate("/product/write", { state: { location: selectedLocation } });
+      }
+    } else {
+      alert("위치를 선택해주세요!");
+    }
+  }, [navigate, selectedLocation, id]);
 
   const mapRef = useRef(null);
   const markerRef = useRef(null);
