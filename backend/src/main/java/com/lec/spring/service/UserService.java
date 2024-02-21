@@ -71,7 +71,7 @@ public class UserService {
         UsernamePasswordAuthenticationToken authenticationToken = userRequestDTO.toAuthentication();
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        System.out.println("------------------------"+authentication);
+        System.out.println("authentication"+authentication);
         TokenDTO tokenDTO = tokenProvider.createTokenDto(authentication);
 
         RefreshToken refreshToken = RefreshToken.builder()

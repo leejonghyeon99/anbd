@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./CSS/Login.css";
 
 const Login = () => {
@@ -52,8 +52,8 @@ const Login = () => {
         // 홈 화면으로 이동
         navigate("/home");
 
-        // 페이지 새로고침
-        window.location.reload();
+        // // 페이지 새로고침
+        // window.location.reload();
       })
       .catch((error) => {
         alert(error.message);
@@ -63,6 +63,21 @@ const Login = () => {
         });
       });
   };
+
+  useEffect(()=>{
+    oauthLogin();
+  }, []);
+
+  const oauthLogin = () => {
+    const token = new URLSearchParams(window.location.search).get('accessToken');
+
+    if(token){
+      localStorage.setItem('accessToken', token);
+      navigate('/home')
+    }
+
+  }
+  
 
   return (
     <>
@@ -96,7 +111,7 @@ const Login = () => {
               />
             </div>
             <Button type="submit">Login</Button>
-            <div className="oauthLoginBtn">
+            <div className="oauthLoginBtn" onClick={oauthLogin}>
               <a href={`${process.env.REACT_APP_API_BASE_URL}/oauth2/authorization/google`}>
               <img
                 src="/icon/Google.png"

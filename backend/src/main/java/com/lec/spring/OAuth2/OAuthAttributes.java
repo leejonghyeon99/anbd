@@ -22,10 +22,10 @@ public class OAuthAttributes {
     public static OAuthAttributes of(String provider,
                                      String nameAttributeKey, Map<String, Object> attributes) {
 
-        if (provider.equals("Naver")) {
+        if (provider.equals("naver")) {
             return ofNaver(nameAttributeKey, attributes);
         }
-        if (provider.equals("Kakao")) {
+        if (provider.equals("kakao")) {
             return ofKakao(nameAttributeKey, attributes);
         }
         return ofGoogle(nameAttributeKey, attributes);
@@ -56,10 +56,18 @@ public class OAuthAttributes {
         return User.builder()
                 .provider(provider)
                 .provider_id(oauth2UserInfo.getId())
-                .email(UUID.randomUUID() + "@socialUser.com")
                 .nickname(oauth2UserInfo.getNickname())
                 .thumbnail(oauth2UserInfo.getImageUrl())
+                .username("user")
+                .password("1234")
+                .name("아나바다")
+                .nickname("user")
+                .email("user@mail.com")
+                .phone_number("010-1111-2222")
+                .region("서울시 강남구")
                 .auth(Auth.ROLE_USER)
+                .certification("DENIED")
+                .star(0.0)
                 .build();
     }
 
