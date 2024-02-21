@@ -76,9 +76,8 @@ function Sidebar() {
             식품
             {isFoodOpen && (
               <ul className="submenu">
-                <li onClick={() => navigate("/product/list")}>1</li>
-                <li onClick={() => navigate("/product/list")}>2</li>
-                <li onClick={() => navigate("/product/list")}>3</li>
+                <li onClick={() => navigate("/product/list")}>가공식품</li>
+                <li onClick={() => navigate("/product/list")}>기타식품</li>
               </ul>
             )}
           </ul>
@@ -86,9 +85,8 @@ function Sidebar() {
             생활용품
             {isLivingOpen && (
               <ul className="submenu">
-                <li onClick={() => navigate("/product/list")}>1</li>
-                <li onClick={() => navigate("/product/list")}>2</li>
-                <li onClick={() => navigate("/product/list")}>3</li>
+                <li onClick={() => navigate("/product/list")}>주방용품</li>
+                <li onClick={() => navigate("/product/list")}>욕실용품</li>
               </ul>
             )}
           </ul>

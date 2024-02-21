@@ -5,6 +5,7 @@ import com.lec.spring.domain.Status;
 import com.lec.spring.service.product.ProductImageService;
 import com.lec.spring.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
@@ -43,9 +44,13 @@ public class ProductController {
         return new ResponseEntity<>(productService.write(pd,product.get("category")), HttpStatus.CREATED);  //201
     }
     // 목록
-    @GetMapping("/list")
-    public ResponseEntity<?> list(){
-        return new ResponseEntity<>(productService.list(), HttpStatus.OK);
+    @GetMapping("/list/{category}")
+    public ResponseEntity<?> list(
+            @PathVariable(name = "category") String category,
+            @RequestParam String search
+    ){
+
+        return new ResponseEntity<>(productService.list(category,search), HttpStatus.OK);
     }
     // 상세
     @GetMapping("/detail/{id}")
