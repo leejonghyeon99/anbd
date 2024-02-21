@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { MypagebarList } from "../components/MypagebarList";
 import { AdminpagebarList } from "../components/AdminpagebarList";
 import "./CSS/Header.css";
 import "./CSS/Mypagebar.css";
+
 // icon import
 import { FaUserCircle } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
@@ -54,6 +55,7 @@ const Navbar = styled.div`
 
 const Header = () => {
   const navigate = useNavigate();
+  const headerRef = useRef(null);
 
   const [user, setUser] = useState({
     username: "",
@@ -104,6 +106,22 @@ const Header = () => {
   const [isBlivingOpen, setIsBlivingOpen] = useState(false);
   // Mypage 버튼
   const [isMypageVisible, setIsMypageVisible] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (headerRef.current && !headerRef.current.contains(event.target)) {
+        // 클릭된 요소가 Header 외부에 있으면 Navbar를 닫음
+        setIsMypageVisible(false);
+      }
+    };
+  
+    document.addEventListener("click", handleClickOutside);
+  
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [isMypageVisible]);
+
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -181,7 +199,7 @@ const Header = () => {
 
   return (
     <div className="header">
-      <StyledHeader>
+      <StyledHeader ref={headerRef}>
         <div className="headerBox">
           <div className="headerFix">
             <div className="hiddenMenu">
@@ -222,7 +240,7 @@ const Header = () => {
             </div>
           </div>
 
-          <Navbar isVisible={isMypageVisible} id="mypageNavbar">
+          <Navbar isVisible={isMypageVisible} id="navbar">
             {" "}
             {/* Navbar의 isVisible 속성에 따라 보이거나 숨김 */}
             <nav className="nav-menu">
@@ -278,7 +296,7 @@ const Header = () => {
             </nav>
             {/*로그아웃 버튼!! */}
             <img
-              src="icon/logout.png"
+              src="/icon/logout.png"
               className="logout"
               onClick={handleLogout}
             ></img>
