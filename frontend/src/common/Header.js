@@ -296,7 +296,7 @@ const Header = () => {
             </nav>
             {/*로그아웃 버튼!! */}
             <img
-              src="icon/logout.png"
+              src="/icon/logout.png"
               className="logout"
               onClick={handleLogout}
             ></img>

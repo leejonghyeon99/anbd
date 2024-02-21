@@ -18,6 +18,7 @@ const SignUp = () => {
     region: "",
   });
 
+  //유효성 검사를 위한 State함수들
   const [usernameErr, setUsernameErr] = useState(false);
   const [passwordErr, setPasswordErr] = useState(false);
   const [nameErr, setNameErr] = useState(false);
@@ -44,16 +45,15 @@ const SignUp = () => {
     });
   };
 
-  // join버튼을 누르면 submit되는 동작
+  //유효성 검사
   const validateForm = () => {
-    const isUsernameErr = user.username === '';
-    const isPasswordErr = user.password === '';
-    const isNameErr = user.name === '';
-    const isNicknameErr = user.nickname === '';
-    const isPhoneErr = user.phone === '';
-    const isEmailErr = user.email === '';
-    const isRegError = user.reg === '';
-
+    const isUsernameErr = user.username.trim() === '';
+    const isPasswordErr = user.password.trim() === '';
+    const isNameErr = user.name.trim() === '';
+    const isNicknameErr = user.nickname.trim() === '';
+    const isPhoneErr = user.phone_number.trim() === '';
+    const isEmailErr = user.email.trim() === '';
+    const isRegError = user.region === '';
     setUsernameErr(isUsernameErr);
     setPasswordErr(isPasswordErr);
     setNameErr(isNameErr);
@@ -61,29 +61,22 @@ const SignUp = () => {
     setPhoneErr(isPhoneErr);
     setEmailErr(isEmailErr);
     setRegError(isRegError);
-
+    
     return !(isUsernameErr || isPasswordErr || isNameErr || isNicknameErr || isPhoneErr || isEmailErr || isRegError);
   };
-
+  
+  // join버튼을 누르면 submit되는 동작
   const submitJoin = (e) => {
     e.preventDefault();
     const { repassword, ...signupdata } = user;
 
     if(validateForm()) {
-      setUser({
-        ...user,
-      })
-    }
 
     if (user.password !== user.repassword) {
       alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
       return;
     }
 
-    if (!user.region) {
-      alert("거주지역을 선택해 주세요.");
-      return;
-    }
     console.log(signupdata);
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/signup`, {
       method: "POST",
@@ -108,6 +101,7 @@ const SignUp = () => {
       .catch((Error) => {
         alert(Error.message);
       });
+    };
   };
 
 
@@ -308,6 +302,11 @@ const SignUp = () => {
             ))}
           </select>
         </div>
+        {regError && (
+          <div>
+            <small className="text-danger">거주지역을 선택해주세요</small>
+          </div>
+        )}
         <Button type="submit">Join</Button>
       </Form>
     </div>
