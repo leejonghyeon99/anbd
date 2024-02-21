@@ -27,7 +27,7 @@ WHERE id = 17;
 
 select * from user;
 desc user;
-select * from category;
+select * from category order by id;
 select * from product;
 desc product;
 desc user_block;

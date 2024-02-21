@@ -6,6 +6,7 @@ import com.lec.spring.dto.CategoryDTO;
 import com.lec.spring.dto.ProductDTO;
 import com.lec.spring.dto.ReportDTO;
 import com.lec.spring.dto.UserDTO;
+import com.lec.spring.dto.exception.Response;
 import com.lec.spring.service.admin.AdminService;
 import com.lec.spring.service.admin.AnalyzeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,8 +84,9 @@ public class AdminController {
 
     //대분류 등록
     @PostMapping("/product/category")
-    public ResponseEntity<String> addCategory(String name){
-        return new ResponseEntity<>(adminService.addCategory(name),HttpStatus.CREATED);
+    public ResponseEntity<Response<?>> addCategory(@RequestBody CategoryDTO dto){
+
+        return new ResponseEntity<>(adminService.addCategory(dto.getName()),HttpStatus.CREATED);
     }
 
     //대분류 삭제
@@ -95,7 +97,7 @@ public class AdminController {
 
     //대분류 수정
     @PatchMapping("/product/category")
-    public ResponseEntity<CategoryDTO> update(@RequestBody Category category){
+    public ResponseEntity<Response<?>> update(@RequestBody Category category){
         System.out.println(category.toString());
         return new ResponseEntity<>(adminService.updateCategory(category),HttpStatus.OK);
     }

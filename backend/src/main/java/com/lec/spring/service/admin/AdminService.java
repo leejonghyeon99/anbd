@@ -8,6 +8,7 @@ import com.lec.spring.dto.CategoryDTO;
 import com.lec.spring.dto.ProductDTO;
 import com.lec.spring.dto.ReportDTO;
 import com.lec.spring.dto.UserDTO;
+import com.lec.spring.dto.exception.Response;
 import com.lec.spring.repository.*;
 import com.lec.spring.repository.product.ProductRepository;
 import jakarta.transaction.Transactional;
@@ -96,25 +97,23 @@ public class AdminService {
     //대분류 목록
     public List<CategoryDTO> categoryList() {
         return CategoryDTO.toDtoList(
-                categoryRepository.findAll()
-                        .stream()
-                        .sorted(Comparator.comparing(Category::getName))
-                        .collect(Collectors.toList())
+                categoryRepository.findAll(Sort.by(Sort.Order.asc("id")))
         );
     }
 
     //대분류 추가
     @Transactional
-    public String addCategory(String name){
+    public Response<?> addCategory(String name){
 
         if(categoryRepository.findByName(name).isPresent()){
-            return "중복 되었습니다.";
+            return Response.error("duple");
         }
 
         Category category = new Category();
         category.setName(name);
         categoryRepository.save(category);
-        return "등록 성공";
+        List<Category> categories = categoryRepository.findAll(Sort.by(Sort.Order.asc("id")));
+        return Response.success(CategoryDTO.toDtoList(categories));
     }
 
 
@@ -131,11 +130,15 @@ public class AdminService {
 
     //대분류 카테고리 수정
     @Transactional
-    public CategoryDTO updateCategory(Category category){
+    public Response<?> updateCategory(Category category){
         if(categoryRepository.findById(category.getId()).isPresent()){
-            return CategoryDTO.toDto(categoryRepository.save(category));
+            categoryRepository.save(category);
+            List<Category> categories = categoryRepository.findAll(Sort.by(Sort.Order.asc("id")));
+            return Response.success(CategoryDTO.toDtoList(categories));
+        }else{
+            return Response.error("수정할 카테고리가 존재하지 않습니다.");
         }
-        return CategoryDTO.toDto(category);
+
 
     }
 
