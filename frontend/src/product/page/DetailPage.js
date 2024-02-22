@@ -13,7 +13,7 @@ const DetailPage = () => {
     description:"",
     createdAt:"",
     price:"",
-    middleCaztegory:"",
+    middleCategory:"",
     user:"",
   });
   const [files, setFiles] = useState([]);
@@ -24,7 +24,7 @@ const DetailPage = () => {
     
   }
   const UpdateOk = () => {
-    navigate('/product/update/'+id);
+    navigate('/product/update/' + id);
   }
   
   const ListOk = () => {
@@ -35,6 +35,7 @@ const DetailPage = () => {
     .then(response => response.json())
     .then(data => setProduct(data));
   }, []);
+useEffect(() =>{console.log(product)},[product])
 
   const DeleteOk = () => {
     if(!window.confirm("정말 삭제하시겠습니까?")) return;
@@ -98,7 +99,7 @@ const DetailPage = () => {
       <span>카테고리</span>
       <div className='mb-3'>
         <span className='form-control'>{product.middleCategory}</span>
-        <span className='form-control'>{product.createdAt}</span>
+        <span className='form-control'>등록일자{product.createdAt}</span>
       </div>
       <span>내용</span>
       <div className='mb-3'>

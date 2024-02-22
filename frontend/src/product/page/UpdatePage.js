@@ -25,6 +25,7 @@ const UpdatePage = () => {
   
   const [product, setProduct] = useState({
     title:"",
+    id:id,
     description:"",
     price:0,
     status:"",
@@ -35,11 +36,12 @@ const UpdatePage = () => {
       //   name:""
     // },
     refreshedAt:"",
-    location: ""
+    location: "",
   });
+  console.log("product: " + product)
   
   const [categories, setCategories] = useState([]);
-  const [selectCategory, setSelectCategory] = useState("");
+  const [selectCategory, setSelectCategory] = useState({});
   
   const pc = {
     ...product,
@@ -68,25 +70,17 @@ const UpdatePage = () => {
     console.log(product);
   }
 
-
   // 대분류 카테고리만
-  const CategoryValue = (e) => {
-    setProduct({
-      ...product,
-      category: {
-        id:e.target.value,
-        name:e.target.options[e.target.selectedIndex].text  // select 안 option들 중에서 선택된 option에 해당하는 text 가져오기
-      },
-    });
-    console.log(product);
-  }
-
-  // 선택된 category 값
   // const CategoryValue = (e) => {
-  //   setSelectCategory(e.target.value);
-  //   console.log("category " + e.target.value);
+  //   setProduct({
+  //     ...product,
+  //     category: {
+  //       id:e.target.value,
+  //       name:e.target.options[e.target.selectedIndex].text  // select 안 option들 중에서 선택된 option에 해당하는 text 가져오기
+  //     },
+  //   });
+  //   console.log(product);
   // }
-
 
   // 카테고리
   useEffect(() => {
@@ -96,10 +90,16 @@ const UpdatePage = () => {
       setCategories(data);
     });
   }, []);
+  
+  // 선택된 category 값
+  const CategoryValue = (e) => {
+    setSelectCategory({id : e.target.value, name : e.target.options[e.target.selectedIndex].text});
+  }
+  useEffect(()=>{console.log(selectCategory);},[selectCategory])
 
   // 지도
   const MapOk = () => {
-    navigate("/product/map/"+id);
+    navigate("/product/map/" + id);
   }
 
   // 끌어올리기
@@ -145,7 +145,7 @@ const UpdatePage = () => {
       } else {
         alert('수정 실패');
       }
-    })
+    })                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
   }
 
   return (
@@ -164,7 +164,7 @@ const UpdatePage = () => {
       </div>
       )} */}
 
-<button onClick={toggleGoogleMaps}>
+      <button onClick={toggleGoogleMaps}>
         {showGoogleMaps ? 'GoogleMaps 숨기기' : 'GoogleMaps 표시하기'}
       </button>
 
@@ -178,6 +178,7 @@ const UpdatePage = () => {
           }}
         />
       )}
+      <span>선택된 위치: {product.location}</span>
 
       {/* <input type="button" name="location" id="location" value={product.location} onClick={MapOk}></input><br/> */}
       <span>제목</span>
@@ -255,14 +256,14 @@ const UpdatePage = () => {
             <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option> 
             <option value="기타">기타</option></>)}
           </select> */}
-          <select className='form-select' name='middleCategory' value={product.middleCategory} onChange={UpdateValue}>
+          {/* <select className='form-select' name='middleCategory' value={product.middleCategory} onChange={UpdateValue}>
             <option value="여성의류">여성의류</option>
             <option value="남성의류">남성의류</option>
             <option value="아동의류">아동의류</option>
-          </select>
+          </select> */}
+          <input type="text" name="middleCategory" ></input>
         </div>
       </div>
-
       <span>가격</span>
       <div className="">
         <input type="number" className="form-control" name='price' id='price' value={product.price} placeholder="가격을 입력하세요" onChange={UpdateValue}/>

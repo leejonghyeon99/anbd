@@ -62,20 +62,39 @@ public class ProductService {
 
     // 수정
     @Transactional
-    public ProductDTO update(Product product) {
+    public ProductDTO update(ProductDTO product) {
+        System.out.println(product.toString());
         Product productEntity = productRepository.findById(product.getId()).orElse(null);
+        Category category = categoryRepository.findById(product.getCategory().getId()).orElse(null);
+
+        if (category != null) {
+            category.setName(product.getCategory().getName());
+            categoryRepository.save(category);
+
+            productEntity.setLocation(product.getLocation());   // 위치
+            productEntity.setTitle(product.getTitle());
+            productEntity.setPrice(product.getPrice());
+            productEntity.setStatus(product.getStatus());
+            productEntity.setDescription(product.getDescription());
+            productEntity.setMiddleCategory(product.getMiddleCategory());
+            productEntity.setCategory(category);
+            productEntity.setRefreshedAt(product.getRefreshedAt());  // 끌어올리기
+            productRepository.save(productEntity);
+        }
+
+
+//        Category category1 = categoryRepository.findById(Integer.parseInt(category)).orElseThrow(() -> new IllegalArgumentException("카테고리가 존재하지 않습니다: " + category));
+//        System.out.println(product.getCategory());
         // Product 업데이트
-        productEntity.setTitle(product.getTitle());
-        productEntity.setPrice(product.getPrice());
-        productEntity.setStatus(product.getStatus());
-        productEntity.setDescription(product.getDescription());
-        productEntity.setMiddleCategory(product.getMiddleCategory());
-
-        productEntity.setRefreshedAt(product.getRefreshedAt());  // 끌어올리기
-//        System.out.println("productEntity.setRefreshedAt(); = " + productEntity.setRefreshedAt(product.getRefreshedAt()));
 //        productEntity.setLocation(product.getLocation());   // 위치
-
-        productRepository.save(productEntity);
+//        productEntity.setTitle(product.getTitle());
+//        productEntity.setPrice(product.getPrice());
+//        productEntity.setStatus(product.getStatus());
+//        productEntity.setDescription(product.getDescription());
+//        productEntity.setMiddleCategory(product.getMiddleCategory());
+//        productEntity.setCategory(product.getCategory());
+//        System.out.println("+++++++" + product.getCategory());
+//        productEntity.setCategory(category1);
 
         return ProductDTO.toDto(productEntity);
     }

@@ -13,7 +13,7 @@ insert into category(name) value ('의류');
 insert into category(name) value ('가전');
 insert into category(name) value ('가전2');
 insert into category(name) value ('가전1');
-insert into category(name) value ('가전3');
+insert into category(name) value ('가전] TEST');
 VALUES (1,20000,'SALE',1, now(), '테스트 상품1', '테스트 상품입니다.', '0000, 0000', '신발');
 insert into product(category_id, price, status, user_id, created_at, title, description, location, middle_category)
 VALUES (1,20000,'SOLD',1, now(), '테스트 상품2', '테스트 상품입니다2.', '0000, 0000', '상의');

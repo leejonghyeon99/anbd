@@ -3,6 +3,7 @@ package com.lec.spring.controller.product;
 import com.lec.spring.domain.Category;
 import com.lec.spring.domain.Product;
 import com.lec.spring.domain.Status;
+import com.lec.spring.dto.ProductDTO;
 import com.lec.spring.service.product.ProductImageService;
 import com.lec.spring.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -48,6 +50,7 @@ public class ProductController {
     public ResponseEntity<?> list(){
         return new ResponseEntity<>(productService.list(), HttpStatus.OK);
     }
+
     // 상세
     @GetMapping("/detail/{id}")
     public ResponseEntity<?> detail(@PathVariable Long id){
@@ -57,8 +60,21 @@ public class ProductController {
     // 수정
     // Map이 아니라 Product 타입을 사용하는 이유는 배열타입인 변수들 때문에
     @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestBody Product product){
-        return new ResponseEntity<>(productService.update(product), HttpStatus.OK);
+    public ResponseEntity<?> update(@RequestBody ProductDTO pd){
+//        System.out.println("--------------------"+product);
+//        Product pd = new Product();
+//        pd.setId(Long.valueOf(String.valueOf(product.get("id"))));
+//        pd.setTitle((String) product.get("title"));
+//        pd.setMiddleCategory((String) product.get("middleCategory"));
+//        pd.setPrice(Integer.parseInt((String) product.get("price")));
+//        pd.setDescription((String) product.get("description"));
+//        pd.setStatus(Status.valueOf((String) product.get("status")));
+//        pd.setLocation((String) product.get("location"));
+//        pd.setRefreshedAt(LocalDateTime.parse(String.valueOf(product.get("refreshedAt"))));  // 끌어올리기
+//        pd.setCategory((Category) product.get("category"));
+//        System.out.println("수정 "+pd.toString());
+//        new ResponseEntity<>(productService.update(product), HttpStatus.OK);
+        return new ResponseEntity<>(productService.update(pd), HttpStatus.OK);
     }
 
     // 삭제
