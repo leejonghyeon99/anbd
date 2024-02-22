@@ -243,7 +243,7 @@ const WritePage = () => {
           )}</select>
       
       <span>중분류</span>
-          <select className="form-select" name='middleCategory' value={product.middleCategory} onChange={WriteValue}>
+          {/* <select className="form-select" name='middleCategory' value={product.middleCategory} onChange={WriteValue}> */}
             {/* {product.category === 'null' && (
               <><option value="" selected>-- 대분류 먼저 선택해주세요 --</option></>
             )} */}
@@ -284,11 +284,11 @@ const WritePage = () => {
             <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option> 
             <option value="기타">기타</option></>)} */}
           
-            <option value="여성의류">여성의류</option>
+            {/* <option value="여성의류">여성의류</option>
             <option value="남성의류">남성의류</option>
             <option value="아동의류">아동의류</option>
-          
-          </select>
+          </select> */}
+          <input type="text" name="middleCategory"></input>
         </div>
       </div>
       <span>가격</span>
