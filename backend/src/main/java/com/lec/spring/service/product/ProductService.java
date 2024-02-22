@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,8 +39,22 @@ public class ProductService {
 
     // 목록
     @Transactional
-    public List<Product> list(){
-        return productRepository.findAll();
+    public List<ProductDTO> list(String category, String search) {
+        List<Product> productList;
+
+//        if (search != null && !search.isEmpty()) {
+//            // 검색어가 있을 경우, 검색어를 이용하여 필터링
+//            productList = productRepository.findByTitleContainingIgnoreCase(search);
+//        } else {
+//            // 검색어가 없을 경우, 전체 상품 목록 반환
+//            productList = productRepository.findAll();
+//        }
+//            List<Product> products = productRepository.findByTitleContainingIgnoreCaseAndCategory_TitleContainingIgnoreCase(category, search);
+//        return productList.stream()
+//                .map(product -> ProductDTO.toDto(product))
+//                .collect(Collectors.toList());
+            return null;
+
     }
 
     // 상세

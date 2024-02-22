@@ -16,6 +16,8 @@ const Update = () => {
     region: "",
   });
 
+
+
   //유효성 검사를 위한 State함수들
 
   const [nameErr, setNameErr] = useState(false);
@@ -23,6 +25,7 @@ const Update = () => {
   const [phoneErr, setPhoneErr] = useState(false);
   const [emailErr, setEmailErr] = useState(false);
   const [regError, setRegError] = useState(false);
+  const [passwordMatchErr, setPasswordMatchErr] = useState(false);
 
   // 토큰으로 유저 정보 불러오기
   useEffect(() => {
@@ -35,10 +38,17 @@ const Update = () => {
         },
       })
         .then((response) => response.json())
-        .then((data) => setUserInfo(data))
+        .then((data) => {
+          const updatedUserInfo = {
+            ...data,
+            password: userInfo.password || data.password,
+            repassword: userInfo.repassword || data.password,
+          };
+          setUserInfo(updatedUserInfo)
+        })
         .catch((error) => console.error("userinfo error", error));
     }
-  }, []);
+  }, [userInfo.password]);
 
   useEffect(() => {
     console.log(userInfo);
@@ -47,6 +57,7 @@ const Update = () => {
   // 변경되는 유저 정보값 받아오기
   function infoChange(e) {
     const { name, value } = e.target;
+
     setUserInfo((prevUser) => ({
       ...prevUser,
       [name]: value,
@@ -60,25 +71,28 @@ const Update = () => {
     const isPhoneErr = userInfo.phone_number.trim() === "";
     const isEmailErr = userInfo.email.trim() === "";
     const isRegError = userInfo.region === "";
+    const isPasswordMatchErr = userInfo.repassword !== userInfo.password;
 
     setNameErr(isNameErr);
     setNicknameErr(isNicknameErr);
     setPhoneErr(isPhoneErr);
     setEmailErr(isEmailErr);
     setRegError(isRegError);
+    setPasswordMatchErr(isPasswordMatchErr);
 
     return !(
       isNameErr ||
       isNicknameErr ||
       isPhoneErr ||
       isEmailErr ||
-      isRegError
+      isRegError ||
+      isPasswordMatchErr
     );
   };
 
   // 유저 정보 수정하기
   function updateUser(e) {
-    e.preventDefault();// 기본 제출 동작 방지
+    e.preventDefault(); // 기본 제출 동작 방지
 
     if (validateForm()) {
       const token = localStorage.getItem("accessToken");
@@ -94,6 +108,7 @@ const Update = () => {
           .then((response) => {
             if (response.ok) {
               alert("회원정보 수정완료");
+              console.log(userInfo.password);
               return response.json();
             } else {
               return Promise.reject("회원정보 수정에 실패했습니다.");
@@ -145,10 +160,36 @@ const Update = () => {
   return (
     <div>
       <Form onSubmit={updateUser}>
-        {/* <div>
-          password :{" "}
-          <input type="password" name="currentpassword" onChange={infoChange} />
-        </div> */}
+        <div>
+          {/* Password 수정 */}
+          <label htmlFor="password">
+            비밀번호 <small>* </small>
+          </label>
+          <input
+            type="password"
+            name="password"
+            onChange={infoChange}
+          />
+        </div>
+
+        <div>
+          {/* Re-enter Password 수정 */}
+          <label htmlFor="repassword">
+            비밀번호 확인 <small>* </small>
+          </label>
+          <input
+            type="password"
+            name="repassword"
+            onChange={infoChange}
+          />
+          {passwordMatchErr && (
+            <div>
+              <small className="text-danger">
+                비밀번호와 비밀번호 확인이 일치하지 않습니다.
+              </small>
+            </div>
+          )}
+        </div>
         {/* 이름 수정 */}
         <div>
           <label htmlFor="name">

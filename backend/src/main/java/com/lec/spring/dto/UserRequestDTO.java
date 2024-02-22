@@ -31,7 +31,7 @@ public class UserRequestDTO {
     public User toUser(PasswordEncoder passwordEncoder) {
         return User.builder()
                 .username(this.username)
-                .password(passwordEncoder.encode(this.password)) // 비밀번호 인코딩
+                .password(isEncode(passwordEncoder,this.password)) // 비밀번호 인코딩
                 .name(this.name)
                 .phone_number(this.phone_number)
                 .nickname(this.nickname)
@@ -42,5 +42,12 @@ public class UserRequestDTO {
 
     public UsernamePasswordAuthenticationToken toAuthentication() {
         return new UsernamePasswordAuthenticationToken(username, password);
+    }
+
+    public String isEncode(PasswordEncoder passwordEncoder, String password){
+        if(password == null || password.isEmpty()){
+            return password;
+        }
+        return passwordEncoder.encode(password);
     }
 }

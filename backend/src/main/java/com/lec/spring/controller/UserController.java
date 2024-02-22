@@ -44,6 +44,7 @@ public class UserController {
 
     @PutMapping("/update")
     public ResponseEntity<?> update(@RequestBody UserRequestDTO userRequestDTO){
+        System.out.println(userRequestDTO.getPassword());
         return ResponseEntity.ok(userService.update(userRequestDTO));
     }
 
