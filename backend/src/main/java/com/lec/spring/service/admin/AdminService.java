@@ -119,12 +119,13 @@ public class AdminService {
 
     //대분류 카테고리 삭제
     @Transactional
-    public String deleteCategory(int id){
+    public Response<?> deleteCategory(int id){
         if(categoryRepository.findById(id).isEmpty()){
-            return "삭제할 데이터가 없습니다.";
+            return Response.error("삭제할 데이터가 없습니다.");
         }
         categoryRepository.deleteById(id);
-        return "삭제 성공";
+        List<Category> categories = categoryRepository.findAll(Sort.by(Sort.Order.asc("id")));
+        return Response.success(CategoryDTO.toDtoList(categories));
     }
 
 

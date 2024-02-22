@@ -91,7 +91,7 @@ public class AdminController {
 
     //대분류 삭제
     @DeleteMapping("/product/category")
-    public ResponseEntity<String> deleteCategory(Integer id){
+    public ResponseEntity<Response<?>> deleteCategory(@RequestBody Integer id){
         return new ResponseEntity<>(adminService.deleteCategory(id),HttpStatus.OK);
     }
 

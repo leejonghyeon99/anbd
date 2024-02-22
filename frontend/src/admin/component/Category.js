@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../css/category.module.css'
-const Category = () => {
+const Category = ({setModalToggle}) => {
+
 
 
     const apiUrl = process.env.REACT_APP_API_BASE_URL;
@@ -9,7 +10,7 @@ const Category = () => {
     const [activeCategory, setActiveCategory] = useState(null);
     const [categoryToggle, setCategoryToggle] = useState("");
     const [categoryInputValue, setCategoryInputValue] = useState("");
-    const [selectCategory, setSelectCategory] = useState({});
+    const [selectCategory, setSelectCategory] = useState(null);
     const [valid, setValid] = useState("");
     useEffect(() => {
         const userList = async () => {
@@ -36,6 +37,7 @@ const Category = () => {
         setCategoryToggle(value);
         setCategoryInputValue('');
         setActiveCategory('');
+        setSelectCategory(null);
     };
 
     const validation = (value) => {
@@ -110,7 +112,7 @@ const Category = () => {
     const selectUpdateValue = (e) =>{
         setSelectCategory({
             ...selectCategory,
-            [e.target.name]: e.target.value,
+            [e.target.name]: e.target.value.trim(),
           })
     }
 
@@ -132,6 +134,7 @@ const Category = () => {
                 const data = await response.json();
     
                 if(data.resultCode === 'success'){
+                    window.alert(selectCategory.name + ' 카테고리가 변경되었습니다.');
                     setCategories(data.result);
                 }
                 
@@ -144,7 +147,7 @@ const Category = () => {
         if(validation(selectCategory.name)){
             console.log(selectCategory.name);
             updateCategory();
-            setSelectCategory({});
+            setSelectCategory(null);
         }
 
 
@@ -160,7 +163,7 @@ const Category = () => {
                         'Content-Type': 'application/json',
                     },
     
-                    body: JSON.stringify(selectCategory),
+                    body: JSON.stringify(selectCategory.id),
                 };
     
                 const response = await fetch(url,option);        
@@ -168,27 +171,30 @@ const Category = () => {
     
                 console.log(data)
                 if(data.resultCode === 'success'){
-                    console.log(data.result)
+                    window.alert(selectCategory.name + ' 카테고리가 삭제 되었습니다.');
                     setCategories(data.result);
-                    setCategoryInputValue('');
+                    setSelectCategory(null);
                 }
                 
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
+        deleteCategory();
+        
     }
-
+useEffect(() => {console.log(selectCategory);},[selectCategory])
    
 
     const txt = [
+        "띄워쓰기는 불가능합니다",
         "카테고리는 중복 될 수 없습니다.",
         "카테고리는 공백 또는 빈문자는 작성 하실 수 없습니다.",
         "카테고리는 특수문자 사용 불가능합니다.",
     ];
 
     return (
-        <div className={`${styles.container}`}>
+            <div className={`${styles.container}`}>
             <div className={`${styles.header}`}>
                 <div className={`${styles.addBtnWrap}`}>                             
                     <button
@@ -213,10 +219,7 @@ const Category = () => {
                         삭제
                     </button>
                 </div>
-                <div className={`${styles.saveAndCancle}`}>
-                    <span className={`${styles.cancleBtn} ${styles.addPointer}`}>취소</span>
-                    <span className={`${styles.saveBtn} ${styles.addPointer}`}>저장</span>
-                </div>            
+                <span className={`${styles.cancleBtn} ${styles.addPointer}`} onClick={() => setModalToggle(false)}>취소</span>   
             </div>
             
             <div className={`${styles.content}`}>
@@ -267,9 +270,9 @@ const Category = () => {
                                         name="name"
                                         type='text' 
                                         placeholder='선택하세요' 
-                                        value={selectCategory.name} 
+                                        value={selectCategory ? selectCategory.name : ''} 
                                         onChange={(e) => selectUpdateValue(e)}
-                                                                        
+                                        disabled={!selectCategory}                                                                        
                                     />
                                 </div>
                                 {selectCategory && 
@@ -292,7 +295,7 @@ const Category = () => {
                                 <input 
                                     type='text' 
                                     placeholder='선택하세요' 
-                                    value={selectCategory ? selectCategory.name : ''}                
+                                    value={selectCategory ? selectCategory.name : ''}           
                                     disabled
                                 />
                             </div>
@@ -313,13 +316,6 @@ const Category = () => {
 
                 </div>
             </div>
-
-            {/* <ul className=''>
-                {categories.map((category) => (
-                    <li key={category.id}>{category.name}</li>
-                ))}
-            </ul> */}
-
         </div>
     );
 };
