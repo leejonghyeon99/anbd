@@ -8,7 +8,6 @@ import Admin from "./admin/Admin";
 import Update from "./user/Update";
 import SignUp from "./user/SignUp";
 import Home from "./common/Home";
-import { Container } from "react-bootstrap";
 import PasswordCheck from "./user/PasswordCheck";
 import ListPage from "./product/page/ListPage";
 import WritePage from "./product/page/WritePage";
@@ -34,8 +33,8 @@ const App = () => {
             <Route path="user/signup" Component={SignUp}></Route>
             <Route path="user/passwordcheck" Component={PasswordCheck}></Route>
             <Route path="user/update" Component={Update}></Route>
-            <Route path="/user/:id" element={<Update />} />
-            <Route path="/product/list" Component={ListPage}></Route>
+            {/* <Route path="/user/:id" element={<Update />} /> */}
+            <Route path="/product/list/:category" Component={ListPage}></Route>
             <Route path="/product/write" Component={WritePage}></Route>
             <Route path="/product/detail/:id" Component={DetailPage}></Route>
             <Route path="/product/update/:id" Component={UpdatePage}></Route>
