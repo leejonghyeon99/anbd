@@ -19,6 +19,7 @@ public class OAuthAttributes {
     private String nameAttributeKey; // 사용자 정보에서 고유 사용자 ID 값을 참조하는 데 사용되는 키(필드)의 이름입니다.
     private OAuth2UserInfo oAuth2UserInfo;
 
+
     public static OAuthAttributes of(String provider,
                                      String nameAttributeKey, Map<String, Object> attributes) {
 
@@ -30,6 +31,7 @@ public class OAuthAttributes {
         }
         return ofGoogle(nameAttributeKey, attributes);
     }
+
 
     private static OAuthAttributes ofNaver(String nameAttributeKey, Map<String, Object> attributes) {
         return OAuthAttributes.builder()
@@ -56,16 +58,16 @@ public class OAuthAttributes {
         return User.builder()
                 .provider(provider)
                 .provider_id(oauth2UserInfo.getId())
+                .email(UUID.randomUUID() + "@socialUser.com")
                 .nickname(oauth2UserInfo.getNickname())
                 .thumbnail(oauth2UserInfo.getImageUrl())
+                .auth(Auth.ROLE_USER)
                 .username("user")
                 .password("1234")
                 .name("아나바다")
                 .nickname("user")
-                .email("user@mail.com")
                 .phone_number("010-1111-2222")
                 .region("서울시 강남구")
-                .auth(Auth.ROLE_USER)
                 .certification("DENIED")
                 .star(0.0)
                 .build();

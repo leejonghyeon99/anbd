@@ -64,21 +64,6 @@ const Login = () => {
       });
   };
 
-  useEffect(()=>{
-    oauthLogin();
-  }, []);
-
-  const oauthLogin = () => {
-    const token = new URLSearchParams(window.location.search).get('accessToken');
-
-    if(token){
-      localStorage.setItem('accessToken', token);
-      navigate('/home')
-    }
-
-  }
-  
-
   return (
     <>
       <div className="loginMain">
@@ -111,7 +96,7 @@ const Login = () => {
               />
             </div>
             <Button type="submit">Login</Button>
-            <div className="oauthLoginBtn" onClick={oauthLogin}>
+            <div className="oauthLoginBtn">
               <a href={`${process.env.REACT_APP_API_BASE_URL}/oauth2/authorization/google`}>
               <img
                 src="/icon/Google.png"

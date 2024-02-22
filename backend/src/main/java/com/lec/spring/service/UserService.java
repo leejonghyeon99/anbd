@@ -52,7 +52,6 @@ public class UserService {
         if (userRepository.existsByUsername(userRequestDTO.getUsername())){
             throw new RuntimeException("이미 가입되어 있는 유저입니다.");
         }
-        // 이메일 인증이 되면 자격증명을 승인됨으로 바꿈
 
         User user = userRequestDTO.toUser(passwordEncoder);
 
@@ -62,6 +61,7 @@ public class UserService {
         user.setRegion(user.getRegion());
 
         return UserResponseDTO.of(userRepository.save(user));
+
     }
 
 
@@ -151,6 +151,9 @@ public class UserService {
 
     }
 
+//    public void updateRefreshToken(String updateRefreshToken) {
+//        this.refreshToken = updateRefreshToken;
+//    }
 
 
 

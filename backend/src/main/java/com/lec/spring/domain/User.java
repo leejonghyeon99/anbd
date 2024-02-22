@@ -1,6 +1,7 @@
 package com.lec.spring.domain;
 
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.*;
 
 import java.util.List;
@@ -43,6 +44,9 @@ public class User extends BaseEntity{
     private String provider;
 
     private String provider_id;
+
+    @Column(length = 512)
+    private String refreshToken;
 
     // 이메일 인증을 위해 unique 추가
     @Column(nullable = false, length = 200, unique = true)

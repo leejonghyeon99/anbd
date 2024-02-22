@@ -16,6 +16,7 @@ import DetailPage from "./product/page/DetailPage";
 import UpdatePage from "./product/page/UpdatePage";
 import GoogleMaps from "./product/page/GoogleMaps";
 import ChatPage from './chat/page/ChatPage';
+import LoginCallback from "./user/LoginCallback";
 
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
             <Route path="/" element={<Navigate to="/home"></Navigate>}></Route>
             <Route path="/home" Component={Home}></Route>
             <Route path="user/login" Component={Login}></Route>
+            <Route path="user/logincallback" Component={LoginCallback}></Route>
             <Route path="user/signup" Component={SignUp}></Route>
             <Route path="user/passwordcheck" Component={PasswordCheck}></Route>
             <Route path="user/update" Component={Update}></Route>
