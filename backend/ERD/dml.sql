@@ -7,6 +7,8 @@ show tables;
 desc user;
 insert into user(auth, star, phone_number, nickname, name, username, password, email, thumbnail, created_at)
 values ('ROLE_USER',3.3,'01012341234','test_name','이종현','가나다라','1234','1z122f7@email.com','default.jpeg', now());
+insert into user(auth, star, phone_number, nickname, name, username, password, email, thumbnail, created_at)
+values ('ROLE_USER',1.8,'01012311231','test_name1','권희수','테스트1','1234','test1@email.com','default.jpeg', now());
 desc user;
 insert into category(name) value ('의류');
 
@@ -49,3 +51,4 @@ select * from user;
 
 # $2a$10$jsEuJ4.Mc/iMGHRa7kB04.9t6PmuGaYKKWfomTgyGcFmfntRtFv0q
 
+insert into category(id, name) values(1, '의류'), (2, '식품'), (3, '생활용품'), (4, '잡화'), (5, '가구/인테리어'), (6, '가전'), (7, '도서'), (8, '기타')

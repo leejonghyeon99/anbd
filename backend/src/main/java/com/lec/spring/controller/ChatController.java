@@ -38,20 +38,6 @@ public class ChatController {
         this.simpMessagingTemplate.convertAndSend("/queue/addChatToClient/"+ id, chatDTO);
     }
 
-//    @MessageMapping("/join")
-//    public void joinUser(@Payload Integer userId) {
-//        userList.add(userId);
-////        userList.forEach(user -> System.out.println(user));
-//        userList.forEach(System.out::println);
-//
-//        // 채팅방 생성 및 사용자 추가
-//        ChatRoom chatRoom = new ChatRoom();
-//        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found")); // userId로 사용자 검색
-//
-//        chatRoom.setUsers(Collections.singletonList(user)); // 단일 사용자로 설정
-//        chatRoomRepository.saveAndFlush(chatRoom); // 채팅방 저장
-//    }
-
     @MessageMapping("/join")
     public void joinUser(@Payload Integer id) {
         userList.add(id);

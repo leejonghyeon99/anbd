@@ -17,12 +17,25 @@ const DetailPage = () => {
     user:"",
   });
   const [files, setFiles] = useState([]);
-  
 
+  // 채팅방
+  const [chatRoom, setChatRoom] = useState({
+    id:"",
+    seller:"",
+    buyer:"",
+    product:"",
+    chats:[],
+  });
+  
   // 채팅하기
-  const GoChat = () => {
-    
-  }
+  const GoChat = (productId) => {
+    // const chatRoomId = chatRoom.id;
+    // if (chatRoomId) {
+    //     navigate(`/chat/${chatRoomId}`); // 채팅방 ID가 있을 경우에만 이동
+    // } else {
+    //     console.error('Chat room ID not available for product', productId);
+    // }
+  };
   const UpdateOk = () => {
     navigate('/product/update/'+id);
   }

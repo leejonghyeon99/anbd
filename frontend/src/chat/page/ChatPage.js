@@ -6,50 +6,60 @@ import SockJS from 'sockjs-client';
 
 const ChatPage = () => {
     const navigate = useNavigate();
-    const [chatRoomIdMap, setChatRoomIdMap] = useState({}); // 상품별 채팅방 ID 매핑
-    const [stompClient, setStompClient] = useState(null);
+    // 채팅방
+    const [chatRoom, setChatRoom] = useState({
+        id:"",
+        seller:"",
+        buyer:"",
+        product:"",
+        chats:[],
+    });
+
+    const [user, setUser] = useState({
+        id:"",
+        username:"",
+        name:"",
+    })
 
     useEffect(() => {
         // SockJS를 사용하여 WebSocket 연결
-        const socket = new SockJS('http://localhost:8080/ws');
-        const client = Stomp.over(socket);
-
-        // 연결 시도
-        client.connect({}, () => {
-            console.log('웹 소켓에 연결되었습니다');
-
-            // 서버로 사용자 ID 전송
-            client.send('/app/join', {}, JSON.stringify({buyerId: 1, productId: 1})); // 여기에 사용자 ID 입력
-
-            // 채팅방 ID 수신
-            const subscription = client.subscribe('/queue/sendChatRoomIdToClient/1', (message) => { // 여기에 사용자 ID 입력
-                const { productId, chatRoomId } = JSON.parse(message.body);
-                console.log(`받은 채팅방 ID (상품 ${productId}):`, chatRoomId);
-                // 여기에서 채팅방 ID를 사용하여 다른 작업을 수행할 수 있습니다.
-                // setChatRoomId(chatRoomId); // 채팅방 ID를 상태에 업데이트
-                // 상품별 채팅방 ID 매핑 업데이트
-                setChatRoomIdMap(prevState => ({
-                    ...prevState,
-                    [productId]: chatRoomId
-                }));
-            });
-            setStompClient(client);
-
-            // cleanup 함수에서 구독 해제
-            return () => {
-                console.log('웹 소켓과의 연결이 해제되었습니다');
-                subscription.unsubscribe();
-            };
+        const userId = user.id;
+        const socket = new SockJS('/api/ws', undefined, {
+            cors: {
+                origin: 'http://localhost:3000',
+                credentials: true,
+            }
         });
+        
+        const stompClient = Stomp.over(socket);
+
+        const onConnect = () => {
+            console.log('WebSocket 연결 성공');
+            // 서버로 사용자 ID 전송하여 채팅방 생성 요청 보내기
+            stompClient.send('/app/join', {}, JSON.stringify({ userId }));
+
+            stompClient.subscribe('/queue/sendChatRoomIdToClient', (message) => {
+                console.log('WebSocket 메세지 수신: ', message.body);
+                const roomId = JSON.parse(message.body);
+                setChatRoom({ ...chatRoom, id: roomId });
+            });
+        };
+
+        stompClient.connect({}, onConnect);
+
+        return () => {
+            // 컴포넌트가 언마운트 될 때 연결 해제
+            stompClient.disconnect();
+        };
     }, []);
 
     // 채팅 페이지로 이동하는 함수
-    const goToChat = (productId) => {
-        const chatRoomId = chatRoomIdMap[productId];
+    const goToChat = () => {
+        const chatRoomId = chatRoom.id;
         if (chatRoomId) {
             navigate(`/chat/${chatRoomId}`); // 채팅방 ID가 있을 경우에만 이동
         } else {
-            console.error('Chat room ID not available for product', productId);
+            console.error('Chat room ID not available');
         }
     };
 
