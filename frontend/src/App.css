@@ -12,10 +12,17 @@
 
 .content {
   background-color: aqua;
-   overflow: hidden; /* Clearfix */
   margin-left: 15%; /* .menu의 너비만큼 여백을 줍니다. */
   height: calc(100vh - 110px);
+  overflow-y: auto;
+  overflow-x: hidden;
+    /* 스크롤바 스타일링 */
+    
+    /* scrollbar-width: thin; */
+    scrollbar-color: #ffffff #b9b9b9a4; /* Firefox */
+
 }
+
 
 
 @media screen and (max-width: 768px) {
@@ -27,5 +34,7 @@
   .content {
     width: 100%;
     margin-left: 0%;
+    font-size: 12.5px;
   }
+
 }

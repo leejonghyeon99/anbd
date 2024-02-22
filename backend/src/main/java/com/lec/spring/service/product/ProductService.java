@@ -3,11 +3,8 @@ package com.lec.spring.service.product;
 import com.lec.spring.domain.Category;
 import com.lec.spring.domain.Product;
 import com.lec.spring.domain.ProductImage;
-import com.lec.spring.domain.User;
-import com.lec.spring.dto.CategoryDTO;
 import com.lec.spring.dto.ProductDTO;
 import com.lec.spring.repository.CategoryRepository;
-import com.lec.spring.repository.UserRepository;
 import com.lec.spring.repository.product.ProductImageRepository;
 import com.lec.spring.repository.product.ProductRepository;
 import jakarta.transaction.Transactional;
@@ -16,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -28,23 +26,46 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
     private final CategoryRepository categoryRepository;
-    private final UserRepository userRepository;
 
     // 등록
     @Transactional
-    public ProductDTO write(Product product, String category){
-        System.out.println(category);
-        Category category1 = categoryRepository.findById(Integer.parseInt(category)).orElse(null);
-        product.setCategory(category1);
-        User user = userRepository.findById(2).orElse(null);
-        product.setUser(user);
-        return ProductDTO.toDto(productRepository.saveAndFlush(product));
+    public ProductDTO write(Product product){
+        Product productEntity = productRepository.findById(product.getId()).orElse(null);
+        String main = product.getCategory().getMain();
+        String sub = product.getCategory().getSub();
+        if (!(categoryRepository.findByMain(main).isPresent() && categoryRepository.findBySub(sub).isPresent())){
+            Category category = Category.builder()
+                    .main(product.getCategory().getMain())
+                    .sub(product.getCategory().getSub())
+                    .build();
+
+            productEntity.setCategory(category);
+            productRepository.save(productEntity);
+
+            return ProductDTO.toDto(productEntity);
+        }
+
+        return null;
     }
 
     // 목록
     @Transactional
-    public List<Product> list(){
-        return productRepository.findAll();
+    public List<ProductDTO> list(String category, String search) {
+        List<Product> productList;
+
+//        if (search != null && !search.isEmpty()) {
+//            // 검색어가 있을 경우, 검색어를 이용하여 필터링
+//            productList = productRepository.findByTitleContainingIgnoreCase(search);
+//        } else {
+//            // 검색어가 없을 경우, 전체 상품 목록 반환
+//            productList = productRepository.findAll();
+//        }
+//            List<Product> products = productRepository.findByTitleContainingIgnoreCaseAndCategory_TitleContainingIgnoreCase(category, search);
+//        return productList.stream()
+//                .map(product -> ProductDTO.toDto(product))
+//                .collect(Collectors.toList());
+            return null;
+
     }
 
     // 상세
