@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./CSS/Login.css";
 
 const Login = () => {
@@ -52,8 +52,8 @@ const Login = () => {
         // 홈 화면으로 이동
         navigate("/home");
 
-        // 페이지 새로고침
-        window.location.reload();
+        // // 페이지 새로고침
+        // window.location.reload();
       })
       .catch((error) => {
         alert(error.message);

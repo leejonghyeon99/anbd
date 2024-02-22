@@ -20,8 +20,9 @@ import java.util.Map;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
-    private static final String NAVER = "Naver";
-    private static final String KAKAO = "Kakao";
+    private static final String NAVER = "naver";
+    private static final String KAKAO = "kakao";
+
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         log.info("CustomOAuth2UserService.loadUser() 실행 - OAuth2 로그인 요청 진입");
@@ -30,22 +31,24 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
         String provider = userRequest.getClientRegistration().getRegistrationId();
-        System.out.println("provider"+provider);
+
         String userNameAttributeName = userRequest.getClientRegistration()
                 .getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName(); // OAuth2 로그인 시 키(PK)가 되는 값
-        System.out.println("userNameAttributeName"+userNameAttributeName);
+
         Map<String, Object> attributes = oAuth2User.getAttributes(); // 소셜 로그인에서 API가 제공하는 userInfo의 Json 값(유저 정보들)
-        System.out.println("attributes"+attributes);
+
         OAuthAttributes extractAttributes = OAuthAttributes.of(provider, userNameAttributeName, attributes);
-        System.out.println("extractAttributes"+extractAttributes);
+
         User createdUser = getUser(extractAttributes, provider); // getUser() 메소드로 User 객체 생성 후 반환
-        System.out.println("createdUser"+createdUser);
 
         // DefaultOAuth2User를 구현한 CustomOAuth2User 객체를 생성해서 반환
         return new CustomOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority(createdUser.getAuth().name())),
-                attributes,
-                extractAttributes.getNameAttributeKey()
+                Collections.singleton(new SimpleGrantedAuthority(createdUser.getAuth().getKey())// getkey 찾기
+                )
+                , attributes
+                , extractAttributes.getNameAttributeKey()
+                , createdUser.getEmail()
+                , createdUser.getAuth()
         );
     }
 
