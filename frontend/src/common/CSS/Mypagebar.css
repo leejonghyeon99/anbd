@@ -50,6 +50,10 @@ li, .mypageList {
   margin-left: 10px;
 }
 
+.mypage_nickname{
+  border: 1px solid black;
+}
+
 @media screen and (max-width: 768px) {
   .profileImg {
     

@@ -17,7 +17,10 @@ public class Category {
     private Integer id;
 
     @Column(nullable = false, length = 20)
-    private String name;
+    private String main;
+
+    @Column(nullable = false, length = 20)
+    private String sub;
 
 //    @OneToMany
 //    @JoinColumn(name = "category_id")

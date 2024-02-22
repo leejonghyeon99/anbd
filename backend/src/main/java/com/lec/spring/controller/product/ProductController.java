@@ -44,13 +44,13 @@ public class ProductController {
         return new ResponseEntity<>(productService.write(pd,product.get("category")), HttpStatus.CREATED);  //201
     }
     // 목록
-    @GetMapping("/list/{category}")
+    @GetMapping("/list/{middleCategory}")
     public ResponseEntity<?> list(
-            @PathVariable(name = "category") String category,
+            @PathVariable(name = "middleCategory") String middleCategory,
             @RequestParam String search
     ){
 
-        return new ResponseEntity<>(productService.list(category,search), HttpStatus.OK);
+        return new ResponseEntity<>(productService.list(middleCategory,search), HttpStatus.OK);
     }
     // 상세
     @GetMapping("/detail/{id}")

@@ -114,14 +114,13 @@ const Header = () => {
         setIsMypageVisible(false);
       }
     };
-  
+
     document.addEventListener("click", handleClickOutside);
-  
+
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [isMypageVisible]);
-
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -212,11 +211,7 @@ const Header = () => {
 
             {/* 로그인한 유저와 비회원의 mypage아이콘 다르게 나오도록 */}
             <div className="mypageToggle" id="menu-bars">
-              {/* <img
-                src="/icon/usericon.png"
-                id="userIcon"
-                onClick={toggleMypage}
-              /> */}
+
               {user.auth === "ROLE_USER" && (
                 <img
                   src="/icon/usericon.png"
@@ -244,6 +239,9 @@ const Header = () => {
             {" "}
             {/* Navbar의 isVisible 속성에 따라 보이거나 숨김 */}
             <nav className="nav-menu">
+              {/* <div className="mypage_nickname">
+                {user.nickname}dd
+              </div> */}
               <li className="navbar-toggle">
                 <img
                   src="/icon/Xmark.png"
@@ -255,27 +253,32 @@ const Header = () => {
                 <img src="/icon/userIcon.png" className="profileImg"></img>
               </div>
 
-              <div>
+              <div className="mypage_auth">
                 {user.auth === "ROLE_USER" && (
                   <div className="userbar">
-                    <li>
-                      <Link to={"/"} onClick={toggleMypage}>
+                    
+                      <Link to={"/chat/:id"} className="chattingBtn" onClick={toggleMypage} >
                         <img
                           src="/icon/chatting.png"
                           className="chatIcon_mp"
                         ></img>
                       </Link>
-                    </li>
 
-                    <ul className="nav-menu-items">
-                      {MypagebarList.map((item, index) => (
-                        <li key={index} className={item.cName} id="menuTitle">
-                          <Link to={item.path} className="mypageList" onClick={toggleMypage}>
-                            {item.icon} <span>{item.title}</span>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
+                    <div>
+                      <ul className="nav-menu-items">
+                        {MypagebarList.map((item, index) => (
+                          <li key={index} className={item.cName} id="menuTitle">
+                            <Link
+                              to={item.path}
+                              className="mypageList"
+                              onClick={toggleMypage}
+                            >
+                              {item.icon} <span>{item.title}</span>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 )}
 
@@ -284,7 +287,11 @@ const Header = () => {
                     <ul>
                       {AdminpagebarList.map((item, index) => (
                         <li key={index} className={item.cName} id="menuTitle">
-                          <Link to={item.path} className="mypageList" onClick={toggleMypage}>
+                          <Link
+                            to={item.path}
+                            className="mypageList"
+                            onClick={toggleMypage}
+                          >
                             {item.icon} <span>{item.title}</span>
                           </Link>
                         </li>
