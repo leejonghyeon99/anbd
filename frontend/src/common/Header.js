@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { MypagebarList } from "../components/MypagebarList";
 import { AdminpagebarList } from "../components/AdminpagebarList";
 import "./CSS/Header.css";
 import "./CSS/Mypagebar.css";
+
 // icon import
 import { FaUserCircle } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
@@ -54,6 +55,7 @@ const Navbar = styled.div`
 
 const Header = () => {
   const navigate = useNavigate();
+  const headerRef = useRef(null);
 
   const [user, setUser] = useState({
     username: "",
@@ -104,6 +106,21 @@ const Header = () => {
   const [isBlivingOpen, setIsBlivingOpen] = useState(false);
   // Mypage 버튼
   const [isMypageVisible, setIsMypageVisible] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (headerRef.current && !headerRef.current.contains(event.target)) {
+        // 클릭된 요소가 Header 외부에 있으면 Navbar를 닫음
+        setIsMypageVisible(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [isMypageVisible]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -181,7 +198,7 @@ const Header = () => {
 
   return (
     <div className="header">
-      <StyledHeader>
+      <StyledHeader ref={headerRef}>
         <div className="headerBox">
           <div className="headerFix">
             <div className="hiddenMenu">
@@ -194,11 +211,7 @@ const Header = () => {
 
             {/* 로그인한 유저와 비회원의 mypage아이콘 다르게 나오도록 */}
             <div className="mypageToggle" id="menu-bars">
-              {/* <img
-                src="/icon/usericon.png"
-                id="userIcon"
-                onClick={toggleMypage}
-              /> */}
+
               {user.auth === "ROLE_USER" && (
                 <img
                   src="/icon/usericon.png"
@@ -222,10 +235,13 @@ const Header = () => {
             </div>
           </div>
 
-          <Navbar isVisible={isMypageVisible} id="mypageNavbar">
+          <Navbar isVisible={isMypageVisible} id="navbar">
             {" "}
             {/* Navbar의 isVisible 속성에 따라 보이거나 숨김 */}
             <nav className="nav-menu">
+              {/* <div className="mypage_nickname">
+                {user.nickname}dd
+              </div> */}
               <li className="navbar-toggle">
                 <img
                   src="/icon/Xmark.png"
@@ -237,27 +253,32 @@ const Header = () => {
                 <img src="/icon/userIcon.png" className="profileImg"></img>
               </div>
 
-              <div>
+              <div className="mypage_auth">
                 {user.auth === "ROLE_USER" && (
                   <div className="userbar">
-                    <li>
-                      <Link to={"/"} onClick={toggleMypage}>
+                    
+                      <Link to={"/chat/:id"} className="chattingBtn" onClick={toggleMypage} >
                         <img
                           src="/icon/chatting.png"
                           className="chatIcon_mp"
                         ></img>
                       </Link>
-                    </li>
 
-                    <ul className="nav-menu-items">
-                      {MypagebarList.map((item, index) => (
-                        <li key={index} className={item.cName} id="menuTitle">
-                          <Link to={item.path} className="mypageList" onClick={toggleMypage}>
-                            {item.icon} <span>{item.title}</span>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
+                    <div>
+                      <ul className="nav-menu-items">
+                        {MypagebarList.map((item, index) => (
+                          <li key={index} className={item.cName} id="menuTitle">
+                            <Link
+                              to={item.path}
+                              className="mypageList"
+                              onClick={toggleMypage}
+                            >
+                              {item.icon} <span>{item.title}</span>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 )}
 
@@ -266,7 +287,11 @@ const Header = () => {
                     <ul>
                       {AdminpagebarList.map((item, index) => (
                         <li key={index} className={item.cName} id="menuTitle">
-                          <Link to={item.path} className="mypageList" onClick={toggleMypage}>
+                          <Link
+                            to={item.path}
+                            className="mypageList"
+                            onClick={toggleMypage}
+                          >
                             {item.icon} <span>{item.title}</span>
                           </Link>
                         </li>
@@ -278,7 +303,7 @@ const Header = () => {
             </nav>
             {/*로그아웃 버튼!! */}
             <img
-              src="icon/logout.png"
+              src="/icon/logout.png"
               className="logout"
               onClick={handleLogout}
             ></img>

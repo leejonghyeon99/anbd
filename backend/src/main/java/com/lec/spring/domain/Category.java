@@ -17,9 +17,11 @@ public class Category {
     private Integer id;
 
     @Column(nullable = false, length = 20)
-    private String name;
+    private String main;
 
-//    @OneToMany
-//    @JoinColumn(name = "category_id")
-//    private List<Product> products;
+    @Column(nullable = false, length = 20)
+    private String sub;
+
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
 }

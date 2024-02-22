@@ -2,6 +2,7 @@ package com.lec.spring.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,14 +35,14 @@ public class Product extends BaseEntity{
 
     private String location;
 
-    private String middleCategory;
-
     @Column(columnDefinition = "datetime default now()")
     private LocalDateTime refreshedAt;
 
     @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     @ToString.Exclude
@@ -59,6 +60,10 @@ public class Product extends BaseEntity{
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Review> reviews;
+
+
+
+
 
 //    @OneToMany(mappedBy = "product",cascade = CascadeType.REMOVE)
 //    private List<ChatRoom> chatRooms;
