@@ -17,13 +17,11 @@ const Admin = () => {
         onClick={() => setModalToggle(false)}
       >
         <div className="admin-menu">
-            <Menu />
-          </div>
-        <div onClick={(e) => e.stopPropagation()}>
-          
+          <Menu />
+        </div>
 
-          <div className="admin-content">
-            {/* <div className="admin-chart">
+        <div className="admin-content">
+          <div className="admin-chart">
             <DailySignUp/>
           </div>
           <div className="admin-chart">
@@ -31,8 +29,10 @@ const Admin = () => {
           </div>
           <div className="admin-user-list">
             <UserList/>
-          </div> */}
-            <div>
+          </div>
+
+          <div onClick={(e) => e.stopPropagation()}>
+            
               {!modalToggle && (
                 <Button
                   onClick={() => {
@@ -42,14 +42,15 @@ const Admin = () => {
                   카테고리 관리
                 </Button>
               )}
-              {modalToggle && 
+              {modalToggle && (
                 <div className="admin-category">
                   <Category setModalToggle={setModalToggle} />
-                </div>              
-              }
-            </div>
+                </div>
+              )}
+
           </div>
         </div>
+        
       </div>
     </>
   );
