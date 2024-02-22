@@ -31,13 +31,19 @@ const WritePage = () => {
     price: "",
     description: "",
     status: "",
-    middleCategory: "",
     createdAt: "",
     location: "",
   });
 
   const [categories, setCategories] = useState([]);
-  const [selectCategory, setSelectCategory] = useState("");
+  const [selectCategory, setSelectCategory] = useState(null);
+
+
+  const [mainCategories, setMainCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
+
+
+  const [selectMain, setSelectMain] = useState("");
 
   // product와 category 같이
   const pc = {
@@ -58,18 +64,29 @@ const WritePage = () => {
     setShowGoogleMaps(prevState => !prevState); // GoogleMaps의 표시 여부를 토글
   };
 
-  // 카테고리
+  // Main목록만 가져오는 카테고리
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/category`)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/category/main`)
     .then(response => response.json())
     .then(data => {
-      setCategories(data);
+      setMainCategories(data);
     });
   }, []);
 
+    // 특정 main에 sub 목록만 가져오는 카테고리
+    // useEffect(() => {
+    //   fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/category/find`)
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     setSubCategories(data);
+    //   });
+    // }, []);
+
   useEffect(() => {
-    console.log("categories " + categories);
-  },[categories]);
+    mainCategories.forEach(f => {
+      console.log(f);
+    })
+  },[mainCategories]);
 
   // 이미지
   const [files, setFiles] = useState([]);
@@ -81,39 +98,7 @@ const WritePage = () => {
     console.log("fileArr " + fileArr);
     console.log("fileArr[0] " + fileArr[0].name);
 
-    // let fileUrl = [];
-    // let fileKeys = [];
-
-    // for (let i = 0; i < fileArr.length; i++) {
-    //   let fileRead = new FileReader();
-    //   fileRead.onload = function(){
-    //     let url = fileRead.result;
-    //     let key = i.toString();
-
-    //     fileUrl.push(url);
-    //     fileKeys.push(key);
-
-    //     console.log("File Url i" , i, ":", url);
-    //     console.log("File Key i" , i, ":", key);
-    //   }
-    //   fileRead.readAsDataURL(fileArr[i]);
-    // }
-    // let fileUrl = [];
-    // let fileKeys = [];
-    // for (let i = 0; i < fileArr.length; i++) {
-    //   let fileRead = new FileReader();
-    //   fileRead.onload = function(){
-    //     fileUrl[i] = fileRead.result;
-    //     console.log("fileUrl[i] : " + fileUrl[i]);
-    //     console.log("fileKeys[i] : " + fileKeys[i]);
-    //   }
-    //   // 파일 key값을 가져오기 위해 파일명 사용
-    //   let fileName = fileArr[i].name;
-    //   fileKeys.push(fileName);
-    //   console.log("파일key : " + fileKeys.push(fileName));
-    //   // 파일 읽기
-    //   fileRead.readAsDataURL(fileArr[i]);
-    // }
+    
 
     let fileData = [];  // 파일의 URL과 키를 담을 배열
     const uploadAndSave = (file, index) => {
@@ -143,8 +128,7 @@ const WritePage = () => {
   };
   // 선택된 category 값
   const CategoryValue = (e) => {
-    setSelectCategory(e.target.value);
-    console.log("category " + e.target.value);
+    setSelectCategory({id : e.target.value, name : e.target.options[e.target.selectedIndex].text});
   }
   // 작성 완료
   const WriteOk = (e) => {
@@ -235,60 +219,21 @@ const WritePage = () => {
       <div>
         <span>대분류</span>
         <div className="mb-3">
-          <select className="form-select" name="category" value={selectCategory.id} onChange={CategoryValue}>
+          <select className="form-select" name="main" value={selectCategory} onChange={CategoryValue}>
             <option>-- 대분류 카테고리를 선택해주세요 --</option>
-          {categories.map(category =>
+          {mainCategories.map(category =>
+          ( 
+            <option key={category.id} value={category.main}>{category.main}</option>)
+          )}</select>
+      
+        <span>중분류</span>
+          <select className="form-select" name='sub' value={selectCategory} onChange={CategoryValue}>          
+              
+            {categories.map(category =>
           ( 
             <option key={category.id} value={category.id}>{category.name}</option>)
           )}</select>
-      
-      <span>중분류</span>
-          {/* <select className="form-select" name='middleCategory' value={product.middleCategory} onChange={WriteValue}> */}
-            {/* {product.category === 'null' && (
-              <><option value="" selected>-- 대분류 먼저 선택해주세요 --</option></>
-            )} */}
-            {/* { === '1' && (
-            <><option value disabled selected>-- 중분류 카테고리를 선택해주세요 --</option> 
-            <option value="여성의류">여성의류</option> 
-            <option value="남성의류">남성의류</option>
-            <option value="아동의류">아동의류</option></>)}
-            {product.category === '2' && (
-            <><option value disabled selected>-- 중분류 카테고리를 선택해주세요 --</option> 
-            <option value="가공식품">가공식품</option>
-            <option value="기타식품">기타식품</option>
-            </>)}
-            {product.category === '3' && (
-            <><option isabled selected>-- 중분류 카테고리를 선택해주세요 --</option> 
-            <option value="주방용품">주방용품</option>
-            <option value="욕실용품">욕실용품</option></>)}
-            {product.category === '4' && (
-            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option> 
-            <option value="남성잡화">남성잡화</option>
-            <option value="여성잡화">여성잡화</option>
-            <option value="아동잡화">아동잡화</option>
-            <option value="반려동물용품">반려동물용품</option></>)}
-            {product.category === '5' && (
-            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option>
-            <option value="가구">가구</option>
-            <option value="인테리어">인테리어</option></>)}
-            {product.category === '6' && (
-            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option> 
-            <option value="디지털기기">디지털기기</option>
-            <option value="주방가전">주방가전</option>
-            <option value="리빙가전">리빙가전</option></>)}
-            {product.category.id === '7' && (
-            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option> 
-            <option value="도서">도서</option>
-            <option value="유아도서">유아도서</option></>)}
-            {product.category.id === '8' && (
-            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option> 
-            <option value="기타">기타</option></>)} */}
-          
-            {/* <option value="여성의류">여성의류</option>
-            <option value="남성의류">남성의류</option>
-            <option value="아동의류">아동의류</option>
-          </select> */}
-          <input type="text" name="middleCategory"></input>
+       
         </div>
       </div>
       <span>가격</span>
