@@ -34,8 +34,6 @@ public class Product extends BaseEntity{
 
     private String location;
 
-    private String middleCategory;
-
     @Column(columnDefinition = "datetime default now()")
     private LocalDateTime refreshedAt;
 
@@ -59,6 +57,10 @@ public class Product extends BaseEntity{
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Review> reviews;
+
+
+
+
 
 //    @OneToMany(mappedBy = "product",cascade = CascadeType.REMOVE)
 //    private List<ChatRoom> chatRooms;

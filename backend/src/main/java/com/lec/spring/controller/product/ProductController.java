@@ -26,31 +26,18 @@ public class ProductController {
 
     // 등록
     @PostMapping("/write")
-    public ResponseEntity<?> write(@RequestBody Map<String,String> product){
-//        Product product1 = productService.write(product);
-        System.out.println("ProductController.write");
-        System.out.println("product = " + product.toString());
-//        System.out.println("::"+product.toString());
-        Product pd = new Product();
-        pd.setTitle(product.get("title"));
-        pd.setMiddleCategory(product.get("middleCategory"));
-        pd.setPrice(Integer.parseInt(product.get("price")));
-        pd.setDescription(product.get("description"));
-        pd.setStatus(Status.valueOf(product.get("status")));
-        pd.setLocation(product.get("location"));
-//        System.out.println(files.toString());
-        System.out.println(pd.toString());
+    public ResponseEntity<?> write(@RequestBody Product product){
 
-        return new ResponseEntity<>(productService.write(pd,product.get("category")), HttpStatus.CREATED);  //201
+        return new ResponseEntity<>(productService.write(product), HttpStatus.CREATED);  //201
     }
     // 목록
-    @GetMapping("/list/{middleCategory}")
+    @GetMapping("/list/{sub}")
     public ResponseEntity<?> list(
-            @PathVariable(name = "middleCategory") String middleCategory,
+            @PathVariable(name = "sub") String sub,
             @RequestParam String search
     ){
 
-        return new ResponseEntity<>(productService.list(middleCategory,search), HttpStatus.OK);
+        return new ResponseEntity<>(productService.list(sub,search), HttpStatus.OK);
     }
     // 상세
     @GetMapping("/detail/{id}")

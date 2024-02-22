@@ -30,11 +30,23 @@ public class ProductService {
 
     // 등록
     @Transactional
-    public ProductDTO write(Product product, String category){
-        System.out.println(category);
-        Category category1 = categoryRepository.findById(Integer.parseInt(category)).orElse(null);
-        product.setCategory(category1);
-        return ProductDTO.toDto(productRepository.saveAndFlush(product));
+    public ProductDTO write(Product product){
+        Product productEntity = productRepository.findById(product.getId()).orElse(null);
+        String main = product.getCategory().getMain();
+        String sub = product.getCategory().getSub();
+        if (!(categoryRepository.findByMain(main).isPresent() && categoryRepository.findBySub(sub).isPresent())){
+            Category category = Category.builder()
+                    .main(product.getCategory().getMain())
+                    .sub(product.getCategory().getSub())
+                    .build();
+
+            productEntity.setCategory(category);
+            productRepository.save(productEntity);
+
+            return ProductDTO.toDto(productEntity);
+        }
+
+        return null;
     }
 
     // 목록
