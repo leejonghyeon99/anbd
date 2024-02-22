@@ -27,7 +27,6 @@ public class ProductDTO {
     private LocalDateTime refreshedAt;
     private CategoryDTO category;
     private String user;
-    private String userProfile;
 
     public static ProductDTO toDto(Product entity) {
         return ProductDTO.builder()
@@ -37,11 +36,9 @@ public class ProductDTO {
                 .price(entity.getPrice())
                 .status(entity.getStatus())
                 .location(entity.getLocation())
-                .middleCategory(entity.getMiddleCategory())
                 .refreshedAt(entity.getRefreshedAt())
                 .category(CategoryDTO.toDto(entity.getCategory()))
-//                .user(UserDTO.toDto(entity.getUser()).getNickname())
-//                .userProfile("profile/"+UserDTO.toDto(entity.getUser()).getId())
+                .user(entity.getUser().getNickname())
                 .build();
     }
 
@@ -51,4 +48,5 @@ public class ProductDTO {
                 .map(ProductDTO::toDto)
                 .collect(Collectors.toList());
     }
+
 }

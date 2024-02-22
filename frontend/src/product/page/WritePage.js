@@ -1,12 +1,18 @@
+
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import GoogleMaps from "./GoogleMaps";
 
 const WritePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedLocation, setSelectedLocation] = useState(""); // 기본 선택, 나중에 현재위치로 불러오기
+  
+  // GoogleMaps 활성여부
+  const [showGoogleMaps, setShowGoogleMaps] = useState(false);
 
+  // 위치
   useEffect(() => {
     if (location.state && location.state.location) {
       const {lat, lng} = location.state.location;
@@ -27,9 +33,17 @@ const WritePage = () => {
     status: "",
     middleCategory: "",
     createdAt: "",
-    category: "",
     location: "",
   });
+
+  const [categories, setCategories] = useState([]);
+  const [selectCategory, setSelectCategory] = useState("");
+
+  // product와 category 같이
+  const pc = {
+    ...product,
+    category: selectCategory
+  };
 
   // 위치
   useEffect(() => {
@@ -40,6 +54,23 @@ const WritePage = () => {
     console.log('::' + selectedLocation);
   }, [selectedLocation]);
 
+  const toggleGoogleMaps = () => {
+    setShowGoogleMaps(prevState => !prevState); // GoogleMaps의 표시 여부를 토글
+  };
+
+  // 카테고리
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/category`)
+    .then(response => response.json())
+    .then(data => {
+      setCategories(data);
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log("categories " + categories);
+  },[categories]);
+
   // 이미지
   const [files, setFiles] = useState([]);
 
@@ -47,8 +78,8 @@ const WritePage = () => {
   const uploadFile = (e) => {
     let fileArr = e.target.files;
     setFiles(Array.from(fileArr)); // 업로드한 files를 배열로
-    console.log("fileArr" + fileArr);
-    console.log("fileArr[0]" + fileArr[0].name);
+    console.log("fileArr " + fileArr);
+    console.log("fileArr[0] " + fileArr[0].name);
 
     // let fileUrl = [];
     // let fileKeys = [];
@@ -102,6 +133,7 @@ const WritePage = () => {
     console.log("fileData", fileData);
   }
 
+  // 작성된 값
   const WriteValue = (e) => {
     setProduct({
       ...product,
@@ -109,9 +141,14 @@ const WritePage = () => {
     });
     console.log(e.target.value);
   };
-
+  // 선택된 category 값
+  const CategoryValue = (e) => {
+    setSelectCategory(e.target.value);
+    console.log("category " + e.target.value);
+  }
+  // 작성 완료
   const WriteOk = (e) => {
-    console.log(product, files);
+    console.log(product);
     e.preventDefault();
 
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
@@ -119,7 +156,7 @@ const WritePage = () => {
       headers: {
         "Content-Type": "application/json;charset=utf-8",
       },
-      body: JSON.stringify(product),  // JSON 형식으로 데이터 전송
+      body: JSON.stringify(pc),  // JSON 형식으로 데이터 전송
     })
       .then((response) => {
         console.log(`응답하라`, response);
@@ -141,10 +178,12 @@ const WritePage = () => {
         }
       });
   };
-
+  // 목록
   const ListOk = () => {
     navigate("/product/list");
   };
+
+  // 지도
   const MapOk = () => {
     navigate("/product/map");
   }
@@ -163,7 +202,24 @@ const WritePage = () => {
         <span>선택된 위치 location: {selectedLocation}</span>
         </div>
       )} */}
-      <input type="button" name="location" id="location" value={product.location} onClick={MapOk}></input><br/>
+      {/* <GoogleMaps props={}></GoogleMaps> */}
+      {/* GoogleMaps를 표시하거나 숨기는 버튼 */}
+      <button onClick={toggleGoogleMaps}>
+        {showGoogleMaps ? 'GoogleMaps 숨기기' : 'GoogleMaps 표시하기'}
+      </button>
+
+      {/* GoogleMaps 컴포넌트를 props와 함께 조건부 렌더링 */}
+      {showGoogleMaps && (
+        <GoogleMaps
+          props={{
+            // 여기에 원하는 props를 전달.
+            key: 'value',
+            anotherProp: 'anotherValue',
+          }}
+        />
+      )}
+      <span>선택된 위치: {product.location}</span>
+      {/* <input type="button" name="location" id="location" value={product.location} onClick={MapOk}></input><br/> */}
       <span>제목</span>
       <div className="mb-3">
         <input
@@ -179,36 +235,34 @@ const WritePage = () => {
       <div>
         <span>대분류</span>
         <div className="mb-3">
-        <select className="form-select" name='category' value={product.category} onChange={WriteValue}>
-            <option value="null">-- 대분류 카테고리를 선택해주세요 --</option>
-            <option value="1">의류</option>
-            <option value="2">식품</option>
-            <option value="3">생활용품</option>
-            <option value="4">잡화</option>
-            <option value="5">가구/인테리어</option>
-            <option value="6">가전</option>
-            <option value="7">도서</option>
-            <option value="8">기타</option>
-          </select>
-          <span>중분류</span>
-          <select className="form-select" name='middleCategory' value={product.middleCategory} onChange={WriteValue}>
-            {product.category === 'null' && (
-            <><option selected disabled>-- 대분류 먼저 선택해주세요 --</option></>)}
-            {product.category === '1' && (
-            <><option selected disabled>-- 중분류 카테고리를 선택해주세요 --</option>
-            <option value="여성의류">여성의류</option>
+          <select className="form-select" name="category" value={selectCategory.id} onChange={CategoryValue}>
+            <option>-- 대분류 카테고리를 선택해주세요 --</option>
+          {categories.map(category =>
+          ( 
+            <option key={category.id} value={category.id}>{category.name}</option>)
+          )}</select>
+      
+      <span>중분류</span>
+          {/* <select className="form-select" name='middleCategory' value={product.middleCategory} onChange={WriteValue}> */}
+            {/* {product.category === 'null' && (
+              <><option value="" selected>-- 대분류 먼저 선택해주세요 --</option></>
+            )} */}
+            {/* { === '1' && (
+            <><option value disabled selected>-- 중분류 카테고리를 선택해주세요 --</option> 
+            <option value="여성의류">여성의류</option> 
             <option value="남성의류">남성의류</option>
             <option value="아동의류">아동의류</option></>)}
             {product.category === '2' && (
-            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option>
+            <><option value disabled selected>-- 중분류 카테고리를 선택해주세요 --</option> 
             <option value="가공식품">가공식품</option>
-            <option value="기타식품">기타식품</option></>)}
+            <option value="기타식품">기타식품</option>
+            </>)}
             {product.category === '3' && (
-            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option>
+            <><option isabled selected>-- 중분류 카테고리를 선택해주세요 --</option> 
             <option value="주방용품">주방용품</option>
             <option value="욕실용품">욕실용품</option></>)}
             {product.category === '4' && (
-            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option>
+            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option> 
             <option value="남성잡화">남성잡화</option>
             <option value="여성잡화">여성잡화</option>
             <option value="아동잡화">아동잡화</option>
@@ -218,18 +272,23 @@ const WritePage = () => {
             <option value="가구">가구</option>
             <option value="인테리어">인테리어</option></>)}
             {product.category === '6' && (
-            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option>
+            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option> 
             <option value="디지털기기">디지털기기</option>
             <option value="주방가전">주방가전</option>
             <option value="리빙가전">리빙가전</option></>)}
-            {product.category === '7' && (
-            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option>
+            {product.category.id === '7' && (
+            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option> 
             <option value="도서">도서</option>
             <option value="유아도서">유아도서</option></>)}
-            {product.category === '8' && (
-            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option>
-            <option value="기타">기타</option></>)}
-          </select>
+            {product.category.id === '8' && (
+            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option> 
+            <option value="기타">기타</option></>)} */}
+          
+            {/* <option value="여성의류">여성의류</option>
+            <option value="남성의류">남성의류</option>
+            <option value="아동의류">아동의류</option>
+          </select> */}
+          <input type="text" name="middleCategory"></input>
         </div>
       </div>
       <span>가격</span>
@@ -267,12 +326,8 @@ const WritePage = () => {
           <option value="SOLD">판매완료</option>
         </select>
       </div>
-      <Button variant="outline-dark me-2" onClick={WriteOk}>
-        완료
-      </Button>
-      <Button variant="outline-dark" onClick={ListOk}>
-        취소
-      </Button>
+      <Button variant="outline-dark me-2" onClick={WriteOk}>완료</Button>
+      <Button variant="outline-dark" onClick={ListOk}>취소</Button>
     </div>
   );
 };

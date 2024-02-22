@@ -98,21 +98,21 @@ public class AdminService {
         return CategoryDTO.toDtoList(
                 categoryRepository.findAll()
                         .stream()
-                        .sorted(Comparator.comparing(Category::getName))
+
                         .collect(Collectors.toList())
         );
     }
 
     //대분류 추가
     @Transactional
-    public String addCategory(String name){
+    public String addCategory(String main){
 
-        if(categoryRepository.findByName(name).isPresent()){
+        if(categoryRepository.findByMain(main).isPresent()){
             return "중복 되었습니다.";
         }
 
         Category category = new Category();
-        category.setName(name);
+        category.setMain(main);
         categoryRepository.save(category);
         return "등록 성공";
     }
