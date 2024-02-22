@@ -3,8 +3,11 @@ package com.lec.spring.service.product;
 import com.lec.spring.domain.Category;
 import com.lec.spring.domain.Product;
 import com.lec.spring.domain.ProductImage;
+import com.lec.spring.domain.User;
+import com.lec.spring.dto.CategoryDTO;
 import com.lec.spring.dto.ProductDTO;
 import com.lec.spring.repository.CategoryRepository;
+import com.lec.spring.repository.UserRepository;
 import com.lec.spring.repository.product.ProductImageRepository;
 import com.lec.spring.repository.product.ProductRepository;
 import jakarta.transaction.Transactional;
@@ -26,6 +29,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
     private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
 
     // 등록
     @Transactional
@@ -89,7 +93,9 @@ public class ProductService {
         Category category = categoryRepository.findById(product.getCategory().getId()).orElse(null);
 
         if (category != null) {
-            category.setName(product.getCategory().getName());
+            category.setMain(product.getCategory().getMain());
+            category.setSub(product.getCategory().getSub());
+
             categoryRepository.save(category);
 
             productEntity.setLocation(product.getLocation());   // 위치
@@ -97,25 +103,10 @@ public class ProductService {
             productEntity.setPrice(product.getPrice());
             productEntity.setStatus(product.getStatus());
             productEntity.setDescription(product.getDescription());
-            productEntity.setMiddleCategory(product.getMiddleCategory());
             productEntity.setCategory(category);
             productEntity.setRefreshedAt(product.getRefreshedAt());  // 끌어올리기
             productRepository.save(productEntity);
         }
-
-
-//        Category category1 = categoryRepository.findById(Integer.parseInt(category)).orElseThrow(() -> new IllegalArgumentException("카테고리가 존재하지 않습니다: " + category));
-//        System.out.println(product.getCategory());
-        // Product 업데이트
-//        productEntity.setLocation(product.getLocation());   // 위치
-//        productEntity.setTitle(product.getTitle());
-//        productEntity.setPrice(product.getPrice());
-//        productEntity.setStatus(product.getStatus());
-//        productEntity.setDescription(product.getDescription());
-//        productEntity.setMiddleCategory(product.getMiddleCategory());
-//        productEntity.setCategory(product.getCategory());
-//        System.out.println("+++++++" + product.getCategory());
-//        productEntity.setCategory(category1);
 
         return ProductDTO.toDto(productEntity);
     }

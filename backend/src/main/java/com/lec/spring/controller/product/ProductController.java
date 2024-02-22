@@ -2,6 +2,7 @@ package com.lec.spring.controller.product;
 
 import com.lec.spring.domain.Product;
 import com.lec.spring.domain.Status;
+import com.lec.spring.dto.ProductDTO;
 import com.lec.spring.service.product.ProductImageService;
 import com.lec.spring.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -68,6 +69,12 @@ public class ProductController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
         return new ResponseEntity<>(productService.delete(id), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/category")
+    public ResponseEntity<?> category(){
+        return new ResponseEntity<>(productService.findByCategory(), HttpStatus.OK);
     }
 
     @InitBinder

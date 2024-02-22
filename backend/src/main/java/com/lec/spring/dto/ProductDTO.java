@@ -36,7 +36,6 @@ public class ProductDTO {
                 .price(entity.getPrice())
                 .status(entity.getStatus())
                 .location(entity.getLocation())
-                .middleCategory(entity.getMiddleCategory())
                 .refreshedAt(entity.getRefreshedAt())
                 .category(CategoryDTO.toDto(entity.getCategory()))
                 .user(entity.getUser().getNickname())

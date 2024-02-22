@@ -8,11 +8,11 @@ desc user;/*정렬*/
 select * from user;
 
 /*카테고리 sample*/
-insert into category(name) value ('여성의류');
-insert into category(name) value ('남성의류');
-insert into category(name) value ('아동의류');
-insert into category(name) value ('즉석식품');
-insert into category(name) value ('즉석식품');
+insert into category(main, sub) value ('의류', '여성의류');
+insert into category(main, sub) value ('의류', '남성의류');
+insert into category(main, sub) value ('의류', '아동의류');
+insert into category(main, sub) value ('식품', '즉석식품');
+insert into category(main, sub) value ('식품', '즉석식품');
 
 select * from category;
 
