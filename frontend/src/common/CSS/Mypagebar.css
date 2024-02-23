@@ -1,9 +1,4 @@
-#userIcon {
-  width: 2rem;
-}
-#adminIcon {
-  width: 2.2rem;
-}
+
 
 li, .mypageList {
   list-style-type: none;
@@ -20,15 +15,68 @@ li, .mypageList {
 .profile {
   display: flex;
   justify-content: center;
+  align-items: center;
   border: solid 1px black;
-
+  padding: 5px; /* 필요에 따라 패딩 조절 */
 }
 .profileImg {
   width: 70%;
 }
 
+.mypage_auth:hover .nav-menu-items {
+  display: flex; /* .mypage_auth에 호버 시 .nav-menu-items를 표시합니다. */
+}
+
+.chattingBtn {
+  margin-left: 10px; /* 채팅 버튼과 프로필 이미지 사이 여백 조절 */
+}
+
+.chatIcon_mp {
+  width: 10%;
+  float: left;
+  padding: 2px;
+  margin: 0.4rem;
+}
+
 .nav-menu-items {
-  border: 1px solid black;
+  background-color: #fff; /* 배경색이 필요하면 추가 */
+  padding: 10px; /* 필요에 따라 여백 조절 */
+  border-radius: 5px; /* 필요에 따라 테두리 둥글게 조절 */
+  display: flex; /* 초기에는 메뉴 항목을 감추지 않습니다. */
+  margin-top: 20px;
+  flex-direction: column; /* 세로 방향으로 나열합니다. */
+  width: 100%;
+}
+
+#menuTitle {
+  margin-bottom: 8px;
+  width: 100%;
+  position: relative;
+  height: 100%;
+}
+
+.mypageList {
+  font-size: 13px;
+  border: 1px solid #fff;
+  transition: color 0.5s ease; /* hover 효과를 부드럽게 만들기 위한 transition 추가 */
+  color: rgb(97, 95, 95);
+  font-weight: bold;
+  margin: 0.5rem;
+  z-index: 1;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.158);
+  width: 100%; /* 부모 요소인 #menuTitle과 같은 너비로 설정 */
+  display: inline-block; /* inline-block으로 설정하여 컨테이너 크기가 내부 내용에 맞게 조절되도록 함 */
+  padding: 0.3rem;
+  padding-block: 0.6rem;
+  margin-block: 0.1rem;
+}
+
+.mypageList:hover {
+  color: rgb(32, 76, 114); 
+  border: solid 3px rgba(32, 76, 114, 0.37);
+  box-shadow: 0 0 6px rgba(32, 76, 114, 0.829);
+  background-color: rgba(205, 224, 241, 0.068);
+  font-weight: bolder;
 }
 
 .closeMypage {
@@ -37,8 +85,9 @@ li, .mypageList {
   float: right;
   margin-bottom: 10px;
 }
-
+/*회원정보수정 버튼*/
 .moveToUpdate {
+  padding-inline: 0.3rem;
   float: right;
   margin-bottom: 4px;
   text-decoration: none;
@@ -49,16 +98,13 @@ li, .mypageList {
   font-size: 14px;
 }
 
-.chatIcon_mp {
-  width: 10%;
-  float: right;
-  padding: 2px;
-}
+
 
 .logout {
+  float: right;
   width: 10%;
   padding: 2px;
-  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .mypage_nickname{
@@ -66,7 +112,26 @@ li, .mypageList {
 }
 
 @media screen and (max-width: 768px) {
-  .profileImg {
-    
+  li {
+    font-size: 80%;
+  }
+  .chatIcon_mp {
+    width: 10%;
+  }
+
+  .nav-menu-items {
+    margin-top: 30px;
+  }
+}
+@media screen and (max-width: 600px) {
+  li {
+    font-size: 80%;
+  }
+  .chatIcon_mp {
+    width: 13%;
+  }
+
+  .nav-menu-items {
+    margin-top: 26px;
   }
 }

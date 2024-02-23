@@ -376,14 +376,14 @@ const SignUp = () => {
             </option>
 
             {/* 거주지역 select option을 regionsData에서 map으로 가져온다. */}
-            {regionsData.features.map((feature) => (
-              <option
-                key={feature.properties.SIG_CD}
-                value={feature.properties.SIG_KOR_NM}
-              >
-                {feature.properties.SIG_KOR_NM}
-              </option>
-            ))}
+            {regionsData.features
+              .map((feature) => feature.properties.SIG_KOR_NM)
+              .sort((a, b) => a.localeCompare(b))
+              .map((sortedSIG_KOR_NM, index) => (
+                <option key={index} value={sortedSIG_KOR_NM}>
+                  {sortedSIG_KOR_NM}
+                </option>
+              ))}
           </select>
         </div>
         {regError && (
