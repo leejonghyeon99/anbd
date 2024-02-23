@@ -19,12 +19,14 @@ import java.util.stream.Collectors;
 public class CategoryDTO{
 
     private Integer id;
-    private String name;
+    private String main;
+    private String sub;
 
     public static CategoryDTO toDto(Category entity) {
         return CategoryDTO.builder()
                 .id(entity.getId())
-                .name(entity.getName())
+                .main(entity.getMain())
+                .sub(entity.getSub())
                 .build();
     }
 

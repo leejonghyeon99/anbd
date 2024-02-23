@@ -21,7 +21,7 @@ public class ProductTest {
     public void test(){
         Category category1 = Category.builder()
                 .id(1)
-                .name("의류")
+
                 .build();
         Status status1 = Status.SALE;
         Status status2 = Status.SOLD;
@@ -30,7 +30,7 @@ public class ProductTest {
                 .id(1L)
                 .title("테스트1")
                 .category(category1)
-                .middleCategory("여성의류")
+
                 .price(15000)
                 .description("테스트중")
                 .status(status1)

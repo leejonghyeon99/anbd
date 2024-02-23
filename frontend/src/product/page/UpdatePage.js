@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import GoogleMaps from './GoogleMaps';
 
 const UpdatePage = () => {
 
@@ -11,29 +12,42 @@ const UpdatePage = () => {
   const location = useLocation();
   const [selectedLocation, setSelectedLocation] = useState(""); // 기본 선택
 
+   // GoogleMaps 활성여부
+   const [showGoogleMaps, setShowGoogleMaps] = useState(false);
+
   useEffect(() => {
     if (location.state && location.state.location) {
       const{lat, lng} = location.state.location;
       setSelectedLocation(`${lat}, ${lng}`);
-      console.log("위경도: "+setSelectedLocation(`${lat}, ${lng}`)); // 위도, 경도형식으로 문자열 저장
+      console.log("위경도: " + setSelectedLocation(`${lat}, ${lng}`)); // 위도, 경도형식으로 문자열 저장
     }
   }, [location.state]);
-
+  
   const [product, setProduct] = useState({
     title:"",
+    id:id,
     description:"",
     price:0,
     status:"",
     middleCategory:"",
     // 카테고리는 object
-    category:{
-      id:"",
-      name:""
-    },
+    // category:{
+      //   id:"",
+      //   name:""
+    // },
     refreshedAt:"",
-    location: ""
+    location: "",
   });
-
+  console.log("product: " + product)
+  
+  const [categories, setCategories] = useState([]);
+  const [selectCategory, setSelectCategory] = useState({});
+  
+  const pc = {
+    ...product,
+    category: selectCategory
+  };
+  
   // 위치
   useEffect(() => {
     setProduct((prevProduct) => ({
@@ -42,6 +56,10 @@ const UpdatePage = () => {
     }));
     console.log('::' + selectedLocation);
   }, [selectedLocation]);
+  
+  const toggleGoogleMaps = () => {
+    setShowGoogleMaps(prevState => !prevState); // GoogleMaps의 표시 여부를 토글
+  };
 
   const UpdateValue = (e) => {
     setProduct({
@@ -53,19 +71,35 @@ const UpdatePage = () => {
   }
 
   // 대분류 카테고리만
-  const categoryValue = (e) => {
-    setProduct({
-      ...product,
-      category: {
-        id:e.target.value,
-        name:e.target.options[e.target.selectedIndex].text  // select 안 option들 중에서 선택된 option에 해당하는 text 가져오기
-      },
-    });
-    console.log(product);
-  }
+  // const CategoryValue = (e) => {
+  //   setProduct({
+  //     ...product,
+  //     category: {
+  //       id:e.target.value,
+  //       name:e.target.options[e.target.selectedIndex].text  // select 안 option들 중에서 선택된 option에 해당하는 text 가져오기
+  //     },
+  //   });
+  //   console.log(product);
+  // }
 
+  // 카테고리
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/category`)
+    .then(response => response.json())
+    .then(data => {
+      setCategories(data);
+    });
+  }, []);
+  
+  // 선택된 category 값
+  const CategoryValue = (e) => {
+    setSelectCategory({id : e.target.value, name : e.target.options[e.target.selectedIndex].text});
+  }
+  useEffect(()=>{console.log(selectCategory);},[selectCategory])
+
+  // 지도
   const MapOk = () => {
-    navigate("/product/map");
+    navigate("/product/map/" + id);
   }
 
   // 끌어올리기
@@ -94,7 +128,7 @@ const UpdatePage = () => {
       headers: {
         "Content-Type": "application/json;charset-utf-8",
       },
-      body: JSON.stringify(product),
+      body: JSON.stringify(pc),
     })
     .then(response => {
       if(response.status === 200){
@@ -111,11 +145,12 @@ const UpdatePage = () => {
       } else {
         alert('수정 실패');
       }
-    })
+    })                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
   }
 
   return (
     <div>
+      {/* <GoogleMaps props={id}></GoogleMaps> */}
       <h2>상품 수정</h2>
       <span>이미지 첨부</span>
       <div className="mb-3">
@@ -128,7 +163,24 @@ const UpdatePage = () => {
         <span>선택된 위치 Lat:{selectedLocation.lat} Lng: {selectedLocation.lng}</span>
       </div>
       )} */}
-      <input type="button" name="location" id="location" value={product.location} onClick={MapOk}></input><br/>
+
+      <button onClick={toggleGoogleMaps}>
+        {showGoogleMaps ? 'GoogleMaps 숨기기' : 'GoogleMaps 표시하기'}
+      </button>
+
+      {/* GoogleMaps 컴포넌트를 props와 함께 조건부 렌더링 */}
+      {showGoogleMaps && (
+        <GoogleMaps
+          props={{
+            // 여기에 원하는 props를 전달할 수 있습니다.
+            key: 'value',
+            anotherProp: 'anotherValue',
+          }}
+        />
+      )}
+      <span>선택된 위치: {product.location}</span>
+
+      {/* <input type="button" name="location" id="location" value={product.location} onClick={MapOk}></input><br/> */}
       <span>제목</span>
       <div className="mb-3">
         <input
@@ -145,7 +197,13 @@ const UpdatePage = () => {
       <div>
         <span>대분류</span>
         <div className="">
-        <select className="form-select" name='category' value={product.category.id} onChange={categoryValue}>
+        <select className="form-select" name="main" value={selectCategory.id} onChange={CategoryValue}>
+            <option>-- 대분류 카테고리를 선택해주세요 --</option>
+          {categories.map(category =>
+          ( 
+            <option key={category.id} value={category.id}>{category.name}</option>)
+          )}</select>
+        {/* <select className="form-select" name='category' value={product.category.id} onChange={categoryValue}>
             <option value="null">-- 대분류 카테고리를 선택해주세요 --</option>
             <option value="1">의류</option>
             <option value="2">식품</option>
@@ -155,10 +213,10 @@ const UpdatePage = () => {
             <option value="6">가전</option>
             <option value="7">도서</option>
             <option value="8">기타</option>
-          </select>
+          </select> */}
           <span>중분류</span>
-          <select className="form-select" name='middleCategory' value={product.middleCategory} onChange={UpdateValue}>
-            {product.category.id === 'null' && (
+          {/* <select className="form-select" name='middleCategory' value={product.middleCategory} onChange={UpdateValue}> */}
+            {/* {product.category.id === 'null' && (
               <><option value="null" selected>-- 대분류 먼저 선택해주세요 --</option></>
             )}
             {product.category.id === '1' && (
@@ -172,7 +230,7 @@ const UpdatePage = () => {
             <option value="기타식품">기타식품</option>
             </>)}
             {product.category.id === '3' && (
-            <><option isabled selected>-- 중분류 카테고리를 선택해주세요 --</option> 
+            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option> 
             <option value="주방용품">주방용품</option>
             <option value="욕실용품">욕실용품</option></>)}
             {product.category.id === '4' && (
@@ -181,6 +239,10 @@ const UpdatePage = () => {
             <option value="여성잡화">여성잡화</option>
             <option value="아동잡화">아동잡화</option>
             <option value="반려동물용품">반려동물용품</option></>)}
+            {product.category === '5' && (
+            <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option>
+            <option value="가구">가구</option>
+            <option value="인테리어">인테리어</option></>)}
             {product.category.id === '6' && (
             <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option> 
             <option value="디지털기기">디지털기기</option>
@@ -193,10 +255,15 @@ const UpdatePage = () => {
             {product.category.id === '8' && (
             <><option disabled selected>-- 중분류 카테고리를 선택해주세요 --</option> 
             <option value="기타">기타</option></>)}
-          </select>
+          </select> */}
+          {/* <select className='form-select' name='middleCategory' value={product.middleCategory} onChange={UpdateValue}>
+            <option value="여성의류">여성의류</option>
+            <option value="남성의류">남성의류</option>
+            <option value="아동의류">아동의류</option>
+          </select> */}
+          
         </div>
       </div>
-
       <span>가격</span>
       <div className="">
         <input type="number" className="form-control" name='price' id='price' value={product.price} placeholder="가격을 입력하세요" onChange={UpdateValue}/>

@@ -38,6 +38,17 @@ li, .mypageList {
   margin-bottom: 10px;
 }
 
+.moveToUpdate {
+  float: right;
+  margin-bottom: 4px;
+  text-decoration: none;
+  border: solid 1px rgb(122, 117, 117);
+  border-radius: 3px;
+  background-color: rgb(146, 142, 136);
+  color: azure;
+  font-size: 14px;
+}
+
 .chatIcon_mp {
   width: 10%;
   float: right;
@@ -48,6 +59,10 @@ li, .mypageList {
   width: 10%;
   padding: 2px;
   margin-left: 10px;
+}
+
+.mypage_nickname{
+  border: 1px solid black;
 }
 
 @media screen and (max-width: 768px) {

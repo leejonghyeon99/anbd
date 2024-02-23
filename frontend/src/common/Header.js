@@ -27,19 +27,19 @@ const StyledHeader = styled.header`
 
 const NavMenu = styled.ul`
   /* 다른 스타일들... */
-  display: ${(props) => (props.isMenuOpen ? "block" : "none")};
+  display: ${(props) => (props.ismenuopen === "true" ? "block" : "none")};
   flex-direction: column;
   align-items: center;
   width: 100%;
 
   @media screen and (max-width: 768px) {
-    display: ${(props) => (props.isMenuOpen ? "block" : "none")};
+    display: ${(props) => (props.ismenuopen === "true" ? "block" : "none")};
   }
 `;
 
 const Navbar = styled.div`
   /* 다른 스타일들... */
-  display: ${(props) => (props.isVisible ? "block" : "none")};
+  display: ${(props) => (props.isvisible === "true" ? "block" : "none")};
   position: fixed;
   top: 0;
   right: 0;
@@ -73,23 +73,44 @@ const Header = () => {
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
 
-    // 함수: JWT 디코딩하여 사용자 정보 추출
     const getUserInfoFromToken = (token) => {
-      // JWT는 Base64로 인코딩된 세 부분으로 나뉨: Header, Payload, Signature
-      // 여기서는 Payload의 두 번째 부분을 디코딩하여 JSON 객체로 파싱
       const decodedToken = atob(token.split(".")[1]);
       const userInfo = JSON.parse(decodedToken);
-      // 디코딩된 Payload에서 사용자 정보를 반환
       return userInfo;
     };
 
     const userData = async () => {
       try {
-        // accessToken에서 사용자 정보를 추출
-        const userInfo = getUserInfoFromToken(token);
-        // 사용자 정보를 상태값에 설정
-        setUser(userInfo);
-        console.log(userInfo);
+        if (token) {
+          // 토큰에서 사용자 정보를 추출
+          const userInfo = getUserInfoFromToken(token);
+
+          // 사용자 정보를 상태값에 설정
+          setUser(userInfo);
+
+          // 서버에 사용자 정보 요청 보내기
+          const response = await fetch(
+            `${process.env.REACT_APP_API_BASE_URL}/api/user/info`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (response.ok) {
+            const additionalUserInfo = await response.json();
+            // 서버에서 받은 추가 정보를 기존 사용자 정보에 합치기
+            setUser((prevUserInfo) => ({
+              ...prevUserInfo,
+              ...additionalUserInfo,
+            }));
+          } else {
+            console.error("Failed to fetch additional user info");
+          }
+        } else {
+          console.log("No token found, user is not logged in");
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -114,14 +135,13 @@ const Header = () => {
         setIsMypageVisible(false);
       }
     };
-  
+
     document.addEventListener("click", handleClickOutside);
-  
+
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [isMypageVisible]);
-
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -212,11 +232,6 @@ const Header = () => {
 
             {/* 로그인한 유저와 비회원의 mypage아이콘 다르게 나오도록 */}
             <div className="mypageToggle" id="menu-bars">
-              {/* <img
-                src="/icon/usericon.png"
-                id="userIcon"
-                onClick={toggleMypage}
-              /> */}
               {user.auth === "ROLE_USER" && (
                 <img
                   src="/icon/usericon.png"
@@ -240,10 +255,11 @@ const Header = () => {
             </div>
           </div>
 
-          <Navbar isVisible={isMypageVisible} id="navbar">
+          <Navbar isvisible={isMypageVisible.toString()} id="navbar">
             {" "}
             {/* Navbar의 isVisible 속성에 따라 보이거나 숨김 */}
             <nav className="nav-menu">
+
               <li className="navbar-toggle">
                 <img
                   src="/icon/Xmark.png"
@@ -251,31 +267,46 @@ const Header = () => {
                   onClick={toggleMypage}
                 />
               </li>
+              <div className="mypage_nickname">ID: {user.username}</div>
+              <div>닉네임: {user.nickname}</div>
+              <div>
+                <Link to={"user/passwordcheck"} className="moveToUpdate">
+                  회원정보수정
+                </Link>
+              </div>
               <div className="profile">
                 <img src="/icon/userIcon.png" className="profileImg"></img>
               </div>
 
-              <div>
+              <div className="mypage_auth">
                 {user.auth === "ROLE_USER" && (
                   <div className="userbar">
-                    <li>
-                      <Link to={"/"} onClick={toggleMypage}>
-                        <img
-                          src="/icon/chatting.png"
-                          className="chatIcon_mp"
-                        ></img>
-                      </Link>
-                    </li>
+                    <Link
+                      to={"/chat/:id"}
+                      className="chattingBtn"
+                      onClick={toggleMypage}
+                    >
+                      <img
+                        src="/icon/chatting.png"
+                        className="chatIcon_mp"
+                      ></img>
+                    </Link>
 
-                    <ul className="nav-menu-items">
-                      {MypagebarList.map((item, index) => (
-                        <li key={index} className={item.cName} id="menuTitle">
-                          <Link to={item.path} className="mypageList" onClick={toggleMypage}>
-                            {item.icon} <span>{item.title}</span>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
+                    <div>
+                      <ul className="nav-menu-items">
+                        {MypagebarList.map((item, index) => (
+                          <li key={index} className={item.cName} id="menuTitle">
+                            <Link
+                              to={item.path}
+                              className="mypageList"
+                              onClick={toggleMypage}
+                            >
+                              {item.icon} <span>{item.title}</span>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 )}
 
@@ -284,7 +315,11 @@ const Header = () => {
                     <ul>
                       {AdminpagebarList.map((item, index) => (
                         <li key={index} className={item.cName} id="menuTitle">
-                          <Link to={item.path} className="mypageList" onClick={toggleMypage}>
+                          <Link
+                            to={item.path}
+                            className="mypageList"
+                            onClick={toggleMypage}
+                          >
                             {item.icon} <span>{item.title}</span>
                           </Link>
                         </li>
@@ -303,7 +338,7 @@ const Header = () => {
           </Navbar>
         </div>
 
-        <NavMenu isMenuOpen={isMenuOpen}>
+        <NavMenu ismenuopen={isMenuOpen.toString()}>
           <ul onClick={toggleClothing}>
             의류
             {isBclothingOpen && (
