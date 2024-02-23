@@ -28,6 +28,7 @@ import org.springframework.security.oauth2.client.endpoint.DefaultClientCredenti
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
 
 
@@ -50,13 +51,13 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(passwordEncoder());
-        provider.setUserDetailsService(userDetailsService);
-        return new ProviderManager(provider);
-    }
+//    @Bean
+//    public AuthenticationManager authenticationManager() {
+//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+//        provider.setPasswordEncoder(passwordEncoder());
+//        provider.setUserDetailsService(userDetailsService);
+//        return new ProviderManager(provider);
+//    }
 
 //    @Bean
 //    public LoginSuccessHandler loginSuccessHandler() {
@@ -126,7 +127,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.csrf((csrf) -> csrf.disable());
-        http.cors((cors) -> cors.disable());
+        http.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class);
+
         // 폼로그인, 베이직http 비활성화
         http.formLogin((form)-> form.disable());
         http.httpBasic(AbstractHttpConfigurer::disable);
@@ -143,12 +145,12 @@ public class SecurityConfig {
         http.authorizeHttpRequests((authorize)-> authorize
 //                        .requestMatchers("/api/admin/**").hasRole("ROLE_ADMIN") // 관리자 권한이 필요한 API
 //                        .requestMatchers("/api/user/**").hasRole("ROLE_USER") // 일반 사용자 권한이 필요한 API
-                .requestMatchers("/api/**").permitAll()
+                .requestMatchers("/api/**","/oauth2/authorization/", "/login/oauth2/code/**").permitAll()
                 .anyRequest().authenticated()
                 );
 
 
-        http.apply(new JwtSecurityConfig(tokenProvider, customOAuth2UserService));
+        http.apply(new JwtSecurityConfig(tokenProvider));
 
         http.oauth2Login(oauth2Login -> oauth2Login
                         .successHandler(oAuth2LoginSuccessHandler)

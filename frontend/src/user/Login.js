@@ -53,7 +53,7 @@ const Login = () => {
         navigate("/home");
 
         // // 페이지 새로고침
-        // window.location.reload();
+        window.location.reload();
       })
       .catch((error) => {
         alert(error.message);

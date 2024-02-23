@@ -56,8 +56,6 @@ public class TokenProvider {
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())   // payload "sub": "name"
                 .claim(AUTH_KEY, authority) // payload "auth": "ROLE_USER"
-//                .claim("id",1)
-//                .claim("username","goun")
                 .setExpiration(tokenExpireTime)
                 .signWith(key, SignatureAlgorithm.HS512)  // header "alg": "HS512"
                 .compact(); // 위에서 지정한 모든 설정을 기반으로 JWT를 생성하고, 이를 문자열로 압축하여 반환

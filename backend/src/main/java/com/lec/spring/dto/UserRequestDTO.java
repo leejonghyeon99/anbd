@@ -33,8 +33,8 @@ public class UserRequestDTO {
                 .username(this.username)
                 .password(isEncode(passwordEncoder,this.password)) // 비밀번호 인코딩
                 .name(this.name)
-                .phone_number(this.phone_number)
                 .nickname(this.nickname)
+                .phone_number(this.phone_number)
                 .email(this.email)
                 .region(this.region)
                 .build();
