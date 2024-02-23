@@ -23,7 +23,6 @@ public class ProductDTO {
     private int price;
     private Status status;
     private String location;
-    private String middleCategory;
     private LocalDateTime refreshedAt;
     private CategoryDTO category;
     private String user;

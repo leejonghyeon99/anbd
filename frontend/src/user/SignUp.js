@@ -106,7 +106,7 @@ const SignUp = () => {
 
   return isValid;
   };
-  
+
   // join버튼을 누르면 submit되는 동작
   const submitJoin = (e) => {
     e.preventDefault();

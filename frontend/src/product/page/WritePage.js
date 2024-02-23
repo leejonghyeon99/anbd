@@ -76,7 +76,7 @@ const WritePage = () => {
   }, []);
 
   // 특정 main에 sub 목록만 가져오는 카테고리
- const getSub = () => {
+  const getSub = () => {
     const getByMainForSub = async () => {
       try {
         const url = `${process.env.REACT_APP_API_BASE_URL}/api/product/category/find?main=${selectMain.main}`;
@@ -95,10 +95,7 @@ const WritePage = () => {
   useEffect(() => {
     getSub();
   },[selectMain]);
-
-  // 중분류
-
-
+  
   // 이미지
   const [files, setFiles] = useState([]);
 
@@ -137,26 +134,22 @@ const WritePage = () => {
 
   };
 
-  // 선택된 category 값
+  // 선택된 main category 값
   const mainCategoryValue = (e) => {
-
     console.log("main");
     setSelectMain({
       id : e.target.value,
       main : e.target.options[e.target.selectedIndex].text,
     });
-
   };
 
-  // 선택된 category 값
+  // 선택된 sub category 값
   const subCategoryValue = (e) => {
-
     console.log("sub");
     setSelectSub({
       id : e.target.value,
       sub : e.target.options[e.target.selectedIndex].text,
     });
-
   };
 
   // 작성 완료
