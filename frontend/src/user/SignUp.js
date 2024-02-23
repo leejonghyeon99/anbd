@@ -169,6 +169,30 @@ const SignUp = () => {
     setVerificationCode(e.target.value);
   };
 
+   // 유효성 검사를 통과했을 경우, 서버에 이메일 중복 확인 요청
+   fetch(`${process.env.REACT_APP_API_BASE_URL}/api/email/verification-requests`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email: user.email }),
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.isEmailAvailable) {
+        // 이메일 사용 가능
+        setIsVerificationVisible(true); // 인증번호 입력란 보여주기
+        setEmailErr(null); // 에러 메시지 초기화
+      } else {
+        // 이메일 중복
+        setEmailErr("duplicate"); // 중복 에러 설정
+        setIsVerificationVisible(false); // 인증번호 입력란 숨기기
+      }
+    })
+    .catch(error => {
+      console.error('이메일 중복 확인 중 오류 발생:', error);
+    });
+
   return (
     <div className="signUpMain">
       <div className="joinTitle">
