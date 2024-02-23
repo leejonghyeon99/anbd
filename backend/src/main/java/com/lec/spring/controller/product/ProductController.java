@@ -8,6 +8,7 @@ import com.lec.spring.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -79,7 +80,7 @@ public class ProductController {
 
     // 특정 main으로 검색한 sub 카테고리 목록
     @GetMapping("/category/find")
-    public ResponseEntity<?> findByMainForSub(String main){
+    public ResponseEntity<?> findByMainForSub(@RequestParam("main") String main){
         return new ResponseEntity<>(productService.findByMainForSub(main), HttpStatus.OK);
     }
 

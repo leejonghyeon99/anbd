@@ -43,7 +43,6 @@ public class Product extends BaseEntity{
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     @ToString.Exclude

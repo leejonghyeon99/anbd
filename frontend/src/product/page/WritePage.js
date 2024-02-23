@@ -38,17 +38,19 @@ const WritePage = () => {
   const [categories, setCategories] = useState([]);
   const [selectCategory, setSelectCategory] = useState(null);
 
-
   const [mainCategories, setMainCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
 
-
   const [selectMain, setSelectMain] = useState("");
+  const [selectSub, setSelectSub] = useState("");
 
   // product와 category 같이
   const pc = {
     ...product,
-    category: selectCategory
+    category: {
+      main: selectMain.main,
+      sub: selectSub.sub
+    }
   };
 
   // 위치
@@ -73,20 +75,29 @@ const WritePage = () => {
     });
   }, []);
 
-    // 특정 main에 sub 목록만 가져오는 카테고리
-    // useEffect(() => {
-    //   fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/category/find`)
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     setSubCategories(data);
-    //   });
-    // }, []);
+  // 특정 main에 sub 목록만 가져오는 카테고리
+ const getSub = () => {
+    const getByMainForSub = async () => {
+      try {
+        const url = `${process.env.REACT_APP_API_BASE_URL}/api/product/category/find?main=${selectMain.main}`;
+        const response = await fetch(url);
+        const data = await response.json();
 
+        setSubCategories(data);
+      } catch (error) {
+        
+      }
+    }
+    getByMainForSub();
+ }
+
+  // 대분류
   useEffect(() => {
-    mainCategories.forEach(f => {
-      console.log(f);
-    })
-  },[mainCategories]);
+    getSub();
+  },[selectMain]);
+
+  // 중분류
+
 
   // 이미지
   const [files, setFiles] = useState([]);
@@ -97,8 +108,6 @@ const WritePage = () => {
     setFiles(Array.from(fileArr)); // 업로드한 files를 배열로
     console.log("fileArr " + fileArr);
     console.log("fileArr[0] " + fileArr[0].name);
-
-    
 
     let fileData = [];  // 파일의 URL과 키를 담을 배열
     const uploadAndSave = (file, index) => {
@@ -125,16 +134,35 @@ const WritePage = () => {
       [e.target.name]: e.target.value
     });
     console.log(e.target.value);
+
   };
+
   // 선택된 category 값
-  const CategoryValue = (e) => {
-    setSelectCategory({id : e.target.value, name : e.target.options[e.target.selectedIndex].text});
-  }
+  const mainCategoryValue = (e) => {
+
+    console.log("main");
+    setSelectMain({
+      id : e.target.value,
+      main : e.target.options[e.target.selectedIndex].text,
+    });
+
+  };
+
+  // 선택된 category 값
+  const subCategoryValue = (e) => {
+
+    console.log("sub");
+    setSelectSub({
+      id : e.target.value,
+      sub : e.target.options[e.target.selectedIndex].text,
+    });
+
+  };
+
   // 작성 완료
   const WriteOk = (e) => {
-    console.log(product);
+    console.log(pc);
     e.preventDefault();
-
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
       method: "POST",
       headers: {
@@ -179,14 +207,6 @@ const WritePage = () => {
         <input type="file" accept="image/jpg,impage/png, image/jpeg, image/gif" name='files' id='files' onChange={uploadFile} multiple/>
       </div>
       <span>위치</span>
-      {/* {selectedLocation !== "" && (
-      <div className="mb-3">
-        <Button variant="outline-dark" onClick={MapOk} >위치 선택</Button>
-        <input type="button" name="location" id="location" value={product.location} onChange={WriteValue} onClick={MapOk}/>위치 선택
-        <span>선택된 위치 location: {selectedLocation}</span>
-        </div>
-      )} */}
-      {/* <GoogleMaps props={}></GoogleMaps> */}
       {/* GoogleMaps를 표시하거나 숨기는 버튼 */}
       <button onClick={toggleGoogleMaps}>
         {showGoogleMaps ? 'GoogleMaps 숨기기' : 'GoogleMaps 표시하기'}
@@ -203,7 +223,6 @@ const WritePage = () => {
         />
       )}
       <span>선택된 위치: {product.location}</span>
-      {/* <input type="button" name="location" id="location" value={product.location} onClick={MapOk}></input><br/> */}
       <span>제목</span>
       <div className="mb-3">
         <input
@@ -219,7 +238,7 @@ const WritePage = () => {
       <div>
         <span>대분류</span>
         <div className="mb-3">
-          <select className="form-select" name="main" value={selectCategory} onChange={CategoryValue}>
+          <select className="form-select" name="main" value={selectMain.main} onChange={mainCategoryValue}>
             <option>-- 대분류 카테고리를 선택해주세요 --</option>
           {mainCategories.map(category =>
           ( 
@@ -227,13 +246,12 @@ const WritePage = () => {
           )}</select>
       
         <span>중분류</span>
-          <select className="form-select" name='sub' value={selectCategory} onChange={CategoryValue}>          
-              
-            {categories.map(category =>
-          ( 
-            <option key={category.id} value={category.id}>{category.name}</option>)
-          )}</select>
-       
+          <select className="form-select" name='sub' value={selectSub.sub} onChange={subCategoryValue}>          
+          <option>-- 중분류 카테고리를 선택해주세요 --</option>
+          {subCategories.map(category => ( 
+            <option key={category.id} value={category.sub}>{category.sub}</option>
+          ))}
+          </select>
         </div>
       </div>
       <span>가격</span>
@@ -265,7 +283,7 @@ const WritePage = () => {
           name="status"
           onChange={WriteValue}
         >
-          <option disabled selected>-- 판매 상태를 선택해주세요 --</option >
+          <option selected>-- 판매 상태를 선택해주세요 --</option >
           <option value="SALE">판매중</option>
           <option value="RESERVED">예약중</option>
           <option value="SOLD">판매완료</option>
