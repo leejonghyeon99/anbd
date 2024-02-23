@@ -97,7 +97,7 @@ const Login = () => {
             </div>
             <Button type="submit">Login</Button>
             <div className="oauthLoginBtn">
-              <a href={`${process.env.REACT_APP_API_BASE_URL}/oauth2/authorization/google`}>
+              {/* <a href={`${process.env.REACT_APP_API_BASE_URL}/oauth2/authorization/google`}>
               <img
                 src="/icon/Google.png"
                 alt="Google login"
@@ -119,7 +119,7 @@ const Login = () => {
                 alt="Naver login"
                 className="naverBtn"
               />
-              </a>
+              </a> */}
 
             </div>
           </Form>

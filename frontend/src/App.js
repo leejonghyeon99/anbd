@@ -15,7 +15,7 @@ import DetailPage from "./product/page/DetailPage";
 import UpdatePage from "./product/page/UpdatePage";
 import GoogleMaps from "./product/page/GoogleMaps";
 import ChatPage from './chat/page/ChatPage';
-import LoginCallback from "./user/LoginCallback";
+import UpdatePassword from "./user/UpdatePassword";
 
 
 const App = () => {
@@ -31,11 +31,10 @@ const App = () => {
             <Route path="/" element={<Navigate to="/home"></Navigate>}></Route>
             <Route path="/home" Component={Home}></Route>
             <Route path="user/login" Component={Login}></Route>
-            <Route path="user/logincallback" Component={LoginCallback}></Route>
             <Route path="user/signup" Component={SignUp}></Route>
             <Route path="user/passwordcheck" Component={PasswordCheck}></Route>
             <Route path="user/update" Component={Update}></Route>
-            {/* <Route path="/user/:id" element={<Update />} /> */}
+            <Route path="user/updatepassword" Component={UpdatePassword}></Route>
             <Route path="/product/list/:category" Component={ListPage}></Route>
             <Route path="/product/write" Component={WritePage}></Route>
             <Route path="/product/detail/:id" Component={DetailPage}></Route>

@@ -48,6 +48,11 @@ public class UserController {
         return ResponseEntity.ok(userService.update(userRequestDTO));
     }
 
+    @PutMapping("/updatePassword")
+    public ResponseEntity<?> updatePassword(@RequestBody UserRequestDTO userRequestDTO){
+        return ResponseEntity.ok(userService.updatePassword(userRequestDTO));
+    }
+
     @GetMapping("/info")
     public ResponseEntity<User> getUserInfo() {
         return ResponseEntity.ok(userService.getUser().get());
@@ -74,6 +79,12 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Failed to delete account."));
         }
     }
+
+    @GetMapping("/callback")
+    public ResponseEntity<?> loginCallBack(@RequestBody UserRequestDTO userRequestDTO){
+        return ResponseEntity.ok(userService.update(userRequestDTO));
+    }
+
 
     @PostMapping("/reissue")
     public ResponseEntity<TokenDTO> reissue(@RequestBody TokenRequestDTO tokenRequestDTO){

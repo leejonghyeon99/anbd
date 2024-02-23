@@ -41,6 +41,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         response.addHeader("Refresh-Token", tokenDTO.getRefreshToken());
         response.addHeader("Access-Token-Expire-Time", String.valueOf(tokenDTO.getAccessTokenExpire()));
 
+        System.out.println("response"+response);
+
 
 
     }

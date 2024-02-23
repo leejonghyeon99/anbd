@@ -98,6 +98,18 @@ public class UserService {
         user.setNickname(userRequestDTO.getNickname());
         user.setEmail(userRequestDTO.getEmail());
         user.setPhone_number(userRequestDTO.getPhone_number());
+        user.setRegion(userRequestDTO.getRegion());
+
+        User updateUser = userRepository.save(user);
+
+        return UserResponseDTO.of(updateUser);
+
+    }
+
+    public UserResponseDTO updatePassword(UserRequestDTO userRequestDTO) {
+        User user = userRepository.findById(userRequestDTO.getId()).orElseThrow(()->new RuntimeException("you need to update id check"));
+
+        user.setPassword(userRequestDTO.getPassword());
 
         if (userRequestDTO.getPassword() != null && !userRequestDTO.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
@@ -106,7 +118,6 @@ public class UserService {
         User updateUser = userRepository.save(user);
 
         return UserResponseDTO.of(updateUser);
-
     }
 
     @Transactional
@@ -131,8 +142,8 @@ public class UserService {
 
         return tokenDTO;
     }
-
     // 현재 유저 정보 가져오기
+
     public Optional<User> getUser(){
         return SecurityUtil.getCurrentUserId().flatMap(userRepository::findOneWithAuthoritiesByUsername);
     }
@@ -150,8 +161,8 @@ public class UserService {
 
     }
 
-
     //이메일 인증
+
     public void sendCodeToEmail(String toEmail) {
         this.checkDuplicatedEmail(toEmail);
         String title = "ANBD 이메일 인증 번호";
@@ -192,6 +203,5 @@ public class UserService {
 
         return EmailVerificationResult.of(authResult);
     }
-
 
 }

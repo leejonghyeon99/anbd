@@ -24,7 +24,7 @@ const SignUp = () => {
   const [nameErr, setNameErr] = useState(false);
   const [nicknameErr, setNicknameErr] = useState(false);
   const [phoneErr, setPhoneErr] = useState(false);
-  const [emailErr, setEmailErr] = useState(false);
+  const [emailErr, setEmailErr] = useState(null);
   const [regError, setRegError] = useState(false);
 
   // 인증번호 입력란 가시성 상태 변수
@@ -47,22 +47,64 @@ const SignUp = () => {
 
   //유효성 검사
   const validateForm = () => {
-    const isUsernameErr = user.username.trim() === '';
-    const isPasswordErr = user.password.trim() === '';
-    const isNameErr = user.name.trim() === '';
-    const isNicknameErr = user.nickname.trim() === '';
-    const isPhoneErr = user.phone_number.trim() === '';
-    const isEmailErr = user.email.trim() === '';
-    const isRegError = user.region === '';
-    setUsernameErr(isUsernameErr);
-    setPasswordErr(isPasswordErr);
-    setNameErr(isNameErr);
-    setNicknameErr(isNicknameErr);
-    setPhoneErr(isPhoneErr);
-    setEmailErr(isEmailErr);
-    setRegError(isRegError);
-    
-    return !(isUsernameErr || isPasswordErr || isNameErr || isNicknameErr || isPhoneErr || isEmailErr || isRegError);
+
+  // 각 필드별 에러 상태 초기화
+  setUsernameErr(false);
+  setPasswordErr(false);
+  setNameErr(false);
+  setNicknameErr(false);
+  setPhoneErr(false);
+  setEmailErr(false);
+  setRegError(false);
+
+  let isValid = true;
+
+  // 사용자명 유효성 검사 (예: 최소 4자 이상)
+  if (user.username.trim().length < 4) {
+    setUsernameErr(true);
+    isValid = false;
+  }
+
+  // 비밀번호 유효성 검사 (예: 최소 4자, 숫자 포함)
+  if (user.password.trim().length < 4 || !/\d/.test(user.password)) {
+    setPasswordErr(true);
+    isValid = false;
+  }
+
+  // 이름 유효성 검사 (예: 비어 있지 않음)
+  if (user.name.trim().length === 0) {
+    setNameErr(true);
+    isValid = false;
+  }
+
+  // 닉네임 유효성 검사 (예: 비어 있지 않음)
+  if (user.nickname.trim().length === 0) {
+    setNicknameErr(true);
+    isValid = false;
+  }
+
+  // 전화번호 유효성 검사 (예: 숫자만, 10~11자)
+  if (!/^\d{10,11}$/.test(user.phone_number)) {
+    setPhoneErr(true);
+    isValid = false;
+  }
+
+  // 이메일 유효성 검사 (예: 이메일 형식)
+  if (user.email.trim() === '') {
+    setEmailErr("empty");
+  } else if (!/\S+@\S+\.\S+/.test(user.email)) {
+    setEmailErr("format");
+  } else {
+    setEmailErr(null);
+  }
+
+  // 지역 선택 유효성 검사 (예: 선택됨)
+  if (user.region === "") {
+    setRegError(true);
+    isValid = false;
+  }
+
+  return isValid;
   };
   
   // join버튼을 누르면 submit되는 동작
@@ -90,7 +132,6 @@ const SignUp = () => {
           console.log("회원가입");
           return response.json();
         } else {
-          // throw new Error("회원가입 실패");
           return null;
         }
       })
@@ -104,15 +145,22 @@ const SignUp = () => {
     };
   };
 
-
+  // 이메일인증 버튼 클릭
   const validateEmail = () => {
     // 이메일이 비어 있는지 확인
-    if (user.email.trim() === "") {
-      alert("이메일을 입력하세요.");
-      return;
+    if (user.email.trim() === '') {
+      setEmailErr("empty");
+      setIsVerificationVisible(false); // 이메일이 비어있을 때는 인증번호 입력란 숨김
+      return; // 에러가 발생하면 여기서 함수 실행을 중단
+    } else if (!/\S+@\S+\.\S+/.test(user.email)) {
+      setEmailErr("format");
+      setIsVerificationVisible(false); // 이메일 형식이 맞지 않을 때는 인증번호 입력란 숨김
+      return; // 에러가 발생하면 여기서 함수 실행을 중단
+    } else {
+      setEmailErr(null); // 에러가 없으면 에러 상태를 null로 설정
     }
-    // 이메일 검증 코드 추가
-    // 이메일 검증이 성공하면 인증번호 입력란을 보여줍니다.
+  
+    // 이메일 유효성 검사를 통과했을 경우에만 인증번호 입력란을 보여줌
     setIsVerificationVisible(true);
   };
 
@@ -139,10 +187,11 @@ const SignUp = () => {
             value={user.username}
             onChange={formChange}
           />
+          
         </div>
         {usernameErr && (
           <div>
-            <small className="text-danger">ID은 필수입니다</small>
+            <small className="text-danger">ID은 4자리 이상 입력해주세요.</small>
           </div>
         )}
 
@@ -161,7 +210,7 @@ const SignUp = () => {
         </div>
         {passwordErr && (
           <div>
-            <small className="text-danger">비밀번호는 필수입니다</small>
+            <small className="text-danger">비밀번호는 4자리 이상, 숫자가 포함되어야 합니다.</small>
           </div>
         )}
         <div>
@@ -176,7 +225,13 @@ const SignUp = () => {
             value={user.repassword}
             onChange={formChange}
           />
+        
         </div>
+        {passwordErr && (
+          <div>
+            <small className="text-danger">비밀번호가 일치하지 않습니다.</small>
+          </div>
+        )}
         <div>
           {/* 이름 입력란 */}
           <label htmlFor="name">
@@ -248,11 +303,16 @@ const SignUp = () => {
             이메일 인증
           </Button>
         </div>
-        {emailErr && (
-          <div>
-            <small className="text-danger">메일은 필수입니다</small>
-          </div>
-        )}
+        {emailErr === "empty" && (
+    <div>
+      <small className="text-danger">이메일은 필수입니다.</small>
+    </div>
+  )}
+  {emailErr === "format" && (
+    <div>
+      <small className="text-danger">이메일 양식에 맞춰서 입력해주세요.</small>
+    </div>
+  )}
         {/* 인증번호 입력란 */}
         {isVerificationVisible && (
           <div>
