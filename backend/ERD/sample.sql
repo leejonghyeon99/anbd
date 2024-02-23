@@ -1,9 +1,16 @@
 /*회원 sample*/
-insert into user(auth, star, phone_number, nickname, name, username, password,region, email, thumbnail, created_at)
-values ('ROLE_USER',3.3,'01012341234','test_name','김효은','user1','1234','송파구','rlagydms1@gmail.com','default.jpeg', now());
-insert into user(auth, star, phone_number, nickname, name, username, password,region, email, thumbnail, created_at)
-values ('ROLE_ADMIN',3.2,'01011111114','test_name','이종현','admin1','1234','송파구','rmaskdkfhk@gmail.com','default.jpeg', now());
-desc user;/*정렬*/
+# {
+#     "username" : "user1",
+#     "password" : "1111",
+#     "name" : "테스트",
+#     "phone_number" : "01055555556",
+#     "nickname" : "tester",
+#     "email" : "hyod@gmail.com",
+#     "auth" : "ROLE_USER","ROLE_ADMIN"
+#     "star" : "0.0",
+#     "certification" : "approved",
+#     "region" : "광진구"
+# }  -> postman에 넣어야함 ㅠ 안그럼 비번 인코딩이 안돼서!
 
 select * from user;
 
