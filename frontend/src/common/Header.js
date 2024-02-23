@@ -105,7 +105,7 @@ const Header = () => {
             console.error("Failed to fetch additional user info");
           }
         } else {
-          console.log("No token found, user is not logged in");
+          // console.log("No token found, user is not logged in");
         }
       } catch (error) {
         console.error("Error fetching data:", error);

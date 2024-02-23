@@ -49,19 +49,19 @@ public class UserService {
 
     @Transactional
     public UserResponseDTO signup(UserRequestDTO userRequestDTO){
+
         if (userRepository.existsByUsername(userRequestDTO.getUsername())){
             throw new RuntimeException("이미 가입되어 있는 유저입니다.");
         }
-        // 이메일 인증이 되면 자격증명을 승인됨으로 바꿈
 
         User user = userRequestDTO.toUser(passwordEncoder);
 
         user.setAuth(Auth.ROLE_USER);
         user.setCertification("approved");
         user.setStar(0.0);
-        user.setRegion(user.getRegion());
 
         return UserResponseDTO.of(userRepository.save(user));
+
     }
 
 
@@ -71,7 +71,6 @@ public class UserService {
         UsernamePasswordAuthenticationToken authenticationToken = userRequestDTO.toAuthentication();
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        System.out.println("------------------------"+authentication);
         TokenDTO tokenDTO = tokenProvider.createTokenDto(authentication);
 
         RefreshToken refreshToken = RefreshToken.builder()
@@ -99,6 +98,18 @@ public class UserService {
         user.setNickname(userRequestDTO.getNickname());
         user.setEmail(userRequestDTO.getEmail());
         user.setPhone_number(userRequestDTO.getPhone_number());
+        user.setRegion(userRequestDTO.getRegion());
+
+        User updateUser = userRepository.save(user);
+
+        return UserResponseDTO.of(updateUser);
+
+    }
+
+    public UserResponseDTO updatePassword(UserRequestDTO userRequestDTO) {
+        User user = userRepository.findById(userRequestDTO.getId()).orElseThrow(()->new RuntimeException("you need to update id check"));
+
+        user.setPassword(userRequestDTO.getPassword());
 
         if (userRequestDTO.getPassword() != null && !userRequestDTO.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
@@ -107,7 +118,6 @@ public class UserService {
         User updateUser = userRepository.save(user);
 
         return UserResponseDTO.of(updateUser);
-
     }
 
     @Transactional
@@ -132,8 +142,8 @@ public class UserService {
 
         return tokenDTO;
     }
-
     // 현재 유저 정보 가져오기
+
     public Optional<User> getUser(){
         return SecurityUtil.getCurrentUserId().flatMap(userRepository::findOneWithAuthoritiesByUsername);
     }
@@ -151,13 +161,8 @@ public class UserService {
 
     }
 
-
-
-
-
-
-
     //이메일 인증
+
     public void sendCodeToEmail(String toEmail) {
         this.checkDuplicatedEmail(toEmail);
         String title = "ANBD 이메일 인증 번호";
@@ -198,6 +203,5 @@ public class UserService {
 
         return EmailVerificationResult.of(authResult);
     }
-
 
 }

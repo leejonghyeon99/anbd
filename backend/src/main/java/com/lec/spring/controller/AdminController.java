@@ -75,30 +75,30 @@ public class AdminController {
         return new ResponseEntity<>(adminService.productList(page, size),HttpStatus.OK);
     }
 
-    //대분류 목록
-    @GetMapping("/product/category/list")
-    public ResponseEntity<List<CategoryDTO>> categoryList(){
-        return new ResponseEntity<>(adminService.categoryList(),HttpStatus.OK);
-    }
-
-    //대분류 등록
-    @PostMapping("/product/category")
-    public ResponseEntity<String> addCategory(String name){
-        return new ResponseEntity<>(adminService.addCategory(name),HttpStatus.CREATED);
-    }
-
-    //대분류 삭제
-    @DeleteMapping("/product/category")
-    public ResponseEntity<String> deleteCategory(Integer id){
-        return new ResponseEntity<>(adminService.deleteCategory(id),HttpStatus.OK);
-    }
-
-    //대분류 수정
-    @PatchMapping("/product/category")
-    public ResponseEntity<CategoryDTO> update(@RequestBody Category category){
-        System.out.println(category.toString());
-        return new ResponseEntity<>(adminService.updateCategory(category),HttpStatus.OK);
-    }
+//    //대분류 목록
+//    @GetMapping("/product/category/list")
+//    public ResponseEntity<List<CategoryDTO>> categoryList(){
+//        return new ResponseEntity<>(adminService.categoryList(),HttpStatus.OK);
+//    }
+//
+//    //대분류 등록
+//    @PostMapping("/product/category")
+//    public ResponseEntity<String> addCategory(String name){
+//        return new ResponseEntity<>(adminService.addCategory(name),HttpStatus.CREATED);
+//    }
+//
+//    //대분류 삭제
+//    @DeleteMapping("/product/category")
+//    public ResponseEntity<String> deleteCategory(Integer id){
+//        return new ResponseEntity<>(adminService.deleteCategory(id),HttpStatus.OK);
+//    }
+//
+//    //대분류 수정
+//    @PatchMapping("/product/category")
+//    public ResponseEntity<CategoryDTO> update(@RequestBody Category category){
+//        System.out.println(category.toString());
+//        return new ResponseEntity<>(adminService.updateCategory(category),HttpStatus.OK);
+//    }
 
 
 }

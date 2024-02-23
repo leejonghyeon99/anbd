@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./CSS/Login.css";
 
 const Login = () => {
@@ -23,7 +23,7 @@ const Login = () => {
 
   const submitLogin = (e) => {
     e.preventDefault(); // 폼 기본 제출 동작 방지
-  
+
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/login`, {
       method: "POST",
       headers: {
@@ -40,19 +40,19 @@ const Login = () => {
         }
       })
       .then((data) => {
-        localStorage.setItem('accessToken', data.accessToken);
-  
+        localStorage.setItem("accessToken", data.accessToken);
+
         // 사용자 정보 가져오기 없이 직접 토큰으로 디코딩하여 사용자 정보를 추출
-        const decodedToken = atob(data.accessToken.split('.')[1]);
+        const decodedToken = atob(data.accessToken.split(".")[1]);
         const userInfo = JSON.parse(decodedToken);
-  
+
         // 사용자 정보 업데이트
         setUser(userInfo);
-  
+
         // 홈 화면으로 이동
         navigate("/home");
-  
-        // 페이지 새로고침
+
+        // // 페이지 새로고침
         window.location.reload();
       })
       .catch((error) => {
@@ -67,7 +67,7 @@ const Login = () => {
   return (
     <>
       <div className="loginMain">
-          <div className="loginLogo">A N B D</div>
+        <div className="loginLogo">A N B D</div>
         <div className="loginBox">
           <Form onSubmit={submitLogin}>
             <div className="idBox">
@@ -97,9 +97,30 @@ const Login = () => {
             </div>
             <Button type="submit">Login</Button>
             <div className="oauthLoginBtn">
-            <Link> <img src="/icon/Google.png" className="googleBtn"></img></Link>
-            <Link> <img src="/icon/kakao.png" className="kakaoBtn"></img></Link>
-            <Link> <img src="/icon/naver.png" className="naverBtn"></img></Link>
+              {/* <a href={`${process.env.REACT_APP_API_BASE_URL}/oauth2/authorization/google`}>
+              <img
+                src="/icon/Google.png"
+                alt="Google login"
+                className="googleBtn"
+              />
+              </a>
+
+              <a href={`${process.env.REACT_APP_API_BASE_URL}/oauth2/authorization/kakao`}>
+              <img
+                src="/icon/kakao.png"
+                alt="Kakao login"
+                className="kakaoBtn"
+              />
+              </a>
+
+              <a href={`${process.env.REACT_APP_API_BASE_URL}/oauth2/authorization/naver`}>
+              <img
+                src="/icon/naver.png"
+                alt="Naver login"
+                className="naverBtn"
+              />
+              </a> */}
+
             </div>
           </Form>
         </div>
@@ -109,4 +130,3 @@ const Login = () => {
 };
 
 export default Login;
-

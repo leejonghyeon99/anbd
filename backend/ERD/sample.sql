@@ -19,10 +19,15 @@ insert into category(main, sub) value ('의류', '여성의류');
 insert into category(main, sub) value ('의류', '남성의류');
 insert into category(main, sub) value ('의류', '아동의류');
 insert into category(main, sub) value ('식품', '즉석식품');
-insert into category(main, sub) value ('식품', '즉석식품');
+insert into category(main, sub) value ('전기', '냉장고');
 
 select * from category;
+select * from category where main = '의류' group by main,sub ;
+select * from category group by main;
+select * from category group by main, sub;
+select * from category where main='의류' and sub = '여성의류';
 
+select c.id, c.main from Category c group by c.main;
 /*상품 sample*/
 insert into product(category_id, price, status, user_id, created_at, title, description, location, middle_category)
 VALUES (1,20000,'SALE',1, now(), '테스트 상품1', '테스트 상품입니다.', '0000, 0000', '신발');

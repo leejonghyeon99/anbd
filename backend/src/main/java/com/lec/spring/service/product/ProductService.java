@@ -6,6 +6,8 @@ import com.lec.spring.domain.ProductImage;
 import com.lec.spring.domain.User;
 import com.lec.spring.dto.CategoryDTO;
 import com.lec.spring.dto.ProductDTO;
+import com.lec.spring.dto.category.MainCategoryDTO;
+import com.lec.spring.dto.category.SubCategoryDTO;
 import com.lec.spring.repository.CategoryRepository;
 import com.lec.spring.repository.UserRepository;
 import com.lec.spring.repository.product.ProductImageRepository;
@@ -34,22 +36,22 @@ public class ProductService {
     // 등록
     @Transactional
     public ProductDTO write(Product product){
-        Product productEntity = productRepository.findById(product.getId()).orElse(null);
+        System.out.println(product);
         String main = product.getCategory().getMain();
         String sub = product.getCategory().getSub();
-        if (!(categoryRepository.findByMain(main).isPresent() && categoryRepository.findBySub(sub).isPresent())){
-            Category category = Category.builder()
-                    .main(product.getCategory().getMain())
-                    .sub(product.getCategory().getSub())
-                    .build();
 
-            productEntity.setCategory(category);
-            productRepository.save(productEntity);
+        User user = userRepository.findById(1).orElse(null);
 
-            return ProductDTO.toDto(productEntity);
-        }
+        Category category = categoryRepository.findUnique(main, sub);
+        System.out.println(user.toString());
+        product.setCategory(category);
+        product.setUser(user);
+        productRepository.saveAndFlush(product);
+        User writer = userRepository.findById(product.getUser().getId()).orElse(null);
 
-        return null;
+        product.setUser(writer);
+
+        return ProductDTO.toDto(product);
     }
 
     // 목록
@@ -76,7 +78,7 @@ public class ProductService {
     @Transactional
     public ProductDTO detail(Long id){
         Product product = productRepository.findById(id).orElse(null);
-        User user = userRepository.findById(2).orElse(null);
+        User user = userRepository.findById(product.getUser().getId()).orElse(null);
 //        product.getUser().getId()
         product.setUser(user);
 
@@ -120,10 +122,28 @@ public class ProductService {
         return "OK";
     }
 
-    // 카테고리
-    public List<CategoryDTO> findByCategory (){
+    // 특정main으로 sub 가져오기 카테고리
+    public List<CategoryDTO> findByMainForSub (String main){
+        System.out.println("main : ========================" + main);
 
-        return CategoryDTO.toDtoList(categoryRepository.findAll());
+
+        return CategoryDTO.toDtoList(categoryRepository.findAllGroupMain(main).orElse(null));
 
     }
+
+    // main만 가져오기 카테고리
+    public List<CategoryDTO> findByMainForList (){
+
+        return CategoryDTO.toDtoList( categoryRepository.findAllOnlyMain().orElse(null));
+
+
+    }
+    // sub만 가져오기 카테고리
+    public List<CategoryDTO> findBySubForList (){
+
+        return CategoryDTO.toDtoList( categoryRepository.findAllOnlySub().orElse(null));
+
+
+    }
+
 }

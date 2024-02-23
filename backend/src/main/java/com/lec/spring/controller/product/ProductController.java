@@ -8,6 +8,7 @@ import com.lec.spring.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -71,10 +72,16 @@ public class ProductController {
         return new ResponseEntity<>(productService.delete(id), HttpStatus.OK);
     }
 
+    // Main만 가져오기
+    @GetMapping("/category/main")
+    public ResponseEntity<?> findByMainForList() {
+        return new ResponseEntity<>(productService.findByMainForList(), HttpStatus.OK);
+    }
 
-    @GetMapping("/category")
-    public ResponseEntity<?> category(){
-        return new ResponseEntity<>(productService.findByCategory(), HttpStatus.OK);
+    // 특정 main으로 검색한 sub 카테고리 목록
+    @GetMapping("/category/find")
+    public ResponseEntity<?> findByMainForSub(@RequestParam("main") String main){
+        return new ResponseEntity<>(productService.findByMainForSub(main), HttpStatus.OK);
     }
 
     @InitBinder
