@@ -46,7 +46,7 @@ const Update = () => {
           };
           setUserInfo(updatedUserInfo)
         })
-        .catch((error) => console.error("userinfo error", error));
+        .catch((error) => console.error("userInfo error", error));
     }
   }, [userInfo.password]);
 
