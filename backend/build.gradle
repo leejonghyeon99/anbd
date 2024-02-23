@@ -40,12 +40,10 @@ dependencies {
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
     // redis 설정
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-    // oauth2 설정
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    // 메일 설정
     implementation group: 'io.lettuce', name: 'lettuce-core', version: '6.2.4.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 
 
 

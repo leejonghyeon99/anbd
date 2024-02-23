@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import regionsData from "../api/regionsData.json";
+import UpdatePassword from "./UpdatePassword";
 
 const Update = () => {
   const navigate = useNavigate();
@@ -19,7 +20,6 @@ const Update = () => {
 
 
   //유효성 검사를 위한 State함수들
-
   const [nameErr, setNameErr] = useState(false);
   const [nicknameErr, setNicknameErr] = useState(false);
   const [phoneErr, setPhoneErr] = useState(false);
@@ -160,36 +160,6 @@ const Update = () => {
   return (
     <div>
       <Form onSubmit={updateUser}>
-        <div>
-          {/* Password 수정 */}
-          <label htmlFor="password">
-            비밀번호 <small>* </small>
-          </label>
-          <input
-            type="password"
-            name="password"
-            onChange={infoChange}
-          />
-        </div>
-
-        <div>
-          {/* Re-enter Password 수정 */}
-          <label htmlFor="repassword">
-            비밀번호 확인 <small>* </small>
-          </label>
-          <input
-            type="password"
-            name="repassword"
-            onChange={infoChange}
-          />
-          {passwordMatchErr && (
-            <div>
-              <small className="text-danger">
-                비밀번호와 비밀번호 확인이 일치하지 않습니다.
-              </small>
-            </div>
-          )}
-        </div>
         {/* 이름 수정 */}
         <div>
           <label htmlFor="name">
@@ -284,6 +254,7 @@ const Update = () => {
           </div>
         )}
         <Button onClick={updateUser}>회원 수정</Button>
+        <Button as={Link} to="/user/updatePassword">비밀번호 수정</Button>
         <Button onClick={deleteUser}>회원 탈퇴</Button>
       </Form>
     </div>
