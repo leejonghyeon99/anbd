@@ -47,13 +47,13 @@ const SignUp = () => {
 
   //유효성 검사
   const validateForm = () => {
-    const isUsernameErr = user.username.trim() === '';
-    const isPasswordErr = user.password.trim() === '';
-    const isNameErr = user.name.trim() === '';
-    const isNicknameErr = user.nickname.trim() === '';
-    const isPhoneErr = user.phone_number.trim() === '';
-    const isEmailErr = user.email.trim() === '';
-    const isRegError = user.region === '';
+    const isUsernameErr = user.username.trim() === "";
+    const isPasswordErr = user.password.trim() === "";
+    const isNameErr = user.name.trim() === "";
+    const isNicknameErr = user.nickname.trim() === "";
+    const isPhoneErr = user.phone_number.trim() === "";
+    const isEmailErr = user.email.trim() === "";
+    const isRegError = user.region === "";
     setUsernameErr(isUsernameErr);
     setPasswordErr(isPasswordErr);
     setNameErr(isNameErr);
@@ -61,49 +61,55 @@ const SignUp = () => {
     setPhoneErr(isPhoneErr);
     setEmailErr(isEmailErr);
     setRegError(isRegError);
-    
-    return !(isUsernameErr || isPasswordErr || isNameErr || isNicknameErr || isPhoneErr || isEmailErr || isRegError);
+
+    return !(
+      isUsernameErr ||
+      isPasswordErr ||
+      isNameErr ||
+      isNicknameErr ||
+      isPhoneErr ||
+      isEmailErr ||
+      isRegError
+    );
   };
-  
+
   // join버튼을 누르면 submit되는 동작
   const submitJoin = (e) => {
     e.preventDefault();
     const { repassword, ...signupdata } = user;
 
-    if(validateForm()) {
+    if (validateForm()) {
+      if (user.password !== user.repassword) {
+        alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+        return;
+      }
 
-    if (user.password !== user.repassword) {
-      alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
-      return;
+      console.log(signupdata);
+      fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify(signupdata),
+      })
+        .then((response) => {
+          if (response.ok) {
+            console.log("회원가입");
+            return response.json();
+          } else {
+            // throw new Error("회원가입 실패");
+            return null;
+          }
+        })
+        .then((data) => {
+          alert("회원가입 성공");
+          navigate("/home");
+        })
+        .catch((Error) => {
+          alert(Error.message);
+        });
     }
-
-    console.log(signupdata);
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/signup`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-      },
-      body: JSON.stringify(signupdata),
-    })
-      .then((response) => {
-        if (response.ok) {
-          console.log("회원가입");
-          return response.json();
-        } else {
-          // throw new Error("회원가입 실패");
-          return null;
-        }
-      })
-      .then((data) => {
-        alert("회원가입 성공");
-        navigate("/home");
-      })
-      .catch((Error) => {
-        alert(Error.message);
-      });
-    };
   };
-
 
   const validateEmail = () => {
     // 이메일이 비어 있는지 확인
@@ -292,14 +298,14 @@ const SignUp = () => {
             </option>
 
             {/* 거주지역 select option을 regionsData에서 map으로 가져온다. */}
-            {regionsData.features.map((feature) => (
-              <option
-                key={feature.properties.SIG_CD}
-                value={feature.properties.SIG_KOR_NM}
-              >
-                {feature.properties.SIG_KOR_NM}
-              </option>
-            ))}
+            {regionsData.features
+              .map((feature) => feature.properties.SIG_KOR_NM)
+              .sort((a, b) => a.localeCompare(b))
+              .map((sortedSIG_KOR_NM, index) => (
+                <option key={index} value={sortedSIG_KOR_NM}>
+                  {sortedSIG_KOR_NM}
+                </option>
+              ))}
           </select>
         </div>
         {regError && (
