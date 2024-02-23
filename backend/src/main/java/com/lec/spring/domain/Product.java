@@ -39,10 +39,10 @@ public class Product extends BaseEntity{
     private LocalDateTime refreshedAt;
 
     @ManyToOne
+    @ToString.Exclude
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     @ToString.Exclude

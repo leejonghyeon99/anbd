@@ -197,7 +197,7 @@ const UpdatePage = () => {
       <div>
         <span>대분류</span>
         <div className="">
-        <select className="form-select" name="category" value={selectCategory.id} onChange={CategoryValue}>
+        <select className="form-select" name="main" value={selectCategory.id} onChange={CategoryValue}>
             <option>-- 대분류 카테고리를 선택해주세요 --</option>
           {categories.map(category =>
           ( 
@@ -261,7 +261,7 @@ const UpdatePage = () => {
             <option value="남성의류">남성의류</option>
             <option value="아동의류">아동의류</option>
           </select> */}
-          <input type="text" name="middleCategory" ></input>
+          
         </div>
       </div>
       <span>가격</span>

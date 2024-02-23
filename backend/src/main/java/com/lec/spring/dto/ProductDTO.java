@@ -38,7 +38,7 @@ public class ProductDTO {
                 .location(entity.getLocation())
                 .refreshedAt(entity.getRefreshedAt())
                 .category(CategoryDTO.toDto(entity.getCategory()))
-                .user(entity.getUser().getNickname())
+                .user(UserDTO.toDto(entity.getUser()).getNickname())
                 .build();
     }
 
