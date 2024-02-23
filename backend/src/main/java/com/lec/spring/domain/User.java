@@ -45,9 +45,6 @@ public class User extends BaseEntity{
 
     private String provider_id;
 
-    @Column(length = 512)
-    private String refreshToken;
-
     // 이메일 인증을 위해 unique 추가
     @Column(nullable = false, length = 200, unique = true)
     private String email;

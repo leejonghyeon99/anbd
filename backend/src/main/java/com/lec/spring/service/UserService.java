@@ -49,6 +49,7 @@ public class UserService {
 
     @Transactional
     public UserResponseDTO signup(UserRequestDTO userRequestDTO){
+
         if (userRepository.existsByUsername(userRequestDTO.getUsername())){
             throw new RuntimeException("이미 가입되어 있는 유저입니다.");
         }
@@ -58,7 +59,6 @@ public class UserService {
         user.setAuth(Auth.ROLE_USER);
         user.setCertification("approved");
         user.setStar(0.0);
-        user.setRegion(user.getRegion());
 
         return UserResponseDTO.of(userRepository.save(user));
 
@@ -71,7 +71,6 @@ public class UserService {
         UsernamePasswordAuthenticationToken authenticationToken = userRequestDTO.toAuthentication();
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        System.out.println("authentication"+authentication);
         TokenDTO tokenDTO = tokenProvider.createTokenDto(authentication);
 
         RefreshToken refreshToken = RefreshToken.builder()
@@ -150,14 +149,6 @@ public class UserService {
         userRepository.delete(user);
 
     }
-
-//    public void updateRefreshToken(String updateRefreshToken) {
-//        this.refreshToken = updateRefreshToken;
-//    }
-
-
-
-
 
 
     //이메일 인증
