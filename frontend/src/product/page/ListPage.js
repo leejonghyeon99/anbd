@@ -8,37 +8,34 @@ const { Search } = Input;
 const ListPage = () => {
   const navigate = useNavigate();
 
-  const { category } = useParams();
+  const { sub } = useParams();
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
-  const [filteredProducts, setFilteredProducts] = useState([]);
-
+  
   useEffect(() => {
-    const productList = async () => {
+   
+    // 상품목록
+    // //중분류 이름으로 목록
+    const getProductListBySub = async () => {
       try {
-        const url = `${apiUrl}/api/product/list/${category}?search=${search}`;
-
+        const url = `${apiUrl}/api/product/list/${sub}`;
         const response = await fetch(url);
         const data = await response.json();
+    
+        // 서버에서 받은 데이터를 category 상태에 저장
         setProducts(data);
-      } catch {
-        return null;
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
     };
 
-    productList();
-  }, [search]);
+    getProductListBySub();
+  }, []);
 
-  
-  useEffect(() => {
-    console.log(products);
-  }, [products]);
-  // 검색어가 변경될 때마다 필터링된 상품 목록을 업데이트
-  const handleSearchChange = (event) => {
-    setSearch(event.target.value);
-  };
+useEffect(() => {console.log(products);},[products])
+
   const WriteOk = () => {
     navigate("/product/write");
   };
@@ -52,7 +49,6 @@ const ListPage = () => {
           type="text"
           placeholder="검색어를 입력하세요"
           value={search}
-          onChange={handleSearchChange}
         />
       </Form>
       {/* 검색 결과가 있을 때만 보여줌 */}

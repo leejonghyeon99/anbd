@@ -35,7 +35,7 @@ public class ProductController {
     @GetMapping("/list/{sub}")
     public ResponseEntity<?> list(
             @PathVariable(name = "sub") String sub,
-            @RequestParam String search
+            @RequestParam(required = false) String search
     ){
 
         return new ResponseEntity<>(productService.list(sub,search), HttpStatus.OK);
@@ -82,6 +82,10 @@ public class ProductController {
     @GetMapping("/category/find")
     public ResponseEntity<?> findByMainForSub(@RequestParam("main") String main){
         return new ResponseEntity<>(productService.findByMainForSub(main), HttpStatus.OK);
+    }
+    @GetMapping("/category/sub")
+    public ResponseEntity<?> findBySubForList(){
+        return new ResponseEntity<>(productService.findBySubForList(), HttpStatus.OK);
     }
 
     @InitBinder
