@@ -11,11 +11,14 @@ const DetailPage = () => {
     id:"",
     title:"",
     description:"",
-    createdAt:"",
+    refreshedAt:"",
     price:"",
-    middleCategory:"",
     user:"",
+    category:{
+      sub:""
+    }
   });
+
   const [files, setFiles] = useState([]);
   
 
@@ -23,19 +26,27 @@ const DetailPage = () => {
   const GoChat = () => {
     
   }
+
   const UpdateOk = () => {
     navigate('/product/update/' + id);
   }
   
+  // 리스트 페이지 이동
   const ListOk = () => {
     navigate('/product/list');
   }
+
+
+
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/detail/` + id)
     .then(response => response.json())
     .then(data => setProduct(data));
   }, []);
-useEffect(() =>{console.log(product)},[product])
+
+  useEffect(() =>{
+    console.log(":"+product.createdAt)
+  },[product]);
 
   const DeleteOk = () => {
     if(!window.confirm("정말 삭제하시겠습니까?")) return;
@@ -46,7 +57,7 @@ useEffect(() =>{console.log(product)},[product])
     .then(data => {
       if(data !== 'FAIL'){
         alert("삭제 성공");
-        navigate('/product/list');
+        navigate('/product/list'); // 변경
       } else{
         alert("삭제 실패");
       }
@@ -98,8 +109,8 @@ useEffect(() =>{console.log(product)},[product])
       </div>
       <span>카테고리</span>
       <div className='mb-3'>
-        <span className='form-control'>{product.middleCategory}</span>
-        <span className='form-control'>등록일자{product.createdAt}</span>
+        <span className='form-control'>{product.category.sub}</span>
+        {/* <span className='form-control'>수정일자: {product.refreshedAt}</span> */}
       </div>
       <span>내용</span>
       <div className='mb-3'>
