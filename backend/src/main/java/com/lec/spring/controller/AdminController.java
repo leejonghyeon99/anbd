@@ -86,7 +86,7 @@ public class AdminController {
     @PostMapping("/product/category")
     public ResponseEntity<Response<?>> addCategory(@RequestBody CategoryDTO dto){
 
-        return new ResponseEntity<>(adminService.addCategory(dto.getName()),HttpStatus.CREATED);
+        return new ResponseEntity<>(adminService.addCategory(dto),HttpStatus.CREATED);
     }
 
     //대분류 삭제

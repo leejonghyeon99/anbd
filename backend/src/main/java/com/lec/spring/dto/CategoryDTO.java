@@ -22,6 +22,14 @@ public class CategoryDTO{
     private String main;
     private String sub;
 
+    public static Category toEntity(CategoryDTO dto){
+        return Category.builder()
+                .id(dto.id)
+                .main(dto.getMain())
+                .sub(dto.getSub())
+                .build();
+    }
+
     public static CategoryDTO toDto(Category entity) {
         return CategoryDTO.builder()
                 .id(entity.getId())

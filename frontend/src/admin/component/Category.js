@@ -12,24 +12,40 @@ const Category = ({setModalToggle}) => {
     const [categoryInputValue, setCategoryInputValue] = useState("");
     const [selectCategory, setSelectCategory] = useState(null);
     const [valid, setValid] = useState("");
+
+    const transformData = (data) => {
+        return Object.values(data.reduce((acc, currentItem) => {
+            const { main, sub } = currentItem;
+            if (!acc[main]) {
+              acc[main] = { main, sub: [sub] };
+            } else {
+              acc[main].sub.push(sub);
+            }
+            return acc;
+          }, []))
+      };
+
     useEffect(() => {
-        const userList = async () => {
+        const categoryList = async () => {
             try {
                 const url = `${apiUrl}/api/admin/product/category/list`;
                 const response = await fetch(url);
                 const data = await response.json();
-                
-                setCategories(data)
+                console.log('zzzz',data)
+                setCategories(transformData(data))
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
-        userList();
+        categoryList();
     }, []);
 
+
+    useEffect(()=>{console.log(categories);},[categories])
+
     const handleCategoryClick = (m) => {
-        setActiveCategory(m.id);
+        setActiveCategory(m.main);
         setSelectCategory(m);
     };
 
@@ -225,13 +241,25 @@ useEffect(() => {console.log(selectCategory);},[selectCategory])
             <div className={`${styles.content}`}>
                 <div className={`${styles.categoryList}`}>
                         {categories.map((m) => (
-                            <div
-                                key={m.id}
-                                className={`${styles.category} ${m.id === activeCategory ? styles.active : ''}`}
-                                onClick={() => handleCategoryClick(m)}                            
-                                >                            
-                                {m.name}                                
-                            </div>
+                            <>
+                                <div
+                                    key={m.id}
+                                    className={`${styles.category} ${m.main === activeCategory ? styles.active : ''}`}
+                                    onClick={() => handleCategoryClick(m)}                            
+                                    >                            
+                                    {m.main}                   
+                                    
+                                </div>
+                                {m.sub.map((s) => (
+                                   <div
+                                       
+                                        className={`${styles.category} ${s === activeCategory ? styles.active : ''}`}
+                                                                   
+                                        >                            
+                                        {s}                                                           
+                                    </div>    
+                                ))}
+                            </>     
                         ))}
                 </div>
                 <div className={`${styles.categoryWrite}`}>
