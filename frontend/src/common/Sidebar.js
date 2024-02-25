@@ -6,7 +6,6 @@ import "./CSS/Sidebar.css"
 const Styledsidebar = styled.div`
   display: ${(props) => (props.isMenuOpen ? "block" : "none")};
 
-
   @media screen and (min-width: 768px) {
     display: block;
   }
@@ -163,7 +162,6 @@ function Sidebar() {
                   style={{ display: isSubMenuOpen(m.main) ? "block" : "none" }}
                 >
                   <span className="subCategory">{s}</span>
-
                 </li>
               ))}
             </ul>

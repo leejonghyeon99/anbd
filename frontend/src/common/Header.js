@@ -7,10 +7,12 @@ import "./CSS/Header.css";
 import "./CSS/Mypagebar.css";
 import Logout from './Logout'; 
 import Sidebar from "./Sidebar.js";
+
 // icon import
 import { FaUserCircle } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { Container } from "react-bootstrap";
+import Sidebar from "./Sidebar";
 
 const Navbar = styled.div`
   /* 다른 스타일들... */
@@ -43,8 +45,8 @@ const NavMenu = styled.ul`
   opacity: ${(props) => (props.ismenuopen === "true" ? "1" : "0")};
 
   @media screen and (max-width: 768px) {
-    display: ${(props) => (props.ismenuopen === "true" ? "block" : "none")};
-    border-radius: 5px;
+  display: ${(props) => (props.ismenuopen === "true" ? "block" : "none")};
+  border-radius: 5px;
   }
 `;
 
@@ -209,8 +211,41 @@ const Header = () => {
     setIsMenuOpen(false); // Navbar가 열려있는 경우 닫도록 설정
   };
 
-  const handleLogoutClick = () => {
-    Logout(navigate);
+  //Logout
+  const handleLogout = () => {
+    const token = localStorage.getItem("accessToken");
+    console.log(token);
+
+    if (!token) {
+      console.log("No token found, user is probably not logged in");
+      // 추가 처리: 사용자가 이미 로그아웃 상태임을 알림 or 로그인 페이지로 리디렉션
+      return;
+    }
+
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/logout`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json;charset=utf-8",
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json(); // 서버로부터의 응답을 JSON으로 파싱
+        } else {
+          throw new Error("로그아웃 실패");
+        }
+      })
+      .then((data) => {
+        console.log("로그아웃 성공", data.message);
+        localStorage.removeItem("accessToken");
+        // 페이지 새로고침
+        navigate("/");
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error(error); // 오류 처리
+      });
   };
 
   return (
@@ -332,7 +367,13 @@ const Header = () => {
               </div>
             </nav>
             {/*로그아웃 버튼!! */}
-            <Logout />
+            <Link>
+              <img
+                src="/icon/logout.png"
+                className="logout"
+                onClick={handleLogout}
+              />
+            </Link>
           </Navbar>
         </div>
 
