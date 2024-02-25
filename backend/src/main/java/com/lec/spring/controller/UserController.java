@@ -80,11 +80,6 @@ public class UserController {
         }
     }
 
-    @GetMapping("/callback")
-    public ResponseEntity<?> loginCallBack(@RequestBody UserRequestDTO userRequestDTO){
-        return ResponseEntity.ok(userService.update(userRequestDTO));
-    }
-
 
     @PostMapping("/reissue")
     public ResponseEntity<TokenDTO> reissue(@RequestBody TokenRequestDTO tokenRequestDTO){

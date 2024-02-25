@@ -140,11 +140,9 @@ public class UserService {
         return tokenDTO;
     }
     // 현재 유저 정보 가져오기
-
     public Optional<User> getUser(){
         return SecurityUtil.getCurrentUserId().flatMap(userRepository::findOneWithAuthoritiesByUsername);
     }
-
 
     public String logout(String accessToken) {
        jwtBlacklistService.blacklistToken(accessToken);
