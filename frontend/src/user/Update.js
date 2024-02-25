@@ -256,6 +256,7 @@ const Update = () => {
         <Button onClick={updateUser}>회원 수정</Button>
         <Button as={Link} to="/user/updatePassword">비밀번호 수정</Button>
         <Button onClick={deleteUser}>회원 탈퇴</Button>
+        <Button onClick={() => navigate('/home')}>HOME</Button>
       </Form>
     </div>
   );
