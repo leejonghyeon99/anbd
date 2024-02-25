@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import regionsData from "../api/regionsData.json";
-import UpdatePassword from "./UpdatePassword";
+
 
 const Update = () => {
   const navigate = useNavigate();
@@ -17,7 +17,9 @@ const Update = () => {
     region: "",
   });
 
-
+    // 유저 정보 변경 확인을 위한 상태 추가
+    const [originalEmail, setOriginalEmail] = useState("");
+    const [emailChanged, setEmailChanged] = useState(false);
 
   //유효성 검사를 위한 State함수들
   const [nameErr, setNameErr] = useState(false);
@@ -45,6 +47,7 @@ const Update = () => {
             repassword: userInfo.repassword || data.password,
           };
           setUserInfo(updatedUserInfo)
+          setOriginalEmail(data.email); // 원래 이메일 주소 저장
         })
         .catch((error) => console.error("userInfo error", error));
     }
@@ -62,6 +65,13 @@ const Update = () => {
       ...prevUser,
       [name]: value,
     }));
+
+        // 이메일 주소가 변경되었는지 확인
+        if (name === "email" && value !== originalEmail) {
+          setEmailChanged(true);
+        } else if (name === "email" && value === originalEmail) {
+          setEmailChanged(false);
+        }
   }
 
   //유효성 검사
@@ -89,6 +99,101 @@ const Update = () => {
       isPasswordMatchErr
     );
   };
+
+    // 인증번호 입력란 가시성 상태 변수
+    const [isVerificationVisible, setIsVerificationVisible] = useState(false);
+    // 인증번호 상태 변수
+  const [code, setCode] = useState("");
+    // 인증 성공 상태 추가
+    const [isVerified, setIsVerified] = useState(false);
+
+      // 이메일인증 버튼 클릭 시 유효성 검증
+  const validateEmail = () => {
+
+    if (!emailChanged) {
+      alert("이미 인증된 이메일 주소입니다.");
+      return;
+    }
+
+    // 이메일이 비어 있는지 확인
+    if (userInfo.email.trim() === '') {
+      setEmailErr("empty");
+      setIsVerificationVisible(false); // 이메일이 비어있을 때는 인증번호 입력란 숨김
+      return false;
+     // 에러가 발생하면 여기서 함수 실행을 중단
+    } else if (!/\S+@\S+\.\S+/.test(userInfo.email)) {
+      setEmailErr("format");
+      setIsVerificationVisible(false); // 이메일 형식이 맞지 않을 때는 인증번호 입력란 숨김
+      return false;
+    } else {
+      setEmailErr(null); // 에러가 없으면 에러 상태를 null로 설정
+
+      // 이메일 유효성 검사를 통과했을 경우에만 인증번호 입력란을 보여줌
+      setIsVerificationVisible(true);
+      // 이메일 인증코드 보내기
+      requestEmailVerification();
+      return true;
+    }
+  };
+
+  // 이메일 인증코드 보내기
+  const requestEmailVerification = async () => {
+   
+    // 이메일 유효성 검사를 통과한 경우, 서버로 이메일 인증 요청
+    await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/email/verification-requests?email=${userInfo.email}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+      },
+      body: JSON.stringify({ email: userInfo.email }),
+    })
+    .then((response) => {
+      if (response.status===200) {
+        // 이메일 인증 요청 성공 처리
+        alert("인증 코드가 발송되었습니다. 이메일을 확인해주세요.");
+      } else {
+        console.log(userInfo.email);
+        // 서버 측 에러 처리
+        alert("인증 코드 발송에 실패했습니다.");
+      }
+    })
+    .catch((error) => {
+      console.error('이메일 인증 중 오류 발생:', error);
+    });
+  };
+
+
+  // 인증번호 입력 핸들러 함수
+  const codeChange = (e) => {
+    setCode(e.target.value);
+  };
+
+
+  const verifyCode = async (email, code) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/email/verifications?email=${encodeURIComponent(email)}&code=${encodeURIComponent(code)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await response.json();
+      console.log("서버 응답:", data);
+  
+      if (data.verified) {
+        alert("인증 성공!");
+        setIsVerified(true); // 인증 성공 상태 업데이트
+
+      } else {
+        alert("인증 실패. 코드를 다시 확인해주세요.");
+        setIsVerified(false); // 인증 실패 상태를 유지하거나 업데이트
+      }
+    } catch (error) {
+      console.error("인증 중 오류 발생", error);
+    }
+  };
+  
+
 
   // 유저 정보 수정하기
   function updateUser(e) {
@@ -211,14 +316,48 @@ const Update = () => {
           <label htmlFor="email">
             이메일 <small>* </small>
           </label>
-          <input name="email" value={userInfo.email} onChange={infoChange} />
+          <input name="email" value={userInfo.email} onChange={infoChange} /> 
+          {!isVerified && <Button
+            onClick={validateEmail}
+            variant="light"
+            size="sm"
+            className="rounded"
+          >
+            이메일 인증
+          </Button>}
         </div>
-        {emailErr && (
+        {emailErr === "empty" && (
+    <div>
+      <small className="text-danger">이메일은 필수입니다.</small>
+    </div>
+  )}
+  {emailErr === "format" && (
+    <div>
+      <small className="text-danger">이메일 양식에 맞춰서 입력해주세요.</small>
+    </div>
+  )}
+        <div>
+          {/* 인증번호 입력란 */}
+        {isVerificationVisible && !isVerified && (
           <div>
-            <small className="text-danger">메일은 필수입니다</small>
+            <label htmlFor="verificationCode">
+              인증번호 <small>* </small>
+            </label>
+            <input
+              type="text"
+              placeholder="인증번호를 입력하세요"
+              name="code"
+              value={code}
+              onChange={codeChange}
+            />{" "}
+            <Button onClick={() => verifyCode(userInfo.email, code)} variant="light" size="sm">
+              인증번호 확인
+            </Button>
           </div>
         )}
-        <div>
+         {/* 인증 성공 메시지 */}
+         {isVerified && <div style={{ color: 'blue' }}>[이메일 인증 완료]</div>}
+        <div></div>
           {/* 주소 수정 */}
           <label htmlFor="region">
             주소 <small>* (최대 3개) </small>
