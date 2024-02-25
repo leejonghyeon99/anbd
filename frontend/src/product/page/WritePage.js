@@ -4,6 +4,9 @@ import { Button } from "react-bootstrap";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import GoogleMaps from "./GoogleMaps";
 
+import { VscClose } from 'react-icons/vsc';
+// import * as S from './style';
+
 const WritePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -49,23 +52,74 @@ const WritePage = () => {
 
   // 이미지 첨부
   const uploadFile = (e) => {
-    const selectedFiles = Array.from(e.target.files); // 선택된 파일 목록을 배열로 변환
-    const uploadedFiles = selectedFiles.map((file) => ({
-      originalName: file.name,  // 원본 파일명
-      photoName:""  // 서버에서 생성된 저장된 파일 이름은 아직 모름
-      // url: URL.createObjectURL(file), // 파일을 위한 URL 생성
-    }));
-    setFiles([...files, ...uploadedFiles]); // 기존 파일 목록과 새로 업로드된 파일 목록을 병합하여 상태 업데이트
+//     const selectedFiles = Array.from(e.target.files); // 선택된 파일 목록을 배열로 변환
+//     const uploadedFiles = selectedFiles.map((file) => ({
+//       originalName: file.name,  // 원본 파일명
+//       photoName:""  // 서버에서 생성된 저장된 파일 이름은 아직 모름
+//       // url: URL.createObjectURL(file), // 파일을 위한 URL 생성
+//     }));
+//     setFiles([...files, ...uploadedFiles]); // 기존 파일 목록과 새로 업로드된 파일 목록을 병합하여 상태 업데이트
   
-    const updatedFiles = [...files, ...uploadedFiles]; // 기존 파일 목록과 새로 업로드된 파일 목록을 병합하여 업데이트
-    setFiles(updatedFiles); // 파일 상태 업데이트
-};
-  // 이미지 삭제 기능
-  const deleteFile = (index) => {
-    const newFiles = [...files];
-    newFiles.splice(index, 1); // 해당 인덱스의 파일 제거
-    setFiles(newFiles); // 파일 목록 업데이트
-  };
+//     const updatedFiles = [...files, ...uploadedFiles]; // 기존 파일 목록과 새로 업로드된 파일 목록을 병합하여 업데이트
+//     setFiles(updatedFiles); // 파일 상태 업데이트
+// };
+//   // 이미지 삭제 기능
+//   const deleteFile = (index) => {
+//     const newFiles = [...files];
+//     newFiles.splice(index, 1); // 해당 인덱스의 파일 제거
+//     setFiles(newFiles); // 파일 목록 업데이트
+//   };
+  }
+  //* 화면에 출력될 파일과 서버에 보내질 파일을 구분할 필요없다. 
+  //화면에 출력되는 파일
+  // const [selectedImages, setSelectedImages] = useState([]);
+  // //서버에 보내지는 파일
+  // const [selectedFiles, setSelectedFiles] = useState(null);
+
+  // const onSelectFile = (e: any) => {
+  //   e.preventDefault();
+  //   e.persist();
+  //   //선택한 파일 
+  //   const selectedFiles = e.target.files;
+  //   //선택한 파일들을 fileUrlList에 넣어준다. 
+  //   const fileUrlList = [...selectedFiles];
+
+  //   // 업로드되는 파일에는 url이 있어야 한다. filePath로 보내줄 url이다.
+  //   //획득한 Blob URL Address를 브라우져에서 그대로 호출 시에 이미지는 표시가 되고 ,
+  //   //일반 파일의 경우 다운로드를 할 수 있다.
+  //   for (let i = 0; i < selectedFiles.length; i++) {
+  //     const nowUrl = URL.createObjectURL(selectedFiles[i]);
+  //     fileUrlList.push(nowUrl[i]);
+  //   }
+
+  //   setSelectedFiles(fileUrlList);
+
+  //   //Array.from() 은 문자열 등 유사 배열(Array-like) 객체나 이터러블한 객체를 배열로 만들어주는 메서드이다.
+  //   const selectedFileArray: any = Array.from(selectedFiles);
+
+  //   //브라우저 상에 보여질 파일 이름
+  //   const imageArray = selectedFileArray.map((file: any) => {
+  //     return file.name;
+  //   });
+
+  //   // 첨부파일 삭제시
+  //   setSelectedImages((previousImages: any) => previousImages.concat(imageArray));
+  //   e.target.value = '';
+  // };
+
+  // //브라우저상에 보여질 첨부파일
+  // const attachFile =
+  //   selectedImages &&
+  //   selectedImages.map((image: any) => {
+  //     return (
+  //       <S.DivImg key={image}>
+  //         <div>{image}</div>
+  //         <button onClick={() => setSelectedImages(selectedImages.filter((e) => e !== image))}>
+  //         <VscClose size='30' /> 
+  //         </button>
+  //       </S.DivImg>
+  //     );
+  //   });
 
   // product와 category 같이
   const pc = {

@@ -27,8 +27,8 @@ public class ProductController {
 
     // 등록
     @PostMapping("/write")
-    public ResponseEntity<?> write(@RequestBody Product product, @RequestParam Map<String, MultipartFile> files){
-        return new ResponseEntity<>(productService.write(product, files), HttpStatus.CREATED);  //201
+    public ResponseEntity<?> write(@RequestBody Product product){
+        return new ResponseEntity<>(productService.write(product), HttpStatus.CREATED);  //201
     }
     // 목록
     @GetMapping("/list/{sub}")
