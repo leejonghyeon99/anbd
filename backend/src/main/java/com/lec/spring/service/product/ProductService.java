@@ -6,8 +6,6 @@ import com.lec.spring.domain.ProductImage;
 import com.lec.spring.domain.User;
 import com.lec.spring.dto.CategoryDTO;
 import com.lec.spring.dto.ProductDTO;
-import com.lec.spring.dto.category.MainCategoryDTO;
-import com.lec.spring.dto.category.SubCategoryDTO;
 import com.lec.spring.repository.CategoryRepository;
 import com.lec.spring.repository.UserRepository;
 import com.lec.spring.repository.product.ProductImageRepository;
@@ -61,7 +59,6 @@ public class ProductService {
           List<ProductDTO> list = ProductDTO.toDtoList(productRepository.getProductBySub(category.getId()));
         return list;
 
-    }
 
     // 상세
     @Transactional
@@ -81,7 +78,11 @@ public class ProductService {
     public ProductDTO update(ProductDTO product) {
         System.out.println(product.toString());
         Product productEntity = productRepository.findById(product.getId()).orElse(null);
-        Category category = categoryRepository.findById(product.getCategory().getId()).orElse(null);
+//        Category category = categoryRepository.findById(product.getCategory().getId()).orElse(null);
+
+        String main = product.getCategory().getMain();
+        String sub = product.getCategory().getSub();
+        Category category = categoryRepository.findUnique(main, sub);
 
         if (category != null) {
             category.setMain(product.getCategory().getMain());
@@ -96,9 +97,9 @@ public class ProductService {
             productEntity.setDescription(product.getDescription());
             productEntity.setCategory(category);
             productEntity.setRefreshedAt(product.getRefreshedAt());  // 끌어올리기
+
             productRepository.save(productEntity);
         }
-
         return ProductDTO.toDto(productEntity);
     }
 
@@ -111,29 +112,20 @@ public class ProductService {
         return "OK";
     }
 
-    // 특정main으로 sub 가져오기 카테고리
+    // 특정 main으로 sub 가져오기 카테고리
     public List<CategoryDTO> findByMainForSub (String main){
         System.out.println("main : ========================" + main);
-
-
         return CategoryDTO.toDtoList(categoryRepository.findAllGroupMain(main).orElse(null));
-
     }
-
     // main만 가져오기 카테고리
     public List<CategoryDTO> findByMainForList (){
-
         return CategoryDTO.toDtoList( categoryRepository.findAllOnlyMain().orElse(null));
-
-
     }
     // sub만 가져오기 카테고리
     public List<CategoryDTO> findBySubForList (){
+
         System.out.println("---------------------------------------------");
         System.out.println(categoryRepository.findAllOnlySub().orElse(null));
-        return CategoryDTO.toDtoList( categoryRepository.findAllOnlySub().orElse(null));
-
 
     }
-
 }
