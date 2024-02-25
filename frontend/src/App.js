@@ -15,6 +15,7 @@ import DetailPage from "./product/page/DetailPage";
 import UpdatePage from "./product/page/UpdatePage";
 import GoogleMaps from "./product/page/GoogleMaps";
 import ChatPage from './chat/page/ChatPage';
+import UpdatePassword from "./user/UpdatePassword";
 
 
 const App = () => {
@@ -36,6 +37,8 @@ const App = () => {
             <Route path="user/update" Component={Update}></Route>
             <Route path="/user/:id" element={<Update />} /> 
             <Route path="/product/list/:category" Component={ListPage}></Route>
+            <Route path="user/updatepassword" Component={UpdatePassword}></Route>
+            <Route path="/product/list/:sub" Component={ListPage}></Route>
             <Route path="/product/write" Component={WritePage}></Route>
             <Route path="/product/detail/:id" Component={DetailPage}></Route>
             <Route path="/product/update/:id" Component={UpdatePage}></Route>

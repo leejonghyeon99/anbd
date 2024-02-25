@@ -1,7 +1,8 @@
 package com.lec.spring.domain;
 
-import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+
 
 public enum Auth {
 
@@ -15,8 +16,7 @@ public enum Auth {
         this.auth = auth;
     }
 
-
     public String getKey() {
-        return null;
+        return auth;
     }
 }
