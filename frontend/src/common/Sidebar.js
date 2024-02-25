@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
+import "./CSS/Sidebar.css"
 
 const Styledsidebar = styled.div`
   display: ${(props) => (props.isMenuOpen ? "block" : "none")};
-  flex: 1;
-  height: calc(100vh - 120px);
-  background-color: blueviolet;
-  position: sticky;
-  top: 50px;
-  padding: 15px;
+
 
   @media screen and (min-width: 768px) {
     display: block;
@@ -17,20 +13,11 @@ const Styledsidebar = styled.div`
 `;
 
 const SidebarMenu = styled.div`
-  ul {
-    list-style: none;
-    font-size: calc(
-      8px + 0.8vw
-    ); /* vw 단위를 사용하여 글꼴 크기를 동적으로 변경 */
-    padding: 0;
-    margin: 0;
-  }
-
   li {
     cursor: pointer;
   }
   .mainCategory {
-    font-size: calc(10px + 0.5vw); /* m.main에 대한 글자 크기 조절 */
+    font-size: calc(9px + 0.5vw); /* m.main에 대한 글자 크기 조절 */
     font-weight: bold; /* m.main에 대한 글자 굵게 설정 */
     /* 다른 스타일링을 추가할 수 있습니다. */
   }
@@ -152,7 +139,7 @@ function Sidebar() {
   }, [category]);
 
   return (
-    <Styledsidebar>
+    <Styledsidebar className="sidebarBox">
       <div className="sidebarWrapper">
         <SidebarMenu className="sidebarMenu">
 
@@ -161,7 +148,7 @@ function Sidebar() {
 
           {/* 카테고리 데이터를 순회하며 렌더링 */}
           {category.map((m) => (
-            <ul key={m.main}>
+            <ul key={m.main} className="menuList">
 
               {/* 메인 카테고리를 클릭할 때 서브 메뉴를 토글하는 함수 호출 */}
               <li onClick={() => toggleSubMenu(m.main)}>
@@ -175,8 +162,7 @@ function Sidebar() {
                   onClick={() => handleSubMenuClick(s)}
                   style={{ display: isSubMenuOpen(m.main) ? "block" : "none" }}
                 >
-
-                  <span className={m.sub}>{s}</span>
+                  <span className="subCategory">{s}</span>
 
                 </li>
               ))}
