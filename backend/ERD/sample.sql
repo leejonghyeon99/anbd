@@ -11,6 +11,7 @@
 #     "certification" : "approved",
 #     "region" : "광진구"
 # }  -> postman에 넣어야함 ㅠ 안그럼 비번 인코딩이 안돼서!
+select main from Category as c group by c.main;
 
 select * from user;
 select * from Product  where category_id = 1;

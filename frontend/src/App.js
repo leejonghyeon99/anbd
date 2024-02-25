@@ -21,8 +21,8 @@ import UpdatePassword from "./user/UpdatePassword";
 const App = () => {
   return (
     <>
-      <Admin></Admin>
-      {/* <div className="AppBox">
+      {/* <Admin></Admin> */}
+      <div className="AppBox">
         <Header className="header" />
         <div className="menu">
           <Sidebar />
@@ -49,7 +49,7 @@ const App = () => {
             <Route path="/chat" Component={ChatPage}></Route>
           </Routes>
         </div>
-      </div> */}
+      </div>
     </>
   );
 };

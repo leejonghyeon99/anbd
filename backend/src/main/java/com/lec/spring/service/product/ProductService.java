@@ -118,8 +118,8 @@ public class ProductService {
         return CategoryDTO.toDtoList(categoryRepository.findAllGroupMain(main).orElse(null));
     }
     // main만 가져오기 카테고리
-    public List<CategoryDTO> findByMainForList (){
-        return CategoryDTO.toDtoList( categoryRepository.findAllOnlyMain().orElse(null));
+    public List<String> findByMainForList (){
+        return categoryRepository.findAllOnlyMain().orElse(null);
     }
     // sub만 가져오기 카테고리
     public List<CategoryDTO> findBySubForList (){
