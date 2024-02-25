@@ -97,7 +97,6 @@ public class ProductService {
             productEntity.setDescription(product.getDescription());
             productEntity.setCategory(category);
             productEntity.setRefreshedAt(product.getRefreshedAt());  // 끌어올리기
-
             productRepository.save(productEntity);
         }
         return ProductDTO.toDto(productEntity);
@@ -123,10 +122,8 @@ public class ProductService {
     }
     // sub만 가져오기 카테고리
     public List<CategoryDTO> findBySubForList (){
-
         System.out.println("---------------------------------------------");
         System.out.println(categoryRepository.findAllOnlySub().orElse(null));
-
         return CategoryDTO.toDtoList( categoryRepository.findAllOnlySub().orElse(null));
     }
 
