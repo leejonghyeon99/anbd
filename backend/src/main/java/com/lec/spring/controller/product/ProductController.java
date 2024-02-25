@@ -2,6 +2,7 @@ package com.lec.spring.controller.product;
 
 import com.lec.spring.domain.Product;
 import com.lec.spring.domain.Status;
+import com.lec.spring.dto.CategoryDTO;
 import com.lec.spring.dto.ProductDTO;
 import com.lec.spring.service.product.ProductImageService;
 import com.lec.spring.service.product.ProductService;
@@ -28,7 +29,6 @@ public class ProductController {
     // 등록
     @PostMapping("/write")
     public ResponseEntity<?> write(@RequestBody Product product){
-
         return new ResponseEntity<>(productService.write(product), HttpStatus.CREATED);  //201
     }
     // 목록
@@ -37,7 +37,6 @@ public class ProductController {
             @PathVariable(name = "sub") String sub,
             @RequestParam(required = false) String search
     ){
-
         return new ResponseEntity<>(productService.list(sub,search), HttpStatus.OK);
     }
     // 상세
@@ -75,6 +74,8 @@ public class ProductController {
     // Main만 가져오기
     @GetMapping("/category/main")
     public ResponseEntity<?> findByMainForList() {
+        System.out.println("실행중");
+
         return new ResponseEntity<>(productService.findByMainForList(), HttpStatus.OK);
     }
 

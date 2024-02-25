@@ -53,6 +53,8 @@ const GoogleMaps = () => {
     if(markerRef.current){
       markerRef.current.setMap(null);
     }
+    
+    //2024.02.21 부로 Marker -> AdvancedMarkerElement 
     const marker = new window.google.maps.Marker({
       position:location,
       map: map,

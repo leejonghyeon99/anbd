@@ -1,111 +1,211 @@
+@import url("https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap");
+.container {
+  background-color: #ffffff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 
-
-.container{
-    background-color: #f8f8f8c4;
-   position: relative;
-   width: 100%;
-   height: 100%;
-   display: flex;
-   flex-direction: column;
+  width: 800px;
+  height: 700px;
+  max-width: 800px;
+  margin: 20px;
 }
 
-.header{
-    display: flex;
-    justify-content: space-between;
-    outline: 1px solid black;
-    width: 100%;
-    height: 80px;
-    padding: 10px 0 10px 0;
+.header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 80px;
+  padding: 10px 0 10px 0;
+  border-bottom: 5px solid rgb(223, 222, 222);
 }
 
-.addPointer{
-    cursor: pointer;
+.addPointer {
+  cursor: pointer;
 }
 
-.addBtnWrap{
-    display : flex;
-	justify-content : center;
-	align-items : center;
-    padding-left: 20px;
+.addBtnWrap {
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  width: 400px;
 }
 
-.addBtn{
-    padding: 0 10px 0 10px;
-    outline: 1px solid black;
-    font-size: 1.2em;
-    
+.addBtn:nth-child(1) {
+  border: 1px solid rgb(59, 86, 240);
+  background-color: transparent;
+  color: black;
 }
 
-.saveAndCancle{
-    padding: 0;
-    width: 200px;
-    display : flex;
-    flex-direction: row;
+.addBtn:nth-child(2) {
+  border: 1px solid rgb(243, 182, 68);
+  background-color: transparent;
+  color: black;
 }
 
-.saveAndCancle span {
-    margin: 5px;
-    outline: 1px solid lightgray;
-    border-radius: 1px;
-    display: inline-block;
-    width: 70px;
-    height: 50px;
-    display : flex;
-	justify-content : center;
-	align-items : center;
-
-}
-  
-.cancleBtn{
-    color: #504e4e;
+.addBtn:nth-child(3) {
+  border: 1px solid rgb(247, 53, 53);
+  background-color: transparent;
+  color: black;
 }
 
-.saveBtn{
-    color: #fff;
-    background-color: rgb(57, 152, 240);
+.addBtn {
+  padding: 0 10px 0 10px;
+  outline: 1px solid lightgrey;
+  font-size: 1.2em;
+  border-radius: 5px;
+  width: 70px;
+  height: 40px;
+  margin: 0 8px 0 8px;
 }
 
-.cancleBtn:hover{
-    background-color: rgb(213, 227, 240);
+.addBtn:hover {
+  border: none;
+  box-shadow: 1px 1px 3px 3px #007bff;
 }
 
-.saveBtn:hover{
-    background-color: rgb(43, 143, 236);
+.cancleBtn {
+  margin: 5px;
+  margin-right: 20px;
+  outline: 1px solid lightgray;
+  border-radius: 1px;
+
+  width: 70px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #504e4e;
 }
 
-
-
-.content{
-    display: flex;
-    width: 100%;
-    height: 100%;
-    padding: 5px 0 0 0;
+.cancleBtn:hover {
+  background-color: rgb(213, 227, 240);
 }
 
-.content div{
-    border: 1px solid black;
-    flex: 1;
+.content {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: 5px 0 0 0;
+  overflow: hidden;
 }
 
-.categoryList{
-    padding-left: 10px;
+.categoryList {
+  flex: 50%;
+  font-family: "IBM Plex Sans KR", sans-serif;
+  font-weight: bold;
+  font-style: normal;
+  font-size: 1.3em;
+  color: black;
+
+  overflow-y: scroll;
 }
 
-.categoryList div{
-    height: 50px;
-}
-.categoryList div:hover{
-    cursor: pointer;
+.categoryList::-webkit-scrollbar {
+  width: 12px;
 }
 
-.active{
-    background-color: aquamarine;
+.categoryList::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
 }
 
-
-
-.categoryWrite{
-
+.categoryList::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
 }
 
+.category {
+  flex: 9;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 15px;
+}
+.category:hover {
+  cursor: pointer;
+}
 
+.active {
+  background-color: aquamarine;
+  color: rgb(43, 143, 236);
+}
+
+.categoryWrite {
+  flex: 50%;
+  padding: 0 40px 0 40px;
+}
+
+.categoryNameBox {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.categoryNameBox > label {
+  position: absolute;
+  bottom: 60px;
+  font-size: small;
+  color: lightgray;
+}
+
+.categoryName {
+  height: 100px;
+  border-bottom: 2px solid lightgray;
+
+  font-family: "IBM Plex Sans KR", sans-serif;
+  font-weight: bold;
+  font-style: normal;
+  font-size: 1.3em;
+  color: black;
+
+  display: flex;
+  align-items: flex-end;
+
+  transition: 0.3s border;
+}
+
+.categoryName > input {
+  margin-bottom: 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  width: 100%;
+}
+
+.categoryName > input:focus {
+  box-shadow: none;
+}
+
+.focusWithin:focus-within {
+  /* focus-within일 때의 스타일 */
+  border-color: #007bff; /* 변경하고자 하는 색상으로 수정 */
+}
+
+.addCategoryBtn {
+  position: absolute;
+  width: 80px;
+  right: 0;
+  bottom: 0;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  background-color: #007bff;
+}
+
+.txt {
+  margin-top: 20px;
+  height: auto;
+  border-left: 5px #007bff solid;
+  padding: 10px 0 20px 10px;
+  font-family: "Nanum Myeongjo", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.valid {
+  color: red;
+}

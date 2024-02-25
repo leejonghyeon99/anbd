@@ -11,6 +11,7 @@
 #     "certification" : "approved",
 #     "region" : "광진구"
 # }  -> postman에 넣어야함 ㅠ 안그럼 비번 인코딩이 안돼서!
+select main from Category as c group by c.main;
 
 select * from user;
 select * from Product  where category_id = 1;
@@ -64,6 +65,8 @@ VALUES (7,20000,'SALE',1, now(), '테스트 상품7-1', '테스트 상품입니�
 desc product;/*정렬*/
 
 select * from product;
+select * from product_image;
+
 
 /* 신고 sample */
 insert into report(user_id, reason) VALUES (6,'그냥1');

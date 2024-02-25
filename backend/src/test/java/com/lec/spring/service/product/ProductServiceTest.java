@@ -1,10 +1,13 @@
 package com.lec.spring.service.product;
 
+import com.lec.spring.dto.CategoryDTO;
 import com.lec.spring.repository.CategoryRepository;
 import com.lec.spring.repository.product.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,5 +32,10 @@ class ProductServiceTest {
     }
 
 
+    @Test
+    void findByMainForList() {
 
+        System.out.println(repository.findAllOnlyMain()
+        );
+    }
 }

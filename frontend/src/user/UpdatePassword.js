@@ -79,11 +79,12 @@ const UpdatePassword = () => {
         })
           .then((response) => {
             if (response.ok) {
-              alert("회원정보 수정완료");
+              alert("비밀번호 변경완료");
               console.log(userInfo.password);
               return response.json();
             } else {
-              return Promise.reject("회원정보 수정에 실패했습니다.");
+              console.log("Error status text:", response.statusText);
+              return Promise.reject("비밀번호 변경에 실패했습니다.");
             }
           })
           .then((data) => {
@@ -92,12 +93,17 @@ const UpdatePassword = () => {
             navigate("/home");
           })
           .catch((error) => {
-            console.error("회원정보 수정오류", error);
-            alert(error);
+            console.error("비밀번호 변경오류", error);
+            alert("비밀번호 변경정에 실패했습니다. 다시 시도해주세요.");
           });
       }
     }
   }
+
+    // 이전 화면으로 돌아가는 함수
+    const goBack = () => {
+      navigate(-1); // -1을 사용하면 이전 화면으로 이동합니다.
+    };
 
     return (
         <Form onSubmit={updatePassword}>
@@ -131,7 +137,8 @@ const UpdatePassword = () => {
             </div>
           )}
         </div>
-        <Button onClick={updatePassword}>회원 수정</Button>
+        <Button onClick={updatePassword}>비밀번호 수정</Button>
+        <Button onClick={goBack}>이전으로</Button>
         </Form>
     );
 };
