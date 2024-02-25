@@ -56,10 +56,10 @@ public class ProductService {
     @Transactional
     public List<ProductDTO> list(String sub, String search) {
         Category category = categoryRepository.findBySub(sub).orElse(null);
-          List<ProductDTO> list = ProductDTO.toDtoList(productRepository.getProductBySub(category.getId()));
+        List<ProductDTO> list = ProductDTO.toDtoList(productRepository.getProductBySub(category.getId()));
         return list;
 
-
+    }
     // 상세
     @Transactional
     public ProductDTO detail(Long id){
@@ -127,6 +127,7 @@ public class ProductService {
         System.out.println("---------------------------------------------");
         System.out.println(categoryRepository.findAllOnlySub().orElse(null));
 
+        return CategoryDTO.toDtoList( categoryRepository.findAllOnlySub().orElse(null));
     }
 
     // - 지우가 씀 -

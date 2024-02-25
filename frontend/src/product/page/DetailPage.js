@@ -3,6 +3,7 @@ import { Button, Image, Col } from 'react-bootstrap';
 import { json, useNavigate, useParams } from 'react-router-dom';
 import SockJS from 'sockjs-client';
 import ChatPage from '../../chat/page/ChatPage';
+import { Stomp } from '@stomp/stompjs';
 
 const DetailPage = () => {
   const navigate = useNavigate();
