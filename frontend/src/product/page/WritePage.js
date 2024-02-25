@@ -35,8 +35,8 @@ const WritePage = () => {
     location: "",
   });
 
-  const [categories, setCategories] = useState([]);
-  const [selectCategory, setSelectCategory] = useState(null);
+  // const [categories, setCategories] = useState([]);
+  // const [selectCategory, setSelectCategory] = useState(null);
 
   const [mainCategories, setMainCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
@@ -44,14 +44,41 @@ const WritePage = () => {
   const [selectMain, setSelectMain] = useState("");
   const [selectSub, setSelectSub] = useState("");
 
+  // 이미지
+  const [files, setFiles] = useState([]);
+
+  // 이미지 첨부
+  const uploadFile = (e) => {
+    const selectedFiles = Array.from(e.target.files); // 선택된 파일 목록을 배열로 변환
+    const uploadedFiles = selectedFiles.map((file) => ({
+      originalName: file.name,  // 원본 파일명
+      photoName:""  // 서버에서 생성된 저장된 파일 이름은 아직 모름
+      // url: URL.createObjectURL(file), // 파일을 위한 URL 생성
+    }));
+    setFiles([...files, ...uploadedFiles]); // 기존 파일 목록과 새로 업로드된 파일 목록을 병합하여 상태 업데이트
+  
+    const updatedFiles = [...files, ...uploadedFiles]; // 기존 파일 목록과 새로 업로드된 파일 목록을 병합하여 업데이트
+    setFiles(updatedFiles); // 파일 상태 업데이트
+};
+  // 이미지 삭제 기능
+  const deleteFile = (index) => {
+    const newFiles = [...files];
+    newFiles.splice(index, 1); // 해당 인덱스의 파일 제거
+    setFiles(newFiles); // 파일 목록 업데이트
+  };
+
   // product와 category 같이
   const pc = {
     ...product,
     category: {
       main: selectMain.main,
       sub: selectSub.sub
-    }
+    },
+    files: files
   };
+  useEffect(() => {
+    console.log(`files: ${files.originalName}`);
+  })
 
   // 위치
   useEffect(() => {
@@ -62,8 +89,9 @@ const WritePage = () => {
     console.log('::' + selectedLocation);
   }, [selectedLocation]);
 
+  // GoogleMaps의 표시 여부를 토글
   const toggleGoogleMaps = () => {
-    setShowGoogleMaps(prevState => !prevState); // GoogleMaps의 표시 여부를 토글
+    setShowGoogleMaps(prevState => !prevState); 
   };
 
   // Main목록만 가져오는 카테고리
@@ -84,9 +112,7 @@ const WritePage = () => {
         const data = await response.json();
 
         setSubCategories(data);
-      } catch (error) {
-        
-      }
+      } catch (error) {console.log(`error`);}
     }
     getByMainForSub();
  }
@@ -95,34 +121,6 @@ const WritePage = () => {
   useEffect(() => {
     getSub();
   },[selectMain]);
-  
-  // 이미지
-  const [files, setFiles] = useState([]);
-
-  // 이미지 첨부
-  const uploadFile = (e) => {
-    let fileArr = e.target.files;
-    setFiles(Array.from(fileArr)); // 업로드한 files를 배열로
-    console.log("fileArr " + fileArr);
-    console.log("fileArr[0] " + fileArr[0].name);
-
-    let fileData = [];  // 파일의 URL과 키를 담을 배열
-    const uploadAndSave = (file, index) => {
-      let fileRead = new FileReader();
-      fileRead.onload = function(){
-        let url = fileRead.result;
-        let key = index.toString();
-        fileData.push({url, key});
-        console.log("file Url", index, ":", url);
-        console.log("file Key", index, ":", key);
-      }
-      fileRead.readAsDataURL(file);
-    }
-    for (let i = 0; i < fileArr.length; i++) {
-      uploadAndSave(fileArr[i], i);
-    }
-    console.log("fileData", fileData);
-  }
 
   // 작성된 값
   const WriteValue = (e) => {
@@ -131,7 +129,6 @@ const WritePage = () => {
       [e.target.name]: e.target.value
     });
     console.log(e.target.value);
-
   };
 
   // 선택된 main category 값
@@ -154,7 +151,7 @@ const WritePage = () => {
 
   // 작성 완료
   const WriteOk = (e) => {
-    console.log(pc);
+    console.log(pc, files);
     e.preventDefault();
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
       method: "POST",
@@ -197,7 +194,15 @@ const WritePage = () => {
       <h2>글쓰기</h2>
       <span>이미지 첨부</span>
       <div className="mb-3">
-        <input type="file" accept="image/jpg,impage/png, image/jpeg, image/gif" name='files' id='files' onChange={uploadFile} multiple/>
+        <input type="file" accept="image/*" name='files' id='files' onChange={uploadFile} multiple/>
+      </div>
+      <div className="mb-2">
+        <span>미리보기</span>
+        {files.map((file, index) => {
+          <div key={index}>
+            <img src={file.url} alt={`Uploaded ${index}`} style={{ width: '100px', height: '100px' }} />
+          </div>
+        })}
       </div>
       <span>위치</span>
       {/* GoogleMaps를 표시하거나 숨기는 버튼 */}

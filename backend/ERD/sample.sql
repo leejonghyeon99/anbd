@@ -34,6 +34,8 @@ VALUES (2, 25500, 'SALE', 1, now(), '테스트 상품5', '테스트 상품입니
 desc product;/*정렬*/
 
 select * from product;
+select * from product_image;
+
 
 /* 신고 sample */
 insert into report(user_id, reason) VALUES (6,'그냥1');

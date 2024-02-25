@@ -61,10 +61,6 @@ public class Product extends BaseEntity{
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Review> reviews;
 
-
-
-
-
 //    @OneToMany(mappedBy = "product",cascade = CascadeType.REMOVE)
 //    private List<ChatRoom> chatRooms;
 }
