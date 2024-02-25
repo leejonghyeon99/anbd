@@ -19,6 +19,7 @@ insert into category(main, sub) value ('의류', '여성의류');
 insert into category(main, sub) value ('의류', '남성의류');
 insert into category(main, sub) value ('의류', '아동의류');
 insert into category(main, sub) value ('식품', '즉석식품');
+insert into category(main, sub) value ('생활용품', '주방');
 insert into category(main, sub) value ('식품', '가공식품');
 insert into category(main, sub) value ('생활용품', '주방용품');
 
@@ -46,4 +47,3 @@ select * from product;
 insert into report(user_id, reason) VALUES (6,'그냥1');
 
 select * from user_block;
-
