@@ -50,6 +50,9 @@ function Sidebar() {
   // //중분류 상태 설정
   const [category, setCategory] = useState([]);
 
+    // 현재 선택된 서브 메뉴
+    const [selectedSub, setSelectedSub] = useState(null);
+
   // 모든 대분류의 중분류가 따로따로 토글되도록 아래 상태함수들 줌
   const [isClothingOpen, setIsClothingOpen] = useState(false);
   const [isFoodOpen, setIsFoodOpen] = useState(false);
@@ -109,6 +112,13 @@ function Sidebar() {
     }
   };
 
+    // 서브 메뉴 클릭 시 해당 메뉴로 이동
+    const handleSubMenuClick = (sub) => {
+      // 페이지 새로고침
+      navigate(`/product/list/${sub}`);
+      window.location.reload();
+    };
+
   // useEffect: 상품 카테고리 목록 (상품 x)을 불러옴
   useEffect(() => {
     const categoryGetSub = async () => {
@@ -162,10 +172,10 @@ function Sidebar() {
               {m.sub.map((s) => (
                 <li
                   key={s}
-                  onClick={() => navigate(`/product/list/${s}`)}
+                  onClick={() => handleSubMenuClick(s)}
                   style={{ display: isSubMenuOpen(m.main) ? "block" : "none" }}
                 >
-                  <span className="subCategory">{s}</span>
+                  <span className={`subCategory ${s === selectedSub ? "selected" : ""}`}>{s}</span>
                 </li>
               ))}
             </ul>
