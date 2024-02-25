@@ -175,20 +175,13 @@ function Sidebar() {
                   onClick={() => handleSubMenuClick(s)}
                   style={{ display: isSubMenuOpen(m.main) ? "block" : "none" }}
                 >
-                  <span className={`subCategory ${s === selectedSub ? "selected" : ""}`}>{s}</span>
+                  <span className={m.sub}>{s}</span>
                 </li>
               ))}
             </ul>
           ))}
 
-          {/* 카테고리 데이터를 순회하며 렌더링 */}
-          {/* {category.map((m) => (
-            <ul >{m.main}
-              {m.sub.map((s) => (
-                <li onClick={() => navigate(`/product/list/${s}`)}>{s}</li>
-              ))}
-            </ul>
-          ))} */}
+
         </SidebarMenu>
       </div>
     </Styledsidebar>
