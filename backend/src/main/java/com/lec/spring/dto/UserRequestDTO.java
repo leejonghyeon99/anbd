@@ -27,6 +27,7 @@ public class UserRequestDTO {
     private Double star;
     private Auth auth;
     private String region;
+    private String code;
 
     public User toUser(PasswordEncoder passwordEncoder) {
         return User.builder()
