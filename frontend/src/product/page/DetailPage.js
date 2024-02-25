@@ -35,9 +35,7 @@ const DetailPage = () => {
   const ListOk = () => {
     navigate('/product/list');
   }
-
-
-
+  
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/detail/` + id)
     .then(response => response.json())

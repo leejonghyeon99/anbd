@@ -29,7 +29,6 @@ public class ProductController {
     // 등록
     @PostMapping("/write")
     public ResponseEntity<?> write(@RequestBody Product product){
-
         return new ResponseEntity<>(productService.write(product), HttpStatus.CREATED);  //201
     }
     // 목록
@@ -38,7 +37,6 @@ public class ProductController {
             @PathVariable(name = "sub") String sub,
             @RequestParam(required = false) String search
     ){
-
         return new ResponseEntity<>(productService.list(sub,search), HttpStatus.OK);
     }
     // 상세
