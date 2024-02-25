@@ -98,11 +98,5 @@
     display: inline-block;
     width: 2.5rem;
   }
-  
-}
 
-@media screen and (max-width: 550px) {
-  #menuIcon {
-    width: 1rem;
-  }
 }
