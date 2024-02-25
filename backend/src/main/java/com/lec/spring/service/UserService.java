@@ -50,11 +50,6 @@ public class UserService {
     @Transactional
     public UserResponseDTO signup(UserRequestDTO userRequestDTO){
 
-//        if (userRepository.existsByEmail(userRequestDTO.getEmail())){
-//            throw new RuntimeException("이미 가입되어 있는 이메일입니다.");
-//        }
-
-
         // 사용자 객체 생성 및 속성 설정
         User user = userRequestDTO.toUser(passwordEncoder);
 
@@ -145,11 +140,9 @@ public class UserService {
         return tokenDTO;
     }
     // 현재 유저 정보 가져오기
-
     public Optional<User> getUser(){
         return SecurityUtil.getCurrentUserId().flatMap(userRepository::findOneWithAuthoritiesByUsername);
     }
-
 
     public String logout(String accessToken) {
        jwtBlacklistService.blacklistToken(accessToken);
