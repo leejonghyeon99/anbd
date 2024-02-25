@@ -235,7 +235,7 @@ const WritePage = () => {
             <option>-- 대분류 카테고리를 선택해주세요 --</option>
           {mainCategories.map(category =>
           ( 
-            <option key={category.id} value={category.main}>{category.main}</option>)
+            <option value={category}>{category}</option>)
           )}</select>
       
         <span>중분류</span>
