@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Image, Col } from 'react-bootstrap';
 import { json, useNavigate, useParams } from 'react-router-dom';
+import SockJS from 'sockjs-client';
+import ChatPage from '../../chat/page/ChatPage';
 
 const DetailPage = () => {
   const navigate = useNavigate();
@@ -20,13 +22,90 @@ const DetailPage = () => {
   });
 
   const [files, setFiles] = useState([]);
-  
+
+  // 채팅방
+  const [chatRoomId, setChatRoomId] = useState("");
+  const [chatRoom, setChatRoom] = useState({
+    id:"",
+    seller:"",
+    buyer:"",
+    product:"",
+    chats:[],
+  });
+
+  // WebSocket 연결 설정
+  useEffect(() => {
+    const socket = new SockJS('/api/ws', undefined, {
+      cors: {
+        origin: 'http://localhost:3000',
+        credentials: true,
+      }
+    });
+
+    const stompClient = Stomp.over(socket);
+
+    const onConnect = () => {
+      console.log('WebSocket 연결 성공');
+      stompClient.send('/app/join', {}, JSON.stringify(11));
+
+      stompClient.subscribe('/queue/sendChatRoomIdToClient/' + chatRoom.buyer, (message) => {
+        console.log('WebSocket 메세지 수신: ', message.body);
+        const roomId = JSON.parse(message.body);
+        setChatRoomId(roomId);
+      });
+    };
+
+    stompClient.connect({}, onConnect);
+
+    return () => {
+      stompClient.disconnect();
+    };
+  }, []);
 
   // 채팅하기
   const GoChat = () => {
-    
-  }
+    const requestData = {
+      sellerId: product.user,
+      // buyerId: ,   // JWT 로 받아와야함
+      productId: product.id
+    };
 
+    console.log("requestData:", requestData);
+
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/chatroom/room`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(requestData)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log(data);
+      // 채팅방 ID 업데이트
+      setChatRoomId(data.id);
+      // 채팅방 생성 후 이동
+      navigate(`/chat/${data.id}`);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      // 오류 처리 추가
+      alert('Failed to create chat room');
+    });
+  };
+
+    // navigate(`/chat`);
+    // const chatRoomId = chatRoom.id;
+      // if (chatRoomId) {
+      //     navigate(`/chat/${chatRoomId}`); // 채팅방 ID가 있을 경우에만 이동
+      // } else {
+      //     console.error('Chat room ID not available');
+      // }
   const UpdateOk = () => {
     navigate('/product/update/' + id);
   }
@@ -35,18 +114,11 @@ const DetailPage = () => {
   const ListOk = () => {
     navigate('/product/list');
   }
-
-
-
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/detail/` + id)
     .then(response => response.json())
     .then(data => setProduct(data));
   }, []);
-
-  useEffect(() =>{
-    console.log(":"+product.createdAt)
-  },[product]);
 
   const DeleteOk = () => {
     if(!window.confirm("정말 삭제하시겠습니까?")) return;

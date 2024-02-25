@@ -128,4 +128,10 @@ public class ProductService {
         System.out.println(categoryRepository.findAllOnlySub().orElse(null));
 
     }
+
+    // - 지우가 씀 -
+    public Product getProductById(Long id) {
+        return productRepository.findById(id)
+                .orElse(null);
+    }
 }

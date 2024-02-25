@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -53,12 +54,14 @@ public class UserService {
         if (userRepository.existsByUsername(userRequestDTO.getUsername())){
             throw new RuntimeException("이미 가입되어 있는 유저입니다.");
         }
+        // 이메일 인증이 되면 자격증명을 승인됨으로 바꿈
 
         User user = userRequestDTO.toUser(passwordEncoder);
 
         user.setAuth(Auth.ROLE_USER);
         user.setCertification("approved");
         user.setStar(0.0);
+        user.setRegion(user.getRegion());
 
         return UserResponseDTO.of(userRepository.save(user));
 
@@ -71,6 +74,7 @@ public class UserService {
         UsernamePasswordAuthenticationToken authenticationToken = userRequestDTO.toAuthentication();
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        System.out.println("------------------------"+authentication);
         TokenDTO tokenDTO = tokenProvider.createTokenDto(authentication);
 
         RefreshToken refreshToken = RefreshToken.builder()
@@ -118,6 +122,7 @@ public class UserService {
         User updateUser = userRepository.save(user);
 
         return UserResponseDTO.of(updateUser);
+
     }
 
     @Transactional
@@ -142,6 +147,7 @@ public class UserService {
 
         return tokenDTO;
     }
+
     // 현재 유저 정보 가져오기
 
     public Optional<User> getUser(){
@@ -202,6 +208,12 @@ public class UserService {
         boolean authResult = redisService.checkExistsValue(key) && redisCode.equals(code);
 
         return EmailVerificationResult.of(authResult);
+    }
+
+
+    // 현재 로그인한 사용자 정보 불러오기 - 지우가 씀 -
+    public User getLoggedInUser() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
 }
