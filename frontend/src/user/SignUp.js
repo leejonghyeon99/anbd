@@ -48,32 +48,6 @@ const SignUp = () => {
   //유효성 검사
   const validateForm = () => {
 
-//     const isUsernameErr = user.username.trim() === "";
-//     const isPasswordErr = user.password.trim() === "";
-//     const isNameErr = user.name.trim() === "";
-//     const isNicknameErr = user.nickname.trim() === "";
-//     const isPhoneErr = user.phone_number.trim() === "";
-//     const isEmailErr = user.email.trim() === "";
-//     const isRegError = user.region === "";
-//     setUsernameErr(isUsernameErr);
-//     setPasswordErr(isPasswordErr);
-//     setNameErr(isNameErr);
-//     setNicknameErr(isNicknameErr);
-//     setPhoneErr(isPhoneErr);
-//     setEmailErr(isEmailErr);
-//     setRegError(isRegError);
-
-//     return !(
-//       isUsernameErr ||
-//       isPasswordErr ||
-//       isNameErr ||
-//       isNicknameErr ||
-//       isPhoneErr ||
-//       isEmailErr ||
-//       isRegError
-//     );
-
-
   // 각 필드별 에러 상태 초기화
   setUsernameErr(false);
   setPasswordErr(false);
@@ -139,13 +113,12 @@ const SignUp = () => {
     e.preventDefault();
     const { repassword, ...signupdata } = user;
 
-    if (validateForm()) {
-      if (user.password !== user.repassword) {
-        alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
-        return;
-      }
+    if(validateForm()) {
 
-
+    if (user.password !== user.repassword) {
+      alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+      return;
+    }
 
     console.log(signupdata);
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/signup`, {
@@ -166,28 +139,12 @@ const SignUp = () => {
       .then((data) => {
         alert("회원가입 성공");
         navigate("/home");
-
       })
-        .then((response) => {
-          if (response.ok) {
-            console.log("회원가입");
-            return response.json();
-          } else {
-            // throw new Error("회원가입 실패");
-            return null;
-          }
-        })
-        .then((data) => {
-          alert("회원가입 성공");
-          navigate("/home");
-        })
-        .catch((Error) => {
-          alert(Error.message);
-        });
-    }
+      .catch((Error) => {
+        alert(Error.message);
+      });
+    };
   };
-
-
 
   // 이메일인증 버튼 클릭
 
