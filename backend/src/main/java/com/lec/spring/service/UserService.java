@@ -50,16 +50,17 @@ public class UserService {
     @Transactional
     public UserResponseDTO signup(UserRequestDTO userRequestDTO){
 
-        if (userRepository.existsByUsername(userRequestDTO.getUsername())){
-            throw new RuntimeException("이미 가입되어 있는 유저입니다.");
-        }
+//        if (userRepository.existsByEmail(userRequestDTO.getEmail())){
+//            throw new RuntimeException("이미 가입되어 있는 이메일입니다.");
+//        }
 
+
+        // 사용자 객체 생성 및 속성 설정
         User user = userRequestDTO.toUser(passwordEncoder);
 
         user.setAuth(Auth.ROLE_USER);
-        user.setCertification("approved");
         user.setStar(0.0);
-
+        user.setCertification("APPROVED");
         return UserResponseDTO.of(userRepository.save(user));
 
     }
@@ -99,6 +100,7 @@ public class UserService {
         user.setEmail(userRequestDTO.getEmail());
         user.setPhone_number(userRequestDTO.getPhone_number());
         user.setRegion(userRequestDTO.getRegion());
+
 
         User updateUser = userRepository.save(user);
 
@@ -200,6 +202,8 @@ public class UserService {
         String key = AUTH_CODE_PREFIX + email;
         String redisCode = (String) redisService.getValues(key);
         boolean authResult = redisService.checkExistsValue(key) && redisCode.equals(code);
+        System.out.println(authResult);
+
 
         return EmailVerificationResult.of(authResult);
     }
