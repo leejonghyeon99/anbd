@@ -1,16 +1,19 @@
-import React from 'react';
-import { Card, ListGroup, ListGroupItem } from 'react-bootstrap';
+import React from "react";
+import { Card, ListGroup, ListGroupItem } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const ProductItem = (props) => {
-
-  const {id, user, title, price} = props.product;
+  const { id, user, title, price } = props.product;
 
   return (
     <>
       <Card.Title>판매자ID {user}</Card.Title>
       <Card>
         <Card.Body>
-          <Card.Img variant="top" src="./logo.svg"/>
+          {/* 링크를 클릭하면 해당 상품의 상세 페이지로 이동 */}
+          <Link to={`/product/detail/${id}`}>
+            <Card.Img variant="top" src="/icon/search.png" />
+          </Link>
         </Card.Body>
         <ListGroup>
           <ListGroupItem>Title : {title}</ListGroupItem>
