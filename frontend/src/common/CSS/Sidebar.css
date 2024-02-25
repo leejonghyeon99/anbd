@@ -1,7 +1,7 @@
 .sidebarBox {
   flex: 1;
   height: calc(100vh - 120px);
-  background-color: blueviolet;
+  background-color: rgb(142, 184, 201);
   position: sticky;
   top: 50px;
   padding: 15px;
