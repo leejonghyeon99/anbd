@@ -36,7 +36,6 @@ const App = () => {
             <Route path="user/passwordcheck" Component={PasswordCheck}></Route>
             <Route path="user/update" Component={Update}></Route>
             <Route path="/user/:id" element={<Update />} /> 
-            <Route path="/product/list/:category" Component={ListPage}></Route>
             <Route path="user/updatepassword" Component={UpdatePassword}></Route>
             <Route path="/product/list/:sub" Component={ListPage}></Route>
             <Route path="/product/write" Component={WritePage}></Route>
