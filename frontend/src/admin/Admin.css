@@ -24,15 +24,10 @@
 }
 
 .admin-category{
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
-    width: 800px;
-    height: 700px;
-    border: 1px solid blue;
-    max-width: 800px;
-    margin: 20px;
 }
 
 .admin-user-list{
@@ -46,3 +41,21 @@ canvas{
     width: 100%;
 }
 
+
+.modalBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 회색 배경색을 나타내는 rgba 값 */
+    z-index: 1000;
+  }
+
+  .show {
+    display: block;
+  }
+  
+  .hide {
+    display: none;
+  }
