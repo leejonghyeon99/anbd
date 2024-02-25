@@ -50,11 +50,6 @@ public class UserService {
     @Transactional
     public UserResponseDTO signup(UserRequestDTO userRequestDTO){
 
-//        if (userRepository.existsByEmail(userRequestDTO.getEmail())){
-//            throw new RuntimeException("이미 가입되어 있는 이메일입니다.");
-//        }
-
-
         // 사용자 객체 생성 및 속성 설정
         User user = userRequestDTO.toUser(passwordEncoder);
 

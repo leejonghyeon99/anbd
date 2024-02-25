@@ -225,10 +225,9 @@ const SignUp = () => {
         alert("인증 성공!");
         setIsVerified(true); // 인증 성공 상태 업데이트
 
-      } else {
-        alert("인증 실패. 코드를 다시 확인해주세요.");
-        setIsVerified(false); // 인증 실패 상태를 유지하거나 업데이트
-      }
+      } else { // 가정: 중복된 이메일일 때 409 상태 코드 반환
+        alert(data.message); // "이미 가입된 이메일입니다.""
+      } 
     } catch (error) {
       console.error("인증 중 오류 발생", error);
     }
