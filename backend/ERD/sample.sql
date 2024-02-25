@@ -19,7 +19,7 @@ insert into category(main, sub) value ('의류', '여성의류');
 insert into category(main, sub) value ('의류', '남성의류');
 insert into category(main, sub) value ('의류', '아동의류');
 insert into category(main, sub) value ('식품', '즉석식품');
-insert into category(main, sub) value ('생활용품', '주방용품');
+insert into category(main, sub) value ('생활용품', '주방');
 
 select * from category;
 select * from category where main = '의류' group by main,sub ;
