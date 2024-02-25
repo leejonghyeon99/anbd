@@ -160,21 +160,11 @@ public class ProductService {
 
     // 목록
     @Transactional
-    public List<ProductDTO> list(String category, String search) {
-        List<Product> productList;
+    public List<ProductDTO> list(String sub, String search) {
+        Category category = categoryRepository.findBySub(sub).orElse(null);
+          List<ProductDTO> list = ProductDTO.toDtoList(productRepository.getProductBySub(category.getId()));
+        return list;
 
-//        if (search != null && !search.isEmpty()) {
-//            // 검색어가 있을 경우, 검색어를 이용하여 필터링
-//            productList = productRepository.findByTitleContainingIgnoreCase(search);
-//        } else {
-//            // 검색어가 없을 경우, 전체 상품 목록 반환
-//            productList = productRepository.findAll();
-//        }
-//            List<Product> products = productRepository.findByTitleContainingIgnoreCaseAndCategory_TitleContainingIgnoreCase(category, search);
-//        return productList.stream()
-//                .map(product -> ProductDTO.toDto(product))
-//                .collect(Collectors.toList());
-            return null;
     }
 
     // 상세
@@ -214,7 +204,6 @@ public class ProductService {
             productEntity.setDescription(product.getDescription());
             productEntity.setCategory(category);
             productEntity.setRefreshedAt(product.getRefreshedAt());  // 끌어올리기
-
             productRepository.save(productEntity);
         }
         return ProductDTO.toDto(productEntity);
@@ -240,6 +229,8 @@ public class ProductService {
     }
     // sub만 가져오기 카테고리
     public List<CategoryDTO> findBySubForList (){
+        System.out.println("---------------------------------------------");
+        System.out.println(categoryRepository.findAllOnlySub().orElse(null));
         return CategoryDTO.toDtoList( categoryRepository.findAllOnlySub().orElse(null));
     }
 }

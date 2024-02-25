@@ -15,7 +15,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class UserResponseDTO {
-
     private Integer id;
     private String username;
     private String password;

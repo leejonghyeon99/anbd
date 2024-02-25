@@ -22,7 +22,7 @@ export const MypagebarList = [
         cName: 'nav-text'
     },
     {
-        title: 'ㅇㅇㅇㅇㄴㄹㅇㄴㅇㅇ',
+        title: 'ㅇㅇㅇㅇ',
         path: '/',
         icon: <BiBarChart /> ,
         cName: 'nav-text'

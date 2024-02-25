@@ -60,7 +60,6 @@ app:
   upload:
     product:
       path: upload
-
 # 터미널에 입력 자동 생성 - openssl rand -hex 64
 jwt:
   header: Authorization
@@ -70,3 +69,11 @@ logging:
   level:
     root: INFO
     org.springframework.web.socket: DEBUG
+
+
+
+
+
+
+
+

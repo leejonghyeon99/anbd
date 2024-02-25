@@ -11,32 +11,6 @@ import { FaUserCircle } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { Container } from "react-bootstrap";
 
-const StyledHeader = styled.header`
-  /* 다른 스타일들... */
-  #menuIcon {
-    display: none;
-  }
-
-  @media screen and (max-width: 768px) {
-    #menuIcon {
-      display: inline-block;
-      width: 30px;
-    }
-  }
-`;
-
-const NavMenu = styled.ul`
-  /* 다른 스타일들... */
-  display: ${(props) => (props.ismenuopen === "true" ? "block" : "none")};
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-
-  @media screen and (max-width: 768px) {
-    display: ${(props) => (props.ismenuopen === "true" ? "block" : "none")};
-  }
-`;
-
 const Navbar = styled.div`
   /* 다른 스타일들... */
   display: ${(props) => (props.isvisible === "true" ? "block" : "none")};
@@ -44,12 +18,34 @@ const Navbar = styled.div`
   top: 0;
   right: 0;
   width: 300px;
-  height: calc(100vh - 24px);
+  height: 100%;
   background-color: #ffffff;
   transition: right 0.3s ease-in-out;
+  border: 3px solid rgba(0, 0, 0, 0.466);
 
   @media screen and (max-width: 768px) {
     width: 50%;
+  }
+`;
+
+/* .hiddenMenu 클릭 시 나타나는 NavMenu 스타일링 */
+const NavMenu = styled.ul`
+  display: ${(props) => (props.ismenuopen === "true" ? "block" : "none")};
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  background-color: #fff;
+  padding: 15px;
+  box-shadow: 0px 5px 0px 0px rgba(0, 0, 0, 0.1);
+  transform-origin: top;
+  transform: scaleY(${(props) => (props.ismenuopen === "true" ? "1" : "0")});
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  opacity: ${(props) => (props.ismenuopen === "true" ? "1" : "0")};
+  top: 60px; /* 상단 여백 조절 */
+
+  @media screen and (max-width: 768px) {
+    display: ${(props) => (props.ismenuopen === "true" ? "block" : "none")};
+    border-radius: 5px;
   }
 `;
 
@@ -109,7 +105,7 @@ const Header = () => {
             console.error("Failed to fetch additional user info");
           }
         } else {
-          console.log("No token found, user is not logged in");
+          // console.log("No token found, user is not logged in");
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -219,16 +215,18 @@ const Header = () => {
 
   return (
     <div className="header">
-      <StyledHeader ref={headerRef}>
+      <div ref={headerRef}>
         <div className="headerBox">
           <div className="headerFix">
             <div className="hiddenMenu">
               {/* 아이콘 클릭 시 메뉴 토글 */}
               <img src="/icon/menu.png" id="menuIcon" onClick={toggleMenu} />
             </div>
-            <Link to="/home" className="logo">
-              AH!NaBaDa
-            </Link>
+            <div className="logo">
+              <Link to="/home" className="goHome">
+                AH!NaBaDa
+              </Link>
+            </div>
 
             {/* 로그인한 유저와 비회원의 mypage아이콘 다르게 나오도록 */}
             <div className="mypageToggle" id="menu-bars">
@@ -259,7 +257,6 @@ const Header = () => {
             {" "}
             {/* Navbar의 isVisible 속성에 따라 보이거나 숨김 */}
             <nav className="nav-menu">
-
               <li className="navbar-toggle">
                 <img
                   src="/icon/Xmark.png"
@@ -267,11 +264,16 @@ const Header = () => {
                   onClick={toggleMypage}
                 />
               </li>
-              <div className="mypage_nickname">ID: {user.username}</div>
-              <div>닉네임: {user.nickname}</div>
+              <div className="mypage_nickname">
+                <p>
+                  ID: {user.username}
+                  <br />
+                  닉네임: {user.nickname}
+                </p>
+              </div>
               <div>
                 <Link to={"user/passwordcheck"} className="moveToUpdate">
-                  회원정보수정
+                  <small>회원정보수정</small>
                 </Link>
               </div>
               <div className="profile">
@@ -330,11 +332,13 @@ const Header = () => {
               </div>
             </nav>
             {/*로그아웃 버튼!! */}
-            <img
-              src="/icon/logout.png"
-              className="logout"
-              onClick={handleLogout}
-            ></img>
+            <Link>
+              <img
+                src="/icon/logout.png"
+                className="logout"
+                onClick={handleLogout}
+              />
+            </Link>
           </Navbar>
         </div>
 
@@ -370,7 +374,7 @@ const Header = () => {
             )}
           </ul>
         </NavMenu>
-      </StyledHeader>
+      </div>
     </div>
   );
 };
