@@ -1,0 +1,60 @@
+// import React, { useState, useEffect } from 'react';
+// import SockJS from 'sockjs-client';
+// import Stomp from 'stompjs';
+
+// const ChatComponent = () => {
+//   const [stompClient, setStompClient] = useState(null);
+//   const [messages, setMessages] = useState([]);
+//   const [inputMessage, setInputMessage] = useState('');
+
+//   useEffect(() => {
+//     const socket = new SockJS('http://localhost:8080/ws');
+//     const stomp = Stomp.over(socket);
+//     stomp.debug = null; // Optional: Disable console logging
+
+//     stomp.connect({}, () => {
+//       console.log('Connected to WebSocket server');
+//       setStompClient(stomp);
+//     });
+
+//     return () => {
+//       if (stompClient) {
+//         stompClient.disconnect();
+//       }
+//     };
+//   }, []);
+
+//   const sendMessage = () => {
+//     if (!stompClient || !inputMessage) return;
+//     stompClient.send('/app/chat/{roomId}', {}, JSON.stringify(inputMessage));
+//     setInputMessage('');
+//   };
+
+//   const handleInputChange = (event) => {
+//     setInputMessage(event.target.value);
+//   };
+
+//   const handleMessage = (message) => {
+//     setMessages((prevMessages) => [...prevMessages, message]);
+//   };
+
+//   return (
+//     <div>
+//       <h1>Chat</h1>
+//       <div>
+//         {messages.map((message, index) => (
+//           <div key={index}>{message}</div>
+//         ))}
+//       </div>
+//       <input
+//         type="text"
+//         value={inputMessage}
+//         onChange={handleInputChange}
+//         placeholder="Enter your message"
+//       />
+//       <button onClick={sendMessage}>Send</button>
+//     </div>
+//   );
+// };
+
+// export default ChatComponent;

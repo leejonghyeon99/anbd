@@ -21,8 +21,8 @@ public class ChatRoomDTO {
 
     public static ChatRoomDTO toDto(ChatRoom entity) {
         return ChatRoomDTO.builder()
-//                .id(entity.getId())
-//                .product(entity.getProduct())
+                .id(entity.getId())
+                .product(entity.getProduct())
                 .build();
     }
 

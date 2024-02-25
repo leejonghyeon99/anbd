@@ -33,9 +33,4 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByProviderAndProvider_id(@Param("provider") String provider, @Param("provider_id") String provider_id);
 
     Page<User> findByUsernameContainingIgnoreCase(String search, Pageable pageable);
-
-
-
-
-
 }

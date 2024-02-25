@@ -3,6 +3,7 @@ package com.lec.spring.service.product;
 import com.lec.spring.domain.Category;
 import com.lec.spring.domain.Product;
 import com.lec.spring.domain.ProductImage;
+import com.lec.spring.domain.User;
 import com.lec.spring.dto.ProductDTO;
 import com.lec.spring.repository.CategoryRepository;
 import com.lec.spring.repository.product.ProductImageRepository;
@@ -78,5 +79,11 @@ public class ProductService {
         if (!isexists) return "FAIL";
         productRepository.deleteById(id);
         return "OK";
+    }
+
+    // - 지우가 씀 -
+    public Product getProductById(Long id) {
+        return productRepository.findById(id)
+                .orElse(null);
     }
 }

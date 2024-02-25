@@ -43,10 +43,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/ws/**")
+                registry.addMapping("/api/ws/**")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*")
-                        .allowedOrigins(url);
+                        .allowedOrigins(url)
+                        .allowCredentials(true); // 인증정보를 함께 보낼 수 있도록 허용
             }
         };
     }
