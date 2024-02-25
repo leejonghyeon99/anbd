@@ -105,8 +105,9 @@ const SignUp = () => {
   }
 
   return isValid;
+
   };
-  
+
   // join버튼을 누르면 submit되는 동작
   const submitJoin = (e) => {
     e.preventDefault();
@@ -146,6 +147,7 @@ const SignUp = () => {
   };
 
   // 이메일인증 버튼 클릭
+
   const validateEmail = () => {
     // 이메일이 비어 있는지 확인
     if (user.email.trim() === '') {
