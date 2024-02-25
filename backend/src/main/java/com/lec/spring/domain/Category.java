@@ -19,7 +19,7 @@ public class Category {
     @Column(nullable = false, length = 20)
     private String main;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 20, unique = true)
     private String sub;
 
     @OneToMany(mappedBy = "category")

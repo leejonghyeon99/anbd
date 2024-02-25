@@ -8,9 +8,11 @@ import com.lec.spring.dto.CategoryDTO;
 import com.lec.spring.dto.ProductDTO;
 import com.lec.spring.dto.ReportDTO;
 import com.lec.spring.dto.UserDTO;
+import com.lec.spring.dto.exception.Response;
 import com.lec.spring.repository.*;
 import com.lec.spring.repository.product.ProductRepository;
 import jakarta.transaction.Transactional;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,30 +24,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@NoArgsConstructor
 public class AdminService {
 
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
     private ProductRepository productRepository;
+    @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
     private RegionRepository regionRepository;
+    @Autowired
     private ReportRepository reportRepository;
 
 
-
-    @Autowired
-    public AdminService(
-            UserRepository userRepository,
-            ProductRepository productRepository,
-            CategoryRepository categoryRepository,
-            RegionRepository regionRepository,
-            ReportRepository reportRepository
-            ) {
-        this.userRepository = userRepository;
-        this.productRepository = productRepository;
-        this.categoryRepository = categoryRepository;
-        this.regionRepository = regionRepository;
-        this.reportRepository = reportRepository;
-    }
 
     public UserDTO findUserById(int id){
         return UserDTO.toDto(userRepository.findById(id).orElse(null));
@@ -96,46 +89,49 @@ public class AdminService {
     //대분류 목록
     public List<CategoryDTO> categoryList() {
         return CategoryDTO.toDtoList(
-                categoryRepository.findAll()
-                        .stream()
-
-                        .collect(Collectors.toList())
+                categoryRepository.findAll(Sort.by(Sort.Order.asc("id")))
         );
     }
 
     //대분류 추가
     @Transactional
-    public String addCategory(String main){
+    public Response<?> addCategory(CategoryDTO dto){
 
-        if(categoryRepository.findByMain(main).isPresent()){
-            return "중복 되었습니다.";
+        if(categoryRepository.findByMain(dto.getMain()).isPresent()){
+            return Response.error("duple");
         }
 
-        Category category = new Category();
-        category.setMain(main);
+        Category category = CategoryDTO.toEntity(dto);
+
         categoryRepository.save(category);
-        return "등록 성공";
+        List<Category> categories = categoryRepository.findAll(Sort.by(Sort.Order.asc("id")));
+        return Response.success(CategoryDTO.toDtoList(categories));
     }
 
 
     //대분류 카테고리 삭제
     @Transactional
-    public String deleteCategory(int id){
+    public Response<?> deleteCategory(int id){
         if(categoryRepository.findById(id).isEmpty()){
-            return "삭제할 데이터가 없습니다.";
+            return Response.error("삭제할 데이터가 없습니다.");
         }
         categoryRepository.deleteById(id);
-        return "삭제 성공";
+        List<Category> categories = categoryRepository.findAll(Sort.by(Sort.Order.asc("id")));
+        return Response.success(CategoryDTO.toDtoList(categories));
     }
 
 
     //대분류 카테고리 수정
     @Transactional
-    public CategoryDTO updateCategory(Category category){
+    public Response<?> updateCategory(Category category){
         if(categoryRepository.findById(category.getId()).isPresent()){
-            return CategoryDTO.toDto(categoryRepository.save(category));
+            categoryRepository.save(category);
+            List<Category> categories = categoryRepository.findAll(Sort.by(Sort.Order.asc("id")));
+            return Response.success(CategoryDTO.toDtoList(categories));
+        }else{
+            return Response.error("수정할 카테고리가 존재하지 않습니다.");
         }
-        return CategoryDTO.toDto(category);
+
 
     }
 
