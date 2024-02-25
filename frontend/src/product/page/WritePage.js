@@ -125,7 +125,7 @@ const WritePage = () => {
   const pc = {
     ...product,
     category: {
-      main: selectMain,
+      main: selectMain.main,
       sub: selectSub.sub
     },
     files: files
@@ -153,7 +153,7 @@ const WritePage = () => {
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/category/main`)
     .then(response => response.json())
     .then(data => {
-      
+
       setMainCategories(data);
     });
   }, []);
@@ -165,7 +165,7 @@ const WritePage = () => {
         const url = `${process.env.REACT_APP_API_BASE_URL}/api/product/category/find?main=${selectMain.main}`;
         const response = await fetch(url);
         const data = await response.json();
-        
+
         setSubCategories(data);
       } catch (error) {console.log(`error`);}
     }
@@ -175,7 +175,6 @@ const WritePage = () => {
   // 대분류
   useEffect(() => {
     getSub();
-    console.log(selectMain)
   },[selectMain]);
 
   // 작성된 값
@@ -292,11 +291,11 @@ const WritePage = () => {
       <div>
         <span>대분류</span>
         <div className="mb-3">
-          <select className="form-select" name="main" value={selectMain} onChange={mainCategoryValue}>
+          <select className="form-select" name="main" value={selectMain.main} onChange={mainCategoryValue}>
             <option>-- 대분류 카테고리를 선택해주세요 --</option>
           {mainCategories.map(category =>
           ( 
-            <option key={category.id} value={category}>{category}</option>)
+            <option value={category}>{category}</option>)
           )}</select>
       
         <span>중분류</span>

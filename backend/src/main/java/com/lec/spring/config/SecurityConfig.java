@@ -127,7 +127,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.csrf((csrf) -> csrf.disable());
-        http.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class);
+        http.cors((cors) -> cors.disable());
+//        http.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class);
 
         // 폼로그인, 베이직http 비활성화
         http.formLogin((form)-> form.disable());

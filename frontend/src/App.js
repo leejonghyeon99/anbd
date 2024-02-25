@@ -21,6 +21,7 @@ import UpdatePassword from "./user/UpdatePassword";
 const App = () => {
   return (
     <>
+      {/* <Admin></Admin> */}
       <div className="AppBox">
         <Header className="header" />
         <div className="menu">
@@ -34,6 +35,7 @@ const App = () => {
             <Route path="user/signup" Component={SignUp}></Route>
             <Route path="user/passwordcheck" Component={PasswordCheck}></Route>
             <Route path="user/update" Component={Update}></Route>
+            <Route path="/user/:id" element={<Update />} /> 
             <Route path="user/updatepassword" Component={UpdatePassword}></Route>
             <Route path="/product/list/:sub" Component={ListPage}></Route>
             <Route path="/product/write" Component={WritePage}></Route>

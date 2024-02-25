@@ -11,7 +11,8 @@
 #     "certification" : "approved",
 #     "region" : "광진구"
 # }  -> postman에 넣어야함 ㅠ 안그럼 비번 인코딩이 안돼서!
-select * from category;
+select main from Category as c group by c.main;
+
 select * from user;
 select * from Product  where category_id = 1;
 /*카테고리 sample*/
@@ -22,8 +23,6 @@ insert into category(main, sub) value ('식품', '즉석식품');
 insert into category(main, sub) value ('식품', '가공식품');
 insert into category(main, sub) value ('생활용품', '거실');
 insert into category(main, sub) value ('생활용품', '주방용품');
-
-insert into product (description, price, status, title, user_id, category_id) value ('이걸로 테스트 해볼게', '20', 'SALE', '옷사세요', 1, 1);
 
 select * from category;
 select * from category where main = '의류' group by main,sub ;
@@ -64,7 +63,7 @@ VALUES (7,20000,'SALE',1, now(), '테스트 상품7-1', '테스트 상품입니�
 
 
 desc product;/*정렬*/
-select * from user;
+
 select * from product;
 select * from product_image;
 
