@@ -163,6 +163,7 @@ function Sidebar() {
                   style={{ display: isSubMenuOpen(m.main) ? "block" : "none" }}
                 >
                   <span className="subCategory">{s}</span>
+
                 </li>
               ))}
             </ul>
