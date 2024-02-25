@@ -33,4 +33,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 
     Page<User> findByUsernameContainingIgnoreCase(String search, Pageable pageable);
+
+    Optional<User> findByNickname(String nickname);
 }

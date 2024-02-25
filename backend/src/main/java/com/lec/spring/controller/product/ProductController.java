@@ -79,6 +79,7 @@ public class ProductController {
     // 특정 main으로 검색한 sub 카테고리 목록
     @GetMapping("/category/find")
     public ResponseEntity<?> findByMainForSub(@RequestParam("main") String main){
+        System.out.println(main);
         return new ResponseEntity<>(productService.findByMainForSub(main), HttpStatus.OK);
     }
     @GetMapping("/category/sub")

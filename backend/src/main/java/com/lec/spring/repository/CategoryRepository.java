@@ -21,8 +21,8 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
     @Query("select c from Category c where c.main = :main group by c.main, c.sub ")
     Optional<List<Category>> findAllGroupMain(String main);
 
-    @Query("select c as main from Category c group by c.main ")
-    Optional<List<Category>> findAllOnlyMain();
+    @Query("select distinct c.main  from Category c")
+    Optional<List<String>> findAllOnlyMain();
 
     @Query("select c from Category c")
     Optional<List<Category>> findAllOnlySub();

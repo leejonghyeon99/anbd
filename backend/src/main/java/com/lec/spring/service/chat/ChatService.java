@@ -23,14 +23,16 @@ public class ChatService {
         User seller = userRepository.findById(sellerId).orElse(null);
         User buyer = userRepository.findById(buyerId).orElse(null);
         Product product = productRepository.findById(productId).orElse(null);
-        System.out.println(seller);
-        System.out.println(buyer);
-        System.out.println(product);
+
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.setSeller(seller);
         chatRoom.setBuyer(buyer);
         chatRoom.setProduct(product);
 
         return chatRoomRepository.save(chatRoom);
+    }
+
+    public ChatRoom findRoomBySellerAndBuyer(Integer sellerId, Integer buyerId, Long productId) {
+        return chatRoomRepository.getChatExist(sellerId, buyerId, productId);
     }
 }

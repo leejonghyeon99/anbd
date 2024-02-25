@@ -8,49 +8,25 @@ const ChatPage = () => {
     const navigate = useNavigate();
     const [chatRoomId, setChatRoomId] = useState("");
     const [chatRoom, setChatRoom] = useState({
-        seller: { id: "" }, // 초기값 설정
-        buyer: { id: "" },  // 초기값 설정
-        product: { id: "" } // 초기값 설정
-    });
-    const [user, setUser] = useState({
         id:"",
-        username:"",
-        name:"",
-    });
+        seller:"",
+        buyer:"",
+        product:"",
+        chats:[],
+      });
+      const [user, setUser] = useState({
+        username: "",
+        password: "",
+        repassword: "",
+        name: "",
+        nickname: "",
+        phone_number: "",
+        email: "",
+        region: "",
+        auth: "", // 추가: 사용자 권한 정보
+      });
 
     useEffect(() => {
-        const requestData = {
-            sellerId: chatRoom.seller.id,
-            buyerId: chatRoom.buyer.id,
-            productId: chatRoom.product.id
-        };
-
-        fetch("http://localhost:8080/chatroom/room", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(requestData)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);
-            // 채팅방 ID 업데이트
-            setChatRoomId(data.id);
-            // 채팅방 생성 후 이동
-            navigate(`/chat/${data.id}`);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            // 오류 처리 추가
-            alert('Failed to create chat room');
-        });
-
         const socket = new SockJS('/api/ws', undefined, {
             cors: {
                 origin: 'http://localhost:3000',

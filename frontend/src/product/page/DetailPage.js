@@ -34,46 +34,89 @@ const DetailPage = () => {
     chats:[],
   });
 
+  const [user, setUser] = useState({
+    username: "",
+    password: "",
+    repassword: "",
+    name: "",
+    nickname: "",
+    phone_number: "",
+    email: "",
+    region: "",
+    auth: "", // 추가: 사용자 권한 정보
+  });
+
   // WebSocket 연결 설정
   useEffect(() => {
-    const socket = new SockJS('/api/ws', undefined, {
-      cors: {
-        origin: 'http://localhost:3000',
-        credentials: true,
+    const token = localStorage.getItem("accessToken");
+    const getUserInfoFromToken = (token) => {
+      const decodedToken = atob(token.split(".")[1]);
+      const userInfo = JSON.parse(decodedToken);
+      return userInfo;
+    };
+
+    const userData = async () => {
+      try {
+        if (token) {
+          // 토큰에서 사용자 정보를 추출
+          const userInfo = getUserInfoFromToken(token);
+
+          // 사용자 정보를 상태값에 설정
+          console.log(userInfo)
+          setUser(userInfo);
+
+          // 서버에 사용자 정보 요청 보내기
+          const response = await fetch(
+            `${process.env.REACT_APP_API_BASE_URL}/api/user/info`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (response.ok) {
+            const additionalUserInfo = await response.json();
+            // 서버에서 받은 추가 정보를 기존 사용자 정보에 합치기
+            setUser((prevUserInfo) => ({
+              ...prevUserInfo,
+              ...additionalUserInfo,
+            }));
+          } else {
+            console.error("Failed to fetch additional user info");
+          }
+        } else {
+          // console.log("No token found, user is not logged in");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
-    });
-
-    const stompClient = Stomp.over(socket);
-
-    const onConnect = () => {
-      console.log('WebSocket 연결 성공');
-      stompClient.send('/app/join', {}, JSON.stringify(11));
-
-      stompClient.subscribe('/queue/sendChatRoomIdToClient/' + chatRoom.buyer, (message) => {
-        console.log('WebSocket 메세지 수신: ', message.body);
-        const roomId = JSON.parse(message.body);
-        setChatRoomId(roomId);
-      });
     };
 
-    stompClient.connect({}, onConnect);
-
-    return () => {
-      stompClient.disconnect();
-    };
+    // userData 함수 실행 (컴포넌트가 마운트될 때 한 번만 실행하도록 빈 배열 전달)
+    userData();
   }, []);
+
+  useEffect(()=>{console.log(user);},[user])
 
   // 채팅하기
   const GoChat = () => {
+
+    if (!user ) {
+      console.log("사용자가 로그인되지 않았거나 사용자 이름이 없습니다.");
+      // 사용자가 로그인되지 않았거나 사용자 이름이 없는 경우 처리할 코드
+      return;
+    }
+    
     const requestData = {
       sellerId: product.user,
-      // buyerId: ,   // JWT 로 받아와야함
+      buyerId: user.sub,   // JWT 로 받아와야함
       productId: product.id
     };
 
     console.log("requestData:", requestData);
 
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/chatroom/room`, {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/chatroom/room`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -81,17 +124,20 @@ const DetailPage = () => {
       body: JSON.stringify(requestData)
     })
     .then(response => {
-      if (!response.ok) {
+      if (!response.status === '200') {
         throw new Error('Network response was not ok');
       }
       return response.json();
     })
     .then(data => {
+      if (!data) {
+        throw new Error('Received empty response from the server');
+      }
       console.log(data);
       // 채팅방 ID 업데이트
-      setChatRoomId(data.id);
+      setChatRoomId(data);
       // 채팅방 생성 후 이동
-      navigate(`/chat/${data.id}`);
+      navigate(`/chatRoom/${data}`);
     })
     .catch(error => {
       console.error('Error:', error);
