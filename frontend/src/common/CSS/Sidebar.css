@@ -10,3 +10,13 @@
     padding: 20px;
     color: #555;
 }
+
+.mainCategory {
+    font-size: 18px; /* 적절한 크기로 조절 */
+    font-weight: bold; /* 필요에 따라 굵게 설정 */
+  }
+  
+  .subCategory {
+    font-size: 14px; /* 적절한 크기로 조절 */
+    /* 추가적인 스타일링 가능 */
+  }
