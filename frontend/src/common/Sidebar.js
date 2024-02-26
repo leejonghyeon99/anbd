@@ -6,6 +6,7 @@ import "./CSS/Sidebar.css"
 const Styledsidebar = styled.div`
   display: ${(props) => (props.isMenuOpen ? "block" : "none")};
 
+
   @media screen {
     display: block;
   }

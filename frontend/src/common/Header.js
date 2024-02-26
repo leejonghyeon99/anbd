@@ -5,11 +5,15 @@ import { MypagebarList } from "../components/MypagebarList";
 import { AdminpagebarList } from "../components/AdminpagebarList";
 import "./CSS/Header.css";
 import "./CSS/Mypagebar.css";
+import Logout from './Logout'; 
+
+
 
 // icon import
 import { FaUserCircle } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { Container } from "react-bootstrap";
+import Sidebar from "./Sidebar";
 
 const Navbar = styled.div`
   /* 다른 스타일들... */
