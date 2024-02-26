@@ -5,6 +5,7 @@ import com.lec.spring.dto.CategoryDTO;
 import com.lec.spring.dto.category.MainCategoryDTO;
 import com.lec.spring.dto.category.SubCategoryDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -26,4 +27,12 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
     @Query("select c from Category c")
     Optional<List<Category>> findAllOnlySub();
+
+    @Modifying
+    @Query("delete from Category c where c.main = :main and c.sub=:sub")
+    void deleteSub(String main, String sub);
+
+    @Modifying
+    @Query("update Category c set c.sub=:change where c.main = :main and c.sub=:sub")
+    void updateSub(String change, String main, String sub);
 }

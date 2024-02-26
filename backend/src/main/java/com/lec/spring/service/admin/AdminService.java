@@ -97,7 +97,7 @@ public class AdminService {
     @Transactional
     public Response<?> addCategory(CategoryDTO dto){
 
-        if(categoryRepository.findByMain(dto.getMain()).isPresent()){
+        if(categoryRepository.findByMain(dto.getMain()).isPresent() && categoryRepository.findBySub(dto.getSub()).isPresent()){
             return Response.error("duple");
         }
 
@@ -134,6 +134,40 @@ public class AdminService {
 
 
     }
+
+
+    @Transactional
+    public Response<?> addSubCategory(CategoryDTO dto){
+
+
+        Category category = CategoryDTO.toEntity(dto);
+
+        categoryRepository.save(category);
+        List<Category> categories = categoryRepository.findAll(Sort.by(Sort.Order.asc("id")));
+        return Response.success(CategoryDTO.toDtoList(categories));
+    }
+
+    //중분류 카테고리 삭제
+    @Transactional
+    public Response<?> deleteChildCategory(Category category){
+
+        categoryRepository.deleteSub(category.getMain(),category.getSub());
+
+        return Response.success("ok");
+    }
+
+
+    //중분류 카테고리 수정
+    @Transactional
+    public Response<?> updateChildCategory(Category category, String change){
+        System.out.println(category.toString());
+        System.out.println(change);
+        categoryRepository.updateSub(change, category.getMain(), category.getSub());
+        return Response.success("ok");
+
+
+    }
+
 
 
 
