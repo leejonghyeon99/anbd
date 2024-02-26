@@ -29,30 +29,18 @@ const Navbar = styled.div`
   }
 `;
 
-/* .hiddenMenu 클릭 시 나타나는 NavMenu 스타일링 */
-const NavMenu = styled.ul`
-  display: ${(props) => (props.ismenuopen === "true" ? "block" : "none")};
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  background-color: #fff;
-  padding: 15px;
-  box-shadow: 0px 5px 0px 0px rgba(0, 0, 0, 0.1);
-  transform-origin: top;
-  transform: scaleY(${(props) => (props.ismenuopen === "true" ? "1" : "0")});
-  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-  opacity: ${(props) => (props.ismenuopen === "true" ? "1" : "0")};
-  top: 60px; /* 상단 여백 조절 */
-
-  @media screen and (max-width: 768px) {
-  display: ${(props) => (props.ismenuopen === "true" ? "block" : "none")};
-  border-radius: 5px;
-  }
-`;
-
 const Header = () => {
   const navigate = useNavigate();
   const headerRef = useRef(null);
+
+  const getCurrentDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줌
+    const day = today.getDate();
+  
+    return `${year} ${month} ${day}`;
+  };
 
   const [user, setUser] = useState({
     username: "",
@@ -140,36 +128,6 @@ const Header = () => {
     };
   }, [isMypageVisible]);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-    // 햄버거 토글하면 대분류 모두 닫기
-    setIsBclothingOpen(false);
-    setIsBfoodOpen(false);
-    setIsBlivingOpen(false);
-    // 메뉴를 열 때 mypage는 닫힘
-    setIsMypageVisible(false);
-  };
-
-  const toggleClothing = () => {
-    setIsBclothingOpen(!isBclothingOpen);
-    // 의류 토글 시 다른 메뉴는 닫아!!!
-    setIsBfoodOpen(false);
-    setIsBlivingOpen(false);
-  };
-
-  const toggleFood = () => {
-    setIsBfoodOpen(!isBfoodOpen);
-    // 식품 토글 시 다른 메뉴는 딷아!!!!
-    setIsBclothingOpen(false);
-    setIsBlivingOpen(false);
-  };
-
-  const toggleLiving = () => {
-    setIsBlivingOpen(!isBlivingOpen);
-    // 생활용품 토글 시 다른 메뉴는 닫아!!!!
-    setIsBclothingOpen(false);
-    setIsBfoodOpen(false);
-  };
 
   // mypage show/hide
   const toggleMypage = () => {
@@ -219,10 +177,9 @@ const Header = () => {
       <div ref={headerRef}>
         <div className="headerBox">
           <div className="headerFix">
-            <div className="hiddenMenu">
-              {/* 아이콘 클릭 시 메뉴 토글 */}
+            {/* <div className="hiddenMenu">
               <img src="/icon/menu.png" id="menuIcon" onClick={toggleMenu} />
-            </div>
+            </div> */}
             <div className="logo">
               <Link to="/home" className="goHome">
                 AH!NaBaDa
@@ -265,6 +222,7 @@ const Header = () => {
                   onClick={toggleMypage}
                 />
               </li>
+              <small>Today {getCurrentDate()}</small>
               <div className="mypage_nickname">
                 <p>
                   ID: {user.username}
@@ -342,14 +300,6 @@ const Header = () => {
             </Link>
           </Navbar>
         </div>
-
-
-        {/* isMenuOpen 값에 따라 Sidebar가 보이도록 설정 */}
-        {isMenuOpen && (
-          <NavMenu ismenuopen={isMenuOpen.toString()}>
-            <Sidebar />
-          </NavMenu>
-        )}
       </div>
     </div>
   );
