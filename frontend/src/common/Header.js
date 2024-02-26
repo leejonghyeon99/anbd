@@ -12,7 +12,6 @@ import Sidebar from "./Sidebar.js";
 import { FaUserCircle } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { Container } from "react-bootstrap";
-import Sidebar from "./Sidebar";
 
 const Navbar = styled.div`
   /* 다른 스타일들... */
