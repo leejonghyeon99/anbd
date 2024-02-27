@@ -1,36 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
+import "./CSS/Sidebar.css"
 
 const Styledsidebar = styled.div`
   display: ${(props) => (props.isMenuOpen ? "block" : "none")};
-  flex: 1;
-  height: calc(100vh - 120px);
-  background-color: blueviolet;
-  position: sticky;
-  top: 50px;
-  padding: 15px;
 
-  @media screen and (min-width: 768px) {
+
+  @media screen {
     display: block;
+  }
+
+  @media screen and (max-width: 767px) {
+    display: flex;
+    height: auto;
+    padding: 15px;
+    justify-content: center;
+    text-align: center;
+    border-radius: 4px;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3);
+    z-index: 3;
+    background-color: #fff;
+    position: absolute;
+    left: 19.5px;
+    width: 90%; // 화면 전체 너비를 차지하도록 설정
+    top: 90px; // 헤더와 겹치지 않도록 조절 (필요에 따라 조절 가능)
   }
 `;
 
-const SidebarMenu = styled.div`
-  ul {
-    list-style: none;
-    font-size: calc(
-      8px + 0.8vw
-    ); /* vw 단위를 사용하여 글꼴 크기를 동적으로 변경 */
-    padding: 0;
-    margin: 0;
-  }
 
+const SidebarMenu = styled.div`
   li {
     cursor: pointer;
   }
   .mainCategory {
-    font-size: calc(10px + 0.5vw); /* m.main에 대한 글자 크기 조절 */
+    font-size: calc(9px + 0.5vw); /* m.main에 대한 글자 크기 조절 */
     font-weight: bold; /* m.main에 대한 글자 굵게 설정 */
     /* 다른 스타일링을 추가할 수 있습니다. */
   }
@@ -109,6 +113,13 @@ function Sidebar() {
     }
   };
 
+    // 서브 메뉴 클릭 시 해당 메뉴로 이동
+    const handleSubMenuClick = (sub) => {
+      // 페이지 새로고침
+      navigate(`/product/list/${sub}`);
+      window.location.reload();
+    };
+
   // useEffect: 상품 카테고리 목록 (상품 x)을 불러옴
   useEffect(() => {
     const categoryGetSub = async () => {
@@ -142,7 +153,7 @@ function Sidebar() {
   }, [category]);
 
   return (
-    <Styledsidebar>
+    <Styledsidebar className="sidebarBox">
       <div className="sidebarWrapper">
         <SidebarMenu className="sidebarMenu">
 
@@ -151,7 +162,7 @@ function Sidebar() {
 
           {/* 카테고리 데이터를 순회하며 렌더링 */}
           {category.map((m) => (
-            <ul key={m.main}>
+            <ul key={m.main} className="menuList">
 
               {/* 메인 카테고리를 클릭할 때 서브 메뉴를 토글하는 함수 호출 */}
               <li onClick={() => toggleSubMenu(m.main)}>
@@ -162,7 +173,7 @@ function Sidebar() {
               {m.sub.map((s) => (
                 <li
                   key={s}
-                  onClick={() => navigate(`/product/list/${s}`)}
+                  onClick={() => handleSubMenuClick(s)}
                   style={{ display: isSubMenuOpen(m.main) ? "block" : "none" }}
                 >
                   <span className="subCategory">{s}</span>
@@ -171,14 +182,7 @@ function Sidebar() {
             </ul>
           ))}
 
-          {/* 카테고리 데이터를 순회하며 렌더링 */}
-          {/* {category.map((m) => (
-            <ul >{m.main}
-              {m.sub.map((s) => (
-                <li onClick={() => navigate(`/product/list/${s}`)}>{s}</li>
-              ))}
-            </ul>
-          ))} */}
+
         </SidebarMenu>
       </div>
     </Styledsidebar>

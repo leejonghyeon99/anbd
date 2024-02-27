@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Italianno&family=Nanum+Myeongjo:wght@800&display=swap');
 /* 모든 요소를 감싼 가장 큰 범위의 div*/
 .header {
   margin-bottom: 15px;
@@ -5,6 +6,7 @@
   flex-direction: column;
   position: relative;
   border: 3px solid rgba(0, 0, 0, 0.466);
+
 }
 /* 카테고리 메뉴 제외하고 감싼 div */
 /* .headerBox {
@@ -17,20 +19,9 @@
   align-items: center;
   height: 5rem;
 }
-/* 반응형시 나타나는 햄버거 아이콘의 부모 div*/
 
-.hiddenMenu {
-  border: 1px solid #ffffff00;
-  width: 5rem;
-  padding: 15px;
-}
-
-#menuIcon {
-  display: none;
-  margin-right: 5px;
-  border: 1px solid black;
-  max-width: 100%;
-  height: auto; /* 이미지 비율을 유지하면서 크기 조절 */
+.navbar {
+  z-index: 5;
 }
 
 /* auth에 따른 아이콘 크기 설정*/
@@ -59,9 +50,13 @@
 }
 
 .goHome {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-decoration: none;
   color: black;
   width: 100%;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .submenu {
@@ -85,24 +80,19 @@
   .logo {
     font-size: 100%; /* 로고 크기를 줄임 */
     border-width: 3px; /* 테두리 두께를 줄임 */
+    margin-left: 3rem;
   }
-  .hiddenMenu {
+  /* .hiddenMenu {
     border: 1px solid black;
     width: 4rem;
     height: 4rem;
-    display: flex;
-    justify-content: center; /* 수평 가운데 정렬 */
-    align-items: center; /* 수직 가운데 정렬 */
-  }
+    display: none;
+    justify-content: center; 
+    align-items: center; 
+  } */
   #menuIcon {
     display: inline-block;
-    width: 2.5rem;
+    width: 2rem;
   }
-  
-}
 
-@media screen and (max-width: 550px) {
-  #menuIcon {
-    width: 1rem;
-  }
 }

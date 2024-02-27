@@ -1,22 +1,14 @@
 .sidebarBox {
-    flex: 1;
-    height: calc(100vh - 50px);
-    background-color: blueviolet;
-    position: sticky;
-    top: 50px;
+  flex: 1;
+  height: calc(100vh - 120px);
+  background-color: rgb(138, 165, 175);
+  /* position: sticky; */
+  top: 50px;
+  display: block;
 }
 
-.sidebarWrapper {
-    padding: 20px;
-    color: #555;
+.menuList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
-
-.mainCategory {
-    font-size: 18px; /* 적절한 크기로 조절 */
-    font-weight: bold; /* 필요에 따라 굵게 설정 */
-  }
-  
-  .subCategory {
-    font-size: 14px; /* 적절한 크기로 조절 */
-    /* 추가적인 스타일링 가능 */
-  }

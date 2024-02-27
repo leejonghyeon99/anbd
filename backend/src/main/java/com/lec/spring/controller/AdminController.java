@@ -103,4 +103,27 @@ public class AdminController {
     }
 
 
+    //중 분류 등록
+    @PostMapping("/product/category/child")
+    public ResponseEntity<Response<?>> addSubCategoryChild(@RequestBody CategoryDTO dto){
+        return new ResponseEntity<>(adminService.addSubCategory(dto),HttpStatus.CREATED);
+    }
+
+    //중 삭제
+    @DeleteMapping("/product/category/child")
+    public ResponseEntity<Response<?>> deleteCategoryChild(@RequestBody Category category){
+        return new ResponseEntity<>(adminService.deleteChildCategory(category),HttpStatus.OK);
+    }
+
+    //중분류 수정
+    @PatchMapping("/product/category/child")
+    public ResponseEntity<Response<?>> updateChild(@RequestBody Map<String, Object> map){
+
+        Category category = Category.builder()
+                .main((String) map.get("main"))
+                .sub((String) map.get("sub"))
+                .build();
+        return new ResponseEntity<>(adminService.updateChildCategory(category, (String) map.get("change")),HttpStatus.OK);
+    }
+
 }
