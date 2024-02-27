@@ -12,8 +12,9 @@
 #     "region" : "광진구"
 # }  -> postman에 넣어야함 ㅠ 안그럼 비번 인코딩이 안돼서!
 select main from Category as c group by c.main;
-
+select * from category;
 select * from user;
+update user set auth = 'ROLE_USER' where id =2;
 select * from Product  where category_id = 1;
 /*카테고리 sample*/
 insert into category(main, sub) value ('의류', '여성의류');
