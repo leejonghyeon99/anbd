@@ -9,6 +9,7 @@ import com.lec.spring.dto.ChatDTO;
 import com.lec.spring.dto.ChatRoomDTO;
 import com.lec.spring.dto.ProductDTO;
 import com.lec.spring.dto.UserDTO;
+import com.lec.spring.repository.ChatRepository;
 import com.lec.spring.repository.ChatRoomRepository;
 import com.lec.spring.repository.UserRepository;
 import com.lec.spring.repository.product.ProductRepository;
@@ -40,6 +41,7 @@ public class ChatController {
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final ObjectMapper objectMapper;
     private final ChatRoomRepository chatRoomRepository;
+    private final ChatRepository chatRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
@@ -52,25 +54,25 @@ public class ChatController {
     @Autowired
     private ChatService chatService;
 
-//    @MessageMapping("/chat/{id}")
-//    public void sendMessage(@Payload ChatDTO chatDTO, @DestinationVariable Integer id) {    // Chat id
-//        this.simpMessagingTemplate.convertAndSend("/queue/addChatToClient/"+ id, chatDTO);
-//    }
-
     @MessageMapping("/chat/{id}")
-    @SendTo("/queue/addChatToClient/{id}")
-    public ChatDTO sendMessage(@Payload ChatDTO chatDTO, @DestinationVariable Integer id) {
-
-        User user = userRepository.findById(Integer.valueOf(chatDTO.getUser())).orElseThrow(() -> new RuntimeException("User not found"));
-        ChatRoom chatRoom = chatRoomRepository.findById(chatDTO.getChatRoom().getId()).orElseThrow(() -> new RuntimeException("Chat room not found"));
-
-        System.out.println("유저:" + user);
-        // 메시지 저장 로직
-        Chat chat = chatService.saveMessage(chatDTO.getMessage(), user, chatRoom);
-
-        ChatDTO chatDTO1 = ChatDTO.toDto(chat);
-        return chatDTO1;
+    public void sendMessage(@Payload ChatDTO chatDTO, @DestinationVariable Integer id) {    // Chat id
+        this.simpMessagingTemplate.convertAndSend("/queue/addChatToClient/"+ id, chatDTO);
     }
+
+//    @MessageMapping("/chat/{id}")
+//    @SendTo("/queue/addChatToClient/{id}")
+//    public ChatDTO sendMessage(@Payload ChatDTO chatDTO, @DestinationVariable Integer id) {
+//
+//        User user = userRepository.findById(Integer.valueOf(chatDTO.getUser())).orElseThrow(() -> new RuntimeException("User not found"));
+//        ChatRoom chatRoom = chatRoomRepository.findById(chatDTO.getChatRoom().getId()).orElseThrow(() -> new RuntimeException("Chat room not found"));
+//
+//        System.out.println("유저:" + user);
+//        // 메시지 저장 로직
+//        Chat chat = chatService.saveMessage(chatDTO.getMessage(), user, chatRoom);
+//
+//        ChatDTO chatDTO1 = ChatDTO.toDto(chat);
+//        return chatDTO1;
+//    }
 
 //    @MessageMapping("/join")
 //    public void joinUser(@Payload Integer id) {     // ← User의 ID
@@ -120,7 +122,39 @@ public class ChatController {
         }
     }
 
-//    @MessageMapping("/chat/sendMessage")
+    @PostMapping("/api/chat/sendMessage")
+    public ResponseEntity<?> saveMessage(@RequestBody Map<String, String> chats) {
+        try {
+            // 클라이언트로부터 전달받은 사용자 ID, 채팅방 ID, 메시지 내용 추출
+            Integer userId = Integer.valueOf(chats.get("userId"));
+            Integer chatRoomId = Integer.valueOf(chats.get("chatRoomId"));
+            String messageContent = chats.get("message");
+
+            // 사용자 ID를 사용하여 사용자 정보 조회
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+
+            // 채팅방 ID를 사용하여 채팅방 정보 조회
+            ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
+                    .orElseThrow(() -> new RuntimeException("Chat room not found"));
+
+            // 채팅 메시지 저장
+            Chat chat = chatService.saveMessage(messageContent, user.getId(), chatRoom.getId());
+
+            // 저장된 채팅 메시지를 클라이언트로 반환
+            ChatDTO chatDTO = ChatDTO.toDto(chat);
+            return ResponseEntity.ok(chatDTO);
+        } catch (NumberFormatException e) {
+            // 사용자 ID 또는 채팅방 ID가 잘못된 형식으로 제공된 경우
+            return ResponseEntity.badRequest().body("Invalid user ID or chat room ID");
+        } catch (RuntimeException e) {
+            // 사용자 정보 또는 채팅방 정보를 찾을 수 없는 경우
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+//    @PostMapping("/api/chat/sendMessage")
 //    public ResponseEntity<?> saveMessage(@Payload ChatDTO chatDTO) {
 //        User user = userRepository.findById(Integer.valueOf(chatDTO.getUser())).orElseThrow(() -> new RuntimeException("User not found"));
 //        ChatRoom chatRoom = chatRoomRepository.findById(chatDTO.getChatRoom().getId()).orElseThrow(() -> new RuntimeException("Chat room not found"));

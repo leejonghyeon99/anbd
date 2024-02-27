@@ -136,7 +136,7 @@ const DetailPage = () => {
       console.log("chatRoomId: ", data);
       // 채팅방 ID 업데이트
       setChatRoomId(data);
-      // 채팅방 생성 후 이동
+      // 채팅방 생성 후 이동 
       navigate(`/chatRoom/${data}`);
     })
     .catch(error => {

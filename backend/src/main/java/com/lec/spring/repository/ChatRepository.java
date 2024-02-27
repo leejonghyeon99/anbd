@@ -11,6 +11,8 @@ import java.util.List;
 public interface ChatRepository extends JpaRepository<Chat, Integer> {
     List<Chat> findByChatRoom(ChatRoom chatRoom);
 
+    String findByMessage(String message);
+
 //    List<ChatDTO> findAllByChatRoom(ChatRoomDTO chatRoomDTO);
 
 //    List<ChatDTO> findAllByMessage(String message);

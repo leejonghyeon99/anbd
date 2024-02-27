@@ -1,25 +1,21 @@
+import { SoundTwoTone } from '@ant-design/icons';
 import { Stomp } from '@stomp/stompjs';
 import React, { useEffect, useState } from 'react';
-import { Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 import SockJS from 'sockjs-client';
 
 const ChatPage = () => {
-    const navigate = useNavigate();
-    const [stompClient, setStompClient] = useState(null); // WebSocket 클라이언트 상태 추가
-    const [chatRoomId, setChatRoomId] = useState(""); // 채팅방 ID 상태 추가
-    const [message, setMessage] = useState(""); // 메시지 상태 추가
-    const [chatRoom, setChatRoom] = useState({ // 채팅방 정보 상태 추가
-        id:"",
-        seller:"",
-        buyer:"",
-        product:"",
-        chats:[],
+    const [stompClient, setStompClient] = useState(null);
+    const [chatRoomId, setChatRoomId] = useState("");
+    const [message, setMessage] = useState("");
+    const [chatRoom, setChatRoom] = useState({
+        id: "",
+        seller: "",
+        buyer: "",
+        product: "",
+        chats: [],
     });
 
-    const [chat, setChat] = useState([]); // 채팅 내용 상태 추가
-
-    const [user, setUser] = useState({ // 사용자 정보 상태 추가
+    const [user, setUser] = useState({
         username: "",
         password: "",
         repassword: "",
@@ -32,7 +28,58 @@ const ChatPage = () => {
     });
 
     useEffect(() => {
-        // WebSocket 연결 설정
+    const token = localStorage.getItem("accessToken");
+    const getUserInfoFromToken = (token) => {
+        const decodedToken = atob(token.split(".")[1]);
+        const userInfo = JSON.parse(decodedToken);
+        return userInfo;
+    };
+
+    const userData = async () => {
+        try {
+        if (token) {
+            // 토큰에서 사용자 정보를 추출
+            const userInfo = getUserInfoFromToken(token);
+
+            // 사용자 정보를 상태값에 설정
+            console.log(userInfo)
+            setUser(userInfo);
+
+            // 서버에 사용자 정보 요청 보내기
+            const response = await fetch(
+            `${process.env.REACT_APP_API_BASE_URL}/api/user/info`,
+            {
+                headers: {
+                Authorization: `Bearer ${token}`,
+                },
+            }
+            );
+
+            if (response.ok) {
+            const additionalUserInfo = await response.json();
+            // 서버에서 받은 추가 정보를 기존 사용자 정보에 합치기
+            setUser((prevUserInfo) => ({
+                ...prevUserInfo,
+                ...additionalUserInfo,
+            }));
+            } else {
+            console.error("Failed to fetch additional user info");
+            }
+        } else {
+            // console.log("No token found, user is not logged in");
+        }
+        } catch (error) {
+        console.error("Error fetching data:", error);
+        }
+    };
+
+    // userData 함수 실행 (컴포넌트가 마운트될 때 한 번만 실행하도록 빈 배열 전달)
+    userData();
+    }, []);
+    
+    useEffect(()=>{console.log(user);},[user])
+
+    useEffect(() => {
         const socket = new SockJS('/api/ws', undefined, {
             cors: {
                 origin: 'http://localhost:3000',
@@ -40,69 +87,104 @@ const ChatPage = () => {
             }
         });
         const stompClient = Stomp.over(socket);
-        
+
         const onConnect = () => {
             console.log('WebSocket 연결 성공');
-            // stompClient.send('/app/join', {}, JSON.stringify(chatRoom.buyer)); // 서버에 사용자 ID 전송
             const roomId = chatRoom.id;
             console.log(roomId);
 
             stompClient.subscribe('/queue/sendChatRoomIdToClient/' + roomId, (message) => {
                 console.log('WebSocket 메세지 수신: ', message.body);
                 const receivedMessage = JSON.parse(message.body);
-                setChat(prevMessages => [...prevMessages, receivedMessage]); // 받은 메시지를 채팅 목록에 추가
+                // 채팅 목록을 업데이트
+                setChatRoom(prevChatRoom => ({
+                    ...prevChatRoom,
+                    chats: [...prevChatRoom.chats, receivedMessage]
+                }));
             });
         };
 
-        // WebSocket 연결
         stompClient.connect({}, onConnect);
+        setStompClient(stompClient);
 
-        // 컴포넌트 언마운트 시 WebSocket 연결 해제
         return () => {
             stompClient.disconnect();
         };
-    }, [user.id]);  // 사용자 ID 변경 시 재연결
+    }, [chatRoom.id]);
 
-    // 메시지 전송 함수
-    const sendMessageButtonClick = async () => {
-        if (message.trim().length > 0) { // 메시지가 비어 있지 않은지 확인
-            console.log('message', message);
+    const sendMessageToServer = async (requestData) => {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/chat/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData),
+            });
 
-            // 이미 연결된 WebSocket 이 있다면 메세지 전송
-            if (stompClient && stompClient.connected) {
-                const messageObject = {
-                    userId: user.id,
-                    message: chat.message,
-                    chatRoomId: chatRoom.id
-                    // 필요한 필드 추가 가능
-                };
-                console.log("messageObject", messageObject);
-                // 서버로 메시지 전송
-                stompClient.send('/app/chat/sendMessage', {}, JSON.stringify(messageObject));
-                setMessage(''); // 메시지 초기화
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error:', error);
+            throw error;
+        }
+    };
+
+    const sendMessageButtonClick = async () => {
+        if (message.trim().length === 0) {
+            return;
+        }
+    
+        const requestData = {
+            userId: user.id,
+            message: message,
+            chatRoomId: chatRoom.id
+        };
+        console.log(requestData);
+    
+        try {
+            const data = await sendMessageToServer(requestData);
+            // 채팅 목록을 업데이트
+            setChatRoom(prevChatRoom => ({
+                ...prevChatRoom,
+                chats: [...prevChatRoom.chats, data]
+            }));
+            setMessage('');
+        } catch (error) {
+            // 오류 처리
         }
     };
 
     return (
         <div>
-            {/* 채팅 화면 UI */}
+            <div className='mb-3'>
+                <span className='form-control'>{chatRoom.id}</span>
+            </div>
+            <div className='mb-3'>
+                <span className='form-control'>{chatRoom.seller}</span>
+            </div>
             <ul>
-                {chat.map((message, index) => (
+                {chatRoom.chats.map((message, index) => (
                     <li key={index}>{message.text}</li>
                 ))}
             </ul>
-            {/* 메시지 입력 폼 */}
-            <input 
-                type="text" 
-                value={message} 
-                onChange={(event) => setMessage(event.target.value)} // 입력한 메시지 업데이트
-                onKeyPress={(event) => {
-                    if (event.key === 'Enter') {
-                        sendMessageButtonClick(); // 엔터 키 입력 시 메시지 전송
-                    }
-                }} 
-            />
+            <div style={{ display: "flex", alignItems: "center" }}>
+                <input 
+                    type="text" 
+                    value={message} 
+                    onChange={(event) => setMessage(event.target.value)}
+                    onKeyPress={(event) => {
+                        if (event.key === 'Enter') {
+                            sendMessageButtonClick();
+                        }
+                    }} 
+                />
+                <button onClick={sendMessageButtonClick}>전송</button>
+            </div>
         </div>
     );
 };
