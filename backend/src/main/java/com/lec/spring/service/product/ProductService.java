@@ -6,6 +6,7 @@ import com.lec.spring.domain.ProductImage;
 import com.lec.spring.domain.User;
 import com.lec.spring.dto.CategoryDTO;
 import com.lec.spring.dto.ProductDTO;
+import com.lec.spring.dto.ProductsDTO;
 import com.lec.spring.repository.CategoryRepository;
 import com.lec.spring.repository.UserRepository;
 import com.lec.spring.repository.product.ProductImageRepository;
@@ -44,25 +45,39 @@ public class ProductService {
 
     // 등록
     @Transactional
-    public ProductDTO write(Product product, Map<String, MultipartFile> files){
-        System.out.println(product);
-        String main = product.getCategory().getMain();
-        String sub = product.getCategory().getSub();
+    public Product write(ProductsDTO product, List<MultipartFile> files){
+        System.out.println(product + "@#4324234");
+//        System.out.println(files + "@#4324234");
+//        Category category = categoryRepository.findById(product.getCategory_id()).orElse(null);
+//        User user = userRepository.findById(product.getUser_id()).orElse(null);
 
-        User user = userRepository.findById(1).orElse(null);
+        Product productnew = Product.builder()
+                .title(product.getTitle())
+                .description(product.getDescription())
+                .price(product.getPrice())
+                .status(product.getStatus())
+//                .category(category)
+                .location(product.getLocation())
+//                .user(user)
+                .build();
+//        String main = category.getMain();
+//        String sub = category.getSub();
 
-        Category category = categoryRepository.findUnique(main, sub);
-        System.out.println(user.toString());
-        product.setCategory(category);
-        product.setUser(user);
-        productRepository.saveAndFlush(product);
-        User writer = userRepository.findById(product.getUser().getId()).orElse(null);
+//        User user = userRepository.findById(product.getUser_id()).orElse(null);
+//        product.setUser(user);
 
-        product.setUser(writer);
+//        Category category = categoryRepository.findById(product.getCategory_id());
+//        System.out.println(user.toString());
+//        product.setCategory_id;
+//        productRepository.saveAndFlush(product);
+//        User writer = userRepository.findById(product.getUser_id()).orElse(null);
+//        product.setUser(writer);
 
         // 파일 추가
-         addFiles(files, product.getId());
-        return ProductDTO.toDto(product);
+        addFiles(files, product.getId());
+        System.out.println("~~~~~~~~~~~");
+//        return ProductDTO.toDto(product);
+        return productRepository.save(productnew);
     }
 
     // ProductService에서 Product를 조회하는 메서드 추가
@@ -72,33 +87,53 @@ public class ProductService {
     }
 
     // 특정 글(id) 첨부파일(들) 추가
-    private void addFiles(Map<String, MultipartFile> files, Long id) {
+    private void addFiles(List<MultipartFile> files, Long id) {
         if (files != null) {
-            for (var e : files.entrySet()) {
-                // name="upfile##" 인 경우만 첨부파일 등록. (이유, 다른 웹에디터와 섞이지 않도록..ex: summernote)
-                if (!e.getKey().startsWith("upfile")) continue;
+//            for (var e : files) {
+//                // name="upfile##" 인 경우만 첨부파일 등록. (이유, 다른 웹에디터와 섞이지 않도록..ex: summernote)
+////                if (!startsWith("upfile")) continue;
+//
+//                // 첨부 파일 정보 출력
+//                System.out.println("\n첨부파일 정보: " + e);   // name값
+//                Init.printFileInfo(e);   // 파일 정보 출력
+//                System.out.println();
+//
+//                // 물리적인 파일 저장
+//                ProductImage file = upload(e);
+//
+//                // 성공하면 DB 에도 저장
+//                if (file != null) {
+//                    // ProductService를 사용하여 id를 이용하여 Product를 조회
+//                    Product product = findProductById(id);
+//                    if (product != null) {
+//                        file.setProduct(product); // 조회한 Product 객체를 설정
+//                        productImageRepository.saveAndFlush(file);
+//                    }
 
+            for (MultipartFile file : files) {
                 // 첨부 파일 정보 출력
-                System.out.println("\n첨부파일 정보: " + e.getKey());   // name값
-                Init.printFileInfo(e.getValue());   // 파일 정보 출력
+                System.out.println("\n첨부파일 정보: " + file.getOriginalFilename());   // 파일 이름 출력
+                // 파일 정보 출력
+                System.out.println("파일 크기: " + file.getSize());
+                System.out.println("컨텐츠 타입: " + file.getContentType());
                 System.out.println();
 
                 // 물리적인 파일 저장
-                ProductImage file = upload(e.getValue());
+                ProductImage productImage = upload(file);
 
                 // 성공하면 DB 에도 저장
-                if (file != null) {
+                if (productImage != null) {
                     // ProductService를 사용하여 id를 이용하여 Product를 조회
                     Product product = findProductById(id);
                     if (product != null) {
-                        file.setProduct(product); // 조회한 Product 객체를 설정
-                        // INSERT
-                        productImageRepository.saveAndFlush(file);
+                        productImage.setProduct(product); // 조회한 Product 객체를 설정
+                        productImageRepository.saveAndFlush(productImage);
                     }
                     System.out.println("product ===================================================== " + product);
                 }
             }
         }
+        System.out.println("=~=~======================+++++++++++++++");
     }// end addFiles()
 
     // 물리적으로 파일 저장.  중복된 이름 rename 처리
@@ -175,14 +210,14 @@ public class ProductService {
 //        product.getUser().getId()
         product.setUser(user);
 
-//        List<ProductImage> fileList = productImageRepository.findByProduct(product);
+//        List<ProductImage> fileList = productImageRepository.findByProduct(product.getId());
 //        product.setFileList(fileList);
         return ProductDTO.toDto(product);
     }
 
     // 수정
     @Transactional
-    public ProductDTO update(ProductDTO product) {
+    public ProductDTO update(ProductDTO product, MultipartFile files, Long[] delfile) {
         System.out.println(product.toString());
         Product productEntity = productRepository.findById(product.getId()).orElse(null);
 //        Category category = categoryRepository.findById(product.getCategory().getId()).orElse(null);
@@ -206,7 +241,36 @@ public class ProductService {
             productEntity.setRefreshedAt(product.getRefreshedAt());  // 끌어올리기
             productRepository.save(productEntity);
         }
+//        addFiles(files, product.getId());
+
+        // 삭제할 첨부파일(들) 삭제
+//        if (delfile != null) {
+//            for (Integer id : delfile) {
+//                ProductImage file = productImageRepository.findById(id);
+//                if (file != null) {
+//                    delFile(file);  // 물리적으로 파일 삭제
+//                    productImageRepository.delete(file);  // DB 에서 삭제
+//                }
+//            }
+//        }
         return ProductDTO.toDto(productEntity);
+    }
+
+    // 특정 첨부파일(id) 를 물리적으로 삭제
+    private void delFile(ProductImage file) {
+        String saveDirectory = new File(uploadDir).getAbsolutePath();
+        File f = new File(saveDirectory, file.getPhotoName());   // 물리적으로 저장된 파일들이 삭제 대상
+        System.out.println("삭제시도 --> " + f.getAbsolutePath());
+
+        if (f.exists()) {
+            if (f.delete()) {
+                System.out.println("삭제 성공");
+            } else {
+                System.out.println("삭제 실패");
+            }
+        } else {
+            System.out.println("파일이 존재하지 않습니다.");
+        }
     }
 
     // 삭제
@@ -214,6 +278,13 @@ public class ProductService {
     public String delete(Long id){
         boolean isexists = productRepository.existsById(id);
         if (!isexists) return "FAIL";
+        // 물리적으로 저장된 첨부파일(들) 삭제
+//        List<ProductImage> fileList = productImageRepository.findByProduct(id);
+//        if (fileList != null) {
+//            for (ProductImage file : fileList) {
+//                delFile(file);
+//            }
+//        }
         productRepository.deleteById(id);
         return "OK";
     }

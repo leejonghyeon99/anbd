@@ -38,6 +38,7 @@ public class ProductDTO {
                 .refreshedAt(entity.getRefreshedAt())
                 .category(CategoryDTO.toDto(entity.getCategory()))
                 .user(UserDTO.toDto(entity.getUser()).getNickname())
+
                 .build();
     }
 

@@ -19,8 +19,15 @@ const DetailPage = () => {
     }
   });
 
-  const [files, setFiles] = useState([]);
-  
+  const [productImage, setProductImage] = useState([]);
+
+
+  const [files, setFiles] = useState({
+    id: "",
+    originName: "",  // 원본파일명
+    photoName: ""    // 저장된 파일명
+  });
+
 
   // 채팅하기
   const GoChat = () => {
@@ -91,11 +98,26 @@ const DetailPage = () => {
       <h2>상세</h2>
       {/* <Button onClick={LikeOk}>{wishList? '좋아요 취소' : '좋아요'}</Button> */}
       {/* <Heart src={wishList?HeartImg:EmptyHeartImg}/> */}
-      <div className='mb-3'>
-        <span>이미지</span>
-        <Col xs={6} md={4}>
-          <Image src={files} alt='product Image'/>
-        </Col>
+
+      <div className="container mt-3 mb-3 border rounded">
+        <div className="mb-3 mt-3">
+          <label>첨부파일:</label>
+          {/* <ul className="list-group mb-1">
+            {product.fileList.map((productImage, index) => (
+            <li key={index} className="list-group-item">
+              <a href={`/product/download?id=${productImage.id}`}>{productImage.originName}</a>
+            </li> */}
+          {/* ))} */}
+          {/* </ul> */}
+          {/* 이미지인 경우 보여주기 */}
+        {/* {product.fileList.map((productImage, index) => (
+          productImage.image && (
+            <div key={index}>
+              <img src={`/upload/product/${productImage.filename}`} className="img-thumbnail" alt="이미지이미지" />
+            </div>
+          )
+        ))} */}
+        </div>
       </div>
       <span>title</span>
       <div className='mb-3'>

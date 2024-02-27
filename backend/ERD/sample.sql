@@ -65,7 +65,10 @@ VALUES (7,20000,'SALE',1, now(), '테스트 상품7-1', '테스트 상품입니�
 desc product;/*정렬*/
 
 select * from product;
+select * from user;
+select * from category;
 select * from product_image;
+
 
 
 /* 신고 sample */

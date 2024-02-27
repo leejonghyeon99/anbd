@@ -1,10 +1,7 @@
-
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import GoogleMaps from "./GoogleMaps";
-
-import { VscClose } from 'react-icons/vsc';
 
 const WritePage = () => {
   const navigate = useNavigate();
@@ -47,7 +44,14 @@ const WritePage = () => {
   const [selectSub, setSelectSub] = useState("");
 
   // 이미지
-  const [files, setFiles] = useState([]);
+  // const [files, setFiles] = useState([]);
+  // const [files, setFiles] = useState({
+  //   id: "",
+  //   originName: "",
+  //   photoName: ""
+  // });
+ 
+
 
   // 이미지 첨부
   // const uploadFile = (e) => {
@@ -70,36 +74,24 @@ const WritePage = () => {
 //   };
   // }
 
-  const [postImg, setPostImg] = useState([]);
-  const [previewImg, setPreviewImg] = useState([]);
+  // function uploadFile(e) {
+  //     let fileArr = e.target.files;
+  //     setPostImg(Array.from(fileArr));
 
-  function uploadFile(e) {
-      let fileArr = e.target.files;
-      setPostImg(Array.from(fileArr));
-
-      let fileUrl = [];
-      for(let i = 0; i < fileArr.length; i++){
-          let fileRead = new FileReader();
-          fileRead.onload = function(){
-              fileUrl[i] = fileRead.result;
-              setPreviewImg([...fileUrl]);
-              fileRead.readAsDataURL(fileArr[i]);
-          }
-      };
-  }
-
-
-  // product와 category 같이
-  const pc = {
-    ...product,
-    category: {
-      main: selectMain.main,
-      sub: selectSub.sub
-    },
-    files: files
-  };
+  //     let fileUrl = [];
+  //     for(let i = 0; i < fileArr.length; i++){
+  //         let fileRead = new FileReader();
+  //         fileRead.onload = function(){
+  //             fileUrl[i] = fileRead.result;
+  //             setPreviewImg([...fileUrl]);
+  //             fileRead.readAsDataURL(fileArr[i]);
+  //         }
+  //     };
+  // }
+  
+  
   useEffect(() => {
-    console.log(`files: ${files.originalName}`);
+    // console.log(`files: ${files.originalName}`);
   })
 
   // 위치
@@ -121,6 +113,7 @@ const WritePage = () => {
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/category/main`)
     .then(response => response.json())
     .then(data => {
+      console.log(data);
       setMainCategories(data);
     });
   }, []);
@@ -171,16 +164,68 @@ const WritePage = () => {
     });
   };
 
+  const [file, setFile] = useState(null);
+
+  
+
+  const [selectedFiles, setSelectedFiles] = useState([]);
+
+  // product와 category 같이
+  const pc = {
+    ...product,
+    category: {
+      main: selectMain.main,
+      sub: selectSub.sub
+    },
+    files:selectedFiles.map(file => ({
+      originName: file.originName,
+      photoName: file.photoName
+    }))
+  };
+
+  const handleAddFile = () => {
+    // 파일 선택을 위한 input 요소를 클릭합니다.
+    document.getElementById('fileInput').click();
+  };
+
+  const handleFileChange = (event) => {
+    // 선택한 파일들을 처리합니다.
+    const files = event.target.files;
+    const newFiles =  [...selectedFiles] ; // 기존 배열 복사
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const newFile = { 
+        id: newFiles.length + i, 
+        originName: file.name,
+        photoName: file.name
+      };
+      // newFiles[file.name] = newFile; // 파일 추가
+      newFiles.push(newFile); // 파일 추가
+      console.log(`newProductImage: ${newFile.id}`);
+      console.log(`originName: ${newFile.originName}`);
+    }
+    setSelectedFiles(newFiles); // 새 배열로 업데이트
+    console.log(`files: ${files}`);
+  };
+
   // 작성 완료
   const WriteOk = (e) => {
-    console.log(pc, files);
+    console.log(pc);
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('product', JSON.stringify(pc));
+
+    for (let i = 0; i < selectedFiles.length; i++) {
+      formData.append('files', selectedFiles[i]);
+    }
+
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json;charset=utf-8",
+        // "Content-Type": "application/json;charset=utf-8",
       },
-      body: JSON.stringify(pc),  // JSON 형식으로 데이터 전송
+      body: formData,  // JSON 형식으로 데이터 전송
     })
       .then((response) => {
         console.log(`응답하라`, response);
@@ -226,16 +271,22 @@ const WritePage = () => {
           </div>
         })}
       </div> */}
-      {
-    previewImg.map((imgSrc, i) => 
-        <img key={i}>
-            <button type="button">
-              <img alt="업로드 이미지 제거" src="src/assets/icon-close-button.svg" />
-            </button>
-            <img alt={imgSrc} src={imgSrc} />
-        </img>
-      )
-    }
+      <div className="container mt-3 mb-3 border rounded">
+      <div className="mb-3 mt-3">
+            <label>첨부파일:</label>
+            <div id="files">
+                {/* 첨부 파일 목록을 출력
+                {Object.values(files).map((image, index) => (
+        <div key={index}>{image.originName}</div>
+                ))} */}
+            </div>
+            {/* 파일 선택을 위한 input 요소 */}
+            <input type="file" id="fileInput" accept="image/*" onChange={handleFileChange} multiple />
+            {/* 추가 버튼 */}
+            <button className="btn btn-secondary" onClick={handleAddFile}>파일 추가</button>
+        </div>
+    </div>
+    
       <span>위치</span>
       {/* GoogleMaps를 표시하거나 숨기는 버튼 */}
       <button onClick={toggleGoogleMaps}>
@@ -272,7 +323,7 @@ const WritePage = () => {
             <option>-- 대분류 카테고리를 선택해주세요 --</option>
           {mainCategories.map(category =>
           ( 
-            <option key={category.id} value={category.main}>{category.main}</option>)
+            <option value={category}>{category}</option>)
           )}</select>
       
         <span>중분류</span>

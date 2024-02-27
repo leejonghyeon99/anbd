@@ -5,7 +5,11 @@ import com.lec.spring.domain.ProductImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductImageRepository extends JpaRepository<ProductImage, Integer> {
-    List<ProductImage> findByProduct(Product product);
+//    List<ProductImage> findByProduct(Long id);
+
+    // 특정 첨부파일(id) 한개 SELECT
+    Optional<ProductImage> findById(Integer id);
 }
