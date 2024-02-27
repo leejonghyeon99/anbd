@@ -30,7 +30,7 @@ const SignUp = () => {
   // 인증번호 입력란 가시성 상태 변수
   const [isVerificationVisible, setIsVerificationVisible] = useState(false);
   // 인증번호 상태 변수
-  const [verificationCode, setVerificationCode] = useState("");
+  const [code, setCode] = useState("");
 
   // user의 상태값이 변경될때마다 호출! cosole 확인
   useEffect(() => {
@@ -110,6 +110,13 @@ const SignUp = () => {
   // join버튼을 누르면 submit되는 동작
   const submitJoin = (e) => {
     e.preventDefault();
+
+    // 이메일 인증 확인
+    if (!isVerified) {
+    alert("이메일 인증을 완료해주세요.");
+    return; // 이메일 인증이 완료되지 않았으므로 여기서 함수 실행을 중단
+    }
+
     const { repassword, ...signupdata } = user;
 
     if(validateForm()) {
@@ -145,53 +152,88 @@ const SignUp = () => {
     };
   };
 
-  // 이메일인증 버튼 클릭
+  // 이메일인증 버튼 클릭 시 유효성 검증
   const validateEmail = () => {
     // 이메일이 비어 있는지 확인
     if (user.email.trim() === '') {
       setEmailErr("empty");
       setIsVerificationVisible(false); // 이메일이 비어있을 때는 인증번호 입력란 숨김
-      return; // 에러가 발생하면 여기서 함수 실행을 중단
+      return false;
+     // 에러가 발생하면 여기서 함수 실행을 중단
     } else if (!/\S+@\S+\.\S+/.test(user.email)) {
       setEmailErr("format");
       setIsVerificationVisible(false); // 이메일 형식이 맞지 않을 때는 인증번호 입력란 숨김
-      return; // 에러가 발생하면 여기서 함수 실행을 중단
+      return false;
     } else {
       setEmailErr(null); // 에러가 없으면 에러 상태를 null로 설정
+
+      // 이메일 유효성 검사를 통과했을 경우에만 인증번호 입력란을 보여줌
+      setIsVerificationVisible(true);
+      // 이메일 인증코드 보내기
+      requestEmailVerification();
+      return true;
     }
+  };
   
-    // 이메일 유효성 검사를 통과했을 경우에만 인증번호 입력란을 보여줌
-    setIsVerificationVisible(true);
-  };
-
-  // 인증번호 입력 핸들러 함수
-  const handleVerificationCodeChange = (e) => {
-    setVerificationCode(e.target.value);
-  };
-
-   // 유효성 검사를 통과했을 경우, 서버에 이메일 중복 확인 요청
-   fetch(`${process.env.REACT_APP_API_BASE_URL}/api/email/verification-requests`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email: user.email }),
-  })
-    .then(response => response.json())
-    .then(data => {
-      if (data.isEmailAvailable) {
-        // 이메일 사용 가능
-        setIsVerificationVisible(true); // 인증번호 입력란 보여주기
-        setEmailErr(null); // 에러 메시지 초기화
+  // 이메일 인증코드 보내기
+  const requestEmailVerification = async () => {
+   
+    // 이메일 유효성 검사를 통과한 경우, 서버로 이메일 인증 요청
+    await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/email/verification-requests?email=${user.email}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+      },
+      body: JSON.stringify({ email: user.email }),
+    })
+    .then((response) => {
+      if (response.status===200) {
+        // 이메일 인증 요청 성공 처리
+        alert("인증 코드가 발송되었습니다. 이메일을 확인해주세요.");
       } else {
-        // 이메일 중복
-        setEmailErr("duplicate"); // 중복 에러 설정
-        setIsVerificationVisible(false); // 인증번호 입력란 숨기기
+        console.log(user.email);
+        // 서버 측 에러 처리
+        alert("인증 코드 발송에 실패했습니다.");
       }
     })
-    .catch(error => {
-      console.error('이메일 중복 확인 중 오류 발생:', error);
+    .catch((error) => {
+      console.error('이메일 인증 중 오류 발생:', error);
     });
+  };
+
+
+  // 인증번호 입력 핸들러 함수
+  const codeChange = (e) => {
+    setCode(e.target.value);
+  };
+
+  // 인증 성공 상태 추가
+  const [isVerified, setIsVerified] = useState(false);
+
+  const verifyCode = async (email, code) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/email/verifications?email=${encodeURIComponent(email)}&code=${encodeURIComponent(code)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await response.json();
+      console.log("서버 응답:", data);
+  
+      if (data.verified) {
+        alert("인증 성공!");
+        setIsVerified(true); // 인증 성공 상태 업데이트
+
+      } else { // 가정: 중복된 이메일일 때 409 상태 코드 반환
+        alert(data.message); // "이미 가입된 이메일입니다.""
+      } 
+    } catch (error) {
+      console.error("인증 중 오류 발생", error);
+    }
+  };
+  
+
 
   return (
     <div className="signUpMain">
@@ -318,14 +360,14 @@ const SignUp = () => {
             value={user.email}
             onChange={formChange}
           />
-          <Button
+          {!isVerified && <Button
             onClick={validateEmail}
             variant="light"
             size="sm"
             className="rounded"
           >
             이메일 인증
-          </Button>
+          </Button>}
         </div>
         {emailErr === "empty" && (
     <div>
@@ -338,7 +380,7 @@ const SignUp = () => {
     </div>
   )}
         {/* 인증번호 입력란 */}
-        {isVerificationVisible && (
+        {isVerificationVisible && !isVerified && (
           <div>
             <label htmlFor="verificationCode">
               인증번호 <small>* </small>
@@ -346,20 +388,21 @@ const SignUp = () => {
             <input
               type="text"
               placeholder="인증번호를 입력하세요"
-              name="verificationCode"
-              value={verificationCode}
-              onChange={handleVerificationCodeChange}
+              name="code"
+              value={code}
+              onChange={codeChange}
             />{" "}
-            {/* onClick 수정해야함*/}
-            <Button onClick={validateEmail} variant="light" size="sm">
+            <Button onClick={() => verifyCode(user.email, code)} variant="light" size="sm">
               인증번호 확인
             </Button>
           </div>
         )}
+         {/* 인증 성공 메시지 */}
+         {isVerified && <div style={{ color: 'blue' }}>[이메일 인증 완료]</div>}
         <div>
           {/* 주소 입력란 */}
           <label htmlFor="region">
-            주소 <small>* (최대 3개) </small>
+            주소 <small>* </small>
           </label>
 
           {/*

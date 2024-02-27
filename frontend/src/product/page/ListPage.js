@@ -35,7 +35,7 @@ const ListPage = () => {
   useEffect(() => {
     console.log(products);
   }, [products]);
-
+  console.log(sub);
   // 검색어가 변경될 때마다 실행되는 이벤트 핸들러
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
