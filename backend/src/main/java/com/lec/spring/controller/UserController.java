@@ -1,5 +1,6 @@
 package com.lec.spring.controller;
 
+import com.lec.spring.domain.Status;
 import com.lec.spring.domain.User;
 import com.lec.spring.dto.*;
 import com.lec.spring.jwt.SecurityUtil;
@@ -102,25 +103,40 @@ public class UserController {
 
 
     //유저 정보
-
-
-    //판매 내역
-    @GetMapping("/sold-list")
-    public ResponseEntity<Page> getSoldList(
-            @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size
-    ){
-        return new ResponseEntity<>(userInfoService.getSoldList(page, size),HttpStatus.OK);
+    @GetMapping("/profile")
+    public ResponseEntity<UserDTO> profile(){
+        User user = userService.getUser().orElse(null);
+        if(user == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); //404
+        }
+        return new ResponseEntity<>(UserDTO.toDto(user), HttpStatus.OK); // 200
     }
 
-    //내가 올린 게시물
+    //판매중, 판매완료, 예약중
+    @GetMapping("/product-status")
+    public ResponseEntity<Page> getProductList(
+            @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size,
+            @RequestParam(name = "status", required = false)Status status
+            ){
+        return new ResponseEntity<>(userInfoService.getProductList(page, size, status),HttpStatus.OK);
+    }
 
-    //유저 평점
+    //관심 게시글
+    @GetMapping("/wish-list")
+    public ResponseEntity<Page> getWishList(
+            @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size
+    ){
+        return new ResponseEntity<>(userInfoService.getWishList(page, size),HttpStatus.OK);
+    }
 
-    //게시글 조회수
+    @GetMapping("/test")
+    public void test(){
+        userInfoService.test();
+    }
 
-    //게시글 평점
 
-    //
+
+
 
 
 
