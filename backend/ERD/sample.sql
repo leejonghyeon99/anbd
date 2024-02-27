@@ -34,7 +34,7 @@ select * from category where main='의류' and sub = '여성의류';
 select c.id, c.main from Category c group by c.main;
 /*상품 sample*/
 insert into product(category_id, price, status, user_id, created_at, title, description, location)
-VALUES (1,20000,'SALE',1, now(), '테스트 상품1', '테스트 상품입니다.', '0000, 0000');
+VALUES (1,20000,'SOLD',1, now(), '테스트 상품1', '테스트 상품입니다.', '0000, 0000');
 insert into product(category_id, price, status, user_id, created_at, title, description, location)
 VALUES (1,20000,'SALE',1, now(), '테스트 상품1-1', '테스트 상품입니다.', '0000, 0000');
 insert into product(category_id, price, status, user_id, created_at, title, description, location)

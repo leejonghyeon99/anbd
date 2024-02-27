@@ -4,13 +4,16 @@ import com.lec.spring.domain.User;
 import com.lec.spring.dto.*;
 import com.lec.spring.jwt.SecurityUtil;
 import com.lec.spring.service.UserService;
+import com.lec.spring.service.user.UserInfoService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -20,6 +23,7 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final UserInfoService userInfoService;
 
     @PostMapping("/signup")
     public ResponseEntity<UserResponseDTO> signup(@RequestBody UserRequestDTO userRequestDTO){
@@ -85,5 +89,39 @@ public class UserController {
     public ResponseEntity<TokenDTO> reissue(@RequestBody TokenRequestDTO tokenRequestDTO){
         return ResponseEntity.ok(userService.reissue(tokenRequestDTO));
     }
+
+
+
+
+
+
+
+
+
+
+
+
+    //유저 정보
+
+
+    //판매 내역
+    @GetMapping("/sold-list")
+    public ResponseEntity<Page> getSoldList(
+            @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size
+    ){
+        return new ResponseEntity<>(userInfoService.getSoldList(page, size),HttpStatus.OK);
+    }
+
+    //내가 올린 게시물
+
+    //유저 평점
+
+    //게시글 조회수
+
+    //게시글 평점
+
+    //
+
+
 
 }
