@@ -206,7 +206,7 @@ const Header = () => {
                 />
               )}
               {user.auth !== "ROLE_USER" && user.auth !== "ROLE_ADMIN" && (
-                <div>
+                <div className="anonymous">
                   <Link to="user/login">LOGIN</Link>{" "}
                   <Link to="user/signup">JOIN</Link>
                 </div>
