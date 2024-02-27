@@ -45,7 +45,7 @@ const App = () => {
 
 
             <Route path="/product/map/:id" Component={GoogleMaps}></Route>
-            <Route path="/chat" Component={ChatPage}></Route>
+            <Route path="/chatRoom/:id" Component={ChatPage}></Route>
           </Routes>
         </div>
       </div>

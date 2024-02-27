@@ -133,7 +133,7 @@ const DetailPage = () => {
       if (!data) {
         throw new Error('Received empty response from the server');
       }
-      console.log(data);
+      console.log("chatRoomId: ", data);
       // 채팅방 ID 업데이트
       setChatRoomId(data);
       // 채팅방 생성 후 이동
@@ -160,7 +160,7 @@ const DetailPage = () => {
   // 리스트 페이지 이동
   const ListOk = () => {
     navigate('/product/list');
-  }
+  }      
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/detail/` + id)
     .then(response => response.json())
