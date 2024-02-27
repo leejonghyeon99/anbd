@@ -70,7 +70,6 @@ useEffect(() => {
 
   return (
     <>
-      {/* <Admin></Admin> */}
       <div className="AppBox">
         <div className="HeaderSidebarContainer">
           <Header className="header" />

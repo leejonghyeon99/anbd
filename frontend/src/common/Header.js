@@ -294,13 +294,7 @@ const Header = () => {
               </div>
             </nav>
             {/*로그아웃 버튼!! */}
-            <Link>
-              <img
-                src="/icon/logout.png"
-                className="logout"
-                onClick={handleLogout}
-              />
-            </Link>
+            <Logout/>
           </Navbar>
         </div>
       </div>
