@@ -14,16 +14,17 @@
 select main from Category as c group by c.main;
 
 select * from user;
+update user set auth = 'ROLE_ADMIN' where id =2;
 select * from Product  where category_id = 1;
 /*카테고리 sample*/
-insert into category(main, sub) value ('의류', '여성의류');
+insert into category(main, sub) value ('의류', '');
 insert into category(main, sub) value ('의류', '남성의류');
 insert into category(main, sub) value ('의류', '아동의류');
 insert into category(main, sub) value ('식품', '즉석식품');
 insert into category(main, sub) value ('식품', '가공식품');
 insert into category(main, sub) value ('생활용품', '거실');
 insert into category(main, sub) value ('생활용품', '주방용품');
-
+update Category c set c.sub= '호로로' where c.main = '224' and c.sub='33ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ';
 select * from category;
 select * from category where main = '의류' group by main,sub ;
 select * from category group by main;

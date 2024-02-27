@@ -7,10 +7,27 @@ const Styledsidebar = styled.div`
   display: ${(props) => (props.isMenuOpen ? "block" : "none")};
 
 
-  @media screen and (min-width: 768px) {
+  @media screen {
     display: block;
   }
+
+  @media screen and (max-width: 767px) {
+    display: flex;
+    height: auto;
+    padding: 15px;
+    justify-content: center;
+    text-align: center;
+    border-radius: 4px;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3);
+    z-index: 3;
+    background-color: #fff;
+    position: absolute;
+    left: 19.5px;
+    width: 90%; // 화면 전체 너비를 차지하도록 설정
+    top: 90px; // 헤더와 겹치지 않도록 조절 (필요에 따라 조절 가능)
+  }
 `;
+
 
 const SidebarMenu = styled.div`
   li {
@@ -36,9 +53,6 @@ function Sidebar() {
 
   // //중분류 상태 설정
   const [category, setCategory] = useState([]);
-
-    // 현재 선택된 서브 메뉴
-    const [selectedSub, setSelectedSub] = useState(null);
 
   // 모든 대분류의 중분류가 따로따로 토글되도록 아래 상태함수들 줌
   const [isClothingOpen, setIsClothingOpen] = useState(false);
@@ -163,7 +177,6 @@ function Sidebar() {
                   style={{ display: isSubMenuOpen(m.main) ? "block" : "none" }}
                 >
                   <span className="subCategory">{s}</span>
-
                 </li>
               ))}
             </ul>

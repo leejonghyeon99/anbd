@@ -62,7 +62,7 @@ li, .mypageList {
   color: rgb(97, 95, 95);
   font-weight: bold;
   margin: 0.5rem;
-  z-index: 1;
+  z-index: 4;
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.158);
   width: 100%; /* 부모 요소인 #menuTitle과 같은 너비로 설정 */
   display: inline-block; /* inline-block으로 설정하여 컨테이너 크기가 내부 내용에 맞게 조절되도록 함 */
