@@ -56,7 +56,14 @@
   text-decoration: none;
   color: black;
   width: 100%;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'MoiraiOne-Regular';
+  font-size: calc(23px + 0.7vw);
+  font-weight: bold;
+}
+
+.anonymous a{
+  font-size: calc(6px + 0.7vw);
+  font-family: 'neurimboGothicRegular';
 }
 
 .submenu {

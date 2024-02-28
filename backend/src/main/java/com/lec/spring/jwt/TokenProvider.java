@@ -41,15 +41,13 @@ public class TokenProvider {
 
     public TokenDTO createTokenDto(Authentication authentication){
         System.out.println("createTokenDto"+authentication);
+
         // 권한 가져오기
         String authority = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-
-
         long now = (new Date()).getTime(); // 현재 시간을 밀리초 단위로 now 에 저장
-
 
         // accessToken 생성
         Date tokenExpireTime = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
@@ -117,6 +115,12 @@ public class TokenProvider {
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
+    }
+
+    // 액세스 토큰으로부터 사용자 이름을 추출하는 메소드
+    public String getUsernameFromToken(String token) {
+        Claims claims = parseClaims(token);
+        return claims.getSubject();
     }
 
 }

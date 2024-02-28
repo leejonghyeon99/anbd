@@ -3,7 +3,6 @@ package com.lec.spring.controller;
 import com.lec.spring.domain.Status;
 import com.lec.spring.domain.User;
 import com.lec.spring.dto.*;
-import com.lec.spring.jwt.SecurityUtil;
 import com.lec.spring.service.UserService;
 import com.lec.spring.service.user.UserInfoService;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
