@@ -232,7 +232,9 @@ const Category = ({setModalToggle}) => {
             const data = await response.json(); 
             if(data.resultCode === 'success'){
                 categoryList();
-                setSelectCategory({...selectCategory, sub : updateSub})
+                setSelectCategory('')
+                setUpdateSub('');          
+                
             }
             
         } catch (error) {
@@ -313,6 +315,7 @@ const Category = ({setModalToggle}) => {
         "카테고리는 중복 될 수 없습니다.",
         "카테고리는 공백 또는 빈문자는 작성 하실 수 없습니다.",
         "카테고리는 특수문자 사용 불가능합니다.",
+        "상위카테고리는 하위카테고리를 1개이상 가져야 합니다."
     ];
     useEffect(()=>{console.log(selectCategory);},[selectCategory])
 
@@ -401,7 +404,7 @@ const Category = ({setModalToggle}) => {
                    {categoryToggle === 'manage' && 
                         <>                      
                             <div className={`${styles.categoryNameBox}`}>
-                                <label htmlFor="categoryInput">선택된 카테고리</label>
+                                <label htmlFor="categoryInput">선택된 상위 카테고리 {selectCategory.main}</label>
                                 <div id='categoryInput' className={`${styles.categoryName} ${styles.focusWithin}`}>
                                     <input                                     
                                         name="sub"
@@ -431,7 +434,7 @@ const Category = ({setModalToggle}) => {
 
 
                     {categoryToggle === 'update' && 
-                        <>z
+                        <>
                             <div className={`${styles.categoryNameBox}`}>
                                 <label htmlFor="categoryInput">선택된 중분류</label>
                                 <div id='categoryInput' className={`${styles.categoryName} ${styles.focusWithin}`}>
