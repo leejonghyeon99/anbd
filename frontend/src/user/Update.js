@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import regionsData from "../api/regionsData.json";
+import { fetchWithToken } from "./api";
 
 
 const Update = () => {
   const navigate = useNavigate();
 
   const [userInfo, setUserInfo] = useState({
-    password: "",
-    repassword: "",
     name: "",
     nickname: "",
     phone_number: "",
@@ -27,31 +26,24 @@ const Update = () => {
   const [phoneErr, setPhoneErr] = useState(false);
   const [emailErr, setEmailErr] = useState(false);
   const [regError, setRegError] = useState(false);
-  const [passwordMatchErr, setPasswordMatchErr] = useState(false);
 
   // 토큰으로 유저 정보 불러오기
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-
     if (token) {
-      fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/info`, {
+      fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/user/info`, {
         headers: {
           Authorization: `Bearer ${token}`, // JWT를 Authorization 헤더에 추가
         },
       })
         .then((response) => response.json())
         .then((data) => {
-          const updatedUserInfo = {
-            ...data,
-            password: userInfo.password || data.password,
-            repassword: userInfo.repassword || data.password,
-          };
-          setUserInfo(updatedUserInfo)
+          setUserInfo(data)
           setOriginalEmail(data.email); // 원래 이메일 주소 저장
         })
         .catch((error) => console.error("userInfo error", error));
-    }
-  }, [userInfo.password]);
+    };
+  }, []);
 
   useEffect(() => {
     console.log(userInfo);
@@ -81,22 +73,19 @@ const Update = () => {
     const isPhoneErr = userInfo.phone_number.trim() === "";
     const isEmailErr = userInfo.email.trim() === "";
     const isRegError = userInfo.region === "";
-    const isPasswordMatchErr = userInfo.repassword !== userInfo.password;
 
     setNameErr(isNameErr);
     setNicknameErr(isNicknameErr);
     setPhoneErr(isPhoneErr);
     setEmailErr(isEmailErr);
     setRegError(isRegError);
-    setPasswordMatchErr(isPasswordMatchErr);
 
     return !(
       isNameErr ||
       isNicknameErr ||
       isPhoneErr ||
       isEmailErr ||
-      isRegError ||
-      isPasswordMatchErr
+      isRegError 
     );
   };
 
@@ -140,7 +129,7 @@ const Update = () => {
   const requestEmailVerification = async () => {
    
     // 이메일 유효성 검사를 통과한 경우, 서버로 이메일 인증 요청
-    await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/email/verification-requests?email=${userInfo.email}`, {
+    await fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/email/verification-requests?email=${userInfo.email}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
@@ -171,7 +160,7 @@ const Update = () => {
 
   const verifyCode = async (email, code) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/email/verifications?email=${encodeURIComponent(email)}&code=${encodeURIComponent(code)}`, {
+      const response = await fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/email/verifications?email=${encodeURIComponent(email)}&code=${encodeURIComponent(code)}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -202,7 +191,7 @@ const Update = () => {
     if (validateForm()) {
       const token = localStorage.getItem("accessToken");
       if (token) {
-        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/update`, {
+        fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/user/update`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json;charset=utf-8",
@@ -213,7 +202,6 @@ const Update = () => {
           .then((response) => {
             if (response.ok) {
               alert("회원정보 수정완료");
-              console.log(userInfo.password);
               return response.json();
             } else {
               return Promise.reject("회원정보 수정에 실패했습니다.");
@@ -239,7 +227,7 @@ const Update = () => {
     if (recheck) {
       const token = localStorage.getItem("accessToken");
 
-      fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/deleteUser`, {
+      fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/user/deleteUser`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -18,14 +18,11 @@ public class RefreshToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "`key`", nullable = false, length = 512)
-    private String key;
+    @Column(nullable = false, length = 512)
+    private String username;
 
     @Column(nullable = false, length = 150)
     private String value;
 
-    public RefreshToken updateValue(String token){
-        this.value = token;
-        return this;
-    }
+
 }

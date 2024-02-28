@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { fetchWithToken } from './api';
 
 const UpdatePassword = () => {
 
@@ -17,7 +18,7 @@ const UpdatePassword = () => {
 // 토큰으로 유저 정보 불러오기
 useEffect(() => {
   if (token) {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/info`, {
+    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/user/info`, {
       headers: {
         Authorization: `Bearer ${token}`, // JWT를 Authorization 헤더에 추가
       },
@@ -72,7 +73,7 @@ useEffect(() => {
     if (validateForm()) {
       
       if (token) {
-        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/updatePassword`, {
+        fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/user/updatePassword`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json;charset=utf-8",
