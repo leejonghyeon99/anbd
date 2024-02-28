@@ -3,6 +3,7 @@ package com.lec.spring.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,6 +35,9 @@ public class Product extends BaseEntity{
     private Status status;
 
     private String location;
+
+    @Column(nullable = false, columnDefinition = "bigint default 0")
+    private long viewCnt;
 
     @Column(columnDefinition = "datetime default now()")
     private LocalDateTime refreshedAt;
