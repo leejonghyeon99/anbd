@@ -19,14 +19,17 @@ select * from user;
 update user set auth = 'ROLE_USER' where id =1;
 select * from Product  where category_id = 1;
 /*카테고리 sample*/
-insert into category(main, sub) value ('의류', '');
+insert into category(main, sub) value ('의류', '여성의류');
 insert into category(main, sub) value ('의류', '남성의류');
 insert into category(main, sub) value ('의류', '아동의류');
 insert into category(main, sub) value ('식품', '즉석식품');
 insert into category(main, sub) value ('식품', '가공식품');
 insert into category(main, sub) value ('생활용품', '거실');
 insert into category(main, sub) value ('생활용품', '주방용품');
+insert into category(main, sub) value ('가전', 'TV');
 update Category c set c.sub= '호로로' where c.main = '224' and c.sub='33ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ';
+
+delete from category;
 select * from category;
 select * from category where main = '의류' group by main,sub ;
 select * from category group by main;
@@ -68,6 +71,8 @@ insert into product(category_id, price, status, user_id, created_at, title, desc
 VALUES (7,20000,'SALE',1, now(), '테스트 상품7', '테스트 상품입니다3.', '0000, 0000');
 insert into product(category_id, price, status, user_id, created_at, title, description, location)
 VALUES (7,20000,'SALE',1, now(), '테스트 상품7-1', '테스트 상품입니다3.', '0000, 0000');
+insert into product(category_id, price, status, user_id, created_at, title, description, location)
+VALUES (8,20000,'SALE',1, now(), 'LG QLED', '테스트 상품입니다3.', '0000, 0000');
 
 
 desc product;/*정렬*/
