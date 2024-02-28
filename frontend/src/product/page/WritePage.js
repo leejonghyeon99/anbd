@@ -1,7 +1,12 @@
+
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import GoogleMaps from "./GoogleMaps";
+
+import { VscClose } from 'react-icons/vsc';
+import { fetchWithToken } from "../../user/api";
+// import * as S from './style';
 import { async } from "q";
 
 const WritePage = () => {
@@ -95,7 +100,7 @@ const WritePage = () => {
 
   // Main목록만 가져오는 카테고리
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/category/main`)
+    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/category/main`)
     .then(response => response.json())
     .then(data => {
       console.log(data);
@@ -157,7 +162,7 @@ const WritePage = () => {
       sub: selectSub.sub
     },
   };
-  
+
   // 추가버튼
   const handleAddFile = () => {
     // 파일 선택을 위한 input 요소를 클릭합니다.
@@ -223,8 +228,9 @@ const WritePage = () => {
     console.log(...formData);
 
     const uploadedFiles = async (formData) =>{
-    
+
       await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
+    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
       method: "POST",
       body: formData,  // JSON 형식으로 데이터 전송
     })
@@ -286,10 +292,10 @@ const WritePage = () => {
             <input type="file" name="files" id="fileInput" accept="image/*" onChange={handleFileChange} multiple />
             {/* 추가 버튼 */}
             {/* <div id="fileInput" onChange={handleFileChange}> */}
-              
+
             <button className="btn btn-secondary" onClick={handleAddFile}>파일 추가</button>
     </div>
-    
+
       <span>위치</span>
       {/* GoogleMaps를 표시하거나 숨기는 버튼 */}
       <button onClick={toggleGoogleMaps}>

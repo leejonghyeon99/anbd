@@ -25,8 +25,11 @@ public class ProductDTO {
     private String location;
     private LocalDateTime refreshedAt;
     private CategoryDTO category;
-//    private String user;
-    private UserDTO user;
+    private String user;
+    private long viewCnt;
+    private LocalDateTime createdAt;
+    private List<ProductImageDTO> fileList;
+
 
     public static ProductDTO toDto(Product entity) {
         return ProductDTO.builder()
@@ -36,10 +39,12 @@ public class ProductDTO {
                 .price(entity.getPrice())
                 .status(entity.getStatus())
                 .location(entity.getLocation())
+                .createdAt(entity.getCreatedAt())
                 .refreshedAt(entity.getRefreshedAt())
+                .viewCnt(entity.getViewCnt())
+                .fileList(entity.getFileList().stream().map(ProductImageDTO::toDto).collect(Collectors.toList()))
                 .category(CategoryDTO.toDto(entity.getCategory()))
-//                .user(UserDTO.toDto(entity.getUser()).getNickname())
-                .user(UserDTO.toDto(entity.getUser()))
+                .user(UserDTO.toDto(entity.getUser()).getNickname())
                 .build();
     }
 

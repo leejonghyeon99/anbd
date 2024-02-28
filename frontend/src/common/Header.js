@@ -5,11 +5,16 @@ import { MypagebarList } from "../components/MypagebarList";
 import { AdminpagebarList } from "../components/AdminpagebarList";
 import "./CSS/Header.css";
 import "./CSS/Mypagebar.css";
+import Logout from './Logout';
+
+
 
 // icon import
 import { FaUserCircle } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { Container } from "react-bootstrap";
+import Sidebar from "./Sidebar";
+import { fetchWithToken } from "../user/api";
 
 const Navbar = styled.div`
   /* 다른 스타일들... */
@@ -28,30 +33,18 @@ const Navbar = styled.div`
   }
 `;
 
-/* .hiddenMenu 클릭 시 나타나는 NavMenu 스타일링 */
-const NavMenu = styled.ul`
-  display: ${(props) => (props.ismenuopen === "true" ? "block" : "none")};
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  background-color: #fff;
-  padding: 15px;
-  box-shadow: 0px 5px 0px 0px rgba(0, 0, 0, 0.1);
-  transform-origin: top;
-  transform: scaleY(${(props) => (props.ismenuopen === "true" ? "1" : "0")});
-  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-  opacity: ${(props) => (props.ismenuopen === "true" ? "1" : "0")};
-  top: 60px; /* 상단 여백 조절 */
-
-  @media screen and (max-width: 768px) {
-    display: ${(props) => (props.ismenuopen === "true" ? "block" : "none")};
-    border-radius: 5px;
-  }
-`;
-
 const Header = () => {
   const navigate = useNavigate();
   const headerRef = useRef(null);
+
+  const getCurrentDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줌
+    const day = today.getDate();
+  
+    return `${year} ${month} ${day}`;
+  };
 
   const [user, setUser] = useState({
     username: "",
@@ -85,7 +78,7 @@ const Header = () => {
           setUser(userInfo);
 
           // 서버에 사용자 정보 요청 보내기
-          const response = await fetch(
+          const response = await fetchWithToken(
             `${process.env.REACT_APP_API_BASE_URL}/api/user/info`,
             {
               headers: {
@@ -139,36 +132,6 @@ const Header = () => {
     };
   }, [isMypageVisible]);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-    // 햄버거 토글하면 대분류 모두 닫기
-    setIsBclothingOpen(false);
-    setIsBfoodOpen(false);
-    setIsBlivingOpen(false);
-    // 메뉴를 열 때 mypage는 닫힘
-    setIsMypageVisible(false);
-  };
-
-  const toggleClothing = () => {
-    setIsBclothingOpen(!isBclothingOpen);
-    // 의류 토글 시 다른 메뉴는 닫아!!!
-    setIsBfoodOpen(false);
-    setIsBlivingOpen(false);
-  };
-
-  const toggleFood = () => {
-    setIsBfoodOpen(!isBfoodOpen);
-    // 식품 토글 시 다른 메뉴는 딷아!!!!
-    setIsBclothingOpen(false);
-    setIsBlivingOpen(false);
-  };
-
-  const toggleLiving = () => {
-    setIsBlivingOpen(!isBlivingOpen);
-    // 생활용품 토글 시 다른 메뉴는 닫아!!!!
-    setIsBclothingOpen(false);
-    setIsBfoodOpen(false);
-  };
 
   // mypage show/hide
   const toggleMypage = () => {
@@ -187,7 +150,7 @@ const Header = () => {
       return;
     }
 
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/logout`, {
+    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/user/logout`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -218,10 +181,9 @@ const Header = () => {
       <div ref={headerRef}>
         <div className="headerBox">
           <div className="headerFix">
-            <div className="hiddenMenu">
-              {/* 아이콘 클릭 시 메뉴 토글 */}
+            {/* <div className="hiddenMenu">
               <img src="/icon/menu.png" id="menuIcon" onClick={toggleMenu} />
-            </div>
+            </div> */}
             <div className="logo">
               <Link to="/home" className="goHome">
                 AH!NaBaDa
@@ -245,7 +207,7 @@ const Header = () => {
                 />
               )}
               {user.auth !== "ROLE_USER" && user.auth !== "ROLE_ADMIN" && (
-                <div>
+                <div className="anonymous">
                   <Link to="user/login">LOGIN</Link>{" "}
                   <Link to="user/signup">JOIN</Link>
                 </div>
@@ -264,6 +226,7 @@ const Header = () => {
                   onClick={toggleMypage}
                 />
               </li>
+              <small>Today {getCurrentDate()}</small>
               <div className="mypage_nickname">
                 <p>
                   ID: {user.username}
@@ -272,7 +235,7 @@ const Header = () => {
                 </p>
               </div>
               <div>
-                <Link to={"user/passwordcheck"} className="moveToUpdate">
+                <Link to={"user/passwordcheck"} className="moveToUpdate" onClick={toggleMypage}>
                   <small>회원정보수정</small>
                 </Link>
               </div>
@@ -332,48 +295,9 @@ const Header = () => {
               </div>
             </nav>
             {/*로그아웃 버튼!! */}
-            <Link>
-              <img
-                src="/icon/logout.png"
-                className="logout"
-                onClick={handleLogout}
-              />
-            </Link>
+            <Logout/>
           </Navbar>
         </div>
-
-        <NavMenu ismenuopen={isMenuOpen.toString()}>
-          <ul onClick={toggleClothing}>
-            의류
-            {isBclothingOpen && (
-              <ul className="submenu">
-                <li onClick={() => navigate("/product/list")}>여성의류</li>
-                <li onClick={() => navigate("/product/list")}>남성의류</li>
-                <li onClick={() => navigate("/product/list")}>아동의류</li>
-              </ul>
-            )}
-          </ul>
-          <ul onClick={toggleFood}>
-            식품
-            {isBfoodOpen && (
-              <ul className="submenu">
-                <li onClick={() => navigate("/product/list")}>1</li>
-                <li onClick={() => navigate("/product/list")}>2</li>
-                <li onClick={() => navigate("/product/list")}>3</li>
-              </ul>
-            )}
-          </ul>
-          <ul onClick={toggleLiving}>
-            생활용품
-            {isBlivingOpen && (
-              <ul className="submenu">
-                <li onClick={() => navigate("/product/list")}>1</li>
-                <li onClick={() => navigate("/product/list")}>2</li>
-                <li onClick={() => navigate("/product/list")}>3</li>
-              </ul>
-            )}
-          </ul>
-        </NavMenu>
       </div>
     </div>
   );

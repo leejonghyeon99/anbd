@@ -12,7 +12,11 @@ const ProductItem = (props) => {
         <Card.Body>
           {/* 링크를 클릭하면 해당 상품의 상세 페이지로 이동 */}
           <Link to={`/product/detail/${id}`}>
-            <Card.Img variant="top" src="/icon/search.png" />
+            <Card.Img 
+            variant="top" 
+            src="/icon/search.png"
+            style={{ width: "50px", height: "50px" }}
+             />
           </Link>
         </Card.Body>
         <ListGroup>

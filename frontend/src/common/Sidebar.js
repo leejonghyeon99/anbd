@@ -1,36 +1,38 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
+import "./CSS/Sidebar.css";
 
 const Styledsidebar = styled.div`
   display: ${(props) => (props.isMenuOpen ? "block" : "none")};
-  flex: 1;
-  height: calc(100vh - 120px);
-  background-color: blueviolet;
-  position: sticky;
-  top: 50px;
-  padding: 15px;
 
-  @media screen and (min-width: 768px) {
+  @media screen {
     display: block;
+  }
+
+  @media screen and (max-width: 767px) {
+    display: flex;
+    height: auto;
+    padding: 15px;
+    justify-content: center;
+    text-align: center;
+    border-radius: 4px;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3);
+    z-index: 3;
+    background-color: #fff;
+    position: absolute;
+    left: 19.5px;
+    width: 90%; // 화면 전체 너비를 차지하도록 설정
+    top: 90px; // 헤더와 겹치지 않도록 조절 (필요에 따라 조절 가능)
   }
 `;
 
 const SidebarMenu = styled.div`
-  ul {
-    list-style: none;
-    font-size: calc(
-      8px + 0.8vw
-    ); /* vw 단위를 사용하여 글꼴 크기를 동적으로 변경 */
-    padding: 0;
-    margin: 0;
-  }
-
   li {
     cursor: pointer;
   }
   .mainCategory {
-    font-size: calc(10px + 0.5vw); /* m.main에 대한 글자 크기 조절 */
+    font-size: calc(9px + 0.5vw); /* m.main에 대한 글자 크기 조절 */
     font-weight: bold; /* m.main에 대한 글자 굵게 설정 */
     /* 다른 스타일링을 추가할 수 있습니다. */
   }
@@ -50,63 +52,45 @@ function Sidebar() {
   // //중분류 상태 설정
   const [category, setCategory] = useState([]);
 
-  // 모든 대분류의 중분류가 따로따로 토글되도록 아래 상태함수들 줌
-  const [isClothingOpen, setIsClothingOpen] = useState(false);
-  const [isFoodOpen, setIsFoodOpen] = useState(false);
-  const [isLivingOpen, setIsLivingOpen] = useState(false);
+  // 현재 활성화된 메인 카테고리 상태
+  const [activeMain, setActiveMain] = useState(null);
 
   // 데이터 구조를 변경하여 중복되지 않는 메인 카테고리와 서브 카테고리로 변환, 그룹화
   const transformData = (data) => {
     return Object.values(
+      // reduce 함수를 사용하여 데이터를 순회하며 누적값 생성
       data.reduce((acc, currentItem) => {
         // 데이터 조회, (acc는 []로 초기화됨)
         const { main, sub } = currentItem; //(currentItem 에서 main과 sub 추출)
+
         if (!acc[main]) {
+          // 만약 누적값에 현재 main이 없다면, 새로운 객체 생성 및 sub 배열 초기화
           acc[main] = { main, sub: [sub] };
         } else {
+          // 이미 존재하는 main이라면 해당 객체의 sub 배열에 현재 sub 추가
           acc[main].sub.push(sub);
         }
-        return acc;
-      }, [])
+        return acc; // 누적값 반환
+      }, []) // 초기값으로 빈 배열을 사용
     );
   };
 
   // 각 메인 카테고리에 따라 토글 상태 업데이트
   const toggleSubMenu = (main) => {
-    // 각 메인 카테고리에 따라 토글 상태 업데이트
-    switch (main) {
-      case "의류":
-        setIsClothingOpen(!isClothingOpen);
-        setIsFoodOpen(false);
-        setIsLivingOpen(false);
-        break;
-      case "식품":
-        setIsFoodOpen(!isFoodOpen);
-        setIsClothingOpen(false);
-        setIsLivingOpen(false);
-        break;
-      case "생활용품":
-        setIsLivingOpen(!isLivingOpen);
-        setIsClothingOpen(false);
-        setIsFoodOpen(false);
-        break;
-      default:
-        break;
-    }
+    // 클릭한 메인이 이미 활성화되어 있으면 비활성화하고, 아니면 활성화
+    setActiveMain((prevMain) => (prevMain === main ? null : main));
   };
 
-  // 현재 어떤 메인 카테고리의 서브 메뉴가 열려 있는지 확인
   const isSubMenuOpen = (main) => {
-    switch (main) {
-      case "의류":
-        return isClothingOpen;
-      case "식품":
-        return isFoodOpen;
-      case "생활용품":
-        return isLivingOpen;
-      default:
-        return false;
-    }
+    // 각 메인 카테고리에 따라 동적으로 상태 반환
+    return main === activeMain;
+  };
+
+  // 서브 메뉴 클릭 시 해당 메뉴로 이동
+  const handleSubMenuClick = (sub) => {
+    // 페이지 새로고침
+    navigate(`/product/list/${sub}`);
+    window.location.reload();
   };
 
   // useEffect: 상품 카테고리 목록 (상품 x)을 불러옴
@@ -142,27 +126,25 @@ function Sidebar() {
   }, [category]);
 
   return (
-    <Styledsidebar>
+    <Styledsidebar className="sidebarBox">
       <div className="sidebarWrapper">
         <SidebarMenu className="sidebarMenu">
-
           {/* 데이터를 가져오는 도중에 발생할 수 있는 오류를 나타내는 상태 */}
           {error && <div>에러: {error}</div>}
 
           {/* 카테고리 데이터를 순회하며 렌더링 */}
           {category.map((m) => (
-            <ul key={m.main}>
-
+            <ul key={m.main} className="menuList">
               {/* 메인 카테고리를 클릭할 때 서브 메뉴를 토글하는 함수 호출 */}
               <li onClick={() => toggleSubMenu(m.main)}>
                 <span className="mainCategory">{m.main}</span>
               </li>
-              
+
               {/* 서브 메뉴 렌더링 (토글 상태에 따라 보이거나 숨겨짐) */}
               {m.sub.map((s) => (
                 <li
                   key={s}
-                  onClick={() => navigate(`/product/list/${s}`)}
+                  onClick={() => handleSubMenuClick(s)}
                   style={{ display: isSubMenuOpen(m.main) ? "block" : "none" }}
                 >
                   <span className="subCategory">{s}</span>
@@ -170,15 +152,6 @@ function Sidebar() {
               ))}
             </ul>
           ))}
-
-          {/* 카테고리 데이터를 순회하며 렌더링 */}
-          {/* {category.map((m) => (
-            <ul >{m.main}
-              {m.sub.map((s) => (
-                <li onClick={() => navigate(`/product/list/${s}`)}>{s}</li>
-              ))}
-            </ul>
-          ))} */}
         </SidebarMenu>
       </div>
     </Styledsidebar>

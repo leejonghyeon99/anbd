@@ -3,18 +3,18 @@ use db_anbd;
 show tables;
 
 desc user;
-
+select * from Product p where category_id = 1;
 select * from information_schema.KEY_COLUMN_USAGE where TABLE_NAME = 'user_block';
 UPDATE user
 SET created_at = DATE_SUB(created_at, INTERVAL 2 DAY )
 WHERE id = 17;
-
-
 update user set auth = 'ROLE_USER' where id = 1;
 select  * from category;
 select * from refresh_token;
 
 select * from user;
+
+
 
 desc user;
 

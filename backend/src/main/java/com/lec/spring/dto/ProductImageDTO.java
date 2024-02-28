@@ -1,26 +1,28 @@
 package com.lec.spring.dto;
 
 import com.lec.spring.domain.ProductImage;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
+import lombok.*;
+
+@Getter
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class ProductImageDTO {
-
     private Integer id;
     private String originName;
     private String photoName;
 
-    public static ProductImageDTO toDto(ProductImage entity){
+    // 생성자 생략
+
+    public static ProductImageDTO toDto(ProductImage productImage) {
         return ProductImageDTO.builder()
-                .id(entity.getId())
-                .originName(entity.getOriginName())
-                .photoName(entity.getPhotoName())
+                .id(productImage.getId())
+                .originName(productImage.getOriginName())
+                .photoName(productImage.getPhotoName())
                 .build();
     }
 }
+
+

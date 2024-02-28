@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Image, Col } from 'react-bootstrap';
 import { json, useNavigate, useParams } from 'react-router-dom';
+import { fetchWithToken } from '../../user/api';
 
 const DetailPage = () => {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ const DetailPage = () => {
   }
   
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/detail/` + id)
+    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/detail/` + id)
     .then(response => response.json())
     .then(data => setProduct(data));
   }, []);
@@ -55,7 +56,7 @@ const DetailPage = () => {
 
   const DeleteOk = () => {
     if(!window.confirm("정말 삭제하시겠습니까?")) return;
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/delete/` + id, {
+    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/delete/` + id, {
       method:"DELETE",
     })
     .then(response => response.text())
