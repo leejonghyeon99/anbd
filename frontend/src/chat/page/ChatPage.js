@@ -1,11 +1,11 @@
 import { SoundTwoTone } from '@ant-design/icons';
 import { Stomp } from '@stomp/stompjs';
 import React, { useEffect, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 import SockJS from 'sockjs-client';
 
 const ChatPage = () => {
     const [stompClient, setStompClient] = useState(null);
-    const [chatRoomId, setChatRoomId] = useState("");
     const [message, setMessage] = useState("");
     const [chatRoom, setChatRoom] = useState({
         id: "",
@@ -27,8 +27,13 @@ const ChatPage = () => {
         auth: "", // 추가: 사용자 권한 정보
     });
 
+    const location = useLocation();
+    const ID = location.state.id;
+    console.log("채팅방 ID 넘어왔냐구", ID);
+
+    let token = ""
     useEffect(() => {
-    const token = localStorage.getItem("accessToken");
+    token = localStorage.getItem("accessToken");
     const getUserInfoFromToken = (token) => {
         const decodedToken = atob(token.split(".")[1]);
         const userInfo = JSON.parse(decodedToken);
@@ -77,7 +82,13 @@ const ChatPage = () => {
     userData();
     }, []);
     
-    useEffect(()=>{console.log(user);},[user])
+    useEffect(()=>{
+        console.log(user);
+    },[user]);
+
+    useEffect(()=>{
+        console.log(chatRoom);
+    },[chatRoom]);
 
     useEffect(() => {
         const socket = new SockJS('/api/ws', undefined, {
@@ -90,10 +101,8 @@ const ChatPage = () => {
 
         const onConnect = () => {
             console.log('WebSocket 연결 성공');
-            const roomId = chatRoom.id;
-            console.log(roomId);
 
-            stompClient.subscribe('/queue/sendChatRoomIdToClient/' + roomId, (message) => {
+            stompClient.subscribe('/queue/sendChatRoomIdToClient/' + ID, (message) => {
                 console.log('WebSocket 메세지 수신: ', message.body);
                 const receivedMessage = JSON.parse(message.body);
                 // 채팅 목록을 업데이트
@@ -118,6 +127,7 @@ const ChatPage = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': token,
                 },
                 body: JSON.stringify(requestData),
             });
@@ -140,9 +150,9 @@ const ChatPage = () => {
         }
     
         const requestData = {
-            userId: user.id,
+            userId: user.sub,
             message: message,
-            chatRoomId: chatRoom.id
+            chatRoomId: ID
         };
         console.log(requestData);
     
@@ -155,21 +165,17 @@ const ChatPage = () => {
             }));
             setMessage('');
         } catch (error) {
-            // 오류 처리
+            console.error(error);
         }
     };
 
     return (
         <div>
-            <div className='mb-3'>
-                <span className='form-control'>{chatRoom.id}</span>
-            </div>
-            <div className='mb-3'>
-                <span className='form-control'>{chatRoom.seller}</span>
-            </div>
             <ul>
-                {chatRoom.chats.map((message, index) => (
-                    <li key={index}>{message.text}</li>
+                {chatRoom.chats.map((chat, index) => (
+                    <li key={index} style={{ textAlign: chat.senderId === user.sub ? 'right' : 'left' }}>
+                        {chat.message}
+                    </li>
                 ))}
             </ul>
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -187,6 +193,7 @@ const ChatPage = () => {
             </div>
         </div>
     );
+    
 };
 
 export default ChatPage;

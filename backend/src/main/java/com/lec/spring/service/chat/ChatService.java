@@ -18,28 +18,17 @@ public class ChatService {
     private final UserRepository userRepository;
     private final ChatRoomRepository chatRoomRepository;
 
-    @Transactional
-    public Chat saveMessage(String message, Integer userId, Integer chatRoomId) {
+//    @Transactional
+    public Chat saveMessage(String message, String userId, Integer chatRoomId) {
 
-        User user = userRepository.findById(userId).orElse(null);
+        User user = userRepository.findByUsername(userId).orElse(null);
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElse(null);
-        String sendMessage = chatRepository.findByMessage(message);
 
         Chat chat = new Chat();
         chat.setUser(user);
         chat.setChatRoom(chatRoom);
-        chat.setMessage(sendMessage);
+        chat.setMessage(message);
 
-        return chatRepository.save(chat);
+        return chatRepository.saveAndFlush(chat);
     }
-
-//    @Transactional
-//    public Chat saveMessage(String message, User user, ChatRoom chatRoom) {
-//        Chat chat = new Chat();
-//        chat.setMessage(message);
-//        chat.setUser(user);
-//        chat.setChatRoom(chatRoom);
-//
-//        return chatRepository.save(chat);
-//    }
 }

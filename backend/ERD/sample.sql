@@ -73,6 +73,9 @@ desc product;/*정렬*/
 select * from product;
 select * from product_image;
 
+select * from chat;
+select * from chat_room;
+
 
 /* 신고 sample */
 insert into report(user_id, reason) VALUES (6,'그냥1');

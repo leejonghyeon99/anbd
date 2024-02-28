@@ -137,22 +137,18 @@ const DetailPage = () => {
       // 채팅방 ID 업데이트
       setChatRoomId(data);
       // 채팅방 생성 후 이동 
-      navigate(`/chatRoom/${data}`);
+      navigate(`/chatRoom/${data}`, { state: {id: data}});
+
     })
     .catch(error => {
       console.error('Error:', error);
       // 오류 처리 추가
       alert('Failed to create chat room');
     });
+
   };
 
-    // navigate(`/chat`);
-    // const chatRoomId = chatRoom.id;
-      // if (chatRoomId) {
-      //     navigate(`/chat/${chatRoomId}`); // 채팅방 ID가 있을 경우에만 이동
-      // } else {
-      //     console.error('Chat room ID not available');
-      // }
+
   const UpdateOk = () => {
     navigate('/product/update/' + id);
   }
