@@ -4,11 +4,10 @@ import com.lec.spring.domain.Auth;
 import com.lec.spring.domain.RefreshToken;
 import com.lec.spring.domain.User;
 import com.lec.spring.dto.TokenDTO;
-import com.lec.spring.dto.TokenRequestDTO;
 import com.lec.spring.dto.UserRequestDTO;
 import com.lec.spring.dto.UserResponseDTO;
 import com.lec.spring.dto.email.EmailVerificationResult;
-import com.lec.spring.jwt.SecurityUtil;
+import com.lec.spring.config.SecurityUtil;
 import com.lec.spring.jwt.TokenProvider;
 import com.lec.spring.repository.RefreshTokenRepository;
 import com.lec.spring.repository.UserRepository;
@@ -70,7 +69,7 @@ public class UserService {
         TokenDTO tokenDTO = tokenProvider.createTokenDto(authentication);
 
         RefreshToken refreshToken = RefreshToken.builder()
-                .key(authentication.getName())
+                .username(authentication.getName())
                 .value(tokenDTO.getRefreshToken())
                 .build();
 
@@ -117,34 +116,18 @@ public class UserService {
         return UserResponseDTO.of(updateUser);
     }
 
-    @Transactional
-    public TokenDTO reissue(TokenRequestDTO tokenRequestDTO){
-        if(!tokenProvider.tokenValidation(tokenRequestDTO.getRefreshToken())){
-            throw new RuntimeException("Refresh Token 이 유효하지 않습니다.");
-        }
-
-        Authentication authentication = tokenProvider.getAuthentication(tokenRequestDTO.getAccessToken());
-
-        RefreshToken refreshToken = refreshTokenRepository.findByKey(authentication.getName())
-                .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
-
-        if (!refreshToken.getValue().equals(tokenRequestDTO.getRefreshToken())){
-            throw new RuntimeException("토큰의 유저 정보가 일치하지 않습니다.");
-        }
-
-        TokenDTO tokenDTO = tokenProvider.createTokenDto(authentication);
-
-        RefreshToken newRefreshToken = refreshToken.updateValue(tokenDTO.getRefreshToken());
-        refreshTokenRepository.save(newRefreshToken);
-
-        return tokenDTO;
-    }
     // 현재 유저 정보 가져오기
     public Optional<User> getUser(){
         return SecurityUtil.getCurrentUserId().flatMap(userRepository::findOneWithAuthoritiesByUsername);
     }
 
     public String logout(String accessToken) {
+        // 액세스 토큰에서 사용자 이름 추출
+        String username = tokenProvider.getUsernameFromToken(accessToken);
+
+        // 사용자 이름과 연결된 리프레시 토큰 찾기 및 삭제
+        refreshTokenRepository.deleteByUsername(username);
+
        jwtBlacklistService.blacklistToken(accessToken);
         return accessToken;
     }

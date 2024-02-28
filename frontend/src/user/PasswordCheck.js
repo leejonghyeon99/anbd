@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import { fetchWithToken } from './api';
+
 const PasswordCheck = () => {
 
     const [username, setUsername] = useState('');
@@ -29,7 +31,7 @@ const PasswordCheck = () => {
 
     const confirmPassword = () => {
 
-        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/passwordCheck`, { 
+        fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/user/passwordCheck`, { 
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,
