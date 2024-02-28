@@ -4,8 +4,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: center; /* 중앙 정렬을 위해 추가 */
-    height: 100vh; /* 화면 전체 높이를 차지하도록 설정 */
+    height: auto; /* 화면 전체 높이를 차지하도록 설정 */
     font-family: 'yg-jalnan';
+    height: calc(100vh - 115px);
   }
   
   .loginLogo {
