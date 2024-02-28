@@ -1,4 +1,4 @@
-package com.lec.spring.jwt;
+package com.lec.spring.config;
 
 
 import org.springframework.context.annotation.Bean;
