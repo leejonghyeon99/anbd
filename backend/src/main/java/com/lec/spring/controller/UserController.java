@@ -84,13 +84,6 @@ public class UserController {
     }
 
 
-    @PostMapping("/reissue")
-    public ResponseEntity<TokenDTO> reissue(@RequestBody TokenRequestDTO tokenRequestDTO){
-        return ResponseEntity.ok(userService.reissue(tokenRequestDTO));
-    }
-
-
-
 
 
 
