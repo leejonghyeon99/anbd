@@ -130,6 +130,7 @@ public class ChatController {
             Integer chatRoomId = Integer.valueOf(chats.get("chatRoomId"));
             String messageContent = chats.get("message");
 
+
             // 사용자 ID를 사용하여 사용자 정보 조회
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new RuntimeException("User not found"));
