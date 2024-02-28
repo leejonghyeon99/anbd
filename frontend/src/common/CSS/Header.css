@@ -56,7 +56,14 @@
   text-decoration: none;
   color: black;
   width: 100%;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'MoiraiOne-Regular';
+  font-size: calc(23px + 0.7vw);
+  font-weight: bold;
+}
+
+.anonymous a{
+  font-size: calc(13px + 0.2vw);
+  font-family: 'neurimboGothicRegular';
 }
 
 .submenu {
@@ -82,14 +89,7 @@
     border-width: 3px; /* 테두리 두께를 줄임 */
     margin-left: 3rem;
   }
-  /* .hiddenMenu {
-    border: 1px solid black;
-    width: 4rem;
-    height: 4rem;
-    display: none;
-    justify-content: center; 
-    align-items: center; 
-  } */
+  
   #menuIcon {
     display: inline-block;
     width: 2rem;

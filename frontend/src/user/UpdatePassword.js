@@ -1,44 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { fetchWithToken } from './api';
 
 const UpdatePassword = () => {
 
     const navigate = useNavigate();
 
+    const token = localStorage.getItem("accessToken");
+
     const [userInfo, setUserInfo] = useState({
+      id: "",
       password: "",
       repassword: "",
     });
 
-    const [passwordMatchErr, setPasswordMatchErr] = useState(false);
-
-   // 토큰으로 유저 정보 불러오기
-  useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-
-    if (token) {
-      fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/info`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // JWT를 Authorization 헤더에 추가
-        },
+// 토큰으로 유저 정보 불러오기
+useEffect(() => {
+  if (token) {
+    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/user/info`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // JWT를 Authorization 헤더에 추가
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setUserInfo(prevState => ({
+          ...prevState,
+          id: data.id // id 필드만 업데이트
+        }));
       })
-        .then((response) => response.json())
-        .then((data) => {
-          const updatedUserInfo = {
-            ...data,
-            password: userInfo.password || data.password,
-            repassword: userInfo.repassword || data.password,
-          };
-          setUserInfo(updatedUserInfo)
-        })
-        .catch((error) => console.error("userInfo error", error));
-    }
-  }, [userInfo.password]);
+      .catch((error) => console.error("userInfo error", error));
+  }
+}, []);
 
-  useEffect(() => {
-    console.log(userInfo);
-  }, [userInfo]);
+    const [passwordMatchErr, setPasswordMatchErr] = useState(false);
+    const [isEmptyPassword, setIsEmptyPassword] = useState(false);
+
 
   // 변경되는 유저 정보값 받아오기
   function infoChange(e) {
@@ -48,17 +46,23 @@ const UpdatePassword = () => {
       ...prevUser,
       [name]: value,
     }));
+
+    if (name === 'password') {
+      setIsEmptyPassword(!value);
+    }
   }
 
   //유효성 검사
   const validateForm = () => {
 
     const isPasswordMatchErr = userInfo.repassword !== userInfo.password;
+    const isEmptyPasswordCheck = !userInfo.password; // 비밀번호 입력란이 비었는지 확인
 
     setPasswordMatchErr(isPasswordMatchErr);
+    setIsEmptyPassword(isEmptyPasswordCheck); // isEmptyPassword 상태 업데이트
 
     return !(
-      isPasswordMatchErr
+      isPasswordMatchErr || isEmptyPasswordCheck // 비밀번호가 비었거나, 비밀번호가 일치하지 않으면 false 반환
     );
   };
 
@@ -67,15 +71,16 @@ const UpdatePassword = () => {
     e.preventDefault(); // 기본 제출 동작 방지
 
     if (validateForm()) {
-      const token = localStorage.getItem("accessToken");
+      
       if (token) {
-        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/update`, {
+        fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/user/updatePassword`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json;charset=utf-8",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(userInfo),
+           // userInfo에서 password만 추출하여 전송
+        body: JSON.stringify({ id: userInfo.id, password: userInfo.password }),
         })
           .then((response) => {
             if (response.ok) {
@@ -83,8 +88,7 @@ const UpdatePassword = () => {
               console.log(userInfo.password);
               return response.json();
             } else {
-              console.log("Error status text:", response.statusText);
-              return Promise.reject("비밀번호 변경에 실패했습니다.");
+              alert("비밀번호 변경에 실패했습니다.");
             }
           })
           .then((data) => {
@@ -94,7 +98,6 @@ const UpdatePassword = () => {
           })
           .catch((error) => {
             console.error("비밀번호 변경오류", error);
-            alert("비밀번호 변경정에 실패했습니다. 다시 시도해주세요.");
           });
       }
     }
@@ -136,6 +139,13 @@ const UpdatePassword = () => {
               </small>
             </div>
           )}
+            {isEmptyPassword && (
+          <div>
+            <small className="text-danger">
+              비밀번호를 입력하세요.
+            </small>
+          </div>
+        )}
         </div>
         <Button onClick={updatePassword}>비밀번호 수정</Button>
         <Button onClick={goBack}>이전으로</Button>

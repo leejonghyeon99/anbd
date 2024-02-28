@@ -5,7 +5,7 @@ import { MypagebarList } from "../components/MypagebarList";
 import { AdminpagebarList } from "../components/AdminpagebarList";
 import "./CSS/Header.css";
 import "./CSS/Mypagebar.css";
-import Logout from './Logout'; 
+import Logout from './Logout';
 
 
 
@@ -13,7 +13,6 @@ import Logout from './Logout';
 import { FaUserCircle } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { Container } from "react-bootstrap";
-import Sidebar from "./Sidebar";
 
 const Navbar = styled.div`
   /* 다른 스타일들... */
@@ -41,7 +40,7 @@ const Header = () => {
     const year = today.getFullYear();
     const month = today.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줌
     const day = today.getDate();
-  
+
     return `${year} ${month} ${day}`;
   };
 
@@ -206,7 +205,7 @@ const Header = () => {
                 />
               )}
               {user.auth !== "ROLE_USER" && user.auth !== "ROLE_ADMIN" && (
-                <div>
+                <div className="anonymous">
                   <Link to="user/login">LOGIN</Link>{" "}
                   <Link to="user/signup">JOIN</Link>
                 </div>
@@ -294,13 +293,7 @@ const Header = () => {
               </div>
             </nav>
             {/*로그아웃 버튼!! */}
-            <Link>
-              <img
-                src="/icon/logout.png"
-                className="logout"
-                onClick={handleLogout}
-              />
-            </Link>
+            <Logout/>
           </Navbar>
         </div>
       </div>
