@@ -11,12 +11,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class MvcConfiguration {
 
-    @Bean
-    public PasswordEncoder encoder() {
-        System.out.println("PasswordEncoder bean 생성");
-        return new BCryptPasswordEncoder();
-    }
-
 
     @Configuration
     public static class LocalMvcConfiguration implements WebMvcConfigurer {

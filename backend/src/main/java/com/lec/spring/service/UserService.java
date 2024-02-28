@@ -135,6 +135,10 @@ public class UserService {
 
     public void deleteUser(String userId) {
         User user = userRepository.findByUsername(userId).orElseThrow(() -> new RuntimeException("유저정보가 없습니다."));
+
+        // 사용자 이름으로 리프레시 토큰 찾기 및 삭제
+        refreshTokenRepository.deleteByUsername(user.getUsername());
+
         userRepository.delete(user);
 
     }
