@@ -25,7 +25,8 @@ public class ProductDTO {
     private String location;
     private LocalDateTime refreshedAt;
     private CategoryDTO category;
-    private String user;
+//    private String user;
+    private UserDTO user;
 
     public static ProductDTO toDto(Product entity) {
         return ProductDTO.builder()
@@ -37,8 +38,8 @@ public class ProductDTO {
                 .location(entity.getLocation())
                 .refreshedAt(entity.getRefreshedAt())
                 .category(CategoryDTO.toDto(entity.getCategory()))
-                .user(UserDTO.toDto(entity.getUser()).getNickname())
-
+//                .user(UserDTO.toDto(entity.getUser()).getNickname())
+                .user(UserDTO.toDto(entity.getUser()))
                 .build();
     }
 

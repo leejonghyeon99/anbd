@@ -43,13 +43,13 @@ public class Product extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "category_id")
     @ToString.Exclude
-    @JsonIgnore
+//    @JsonIgnore
     private Category category;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     @ToString.Exclude
-    @JsonIgnore
+//    @JsonIgnore
     private User user;
 
     // 첨부파일
@@ -61,11 +61,11 @@ public class Product extends BaseEntity{
     private List<ProductImage> fileList = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
-    @JsonIgnore
+//    @JsonIgnore
     private List<WishList> wishList;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
-    @JsonIgnore
+//    @JsonIgnore
     private List<Review> reviews;
 
 //    @OneToMany(mappedBy = "product",cascade = CascadeType.REMOVE)

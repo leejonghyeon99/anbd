@@ -66,10 +66,17 @@ desc product;/*정렬*/
 
 select * from product;
 select * from user;
+
 select * from category;
 select * from product_image;
 
+drop table user;
 
+drop table chat_room;
+
+drop table chat;
+
+select * from chat;
 
 /* 신고 sample */
 insert into report(user_id, reason) VALUES (6,'그냥1');

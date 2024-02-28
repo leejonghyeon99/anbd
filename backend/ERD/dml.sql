@@ -9,6 +9,8 @@ UPDATE user
 SET created_at = DATE_SUB(created_at, INTERVAL 2 DAY )
 WHERE id = 17;
 
+
+update user set auth = 'ROLE_USER' where id = 1;
 select  * from category;
 select * from refresh_token;
 

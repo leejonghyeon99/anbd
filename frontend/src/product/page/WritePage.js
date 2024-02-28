@@ -88,11 +88,6 @@ const WritePage = () => {
   //         }
   //     };
   // }
-  
-  
-  useEffect(() => {
-    // console.log(`files: ${files.originalName}`);
-  })
 
   // 위치
   useEffect(() => {
@@ -164,12 +159,6 @@ const WritePage = () => {
     });
   };
 
-  const [file, setFile] = useState(null);
-
-  
-
-  const [selectedFiles, setSelectedFiles] = useState([]);
-
   // product와 category 같이
   const pc = {
     ...product,
@@ -177,36 +166,48 @@ const WritePage = () => {
       main: selectMain.main,
       sub: selectSub.sub
     },
-    files:selectedFiles.map(file => ({
-      originName: file.originName,
-      photoName: file.photoName
-    }))
   };
-
+  
+  
+  // 추가버튼
   const handleAddFile = () => {
     // 파일 선택을 위한 input 요소를 클릭합니다.
     document.getElementById('fileInput').click();
   };
 
+  const [files, setFiles] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+
   const handleFileChange = (event) => {
-    // 선택한 파일들을 처리합니다.
     const files = event.target.files;
-    const newFiles =  [...selectedFiles] ; // 기존 배열 복사
+    console.log(`files: ${files.length}`);
+    const newFiles = [...selectedFiles]; // 기존 배열 복사
     for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      const newFile = { 
-        id: newFiles.length + i, 
-        originName: file.name,
-        photoName: file.name
-      };
-      // newFiles[file.name] = newFile; // 파일 추가
-      newFiles.push(newFile); // 파일 추가
-      console.log(`newProductImage: ${newFile.id}`);
-      console.log(`originName: ${newFile.originName}`);
+        const file = files[i];
+        let photoName = file.name;
+
+        // 파일명에 현재 시간을 추가하여 중복 방지
+        const pos = photoName.lastIndexOf(".");
+        if (pos > -1) { // 확장자가 있는 경우
+            const name = photoName.substring(0, pos); // 파일 이름
+            const ext = photoName.substring(pos + 1); // 파일 확장자
+
+            // 현재 시간(ms)을 이용하여 파일명에 추가
+            photoName = `${name}_${Date.now()}.${ext}`;
+        } else { // 확장자가 없는 경우
+            photoName += `_${Date.now()}`;
+        }
+        console.log(`${photoName}`);
+        const newFile = {
+            originName: file.name,
+            photoName: photoName
+        };
+        newFiles.push(newFile); // 파일 추가
+        console.log(`originName: ${newFile.originName}`);
     }
     setSelectedFiles(newFiles); // 새 배열로 업데이트
-    console.log(`files: ${files}`);
-  };
+    console.log(`files: ${newFiles}`);
+};
 
   // 작성 완료
   const WriteOk = (e) => {
@@ -215,10 +216,21 @@ const WritePage = () => {
 
     const formData = new FormData();
     formData.append('product', JSON.stringify(pc));
+    console.log(`jalfksdjljs: ${formData}`);
 
     for (let i = 0; i < selectedFiles.length; i++) {
-      formData.append('files', selectedFiles[i]);
+      formData.append('files', selectedFiles[i].originName);
+      console.log(`selectedFiles[i]: ${selectedFiles[i].originName}`);
+      console.log(`selectedFiles[i]: ${selectedFiles[i].photoName}`);
     }
+    console.log(`selectedFiles: ${selectedFiles}`);
+
+    console.log("formData.product "+formData.get('product'));
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ', ' + pair[1]); // 모든 키-값 쌍을 출력합니다.
+    }
+    console.log(`formData: ${formData.files}`);
+    console.log(...formData);
 
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
       method: "POST",
@@ -271,6 +283,9 @@ const WritePage = () => {
           </div>
         })}
       </div> */}
+      <div className="mb-3">
+
+      </div>
       <div className="container mt-3 mb-3 border rounded">
       <div className="mb-3 mt-3">
             <label>첨부파일:</label>
@@ -283,7 +298,10 @@ const WritePage = () => {
             {/* 파일 선택을 위한 input 요소 */}
             <input type="file" id="fileInput" accept="image/*" onChange={handleFileChange} multiple />
             {/* 추가 버튼 */}
+            {/* <div id="fileInput" onChange={handleFileChange}> */}
+              
             <button className="btn btn-secondary" onClick={handleAddFile}>파일 추가</button>
+            
         </div>
     </div>
     
