@@ -13,6 +13,8 @@ import Logout from './Logout';
 import { FaUserCircle } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { Container } from "react-bootstrap";
+import Sidebar from "./Sidebar";
+import { fetchWithToken } from "../user/api";
 
 const Navbar = styled.div`
   /* 다른 스타일들... */
@@ -40,7 +42,7 @@ const Header = () => {
     const year = today.getFullYear();
     const month = today.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줌
     const day = today.getDate();
-
+  
     return `${year} ${month} ${day}`;
   };
 
@@ -76,7 +78,7 @@ const Header = () => {
           setUser(userInfo);
 
           // 서버에 사용자 정보 요청 보내기
-          const response = await fetch(
+          const response = await fetchWithToken(
             `${process.env.REACT_APP_API_BASE_URL}/api/user/info`,
             {
               headers: {
@@ -148,7 +150,7 @@ const Header = () => {
       return;
     }
 
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/user/logout`, {
+    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/user/logout`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
