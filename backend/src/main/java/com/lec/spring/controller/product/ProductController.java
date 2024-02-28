@@ -32,7 +32,7 @@ public class ProductController {
     @PostMapping( "/write")
     public ResponseEntity<?> write(@ModelAttribute ProductsDTO product ,
                                    @RequestParam(value="files", required=false) List<MultipartFile> files){
-        System.out.println("ProductController.write" + product);
+        System.out.println("ProductController.write = " + product);
         System.out.println("productImage = " + files );
         return new ResponseEntity<>(productService.write(product, files), HttpStatus.CREATED);  //201
     }

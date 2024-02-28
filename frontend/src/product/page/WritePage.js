@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import GoogleMaps from "./GoogleMaps";
+import { async } from "q";
 
 const WritePage = () => {
   const navigate = useNavigate();
@@ -42,17 +43,6 @@ const WritePage = () => {
 
   const [selectMain, setSelectMain] = useState("");
   const [selectSub, setSelectSub] = useState("");
-
-  // 이미지
-  // const [files, setFiles] = useState([]);
-  // const [files, setFiles] = useState({
-  //   id: "",
-  //   originName: "",
-  //   photoName: ""
-  // });
- 
-
-
   // 이미지 첨부
   // const uploadFile = (e) => {
 //     const selectedFiles = Array.from(e.target.files); // 선택된 파일 목록을 배열로 변환
@@ -168,7 +158,6 @@ const WritePage = () => {
     },
   };
   
-  
   // 추가버튼
   const handleAddFile = () => {
     // 파일 선택을 위한 input 요소를 클릭합니다.
@@ -180,7 +169,7 @@ const WritePage = () => {
 
   const handleFileChange = (event) => {
     const files = event.target.files;
-    console.log(`files: ${files.length}`);
+    console.log(`files length: ${files.length}`);
     const newFiles = [...selectedFiles]; // 기존 배열 복사
     for (let i = 0; i < files.length; i++) {
         const file = files[i];
@@ -209,6 +198,8 @@ const WritePage = () => {
     console.log(`files: ${newFiles}`);
 };
 
+
+
   // 작성 완료
   const WriteOk = (e) => {
     console.log(pc);
@@ -229,14 +220,12 @@ const WritePage = () => {
     for (let pair of formData.entries()) {
       console.log(pair[0] + ', ' + pair[1]); // 모든 키-값 쌍을 출력합니다.
     }
-    console.log(`formData: ${formData.files}`);
     console.log(...formData);
 
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
+    const uploadedFiles = async (formData) =>{
+    
+      await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
       method: "POST",
-      headers: {
-        // "Content-Type": "application/json;charset=utf-8",
-      },
       body: formData,  // JSON 형식으로 데이터 전송
     })
       .then((response) => {
@@ -258,6 +247,8 @@ const WritePage = () => {
           alert("등록 실패");
         }
       });
+    }
+    uploadedFiles(formData);
   };
   // 목록
   const ListOk = () => {
@@ -283,26 +274,20 @@ const WritePage = () => {
           </div>
         })}
       </div> */}
-      <div className="mb-3">
-
-      </div>
-      <div className="container mt-3 mb-3 border rounded">
       <div className="mb-3 mt-3">
             <label>첨부파일:</label>
             <div id="files">
-                {/* 첨부 파일 목록을 출력
-                {Object.values(files).map((image, index) => (
+                {/* 첨부 파일 목록을 출력 */}
+                {files.map((image, index) => (
         <div key={index}>{image.originName}</div>
-                ))} */}
+                ))}
             </div>
             {/* 파일 선택을 위한 input 요소 */}
-            <input type="file" id="fileInput" accept="image/*" onChange={handleFileChange} multiple />
+            <input type="file" name="files" id="fileInput" accept="image/*" onChange={handleFileChange} multiple />
             {/* 추가 버튼 */}
             {/* <div id="fileInput" onChange={handleFileChange}> */}
               
             <button className="btn btn-secondary" onClick={handleAddFile}>파일 추가</button>
-            
-        </div>
     </div>
     
       <span>위치</span>
@@ -321,7 +306,7 @@ const WritePage = () => {
           }}
         />
       )}
-      <span>선택된 위치: {product.location}</span>
+      <span>선택된 위치: {product.location}</span><br/>
       <span>제목</span>
       <div className="mb-3">
         <input
