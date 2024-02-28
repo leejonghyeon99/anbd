@@ -1,8 +1,10 @@
 .sidebarBox {
   flex: 1;
-  height: calc(100vh - 120px);
+  height: calc(100vh - 110px);
+
   /* position: sticky; */
-  top: 50px;
+  margin-top: 10%;
+  margin-inline: 4%;
   display: block;
 }
 

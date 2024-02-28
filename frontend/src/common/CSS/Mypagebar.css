@@ -1,6 +1,5 @@
-
-
-li, .mypageList {
+li,
+.mypageList {
   list-style-type: none;
   text-decoration: none;
 }
@@ -10,40 +9,48 @@ li, .mypageList {
   justify-content: center;
   flex-direction: column;
   margin: 10px;
+  font-family: 'IBMPlexSansKR-Regular';
+}
+
+.closeMypage {
+  width: calc(11px + 0.4vw);
+  float: right;
+  margin-bottom: 10px;
 }
 
 .profile {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: solid 1px black;
+  border: solid 1px rgb(19, 47, 73);
+  border-radius: 10px;
   padding: 5px; /* 필요에 따라 패딩 조절 */
 }
 .profileImg {
   width: 70%;
 }
 
+.mypage_nickname {
+  font-size: calc(10px + 0.3vw);
+  margin-bottom: 0.4rem;
+  font-weight: 800;
+}
 .mypage_auth:hover .nav-menu-items {
   display: flex; /* .mypage_auth에 호버 시 .nav-menu-items를 표시합니다. */
-}
-
-.chattingBtn {
-  margin-left: 10px; /* 채팅 버튼과 프로필 이미지 사이 여백 조절 */
 }
 
 .chatIcon_mp {
   width: 10%;
   float: left;
-  padding: 2px;
+  padding-inline: calc(7px - 0.4vw);
   margin: 0.4rem;
 }
 
 .nav-menu-items {
   background-color: #fff; /* 배경색이 필요하면 추가 */
-  padding: 10px; /* 필요에 따라 여백 조절 */
+  padding-inline: 5px; /* 필요에 따라 여백 조절 */
   border-radius: 5px; /* 필요에 따라 테두리 둥글게 조절 */
   display: flex; /* 초기에는 메뉴 항목을 감추지 않습니다. */
-  margin-top: 20px;
   flex-direction: column; /* 세로 방향으로 나열합니다. */
   width: 100%;
 }
@@ -72,43 +79,37 @@ li, .mypageList {
 }
 
 .mypageList:hover {
-  color: rgb(32, 76, 114); 
+  color: rgb(32, 76, 114);
   border: solid 3px rgba(32, 76, 114, 0.37);
   box-shadow: 0 0 6px rgba(32, 76, 114, 0.829);
   background-color: rgba(205, 224, 241, 0.068);
   font-weight: bolder;
 }
 
-.closeMypage {
-  width: 1.3rem;
-  border: 1px solid black;
-  float: right;
-  margin-bottom: 10px;
-}
 /*회원정보수정 버튼*/
 .moveToUpdate {
   padding-inline: 0.3rem;
   float: right;
   margin-bottom: 4px;
   text-decoration: none;
-  border: solid 1px rgb(122, 117, 117);
   border-radius: 3px;
-  background-color: rgb(146, 142, 136);
-  color: azure;
-  font-size: 14px;
+  background-color: rgb(25, 58, 88);
+  color: rgb(255, 255, 255);
+  font-size: calc(11px + 0.3vw);
+  font-weight: 530;
+  display: flex;
 }
 
-
+.logoutBox {
+  display: flex;
+  justify-content: end;
+  margin-inline: 1rem;
+  margin-bottom: 2rem;
+}
 
 .logout {
-  float: right;
-  width: 10%;
-  padding: 2px;
-  margin-right: 10px;
-}
-
-.mypage_nickname{
-  border: 1px solid black;
+  width: calc(14px + 0.6vw);
+  padding: 0.5px;
 }
 
 @media screen and (max-width: 768px) {
@@ -117,6 +118,10 @@ li, .mypageList {
   }
   .chatIcon_mp {
     width: 10%;
+  }
+
+  .logout{
+    width: 7%;
   }
 
   .nav-menu-items {
@@ -128,7 +133,10 @@ li, .mypageList {
     font-size: 80%;
   }
   .chatIcon_mp {
-    width: 13%;
+    width: 12%;
+  }
+  .logout{
+    width: 8%;
   }
 
   .nav-menu-items {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from "react-router-dom";
 import { fetchWithToken } from '../user/api';
+import "./CSS/Mypagebar.css";
 
 // 로그아웃 기능을 로그아웃.js 밖에서 불러서 실행
 export const handleLogout = (navigate) => {
@@ -39,12 +40,14 @@ const Logout = () => {
     
 
       return (
+        <div className='logoutBox'>
         <img
           src="/icon/logout.png"
-          className="logout"
           onClick={() => handleLogout(navigate)}
+          className='logout'
           alt="Logout"
         />
+        </div>
       );
   };
 
