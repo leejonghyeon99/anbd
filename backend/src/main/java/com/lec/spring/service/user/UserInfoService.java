@@ -67,6 +67,8 @@ public class UserInfoService {
     }
 
 
+
+
     @Transactional
     public Page<WishListDTO> getWishList(int page, int size) {
         User user = userService.getUser().orElseThrow(() -> new RuntimeException("User not found"));

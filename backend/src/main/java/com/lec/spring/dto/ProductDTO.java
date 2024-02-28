@@ -29,7 +29,7 @@ public class ProductDTO {
     private String user;
     private long viewCnt;
     private LocalDateTime createdAt;
-
+    private List<ProductImageDTO> fileList;
 
 
     public static ProductDTO toDto(Product entity) {
@@ -43,6 +43,7 @@ public class ProductDTO {
                 .createdAt(entity.getCreatedAt())
                 .refreshedAt(entity.getRefreshedAt())
                 .viewCnt(entity.getViewCnt())
+                .fileList(entity.getFileList().stream().map(ProductImageDTO::toDto).collect(Collectors.toList()))
                 .category(CategoryDTO.toDto(entity.getCategory()))
                 .user(UserDTO.toDto(entity.getUser()).getNickname())
                 .build();

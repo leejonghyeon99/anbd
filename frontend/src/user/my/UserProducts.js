@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Table } from 'react-bootstrap';
+import { Card, Table } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import styles from './css/UserProducts.module.css'
 const UserProducts = () => {
@@ -40,7 +40,7 @@ const UserProducts = () => {
         //판매중, 판매완료, 예약중 상품 목록
         const getProductStatus = async () => {
             try {
-                const url = `${apiUrl}/api/user/product-status?`;
+                const url = `${apiUrl}/api/user/product-status`;
     
                 const option = {
                     method: 'GET',
@@ -72,37 +72,28 @@ const UserProducts = () => {
     useEffect(()=>{console.log(productList);},[productList])
     return (
         <>
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                    <th style={{ width: '6%', textAlign: 'center' }}>번호</th>
-                    <th>제목</th>                    
-                    <th>가격</th>
-                    <th>상태</th>
-                    <th>작성일</th>
-                    <th>끌어올린날</th>
-                    <th>카테고리</th>
-                    <th>조회수</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {productList.map(product => (
-                    <tr className={`${styles.productList}`}
-                        key={product.id}
-                        onClick={()=> navigate(`/product/detail/${product.id}`)}
-                    >
-                        <td style={{ textAlign: 'center' }}>{product.id}</td>
-                        <td>{product.title}</td>
-                        <td>{formatKrw(product.price)}</td>
-                        <td>{product.status}</td>
-                        <td>{formatDateTime(product.createdAt)}</td>
-                        <td>{formatDateTime(product.refreshedAt)}</td>
-                        <td>{product.category.main} - {product.category.sub}</td>
-                        <td>{product.viewCnt}</td>
-                    </tr>
-                    ))}
-                </tbody>
-            </Table>
+                        
+            {productList.map(product => (
+            <div className={`${styles.productCard}`} key={product.id} onClick={() => navigate(`/product/detail/${product.id}`)}>
+                <img  
+                    src={`${apiUrl}/upload/product/${product.fileList[0].photoName}`} 
+                    className={`${styles.thumbnail}`}
+                />
+                <div>
+                <div>{product.title}</div>
+                <div>
+                    <strong>번호:</strong> {product.id}<br />
+                    <strong>가격:</strong> {formatKrw(product.price)}<br />
+                    <strong>상태:</strong> {product.status}<br />
+                    <strong>작성일:</strong> {formatDateTime(product.createdAt)}<br />
+                    <strong>끌어올린날:</strong> {formatDateTime(product.refreshedAt)}<br />
+                    <strong>카테고리:</strong> {product.category.main} - {product.category.sub}<br />
+                    <strong>조회수:</strong> {product.viewCnt}<br />
+                </div>
+     
+                </div>
+            </div>
+            ))}
         </>
     );
 };
