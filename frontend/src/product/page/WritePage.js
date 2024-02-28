@@ -5,6 +5,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import GoogleMaps from "./GoogleMaps";
 
 import { VscClose } from 'react-icons/vsc';
+import { fetchWithToken } from "../../user/api";
 // import * as S from './style';
 
 const WritePage = () => {
@@ -150,7 +151,7 @@ const WritePage = () => {
 
   // Main목록만 가져오는 카테고리
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/category/main`)
+    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/category/main`)
     .then(response => response.json())
     .then(data => {
       setMainCategories(data);
@@ -207,7 +208,7 @@ const WritePage = () => {
   const WriteOk = (e) => {
     console.log(pc, files);
     e.preventDefault();
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
+    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",

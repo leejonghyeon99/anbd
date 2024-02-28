@@ -146,7 +146,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests((authorize)-> authorize
 //                        .requestMatchers("/api/admin/**").hasRole("ROLE_ADMIN") // 관리자 권한이 필요한 API
 //                        .requestMatchers("/api/user/**").hasRole("ROLE_USER") // 일반 사용자 권한이 필요한 API
-                .requestMatchers("/api/**","oauth2/naver/**","/oauth2/authorization/", "/login/oauth2/code/**", "/favicon.ico").permitAll()
+                .requestMatchers("/api/**","oauth2/naver/**","/oauth2/authorization/", "/login/oauth2/code/**", "/favicon.ico", "/upload/**").permitAll()
                 .anyRequest().authenticated()
                 );
 
