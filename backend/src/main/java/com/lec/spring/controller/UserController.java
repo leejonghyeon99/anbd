@@ -2,9 +2,7 @@ package com.lec.spring.controller;
 
 import com.lec.spring.domain.User;
 import com.lec.spring.dto.*;
-import com.lec.spring.jwt.SecurityUtil;
 import com.lec.spring.service.UserService;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
@@ -80,10 +77,5 @@ public class UserController {
         }
     }
 
-
-    @PostMapping("/reissue")
-    public ResponseEntity<TokenDTO> reissue(@RequestBody TokenRequestDTO tokenRequestDTO){
-        return ResponseEntity.ok(userService.reissue(tokenRequestDTO));
-    }
 
 }
