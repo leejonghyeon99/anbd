@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import GoogleMaps from "./GoogleMaps";
+import { fetchWithToken } from "../../user/api";
 
 const UpdatePage = () => {
   let { id } = useParams();
@@ -75,7 +76,7 @@ const UpdatePage = () => {
 
   // Main목록만 가져오는 카테고리
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/category/main`)
+    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/category/main`)
       .then((response) => response.json())
       .then((data) => {
         setMainCategories(data);
@@ -156,7 +157,7 @@ const UpdatePage = () => {
 
   // 상세
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/detail/` + id)
+    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/detail/` + id)
       .then((response) => response.json())
       .then((data) => setProduct(data));
   }, []);
