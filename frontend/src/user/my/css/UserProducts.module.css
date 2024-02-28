@@ -1,0 +1,9 @@
+.productList{
+    cursor: pointer;
+}
+
+.thumbnail{
+    max-width: 120px;
+    height: 150px;
+    object-fit: cover;
+}
