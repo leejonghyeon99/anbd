@@ -6,7 +6,8 @@ import { AdminpagebarList } from "../components/AdminpagebarList";
 import "./CSS/Header.css";
 import "./CSS/Mypagebar.css";
 import Logout from './Logout';
-import Sidebar from "./Sidebar.js";
+
+
 
 // icon import
 import { FaUserCircle } from "react-icons/fa";
@@ -204,7 +205,7 @@ const Header = () => {
                 />
               )}
               {user.auth !== "ROLE_USER" && user.auth !== "ROLE_ADMIN" && (
-                <div>
+                <div className="anonymous">
                   <Link to="user/login">LOGIN</Link>{" "}
                   <Link to="user/signup">JOIN</Link>
                 </div>
@@ -292,13 +293,7 @@ const Header = () => {
               </div>
             </nav>
             {/*로그아웃 버튼!! */}
-            <Link>
-              <img
-                src="/icon/logout.png"
-                className="logout"
-                onClick={handleLogout}
-              />
-            </Link>
+            <Logout/>
           </Navbar>
         </div>
       </div>
