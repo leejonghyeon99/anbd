@@ -39,7 +39,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         // 클라이언트에 토큰 정보 전송 (예시로는 HTTP 헤더에 토큰을 추가)
         response.addHeader("Authorization", "Bearer " + tokenDTO.getAccessToken());
         response.addHeader("Refresh-Token", tokenDTO.getRefreshToken());
-        response.addHeader("Access-Token-Expire-Time", String.valueOf(tokenDTO.getAccessTokenExpire()));
+        response.addHeader("Access-Token-Expire-Time", String.valueOf(tokenDTO.getAccessTokenExpireTime()));
 
         System.out.println("response"+response);
 
