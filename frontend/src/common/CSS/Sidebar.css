@@ -1,11 +1,14 @@
 .sidebarBox {
+  margin-top: 1%;
   flex: 1;
-  height: calc(100vh - 110px);
-
-  /* position: sticky; */
-  margin-top: 10%;
   margin-inline: 4%;
   display: block;
+  border-right: 2px solid rgba(43, 138, 6, 0.247);
+}
+
+.sidebarMenu {
+  margin-top: 7%;
+  margin-left: 5%;
 }
 
 .menuList {
@@ -16,10 +19,18 @@
 
 .mainCategory {
   font-family: 'yg-jalnan';
-  color: rgb(63, 73, 45);
+  color: rgb(105, 145, 32);
 }
 
 .subCategory {
   font-family: 'TheJamsil5Bold';
-  color: rgba(63, 73, 45, 0.822);
+  color: rgb(83, 114, 25);
+}
+
+@media screen and (max-width: 767px) {
+  .sidebarMenu {
+    margin-top: 0;
+    margin-left: 0;
+  }
+
 }
