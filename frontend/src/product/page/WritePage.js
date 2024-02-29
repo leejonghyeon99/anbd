@@ -18,7 +18,7 @@ const WritePage = () => {
   const [showGoogleMaps, setShowGoogleMaps] = useState(false);
 
   // 위치
-  useEffect(() =>
+  useEffect(() =>{
     if (location.state && location.state.location) {
       const {lat, lng} = location.state.location;
       const newLocation = `${lat}, ${lng}`;
