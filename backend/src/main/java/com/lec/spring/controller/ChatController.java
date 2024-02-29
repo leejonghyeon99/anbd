@@ -54,9 +54,12 @@ public class ChatController {
     @Autowired
     private ChatService chatService;
 
-    @MessageMapping("/chat/{id}")
-    public void sendMessage(@Payload ChatDTO chatDTO, @DestinationVariable Integer id) {    // Chat id
+    @MessageMapping("/api/ws/rooms/{roomId}/send")
+    @SendTo("/queue/public/rooms/{roomId}")
+    public ChatDTO sendMessage(@Payload ChatDTO chatDTO, @DestinationVariable Integer id) {    // ChatRoom id
+        System.out.println(chatDTO);
         this.simpMessagingTemplate.convertAndSend("/queue/addChatToClient/"+ id, chatDTO);
+        return null;
     }
 
 //    @MessageMapping("/chat/{id}")
@@ -102,10 +105,22 @@ public class ChatController {
         System.out.println(UserDTO.toDto(buyer));
         System.out.println(ProductDTO.toDto(product));
         System.out.println("end-------------------------------------");
+        // 판매자와 구매자의 ID가 같을 때는 채팅방 생성하지 않음
+        if (seller.getId().equals(buyer.getId())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Seller and buyer cannot be the same.");
+        }
+
         // 이미 존재하는 채팅방이 있는지 확인
         ChatRoom existingRoom = chatRoomService.findRoomBySellerAndBuyer(seller.getId(), buyer.getId(), product.getId());
         if (existingRoom != null) {
             // 기존 채팅방이 있으면 해당 채팅방 ID 반환
+            System.out.println(existingRoom.getId());
+            return ResponseEntity.ok(ChatRoomDTO.toDto(existingRoom).getId());
+        }
+
+        // 판매자와 구매자가 뒤바뀐 경우에도 채팅방을 찾아보고 있으면 반환
+        existingRoom = chatRoomService.findRoomBySellerAndBuyer(buyer.getId(), seller.getId(), product.getId());
+        if (existingRoom != null) {
             System.out.println(existingRoom.getId());
             return ResponseEntity.ok(ChatRoomDTO.toDto(existingRoom).getId());
         }
@@ -119,6 +134,7 @@ public class ChatController {
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create chat room");
         }
+
     }
 
     @PostMapping("/api/chat/sendMessage")

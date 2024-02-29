@@ -3,6 +3,7 @@ import { Stomp } from '@stomp/stompjs';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import SockJS from 'sockjs-client';
+import { fetchWithToken } from "../../user/Reissue";
 
 const ChatPage = () => {
     const [stompClient, setStompClient] = useState(null);
@@ -51,7 +52,7 @@ const ChatPage = () => {
             setUser(userInfo);
 
             // 서버에 사용자 정보 요청 보내기
-            const response = await fetch(
+            const response = await fetchWithToken(
             `${process.env.REACT_APP_API_BASE_URL}/api/user/info`,
             {
                 headers: {
@@ -123,7 +124,7 @@ const ChatPage = () => {
 
     const sendMessageToServer = async (requestData) => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/chat/sendMessage`, {
+            const response = await fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/chat/sendMessage`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
