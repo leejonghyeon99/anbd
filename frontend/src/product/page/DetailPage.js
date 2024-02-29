@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Image, Col } from 'react-bootstrap';
 import { json, useNavigate, useParams } from 'react-router-dom';
-import { fetchWithToken } from '../../user/api';
+import { fetchWithToken } from "../../user/Reissue";
 
 const DetailPage = () => {
   const navigate = useNavigate();

@@ -1,0 +1,32 @@
+#homeView {
+    background-color: rgba(255, 251, 0, 0.11);
+    height: calc(100vh - 120px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+@media (max-width: 1042px) {
+    #slogan {
+      order: 2; /* 순서 변경하여 위로 이동 */
+    }
+  
+    #main {
+      order: 1; /* 순서 변경하여 아래로 이동 */
+    }
+  }
+
+@media screen and (max-width: 768px) {
+    #homeView {
+        display: block;
+        padding-top: 15%;
+    }
+    #slogan {
+        padding: 20px;
+    }
+    #main{
+        padding: 20px;
+
+    }
+}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import GoogleMaps from "./GoogleMaps";
-import { fetchWithToken } from "../../user/api";
+import { fetchWithToken } from "../../user/Reissue";
 
 const UpdatePage = () => {
   let { id } = useParams();
@@ -167,7 +167,7 @@ const UpdatePage = () => {
     e.preventDefault();
     console.log(product);
 
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/update`, {
+    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/update`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json;charset-utf-8",

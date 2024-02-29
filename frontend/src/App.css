@@ -27,6 +27,15 @@
   font-style: normal;
 }
 
+
+@font-face {
+  font-family: 'IBMPlexSansKR-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
 .AppBox {
   margin-inline: 5%;
 }
@@ -37,10 +46,12 @@
 }
 
 .menu {
-  border: solid 2px #5f5f5f81;
+  border: solid 1px #5f5f5f41;  
+  border-radius: 5px;
   float: left;
   width: 16%;
   margin-inline: 3px;
+  height: calc(100vh - 115px);
 }
 
 #hamburger {
@@ -49,9 +60,10 @@
 }
 
 .content {
-  border: solid 2px #5f5f5f81;
+  border: solid 1px #5f5f5f41;
+  border-radius: 5px;
   margin-left: 15%; /* .menu의 너비만큼 여백을 줍니다. */
-  height: calc(100vh - 110px);
+  height: calc(100vh - 115px);
   overflow-y: auto;
   overflow-x: hidden;
     /* 스크롤바 스타일링 */
@@ -59,10 +71,6 @@
     /* scrollbar-width: thin; */
     scrollbar-color: #ffffff #b9b9b9a4; /* Firefox */
 
-}
-
-.content::-webkit-scrollbar-button {
-  display: none;
 }
 
 

@@ -26,8 +26,7 @@ public class TokenProvider {
 
     private static final String AUTH_KEY = "auth";
     private static final String BEARER_TYPE = "Bearer"; // 일반적으로 OAuth 2.0 인증 과정에서 사용되는 토큰 타입
-//    private static final long ACCESS_TOKEN_EXPIRE_TIME = 60 * 1000 * 60;
-    private static final long ACCESS_TOKEN_EXPIRE_TIME =100000000;
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 60 * 1000 * 2;
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 60 * 1000 * 60 * 24;
 
     private final Key key;
@@ -68,7 +67,7 @@ public class TokenProvider {
         return TokenDTO.builder()
                 .grantType(BEARER_TYPE)
                 .accessToken(accessToken)
-                .accessTokenExpire(tokenExpireTime.getTime())
+                .accessTokenExpireTime(tokenExpireTime.getTime())
                 .refreshToken(refreshToken)
                 .build();
     }
