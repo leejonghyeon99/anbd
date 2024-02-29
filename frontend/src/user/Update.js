@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import regionsData from "../api/regionsData.json";
-import { fetchWithToken } from "./api";
+import { fetchWithToken } from './Reissue';
 
 
 const Update = () => {

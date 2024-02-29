@@ -17,6 +17,7 @@ import GoogleMaps from "./product/page/GoogleMaps";
 import ChatPage from "./chat/page/ChatPage";
 import UpdatePassword from "./user/UpdatePassword";
 import { Button } from "react-bootstrap";
+import MyPage from "./user/my/MyPage";
 
 
 const App = () => {
@@ -92,6 +93,7 @@ useEffect(() => {
             <Route path="user/passwordcheck" Component={PasswordCheck}></Route>
             <Route path="user/update" Component={Update}></Route>
             <Route path="/user/:id" element={<Update />} />
+            <Route path="/user/mypage" element={<MyPage />} />
             <Route
               path="user/updatepassword"
               Component={UpdatePassword}

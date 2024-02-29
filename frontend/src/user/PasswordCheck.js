@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
-import { fetchWithToken } from './api';
+import { fetchWithToken } from './Reissue';
 
 const PasswordCheck = () => {
 
@@ -23,13 +23,15 @@ const PasswordCheck = () => {
             // 사용자 ID가 어떤 필드에 저장되어 있는지는 토큰 생성 방식에 따라 달라질 수 있습니다.
             setUsername(decoded.username || decoded.sub); // 'sub'는 JWT에서 일반적으로 사용자를 나타내는 필드입니다.
         }
-    }, []);
+    }, [token]);
 
     const inputPassword = (e) => {
         setPassword(e.target.value)
     };
 
     const confirmPassword = () => {
+
+        const token = localStorage.getItem('accessToken');
 
         fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/user/passwordCheck`, { 
             method: 'POST',

@@ -27,11 +27,11 @@
 /* auth에 따른 아이콘 크기 설정*/
 /*user auth*/
 #userIcon {
-  width: 2.8rem;
+  width: 2.5rem;
 }
 /*admin auth*/
 #adminIcon {
-  width: 3rem;
+  width: 2.7rem;
 }
 
 .mypageToggle {
