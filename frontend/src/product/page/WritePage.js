@@ -5,7 +5,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import GoogleMaps from "./GoogleMaps";
 
 import { VscClose } from 'react-icons/vsc';
-import { fetchWithToken } from "../../user/api";
+import { fetchWithToken } from "../../user/Reissue";
 // import * as S from './style';
 
 const WritePage = () => {
