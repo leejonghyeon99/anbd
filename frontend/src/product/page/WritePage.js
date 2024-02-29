@@ -43,12 +43,13 @@ const WritePage = () => {
   const [user, setUser] = useState(null)
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const token = localStorage.getItem('accessToken');
+
   useEffect(() => {
     const getUser = async () => {
       try {
-        const url = `${apiUrl}/api/user/profile`;
+        const url = `${apiUrl}/api/user/info`;
+        const response = await fetchWithToken(url);
         // const options = {};
-        const response = await fetch(url);
         const data = await response.json();
           console.log(data);
       } catch (error) {
@@ -56,7 +57,7 @@ const WritePage = () => {
       }
     };
     getUser();
-  },[])
+  },[]);
 
   // const [categories, setCategories] = useState([]);
   // const [selectCategory, setSelectCategory] = useState(null);
@@ -66,6 +67,10 @@ const WritePage = () => {
 
   const [selectMain, setSelectMain] = useState("");
   const [selectSub, setSelectSub] = useState("");
+  useEffect(()=>{
+    console.log(selectMain);
+    console.log(selectSub);
+  },[selectMain, selectSub])
   // 이미지 첨부
   // const uploadFile = (e) => {
 //     const selectedFiles = Array.from(e.target.files); // 선택된 파일 목록을 배열로 변환
@@ -118,7 +123,7 @@ const WritePage = () => {
 
   // Main목록만 가져오는 카테고리
   useEffect(() => {
-    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/category/main`)
+     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/category/main`)
     .then(response => response.json())
     .then(data => {
       console.log(data);
@@ -130,7 +135,7 @@ const WritePage = () => {
   const getSub = () => {
     const getByMainForSub = async () => {
       try {
-        const url = `${process.env.REACT_APP_API_BASE_URL}/api/product/category/find?main=${selectMain.main}`;
+        const url = `${process.env.REACT_APP_API_BASE_URL}/api/product/category/find?main=${selectMain}`;
         const response = await fetch(url);
         const data = await response.json();
 
@@ -157,19 +162,13 @@ const WritePage = () => {
   // 선택된 main category 값
   const mainCategoryValue = (e) => {
     console.log("main");
-    setSelectMain({
-      id : e.target.value,
-      main : e.target.options[e.target.selectedIndex].text,
-    });
+    setSelectMain(e.target.options[e.target.selectedIndex].text);
   };
 
   // 선택된 sub category 값
   const subCategoryValue = (e) => {
     console.log("sub");
-    setSelectSub({
-      id : e.target.value,
-      sub : e.target.options[e.target.selectedIndex].text,
-    });
+    setSelectSub(e.target.options[e.target.selectedIndex].text);
   };
 
   // product와 category 같이
@@ -235,7 +234,8 @@ const WritePage = () => {
     formData.append('price', product.price);
     formData.append('status', product.status);
     formData.append('location', product.location);
-    // formData.append('category_id', category.main);
+    formData.append('categoryMain', selectMain);
+    formData.append('categorySub', selectSub);
     
     for (let index = 0; index < selectedFiles.length; index++) {
       const element = selectedFiles[index];
@@ -357,7 +357,7 @@ const WritePage = () => {
       <div>
         <span>대분류</span>
         <div className="mb-3">
-          <select className="form-select" name="main" value={selectMain.main} onChange={mainCategoryValue}>
+          <select className="form-select" name="main" value={selectMain} onChange={mainCategoryValue}>
             <option>-- 대분류 카테고리를 선택해주세요 --</option>
           {mainCategories.map(category =>
           ( 
@@ -365,7 +365,7 @@ const WritePage = () => {
           )}</select>
       
         <span>중분류</span>
-          <select className="form-select" name='sub' value={selectSub.sub} onChange={subCategoryValue}>          
+          <select className="form-select" name='sub' value={selectSub} onChange={subCategoryValue}>          
           <option>-- 중분류 카테고리를 선택해주세요 --</option>
           {subCategories.map(category => ( 
             <option key={category.id} value={category.sub}>{category.sub}</option>

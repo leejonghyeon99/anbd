@@ -22,18 +22,17 @@ public class SecurityUtil {
         }
 
         String username = null;
-        if (authentication.getPrincipal() instanceof UserDetails) {
+        if (authentication.getPrincipal() instanceof UserDetails ) {
             // 사용자 정보가 UserDetails를 구현한 객체인지 확인합니다.
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             username = userDetails.getUsername();
             System.out.println(username+ "------------------------------------------");
         }
-//        else if (authentication.getPrincipal() instanceof String){
-//
-//            System.out.println("++++++++++++++++++++++++++++++++++++");
-//            username = (String) authentication.getPrincipal();
-//            System.out.println(username+ "*******************************************");
-//        }
+        else if (authentication.getPrincipal() instanceof String){
+            System.out.println("++++++++++++++++++++++++++++++++++++");
+            username = (String) authentication.getPrincipal();
+            System.out.println(username+ "*******************************************");
+        }
 
         return Optional.ofNullable(username);
     }

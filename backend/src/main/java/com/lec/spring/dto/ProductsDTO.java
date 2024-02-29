@@ -4,6 +4,7 @@ import com.lec.spring.domain.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.catalina.authenticator.SavedRequest;
 
 import java.time.LocalDateTime;
 
@@ -19,7 +20,9 @@ public class ProductsDTO {
     private Status status;
     private String location;
     private LocalDateTime refreshed_at;
-    private Integer category_id;
+    private String  categoryMain;
+    private String  categorySub;
+
     private Integer user_id;
 
 

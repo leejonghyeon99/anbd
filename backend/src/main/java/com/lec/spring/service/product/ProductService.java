@@ -11,6 +11,7 @@ import com.lec.spring.repository.CategoryRepository;
 import com.lec.spring.repository.UserRepository;
 import com.lec.spring.repository.product.ProductImageRepository;
 import com.lec.spring.repository.product.ProductRepository;
+import com.lec.spring.service.UserService;
 import com.lec.spring.util.Init;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -42,13 +43,17 @@ public class ProductService {
     private final ProductImageRepository productImageRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
 
     // 등록
     public Product write(ProductsDTO product, List<MultipartFile> files){
         System.out.println(product + "@#4324234");
 //        System.out.println(files + "@#4324234");
-        Category category = categoryRepository.findById(product.getCategory_id()).orElse(null);
-        User user = userRepository.findById(product.getUser_id()).orElse(null);
+        Category category = categoryRepository.findUnique(product.getCategoryMain(),product.getCategorySub());
+        System.out.println(category);
+
+
+        User user = userService.getUser().get();
 
         Product productnew = Product.builder()
                 .title(product.getTitle())

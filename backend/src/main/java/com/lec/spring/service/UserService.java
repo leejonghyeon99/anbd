@@ -118,12 +118,12 @@ public class UserService {
 
     // 현재 유저 정보 가져오기
     public Optional<User> getUser(){
-//        String username =  SecurityUtil.getCurrentUserId().orElse(null);
-//        System.out.println("식별");
-//        System.out.println(username);
-//        User user = userRepository.findOneWithAuthoritiesByUsername(username).orElse(null);
-//        System.out.println("===================================================");
-//        System.out.println(user);
+        String username =  SecurityUtil.getCurrentUserId().orElse(null);
+        System.out.println("식별");
+        System.out.println(username);
+        User user = userRepository.findOneWithAuthoritiesByUsername(username).orElse(null);
+        System.out.println("===================================================");
+        System.out.println(user);
         return SecurityUtil.getCurrentUserId().flatMap(userRepository::findOneWithAuthoritiesByUsername);
     }
 
