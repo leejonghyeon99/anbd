@@ -70,27 +70,35 @@ const UserProducts = () => {
     },[]);
 
     useEffect(()=>{console.log(productList);},[productList])
+
+    const convertStatus = (status) => {
+        switch (status){
+            case 'SOLD': return '판매완료';
+            case 'RESERVED': return '예약중';
+            case 'SALE': return '판매중';
+            default: return '';
+        }
+    }
+    
+
     return (
         <>
-                        
+            <div>검색</div>            
             {productList.map(product => (
             <div className={`${styles.productCard}`} key={product.id} onClick={() => navigate(`/product/detail/${product.id}`)}>
                 <img  
                     src={`${apiUrl}/upload/product/${product.fileList[0].photoName}`} 
                     className={`${styles.thumbnail}`}
                 />
-                <div>
-                <div>{product.title}</div>
-                <div>
-                    <strong>번호:</strong> {product.id}<br />
-                    <strong>가격:</strong> {formatKrw(product.price)}<br />
-                    <strong>상태:</strong> {product.status}<br />
-                    <strong>작성일:</strong> {formatDateTime(product.createdAt)}<br />
-                    <strong>끌어올린날:</strong> {formatDateTime(product.refreshedAt)}<br />
-                    <strong>카테고리:</strong> {product.category.main} - {product.category.sub}<br />
-                    <strong>조회수:</strong> {product.viewCnt}<br />
-                </div>
-     
+                <div className={`${styles.item}`}>
+                        <div className={`${styles.titleAndView}`}><span>{product.title}</span> <span>조회수: {product.viewCnt}</span></div>
+                        <span>가격: {formatKrw(product.price)}</span>
+                        <span>상태: {convertStatus(product.status)}</span>
+                        
+                        
+                        <span>카테고리: {product.category.main} - {product.category.sub}</span>
+                        <span>작성일: {formatDateTime(product.createdAt)}</span>
+                        <span>끌어올린날: {formatDateTime(product.refreshedAt)}</span>                      
                 </div>
             </div>
             ))}

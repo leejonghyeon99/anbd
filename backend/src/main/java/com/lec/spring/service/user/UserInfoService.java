@@ -5,7 +5,9 @@ import com.lec.spring.domain.Status;
 import com.lec.spring.domain.User;
 import com.lec.spring.domain.WishList;
 import com.lec.spring.dto.ProductDTO;
+import com.lec.spring.dto.UserDTO;
 import com.lec.spring.dto.WishListDTO;
+import com.lec.spring.repository.UserRepository;
 import com.lec.spring.repository.WishListRepsitory;
 import com.lec.spring.repository.product.ProductRepository;
 import com.lec.spring.service.UserService;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +29,7 @@ public class UserInfoService {
     private final UserService userService;
     private final ProductRepository productRepository;
     private final WishListRepsitory wishListRepsitory;
-
+    private final UserRepository userRepository;
     //판매내역
     @Transactional
     public Page<ProductDTO> getProductList(int page, int size, Status status) {
@@ -100,5 +103,19 @@ public class UserInfoService {
 
     public void test(){
         System.out.println(wishListRepsitory.findAll());
+    }
+
+    //썸네일 변경
+    public UserDTO changeImg(MultipartFile file){
+        User user = userService.getUser().get();
+
+        if(user == null){
+            return null;
+        }
+
+        user.setThumbnail(file.getOriginalFilename());
+
+        userRepository.save(user);
+        return UserDTO.toDto(user);
     }
 }
