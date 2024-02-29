@@ -4,7 +4,7 @@ import { styled } from "styled-components";
 import "./CSS/Sidebar.css";
 
 const Styledsidebar = styled.div`
-  display: ${(props) => (props.isMenuOpen ? "block" : "none")};
+  display: ${(props) => (props.isMenuOpen === "true" ? "block" : "none")};
 
   @media screen {
     display: block;
@@ -23,14 +23,14 @@ const Styledsidebar = styled.div`
     position: absolute;
     left: 0.3rem;
     width: 90%; // 화면 전체 너비를 차지하도록 설정
-    top: 6%; // 헤더와 겹치지 않도록 조절 (필요에 따라 조절 가능)
+    top: 11%; // 헤더와 겹치지 않도록 조절 (필요에 따라 조절 가능)
   }
   @media screen and (max-width: 389px) {
-    top: 7.5%; // 헤더와 겹치지 않도록 조절 (필요에 따라 조절 가능)
+    top: 13%; // 헤더와 겹치지 않도록 조절 (필요에 따라 조절 가능)
     left: 0.2rem;
   }
   @media screen and (max-width: 290px) {
-    top: 10%; // 헤더와 겹치지 않도록 조절 (필요에 따라 조절 가능)
+    top: 14%; // 헤더와 겹치지 않도록 조절 (필요에 따라 조절 가능)
   }
 `;
 
@@ -53,6 +53,7 @@ const SidebarMenu = styled.div`
 function Sidebar() {
   const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
+   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const [error, setError] = useState(null);
 
