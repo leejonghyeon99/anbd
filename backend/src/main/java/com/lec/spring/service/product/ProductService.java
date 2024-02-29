@@ -62,6 +62,7 @@ public class ProductService {
 
         System.out.println("~~~~~~~~~~~");
         Product sProduct = productRepository.save(productnew);
+        System.out.println(product + "@#4324234");
         // 제품을 save 한 후 id값을 가져옴
         Long productId = sProduct.getId();
         // 파일 추가

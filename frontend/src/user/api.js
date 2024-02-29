@@ -11,6 +11,7 @@ export const fetchWithToken = async (url, options = {}) => {
           ...options.headers,
           'Authorization': `Bearer ${accessToken}`,
       },
+      method: "GET"
   };
 
   let response = await fetch(url, fetchOptions);

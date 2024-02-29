@@ -18,7 +18,7 @@ const WritePage = () => {
   const [showGoogleMaps, setShowGoogleMaps] = useState(false);
 
   // 위치
-  useEffect(() => {
+  useEffect(() =>
     if (location.state && location.state.location) {
       const {lat, lng} = location.state.location;
       const newLocation = `${lat}, ${lng}`;
@@ -39,6 +39,24 @@ const WritePage = () => {
     createdAt: "",
     location: "",
   });
+
+  const [user, setUser] = useState(null)
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
+  const token = localStorage.getItem('accessToken');
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const url = `${apiUrl}/api/user/profile`;
+        // const options = {};
+        const response = await fetch(url);
+        const data = await response.json();
+          console.log(data);
+      } catch (error) {
+        console.log("adsfadsfads");
+      }
+    };
+    getUser();
+  },[])
 
   // const [categories, setCategories] = useState([]);
   // const [selectCategory, setSelectCategory] = useState(null);
@@ -211,26 +229,37 @@ const WritePage = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append('product', JSON.stringify(pc));
-    console.log(`jalfksdjljs: ${formData}`);
-
-    for (let i = 0; i < selectedFiles.length; i++) {
-      formData.append('files', selectedFiles[i].originName);
-      console.log(`selectedFiles[i]: ${selectedFiles[i].originName}`);
-      console.log(`selectedFiles[i]: ${selectedFiles[i].photoName}`);
+    // formData.append('product', JSON.stringify(pc));
+    formData.append('title', product.title);
+    formData.append('description', product.description);
+    formData.append('price', product.price);
+    formData.append('status', product.status);
+    formData.append('location', product.location);
+    // formData.append('category_id', category.main);
+    
+    for (let index = 0; index < selectedFiles.length; index++) {
+      const element = selectedFiles[index];
+      formData.append('files', selectedFiles[index]);
     }
-    console.log(`selectedFiles: ${selectedFiles}`);
+    // console.log(`jalfksdjljs: ${formData}`);
 
-    console.log("formData.product "+formData.get('product'));
-    for (let pair of formData.entries()) {
-      console.log(pair[0] + ', ' + pair[1]); // 모든 키-값 쌍을 출력합니다.
-    }
+    // formData.append('files', selectedFiles[i]);
+    // for (let i = 0; i < selectedFiles.length; i++) {
+    //   console.log(`selectedFiles[i]: ${selectedFiles[i].originName}`);
+    //   console.log(`selectedFiles[i]: ${selectedFiles[i].photoName}`);
+    // }
+    // console.log(`selectedFiles: ${selectedFiles}`);
+
+    // console.log("formData.product "+formData.get('product'));
+    // for (let pair of formData.entries()) {
+    //   console.log(pair[0] + ', ' + pair[1]); // 모든 키-값 쌍을 출력합니다.
+    // }
     console.log(...formData);
 
     const uploadedFiles = async (formData) =>{
 
       await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
-    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
+    // fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
       method: "POST",
       body: formData,  // JSON 형식으로 데이터 전송
     })
