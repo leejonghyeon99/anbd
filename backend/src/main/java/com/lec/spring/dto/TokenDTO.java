@@ -13,7 +13,7 @@ public class TokenDTO {
 
     private String grantType;
     private String accessToken;
-    private long accessTokenExpire;
+    private long accessTokenExpireTime;
     private String refreshToken;
 
 

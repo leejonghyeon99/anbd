@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { fetchWithToken } from './api';
+import { fetchWithToken } from './Reissue';
 
 const UpdatePassword = () => {
 
@@ -32,7 +32,7 @@ useEffect(() => {
       })
       .catch((error) => console.error("userInfo error", error));
   }
-}, []);
+}, [token]);
 
     const [passwordMatchErr, setPasswordMatchErr] = useState(false);
     const [isEmptyPassword, setIsEmptyPassword] = useState(false);

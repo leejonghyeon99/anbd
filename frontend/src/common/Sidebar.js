@@ -31,6 +31,7 @@ const Styledsidebar = styled.div`
   }
   @media screen and (max-width: 290px) {
     top: 14%; // 헤더와 겹치지 않도록 조절 (필요에 따라 조절 가능)
+
   }
 `;
 
