@@ -21,9 +21,16 @@ const Styledsidebar = styled.div`
     z-index: 3;
     background-color: #fff;
     position: absolute;
-    left: 19.5px;
+    left: 0.3rem;
     width: 90%; // 화면 전체 너비를 차지하도록 설정
-    top: 90px; // 헤더와 겹치지 않도록 조절 (필요에 따라 조절 가능)
+    top: 6%; // 헤더와 겹치지 않도록 조절 (필요에 따라 조절 가능)
+  }
+  @media screen and (max-width: 389px) {
+    top: 7.5%; // 헤더와 겹치지 않도록 조절 (필요에 따라 조절 가능)
+    left: 0.2rem;
+  }
+  @media screen and (max-width: 290px) {
+    top: 10%; // 헤더와 겹치지 않도록 조절 (필요에 따라 조절 가능)
   }
 `;
 

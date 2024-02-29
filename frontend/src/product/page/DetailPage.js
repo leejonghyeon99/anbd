@@ -4,6 +4,7 @@ import { json, useNavigate, useParams } from 'react-router-dom';
 import SockJS from 'sockjs-client';
 import ChatPage from '../../chat/page/ChatPage';
 import { Stomp } from '@stomp/stompjs';
+import { fetchWithToken } from "../../user/Reissue";
 
 const DetailPage = () => {
   const navigate = useNavigate();
@@ -162,14 +163,14 @@ const DetailPage = () => {
     navigate('/product/list');
   }      
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/detail/` + id)
+    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/detail/` + id)
     .then(response => response.json())
     .then(data => setProduct(data));
   }, []);
 
   const DeleteOk = () => {
     if(!window.confirm("정말 삭제하시겠습니까?")) return;
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/delete/` + id, {
+    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/delete/` + id, {
       method:"DELETE",
     })
     .then(response => response.text())
