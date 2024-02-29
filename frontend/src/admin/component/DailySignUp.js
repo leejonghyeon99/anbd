@@ -79,7 +79,7 @@ const DailySignUp = (props) => {
     const options = {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: {
+        plugins: {            
             legend: {
                 display : false,
             },
@@ -143,9 +143,10 @@ const DailySignUp = (props) => {
 
     return (
         <>
-            <Bar
+            <Line
                 options={options} 
                 data={data}
+             
                 // ref={chartRef}
             />
         </>
