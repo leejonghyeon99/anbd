@@ -110,8 +110,15 @@ public class UserController {
     @GetMapping("/product-status")
     public ResponseEntity<Page> getProductList(
             @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size,
-            @RequestParam(name = "status", required = false)Status status
+            @RequestParam(name = "status", required = false)String str
             ){
+        Status status;
+        try {
+            status = Status.valueOf(str);
+        }catch (IllegalArgumentException e){
+            status = null;
+        }
+
         return new ResponseEntity<>(userInfoService.getProductList(page, size, status),HttpStatus.OK);
     }
 

@@ -164,7 +164,7 @@ const Header = () => {
             })
             .then(data => {
               console.log(data);
-      
+              setUser(data);
             })     
     }
     changeImg();
