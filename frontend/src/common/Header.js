@@ -102,8 +102,6 @@ const Header = () => {
     userData();
   }, []);
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // 모든 대분류의 중분류가 따로따로 토글되도록 아래 상태함수들 줌
   // Mypage 버튼
   const [isMypageVisible, setIsMypageVisible] = useState(false);
 
@@ -126,7 +124,6 @@ const Header = () => {
   // mypage show/hide
   const toggleMypage = () => {
     setIsMypageVisible(!isMypageVisible);
-    setIsMenuOpen(false); // Navbar가 열려있는 경우 닫도록 설정
   };
 
   useEffect(() => {
@@ -190,12 +187,9 @@ const Header = () => {
       <div ref={headerRef}>
         <div className="headerBox">
           <div className="headerFix">
-            {/* <div className="hiddenMenu">
-              <img src="/icon/menu.png" id="menuIcon" onClick={toggleMenu} />
-            </div> */}
             <div className="logo">
               <Link to="/home" className="goHome">
-                AH!NaBaDa
+                <img src="/img/004-1.png" />
               </Link>
             </div>
 
@@ -203,7 +197,7 @@ const Header = () => {
             <div className="mypageToggle" id="menu-bars">
               {user.auth === "ROLE_USER" && (
                 <img
-                  src="/icon/usericon.png"
+                  src="/icon/user2.png"
                   id="userIcon"
                   onClick={toggleMypage}
                 />
