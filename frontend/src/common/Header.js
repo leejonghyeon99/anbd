@@ -6,7 +6,7 @@ import { AdminpagebarList } from "../components/AdminpagebarList";
 import "./CSS/Header.css";
 import "./CSS/Mypagebar.css";
 import Logout from './Logout';
-import { fetchWithToken } from "../user/api";
+import { fetchWithToken } from "../user/Reissue";
 
 const Navbar = styled.div`
   /* 다른 스타일들... */
@@ -41,7 +41,7 @@ const Header = () => {
   const [user, setUser] = useState({
     username: "",
     password: "",
-    repassword: "",
+    // repassword: "",
     name: "",
     nickname: "",
     phone_number: "",
@@ -57,6 +57,7 @@ const Header = () => {
     const getUserInfoFromToken = (token) => {
       const decodedToken = atob(token.split(".")[1]);
       const userInfo = JSON.parse(decodedToken);
+      console.log(userInfo)
       return userInfo;
     };
 

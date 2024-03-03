@@ -2,7 +2,6 @@ package com.lec.spring.controller;
 
 import com.lec.spring.dto.TokenDTO;
 import com.lec.spring.dto.TokenRequestDTO;
-import com.lec.spring.jwt.TokenProvider;
 import com.lec.spring.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,4 +22,5 @@ public class AuthController {
     public ResponseEntity<TokenDTO> reissue(@RequestBody TokenRequestDTO tokenRequestDTO){
         return ResponseEntity.ok(authService.reissue(tokenRequestDTO));
     }
+
 }
