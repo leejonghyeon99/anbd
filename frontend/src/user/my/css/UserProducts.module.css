@@ -31,3 +31,12 @@
     display: flex;
     justify-content: space-between;
 }
+
+.searchBox{
+    margin-bottom: 20px;
+    display: flex;
+}
+
+.searchComponent{
+    flex: 60%;
+}
