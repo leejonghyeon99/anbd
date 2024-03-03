@@ -115,9 +115,21 @@ public class UserService {
 
         return UserResponseDTO.of(updateUser);
     }
+    // 문제점
+    // 반례 ..   사용자의 로그인 시도시 토큰 발행되는데 2분주기로 변경됨
+                //그러면 발급된 토큰이 갱신시 갱신 하는 동안 사이의 요청 발생시 기존 토큰으로 요청 되어 서버는 인식 불가
+    //  사용자가 회원가입 시도후 서버 타임 기준으로 로그인 시도시 회원정보 못찾음
+    //  고쳐야 할거.   토큰 주기를 최소 15분 이상으로 발행
+    //   리프레쉬 토큰은 엑세스토큰의 1/2 간격으로 발행
+    //  리프레쉬가 동작중에는 엑세스 토큰을 이전값과 새로 발급된 값을 비교해서 다른지 비교
+    // 기존 토큰 <--------> 요청중 <---------> 리프레쉬 발생 ---------- 서버가 받은 토큰은 이전 토큰
+
 
     // 현재 유저 정보 가져오기
     public Optional<User> getUser(){
+        User user = SecurityUtil.getCurrentUserId().flatMap(userRepository::findOneWithAuthoritiesByUsername).orElse(null);
+        System.out.println("ttt");
+        System.out.println(user);
         return SecurityUtil.getCurrentUserId().flatMap(userRepository::findOneWithAuthoritiesByUsername);
     }
 
