@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './css/UserProducts.module.css'
 import SearchBox from './component/SearchBox';
 import { Button } from 'react-bootstrap';
-import CustomPagination from './component/CustomPagination';
+import CustomPagination from '../../components/CustomPagination';
 const UserProducts = () => {
 
     const apiUrl = process.env.REACT_APP_API_BASE_URL;
