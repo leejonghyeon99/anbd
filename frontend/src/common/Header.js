@@ -6,7 +6,7 @@ import { AdminpagebarList } from "../components/AdminpagebarList";
 import "./CSS/Header.css";
 import "./CSS/Mypagebar.css";
 import Logout from './Logout';
-import { fetchWithToken } from "../user/api";
+import { fetchWithToken } from "../user/Reissue";
 
 const Navbar = styled.div`
   /* 다른 스타일들... */
