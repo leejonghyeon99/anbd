@@ -38,7 +38,7 @@ const DetailPage = () => {
   }
   
   useEffect(() => {
-    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/detail/` + id)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/detail/` + id)
     .then(response => response.json())
     .then(data => setProduct(data));
   }, []);
