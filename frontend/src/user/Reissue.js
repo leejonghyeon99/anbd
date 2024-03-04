@@ -5,14 +5,17 @@ export const fetchWithToken = async (url, options = {}) => {
   const decodedToken = jwtDecode(accessToken);
   const currentTime = Date.now() / 1000; // 현재 시간을 초 단위로 변환
 
+
   // 토큰 만료 1분 전이면 재발급 시도
-  if (decodedToken.exp < currentTime + 30) {
+  if (decodedToken.exp < currentTime + 60) {
     const reissueResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/auth/reissue`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ username: decodedToken.sub }), // 'sub'는 일반적으로 사용자를 나타냄
+      body: JSON.stringify({ 
+        username: decodedToken.sub,
+      }), // 'sub'는 일반적으로 사용자를 나타냄
     });
 
     if (reissueResponse.ok) {

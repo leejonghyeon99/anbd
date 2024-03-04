@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
 import Header from "./common/Header";
 import Sidebar from "./common/Sidebar";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useParams } from "react-router-dom";
 import Login from "./user/Login";
 import Admin from "./admin/Admin";
 import Update from "./user/Update";
@@ -18,6 +18,8 @@ import ChatPage from "./chat/page/ChatPage";
 import UpdatePassword from "./user/UpdatePassword";
 import { Button } from "react-bootstrap";
 import MyPage from "./user/my/MyPage";
+import { jwtDecode } from "jwt-decode";
+import { fetchWithToken } from "./user/Reissue";
 
 
 const App = () => {
@@ -69,6 +71,61 @@ useEffect(() => {
     };
   }, []);
 
+  const [username, setUsername] = useState();
+
+  // 엑세스 토큰에서 유저 권한, username 가져오기
+function useAuthInfo() {
+  const token = localStorage.getItem('accessToken');
+  if (!token) return { isAuthenticated: false };
+  try {
+    const decoded = jwtDecode(token);
+    return { isAuthenticated: true, userRole: decoded.auth, userId: decoded.sub };
+  } catch (error) {
+    console.error('Token decode error:', error);
+    return { isAuthenticated: false };
+  }
+}
+
+  // 토큰으로 유저 정보 불러오기
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/user/info`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // JWT를 Authorization 헤더에 추가
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setUsername(data)
+        })
+        .catch((error) => console.error("userInfo error", error));
+    };
+  }, []);
+
+// 조건부 라우팅을 위한 컴포넌트
+function PrivateRoute({ children, allowedRoles }) {
+  const { isAuthenticated, userRole, userId } = useAuthInfo();
+
+
+  if (!isAuthenticated) {
+    return <Navigate to="/user/login" />;
+  }
+
+  if (allowedRoles.includes(userRole)) {
+    if (userRole === 'ROLE_USER' && userId === username) {
+      return children; 
+    } else if(userRole === 'ROLE_ADMIN'){
+      return children; 
+    } else {
+      return <Navigate to="/home" />;
+    }
+  } 
+  else {
+    return <Navigate to="/home" />; // 권한이 없는 경우
+  }
+}
+
   return (
     <>
       <div className="AppBox">
@@ -85,27 +142,32 @@ useEffect(() => {
           </div>
         </div>
         <div className="content">
+          
+          {/* 권한 없이 접근 가능 */}
           <Routes>
             <Route path="/" element={<Navigate to="/home"></Navigate>}></Route>
             <Route path="/home" Component={Home}></Route>
             <Route path="user/login" Component={Login}></Route>
             <Route path="user/signup" Component={SignUp}></Route>
-            <Route path="user/passwordcheck" Component={PasswordCheck}></Route>
-            <Route path="user/update" Component={Update}></Route>
-            <Route path="/user/:id" element={<Update />} />
-            <Route path="/user/mypage" element={<MyPage />} />
-            <Route
-              path="user/updatepassword"
-              Component={UpdatePassword}
-            ></Route>
             <Route path="/product/list/:sub" Component={ListPage}></Route>
-            <Route path="/product/write" Component={WritePage}></Route>
             <Route path="/product/detail/:id" Component={DetailPage}></Route>
-            <Route path="/product/update/:id" Component={UpdatePage}></Route>
-            <Route path="/admin" Component={Admin}></Route>
 
-            <Route path="/product/map/:id" Component={GoogleMaps}></Route>
-            <Route path="/chat" Component={ChatPage}></Route>
+            {/* 유저 권한 접근 가능 */}
+        <Route element={<PrivateRoute allowedRoles={['ROLE_USER']} />}>
+          <Route path="/user/passwordcheck" Component={PasswordCheck} />
+          <Route path="/user/update" Component={Update} />
+          <Route path="/user/updatepassword" Component={UpdatePassword} />
+          <Route path="/user/mypage" Component={MyPage} />
+          <Route path="/product/write" Component={WritePage} />
+          <Route path="/product/update/:id" Component={UpdatePage} />
+          <Route path="/product/map/:id" Component={GoogleMaps} />
+          <Route path="/chat" Component={ChatPage} />
+        </Route>
+
+            {/* 관리자 권한 접근 가능 */}
+            <Route element={<PrivateRoute allowedRoles={['ROLE_ADMIN']} />}>
+            <Route path="/admin" Component={Admin}></Route>
+            </Route>
           </Routes>
         </div>
       </div>

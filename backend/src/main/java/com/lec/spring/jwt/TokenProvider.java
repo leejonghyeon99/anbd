@@ -26,8 +26,8 @@ public class TokenProvider {
 
     private static final String AUTH_KEY = "auth";
     private static final String BEARER_TYPE = "Bearer"; // 일반적으로 OAuth 2.0 인증 과정에서 사용되는 토큰 타입
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 60 * 1000 * 100;
-    private static final long REFRESH_TOKEN_EXPIRE_TIME = 60 * 1000 * 60 * 24;
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 60 * 1000 * 15; // 15분
+    private static final long REFRESH_TOKEN_EXPIRE_TIME = 60 * 1000 * 60 * 24; // 24시간
 
     private final Key key;
 

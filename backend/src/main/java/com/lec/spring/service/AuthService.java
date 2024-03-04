@@ -61,12 +61,6 @@ public class AuthService {
         // 유저네임 기반으로 토큰 재발급
         TokenDTO tokenDTO = tokenProvider.createTokenDto(authentication);
 
-//        // 기존의 리프레쉬 토큰을 찾습니다. 없으면 빌더 패턴을 사용하여 새로 생성합니다.
-//        RefreshToken refreshToken = refreshTokenRepository.findByUsername(authentication.getName())
-//                .orElseGet(() -> RefreshToken.builder()
-//                        .username(authentication.getName())
-//                        .value(tokenDTO.getRefreshToken())
-//                        .build());
 
         // 리프레쉬 토큰 업데이트 및 저장
         newRefreshToken.setValue(tokenDTO.getRefreshToken());

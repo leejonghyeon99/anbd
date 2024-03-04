@@ -41,7 +41,7 @@ const Header = () => {
   const [user, setUser] = useState({
     username: "",
     password: "",
-    repassword: "",
+    // repassword: "",
     name: "",
     nickname: "",
     phone_number: "",
@@ -58,6 +58,7 @@ const Header = () => {
     const getUserInfoFromToken = (token) => {
       const decodedToken = atob(token.split(".")[1]);
       const userInfo = JSON.parse(decodedToken);
+      console.log(userInfo)
       return userInfo;
     };
 

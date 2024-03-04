@@ -137,6 +137,7 @@ public class SecurityConfig {
         // 세션 생성 or 사용 x
         http.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
+        http.apply(new JwtSecurityConfig(tokenProvider));
 
         http.exceptionHandling((exceptionHandling) -> exceptionHandling
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
@@ -146,12 +147,11 @@ public class SecurityConfig {
         http.authorizeHttpRequests((authorize)-> authorize
 //                        .requestMatchers("/api/admin/**").hasRole("ROLE_ADMIN") // 관리자 권한이 필요한 API
 //                        .requestMatchers("/api/user/**").hasRole("ROLE_USER") // 일반 사용자 권한이 필요한 API
-                .requestMatchers("/api/**","oauth2/naver/**","/oauth2/authorization/", "/login/oauth2/code/**", "/favicon.ico", "/upload/**").permitAll()
+                .requestMatchers("/api/**").permitAll()
                 .anyRequest().authenticated()
                 );
 
 
-        http.apply(new JwtSecurityConfig(tokenProvider));
 
         http.oauth2Login(oauth2Login -> oauth2Login
                         .successHandler(oAuth2LoginSuccessHandler) // 동의하고 계속하기를 눌렀을 때 Handler 설정
