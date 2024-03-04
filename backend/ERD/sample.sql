@@ -29,7 +29,7 @@ insert into category(main, sub) value ('생활용품', '거실');
 insert into category(main, sub) value ('생활용품', '주방용품');
 insert into category(main, sub) value ('가전', 'TV');
 update Category c set c.sub= '호로로' where c.main = '224' and c.sub='33ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ';
-update user set thumbnail = 'default.png' where id = 1;
+update user set thumbnail = 'default.png' where id = 3;
 delete from category;
 select * from category;
 select * from category where main = '의류' group by main,sub ;
@@ -41,7 +41,7 @@ select c.id, c.main from Category c group by c.main;
 select * from user;
 update user set auth = 'ROLE_ADMIN' where id=1;
 insert into user (created_at, auth, certification, email, name, nickname, password, phone_number, region, star, username)
-values (now(), 'ROLE_ADMIN','APPROVED','test@email.com','postMAN','NICK POST','$2a$10$0b3NoGkrbHefuZ5NCWNpa.kkt6j0tbstXWa2INhVYhn5mxn4iJLMy','01012341234','서울시 송파구',0.0,'user2');
+values (now(), 'ROLE_ADMIN','APPROVED','test2@email.com','postMAN','NICK POST','$2a$10$0b3NoGkrbHefuZ5NCWNpa.kkt6j0tbstXWa2INhVYhn5mxn4iJLMy','01012341234','서울시 송파구',0.0,'user2');
 desc product;
 /*상품 sample*/
 insert into product(category_id, price, status, user_id, created_at, title, description, location)

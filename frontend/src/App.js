@@ -97,7 +97,7 @@ function useAuthInfo() {
       })
         .then((response) => response.json())
         .then((data) => {
-          setUsername(data)
+          setUsername(data.username)
         })
         .catch((error) => console.error("userInfo error", error));
     };
@@ -153,7 +153,7 @@ function PrivateRoute({ children, allowedRoles }) {
             <Route path="/product/detail/:id" Component={DetailPage}></Route>
 
             {/* 유저 권한 접근 가능 */}
-        <Route element={<PrivateRoute allowedRoles={['ROLE_USER']} />}>
+        {/* <Route element={<PrivateRoute allowedRoles={['ROLE_USER']} />}> */}
           <Route path="/user/passwordcheck" Component={PasswordCheck} />
           <Route path="/user/update" Component={Update} />
           <Route path="/user/updatepassword" Component={UpdatePassword} />
@@ -162,7 +162,7 @@ function PrivateRoute({ children, allowedRoles }) {
           <Route path="/product/update/:id" Component={UpdatePage} />
           <Route path="/product/map/:id" Component={GoogleMaps} />
           <Route path="/chat" Component={ChatPage} />
-        </Route>
+        {/* </Route> */}
 
             {/* 관리자 권한 접근 가능 */}
             <Route element={<PrivateRoute allowedRoles={['ROLE_ADMIN']} />}>

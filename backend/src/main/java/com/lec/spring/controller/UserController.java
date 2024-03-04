@@ -59,8 +59,8 @@ public class UserController {
     }
 
     @GetMapping("/info")
-    public ResponseEntity<User> getUserInfo() {
-        return ResponseEntity.ok(userService.getUser().get());
+    public ResponseEntity<UserDTO> getUserInfo() {
+        return ResponseEntity.ok(UserDTO.toDto(userService.getUser().get()));
     }
 
     @PostMapping("/logout")
