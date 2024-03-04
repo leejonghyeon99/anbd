@@ -56,8 +56,13 @@ const DailySignUp = (props) => {
                 const response = await fetch(`${url}?year=${currentYear}&month=${currentMonth}`);
 
                 const data = await response.json();
-                setChartData(data);
-                console.log(data)
+                const sortedData = data.sort((a, b) => {
+                    const dateA = new Date(a.date);
+                    const dateB = new Date(b.date);
+                  
+                    return dateA - dateB;
+                  });
+                setChartData(sortedData);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -79,7 +84,7 @@ const DailySignUp = (props) => {
     const options = {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: {
+        plugins: {            
             legend: {
                 display : false,
             },
@@ -143,9 +148,10 @@ const DailySignUp = (props) => {
 
     return (
         <>
-            <Bar
+            <Line
                 options={options} 
                 data={data}
+             
                 // ref={chartRef}
             />
         </>

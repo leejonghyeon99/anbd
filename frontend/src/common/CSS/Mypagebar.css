@@ -27,7 +27,10 @@ li,
   padding: 5px; /* 필요에 따라 패딩 조절 */
 }
 .profileImg {
-  width: 70%;
+  width: 150px;
+  height: 150px;
+  cursor: pointer;
+  border-radius: 50%;
 }
 
 .mypage_nickname {
