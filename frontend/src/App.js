@@ -74,9 +74,11 @@ useEffect(() => {
   const [username, setUsername] = useState();
 
   // 엑세스 토큰에서 유저 권한, username 가져오기
-function useAuthInfo() {
+function useTokenInfo() {
   const token = localStorage.getItem('accessToken');
+
   if (!token) return { isAuthenticated: false };
+  
   try {
     const decoded = jwtDecode(token);
     return { isAuthenticated: true, userRole: decoded.auth, userId: decoded.sub };
@@ -104,8 +106,8 @@ function useAuthInfo() {
   }, []);
 
 // 조건부 라우팅을 위한 컴포넌트
-function PrivateRoute({ children, allowedRoles }) {
-  const { isAuthenticated, userRole, userId } = useAuthInfo();
+function PrivateRoute({ element: Component, allowedRoles }) {
+  const { isAuthenticated, userRole, userId } = useTokenInfo();
 
 
   if (!isAuthenticated) {
@@ -114,9 +116,9 @@ function PrivateRoute({ children, allowedRoles }) {
 
   if (allowedRoles.includes(userRole)) {
     if (userRole === 'ROLE_USER' && userId === username) {
-      return children; 
+      return Component; 
     } else if(userRole === 'ROLE_ADMIN'){
-      return children; 
+      return Component; 
     } else {
       return <Navigate to="/home" />;
     }
