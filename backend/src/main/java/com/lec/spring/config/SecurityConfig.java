@@ -131,7 +131,7 @@ public class SecurityConfig {
 //        http.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class);
 
         // 폼로그인, 베이직http 비활성화
-        http.formLogin((form)-> form.disable());
+        http.formLogin((form) -> form.disable());
         http.httpBasic(AbstractHttpConfigurer::disable);
 
         // 세션 생성 or 사용 x
@@ -144,22 +144,25 @@ public class SecurityConfig {
                 .accessDeniedHandler(jwtAccessDeniedHandler));
 
         // 권한 규칙 작성
-        http.authorizeHttpRequests((authorize)-> authorize
-//                        .requestMatchers("/api/admin/**").hasRole("ROLE_ADMIN") // 관리자 권한이 필요한 API
-//                        .requestMatchers("/api/user/**").hasRole("ROLE_USER") // 일반 사용자 권한이 필요한 API
-                .requestMatchers("/api/**","/upload/**","/ws/**").permitAll()
+        http.authorizeHttpRequests((authorize) -> authorize
+//                .requestMatchers("/api/admin/**").hasRole("ROLE_ADMIN") // 관리자 권한이 필요한 API
+//                .requestMatchers("/api/user/passwordCheck","/api/user/update","/api/user/updatePassword"
+//                        ,"/api/user/info", "/api/user/logout", "/api/user/deleteUser").hasRole("ROLE_USER") // 일반 사용자 권한이 필요한 API
+//                .requestMatchers("/api/product/write","/api/product/update").hasRole("ROLE_USER") // 일반 사용자 권한이 필요한 API
+                .requestMatchers("/api/**", "/upload/**").permitAll()
+//                .requestMatchers("/api/user/signup", "/api/user/login", "/api/product/list/**","/api/product/detail/**", "/upload/**", "/api/product/category/**").permitAll()
                 .anyRequest().authenticated()
-                );
+        );
 
 
 
         http.oauth2Login(oauth2Login -> oauth2Login
-                        .successHandler(oAuth2LoginSuccessHandler) // 동의하고 계속하기를 눌렀을 때 Handler 설정
-                        .failureHandler(oAuth2LoginFailureHandler) // 소셜 로그인 실패 시 핸들러 설정
-                        .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
+                .successHandler(oAuth2LoginSuccessHandler) // 동의하고 계속하기를 눌렀을 때 Handler 설정
+                .failureHandler(oAuth2LoginFailureHandler) // 소셜 로그인 실패 시 핸들러 설정
+                .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
                         .userService(customOAuth2UserService)
-                        )
-                );
+                )
+        );
 
         return http.build();
 
