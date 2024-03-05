@@ -1,13 +1,9 @@
-
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import GoogleMaps from "./GoogleMaps";
 
-import { VscClose } from 'react-icons/vsc';
 import { fetchWithToken } from "../../user/Reissue";
-// import * as S from './style';
-import { async } from "q";
 
 const WritePage = () => {
   const navigate = useNavigate();
@@ -38,26 +34,92 @@ const WritePage = () => {
     status: "",
     createdAt: "",
     location: "",
+    // user: user.sub
   });
 
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState("");
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
-  const token = localStorage.getItem('accessToken');
+  // const token = localStorage.getItem('accessToken');
 
   useEffect(() => {
     const getUser = async () => {
       try {
         const url = `${apiUrl}/api/user/info`;
         const response = await fetchWithToken(url);
-        // const options = {};
         const data = await response.json();
           console.log(data);
       } catch (error) {
-        console.log("adsfadsfads");
+        console.log("error");
       }
     };
     getUser();
   },[]);
+
+  // const [user, setUser] = useState({
+  //   username: "",
+  //   password: "",
+  //   repassword: "",
+  //   name: "",
+  //   nickname: "",
+  //   phone_number: "",
+  //   email: "",
+  //   region: "",
+  //   auth: "", // 추가: 사용자 권한 정보
+  // });
+
+  // let token = "";
+
+  // useEffect(() => {
+  //   token = localStorage.getItem("accessToken");
+  //   const getUserInfoFromToken = (token) => {
+  //     const decodedToken = atob(token.split(".")[1]);
+  //     const userInfo = JSON.parse(decodedToken);
+  //     return userInfo;
+  //   };
+
+  //   const userData = async () => {
+  //     try {
+  //       if (token) {
+  //         // 토큰에서 사용자 정보를 추출
+  //         const userInfo = getUserInfoFromToken(token);
+
+  //         // 사용자 정보를 상태값에 설정
+  //         console.log(userInfo)
+  //         setUser(userInfo);
+
+  //         // 서버에 사용자 정보 요청 보내기
+  //         const response = await fetchWithToken(
+  //           `${process.env.REACT_APP_API_BASE_URL}/api/user/info`,
+  //           {
+  //             headers: {
+  //               Authorization: `Bearer ${token}`,
+  //             },
+  //           }
+  //         );
+
+  //         if (response.ok) {
+  //           const additionalUserInfo = await response.json();
+  //           // 서버에서 받은 추가 정보를 기존 사용자 정보에 합치기
+  //           setUser((prevUserInfo) => ({
+  //             ...prevUserInfo,
+  //             ...additionalUserInfo,
+  //           }));
+  //         } else {
+  //           console.error("Failed to fetch additional user info");
+  //         }
+  //       } else {
+  //         // console.log("No token found, user is not logged in");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
+  //   // userData 함수 실행 (컴포넌트가 마운트될 때 한 번만 실행하도록 빈 배열 전달)
+  //   userData();
+  // }, []);
+
+  // useEffect(()=>{console.log(user);},[user])
+
 
   // const [categories, setCategories] = useState([]);
   // const [selectCategory, setSelectCategory] = useState(null);
@@ -191,34 +253,45 @@ const WritePage = () => {
 
   const handleFileChange = (event) => {
     const files = event.target.files;
-    console.log(`files length: ${files.length}`);
+    // console.log(`files length: ${files.length}`);
     const newFiles = [...selectedFiles]; // 기존 배열 복사
+    // for (let i = 0; i < files.length; i++) {
+    //     const file = files[i];
+    //     let photoName = file.name;
+
+    //     // 파일명에 현재 시간을 추가하여 중복 방지
+    //     const pos = photoName.lastIndexOf(".");
+    //     if (pos > -1) { // 확장자가 있는 경우
+    //         const name = photoName.substring(0, pos); // 파일 이름
+    //         const ext = photoName.substring(pos + 1); // 파일 확장자
+
+    //         // 현재 시간(ms)을 이용하여 파일명에 추가
+    //         photoName = `${name}_${Date.now()}.${ext}`;
+    //     } else { // 확장자가 없는 경우
+    //         photoName += `_${Date.now()}`;
+    //     }
+    //     console.log(`${photoName}`);
+    //     const newFile = {
+    //         originName: file.name,
+    //         photoName: photoName
+    //     };
+    //     newFiles.push(newFile); // 파일 추가
+    //     // console.log(`originName: ${newFile.originName}`);
+    // }
     for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        let photoName = file.name;
+        const photoName = file.name; // 원본 파일 이름 사용
 
-        // 파일명에 현재 시간을 추가하여 중복 방지
-        const pos = photoName.lastIndexOf(".");
-        if (pos > -1) { // 확장자가 있는 경우
-            const name = photoName.substring(0, pos); // 파일 이름
-            const ext = photoName.substring(pos + 1); // 파일 확장자
-
-            // 현재 시간(ms)을 이용하여 파일명에 추가
-            photoName = `${name}_${Date.now()}.${ext}`;
-        } else { // 확장자가 없는 경우
-            photoName += `_${Date.now()}`;
-        }
-        console.log(`${photoName}`);
         const newFile = {
             originName: file.name,
-            photoName: photoName
+            // photoName: photoName // 파일 이름 변경 없이 원본 파일 이름 사용
+            file: file
         };
         newFiles.push(newFile); // 파일 추가
-        console.log(`originName: ${newFile.originName}`);
     }
     setSelectedFiles(newFiles); // 새 배열로 업데이트
-    console.log(`files: ${newFiles}`);
-};
+    // console.log(`files: ${newFiles[0].originName}`);
+  };
 
 
 
@@ -227,8 +300,13 @@ const WritePage = () => {
     console.log(pc);
     e.preventDefault();
 
-    const formData = new FormData();
     // formData.append('product', JSON.stringify(pc));
+    const formData = new FormData();
+    // FormData에 파일 추가
+    // selectedFiles.forEach((file, index) => {
+    //   formData.append(`files${index}`, file.file); // 서버에서 files로 받기로 했으므로 files로 append
+    // });
+    formData.append('files', selectedFiles);
     formData.append('title', product.title);
     formData.append('description', product.description);
     formData.append('price', product.price);
@@ -236,30 +314,20 @@ const WritePage = () => {
     formData.append('location', product.location);
     formData.append('categoryMain', selectMain);
     formData.append('categorySub', selectSub);
+    // userId
+    // formData.append('user', product.user);
     
-    for (let index = 0; index < selectedFiles.length; index++) {
-      const element = selectedFiles[index];
-      formData.append('files', selectedFiles[index]);
-    }
-    // console.log(`jalfksdjljs: ${formData}`);
-
-    // formData.append('files', selectedFiles[i]);
-    // for (let i = 0; i < selectedFiles.length; i++) {
-    //   console.log(`selectedFiles[i]: ${selectedFiles[i].originName}`);
-    //   console.log(`selectedFiles[i]: ${selectedFiles[i].photoName}`);
+    // for (let index = 0; index < selectedFiles.length; index++) {
+    //   const element = selectedFiles[index];
+    //   console.log("element" + selectedFiles[0], selectedFiles[0].originName);
     // }
-    // console.log(`selectedFiles: ${selectedFiles}`);
-
-    // console.log("formData.product "+formData.get('product'));
-    // for (let pair of formData.entries()) {
-    //   console.log(pair[0] + ', ' + pair[1]); // 모든 키-값 쌍을 출력합니다.
-    // }
+    // formData.append('files', selectedFiles);
     console.log(...formData);
 
     const uploadedFiles = async (formData) =>{
 
-      await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
-    // fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
+      // await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
+      await fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
       method: "POST",
       body: formData,  // JSON 형식으로 데이터 전송
     })

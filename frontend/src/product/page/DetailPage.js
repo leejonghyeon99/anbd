@@ -20,14 +20,8 @@ const DetailPage = () => {
     }
   });
 
-  const [productImage, setProductImage] = useState([]);
-
-
-  const [files, setFiles] = useState({
-    id: "",
-    originName: "",  // 원본파일명
-    photoName: ""    // 저장된 파일명
-  });
+  const [selectFiles, setSelectFiles] = useState("");
+  
 
 
   // 채팅하기
@@ -45,14 +39,10 @@ const DetailPage = () => {
   }
   
   useEffect(() => {
-    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/detail/` + id)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/detail/` + id)
     .then(response => response.json())
     .then(data => setProduct(data));
   }, []);
-
-  useEffect(() =>{
-    console.log(":"+product.createdAt)
-  },[product]);
 
   const DeleteOk = () => {
     if(!window.confirm("정말 삭제하시겠습니까?")) return;

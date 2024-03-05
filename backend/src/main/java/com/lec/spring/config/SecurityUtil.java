@@ -29,9 +29,8 @@ public class SecurityUtil {
             System.out.println(username+ "------------------------------------------");
         }
         else if (authentication.getPrincipal() instanceof String){
-            System.out.println("++++++++++++++++++++++++++++++++++++");
             username = (String) authentication.getPrincipal();
-            System.out.println(username+ "*******************************************");
+            System.out.println(username);
         }
 
         return Optional.ofNullable(username);

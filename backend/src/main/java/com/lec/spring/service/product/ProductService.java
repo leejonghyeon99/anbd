@@ -41,19 +41,22 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
+
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final UserService userService;
 
     // 등록
     public Product write(ProductsDTO product, List<MultipartFile> files){
-        System.out.println(product + "@#4324234");
-//        System.out.println(files + "@#4324234");
+        System.out.println(product + "저장전");
+        System.out.println(files + "저장전");
         Category category = categoryRepository.findUnique(product.getCategoryMain(),product.getCategorySub());
         System.out.println(category);
 
-
-        User user = userService.getUser().get();
+//        User user = userRepository.findByUsername(product.getUser().getUsername()).orElse(null);
+//        User user = userRepository.findById(product.getUser_id()).orElse(null);
+//        User user = userService.getUser().get();
+//        System.out.println("user~~~~~~~~~~~~~~~~~~~" + user);
 
         Product productnew = Product.builder()
                 .title(product.getTitle())
@@ -62,14 +65,17 @@ public class ProductService {
                 .status(product.getStatus())
                 .category(category)
                 .location(product.getLocation())
-                .user(user)
+//                .user(user)
+                .fileList(product.getFileList())
                 .build();
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++" + productnew);
 
         System.out.println("~~~~~~~~~~~");
         Product sProduct = productRepository.save(productnew);
-        System.out.println(product + "@#4324234");
+        System.out.println(product + "저장 후");
         // 제품을 save 한 후 id값을 가져옴
         Long productId = sProduct.getId();
+        System.out.println("productID가 나와야함: " + productId);
         // 파일 추가
         addFiles(files, productId);
         return sProduct;
@@ -97,7 +103,6 @@ public class ProductService {
 
 
     // ProductService에서 Product를 조회하는 메서드 추가
-    // 여기서부터 에러나는 듯
     public Product findProductById(Long id) {
         // Product를 id로 조회하는 코드를 작성하여 반환
         System.out.println("id = " + id);
@@ -162,6 +167,7 @@ public class ProductService {
 
         // 담긴 파일이 없으면 pass
         String originalFilename = multipartFile.getOriginalFilename();
+        System.out.println("original" + originalFilename);
         if(originalFilename == null || originalFilename.length() == 0) return null;
 
         // 원본파일명
@@ -226,9 +232,9 @@ public class ProductService {
     @Transactional
     public ProductDTO detail(Long id){
         Product product = productRepository.findById(id).orElse(null);
-        User user = userRepository.findById(product.getUser().getId()).orElse(null);
+//        User user = userRepository.findById(product.getUser().getId()).orElse(null);
 //        product.getUser().getId()
-        product.setUser(user);
+//        product.setUser(user);
 
 //        List<ProductImage> fileList = productImageRepository.findByProduct(product.getId());
 //        product.setFileList(fileList);

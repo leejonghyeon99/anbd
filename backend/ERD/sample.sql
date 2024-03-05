@@ -86,6 +86,7 @@ select * from user;
 select * from category;
 select * from product_image;
 
+
 drop table user;
 
 drop table chat_room;

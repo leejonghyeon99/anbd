@@ -59,7 +59,7 @@ public class Product extends BaseEntity{
     // 첨부파일
     @OneToMany(cascade = CascadeType.ALL)   //cascade = CascadeType.All 삭제 등의 동작 발생시 child 자동 삭제
     @JoinColumn(name="product_id")
-    @JsonIgnore
+//    @JsonIgnore
     @ToString.Exclude
     @Builder.Default
     private List<ProductImage> fileList = new ArrayList<>();
