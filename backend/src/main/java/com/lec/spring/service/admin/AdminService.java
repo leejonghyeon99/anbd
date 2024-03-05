@@ -46,7 +46,8 @@ public class AdminService {
 
     //유저 목록
     public Page<UserDTO> userList(int page) {
-        PageRequest pageRequest = PageRequest.of(page, 10);
+        int adjustedPage = page - 1 < 0 ? 0 : page - 1;
+        PageRequest pageRequest = PageRequest.of(adjustedPage, 10);
 
         return userRepository.findAll(pageRequest).map(UserDTO::toDto);
     }

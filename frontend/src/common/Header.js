@@ -6,7 +6,7 @@ import { AdminpagebarList } from "../components/AdminpagebarList";
 import "./CSS/Header.css";
 import "./CSS/Mypagebar.css";
 import Logout from './Logout';
-import { fetchWithToken } from "../user/api";
+import { fetchWithToken } from "../user/Reissue";
 
 const Navbar = styled.div`
   /* 다른 스타일들... */
@@ -28,7 +28,7 @@ const Navbar = styled.div`
 const Header = () => {
 
   const headerRef = useRef(null);
-
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const getCurrentDate = () => {
     const today = new Date();
     const year = today.getFullYear();
@@ -41,13 +41,14 @@ const Header = () => {
   const [user, setUser] = useState({
     username: "",
     password: "",
-    repassword: "",
+    // repassword: "",
     name: "",
     nickname: "",
     phone_number: "",
     email: "",
     region: "",
-    auth: "", // 추가: 사용자 권한 정보
+    auth: "", // 추가: 사용자 권한 정보,
+    thumbnail : "",
   });
 
   // 로그인 유무 상태(useEffect로 상태 확인해야함)
@@ -57,6 +58,7 @@ const Header = () => {
     const getUserInfoFromToken = (token) => {
       const decodedToken = atob(token.split(".")[1]);
       const userInfo = JSON.parse(decodedToken);
+      console.log(userInfo)
       return userInfo;
     };
 
@@ -101,8 +103,6 @@ const Header = () => {
     userData();
   }, []);
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // 모든 대분류의 중분류가 따로따로 토글되도록 아래 상태함수들 줌
   // Mypage 버튼
   const [isMypageVisible, setIsMypageVisible] = useState(false);
 
@@ -125,20 +125,76 @@ const Header = () => {
   // mypage show/hide
   const toggleMypage = () => {
     setIsMypageVisible(!isMypageVisible);
-    setIsMenuOpen(false); // Navbar가 열려있는 경우 닫도록 설정
   };
+
+  useEffect(() => {
+    const getUser = async () =>{
+      const url = `${process.env.REACT_APP_API_BASE_URL}/api/user/profile`;
+      const options = {
+        
+      }
+      try{
+        await fetchWithToken(url,options)
+        .then(response => {
+          if(response.status === 200){
+            return response.json();
+          }
+        })
+        .then(data => {
+          console.log(data);
+          setUser(data);
+        })
+      }catch{
+        console.error('not logged in.')
+      }     
+    }
+    getUser();
+  },[])
+
+  const  handleChangeImg = (file) => {
+
+    const formData = new FormData();
+    formData.append('thumbnail', file);
+    const changeImg = async () =>{
+      const url = `${process.env.REACT_APP_API_BASE_URL}/api/user/change/thumbnail`;
+      const options = {
+        method : "POST",
+        body: formData,
+      }
+      await fetchWithToken(url,options)
+            .then(response => {
+              if(response.status === 201){
+                return response.json();
+              }
+            })
+            .then(data => {
+              console.log(data);
+              setUser(data);
+            })     
+    }
+    changeImg();
+  }
+
+  const fileInputRef = useRef(null);
+
+  const handleClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    handleChangeImg(file);
+  };
+
 
   return (
     <div className="header">
       <div ref={headerRef}>
         <div className="headerBox">
           <div className="headerFix">
-            {/* <div className="hiddenMenu">
-              <img src="/icon/menu.png" id="menuIcon" onClick={toggleMenu} />
-            </div> */}
             <div className="logo">
               <Link to="/home" className="goHome">
-                AH!NaBaDa
+                <img src="/img/004-1.png" />
               </Link>
             </div>
 
@@ -146,7 +202,7 @@ const Header = () => {
             <div className="mypageToggle" id="menu-bars">
               {user.auth === "ROLE_USER" && (
                 <img
-                  src="/icon/usericon.png"
+                  src="/icon/user2.png"
                   id="userIcon"
                   onClick={toggleMypage}
                 />
@@ -166,7 +222,7 @@ const Header = () => {
               )}
             </div>
           </div>
-
+                
           <Navbar isvisible={isMypageVisible.toString()} id="navbar">
             {" "}
             {/* Navbar의 isVisible 속성에 따라 보이거나 숨김 */}
@@ -192,7 +248,17 @@ const Header = () => {
                 </Link>
               </div>
               <div className="profile">
-                <img src="/icon/userIcon.png" className="profileImg"></img>
+                <input
+                  type="file"
+                  style={{ display: 'none' }}
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                />
+                <img
+                  src={`${apiUrl}/upload/thumbnail/${user.thumbnail}`}
+                  className="profileImg"
+                  onClick={handleClick}
+                />
               </div>
 
               <div className="mypage_auth">

@@ -5,18 +5,32 @@ import com.lec.spring.domain.Status;
 import com.lec.spring.domain.User;
 import com.lec.spring.domain.WishList;
 import com.lec.spring.dto.ProductDTO;
+import com.lec.spring.dto.UserDTO;
 import com.lec.spring.dto.WishListDTO;
+import com.lec.spring.repository.UserRepository;
 import com.lec.spring.repository.WishListRepsitory;
 import com.lec.spring.repository.product.ProductRepository;
 import com.lec.spring.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +40,12 @@ public class UserInfoService {
     private final UserService userService;
     private final ProductRepository productRepository;
     private final WishListRepsitory wishListRepsitory;
+    private final UserRepository userRepository;
+
+
+    @Value("${app.upload.thumbnail.path}")
+    private String uploadPath;
+
 
     //판매내역
     @Transactional
@@ -50,8 +70,7 @@ public class UserInfoService {
         int total = productPage.getTotalPages();
 
         // 페이지 번호가 초과될 때 마지막 페이지의 내용을 반환
-        if (adjustedPage >= total) {
-            Pageable lastPage = PageRequest.of(total-1,size,Sort.by("id").descending());
+        if (adjustedPage >= total && total > 0) {
             if (adjustedPage >= total) {
                 // 마지막 페이지의 pageable 객체 생성
                 Pageable lastPageable = PageRequest.of(total - 1, size, Sort.by("id").descending());
@@ -100,5 +119,60 @@ public class UserInfoService {
 
     public void test(){
         System.out.println(wishListRepsitory.findAll());
+    }
+
+    //썸네일 변경
+//    public UserDTO changeImg(MultipartFile file){
+//        User user = userService.getUser().get();
+//
+//        if(user == null){
+//            return null;
+//        }
+//
+//        user.setThumbnail(file.getOriginalFilename());
+//
+//        userRepository.save(user);
+//        return UserDTO.toDto(user);
+//    }
+
+    public UserDTO changeImg(MultipartFile file) {
+        User user = userService.getUser().get();
+        // 업로드 폴더가 존재하지 않으면 생성합니다.
+        File uploadFolder = new File(uploadPath);
+        if (!uploadFolder.exists()) {
+            uploadFolder.mkdirs();
+        }
+
+        // 업로드된 파일의 이름을 생성합니다.
+        String originalFileName = file.getOriginalFilename();
+        String fileName = generateUniqueFileName(originalFileName);
+
+        // 업로드 경로와 파일 이름을 조합하여 저장할 파일 경로를 만듭니다.
+        Path savePath = Path.of(uploadPath, "thumbnail", fileName);
+
+        try {
+            // 파일을 지정된 경로로 복사합니다.
+            Files.copy(file.getInputStream(), savePath, StandardCopyOption.REPLACE_EXISTING);
+            user.setThumbnail(fileName);
+
+            userRepository.save(user);
+            return UserDTO.toDto(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private String generateUniqueFileName(String originalFileName) {
+        // 파일 이름에 현재 시간을 추가하여 유일한 파일 이름 생성
+        Instant now = Instant.now();
+        ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(now, ZoneId.systemDefault());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
+        String timestamp = formatter.format(zonedDateTime);
+
+        // 확장자 추출
+        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+
+        return originalFileName + timestamp + fileExtension;
     }
 }
