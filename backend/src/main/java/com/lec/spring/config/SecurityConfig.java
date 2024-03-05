@@ -47,7 +47,7 @@ public class SecurityConfig {
     private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
@@ -122,6 +122,7 @@ public class SecurityConfig {
 //    }
 
 
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -152,6 +153,7 @@ public class SecurityConfig {
 //                .requestMatchers("/api/user/signup", "/api/user/login", "/api/product/list/**","/api/product/detail/**", "/upload/**", "/api/product/category/**").permitAll()
                 .anyRequest().authenticated()
         );
+
 
 
         http.oauth2Login(oauth2Login -> oauth2Login

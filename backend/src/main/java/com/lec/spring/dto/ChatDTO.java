@@ -24,20 +24,20 @@ public class ChatDTO {
     private String user;
     private String userProfile;
     private ChatRoomDTO chatRoom;
-
-    public static ChatDTO toDto(Chat entity) {
-        return ChatDTO.builder()
-                .id(entity.getId())
-                .message(entity.getMessage())
-                .user(UserDTO.toDto(entity.getUser()).getNickname())
-                .userProfile("profile/"+UserDTO.toDto(entity.getUser()).getId())
-//                .chatRoom(ChatRoomDTO.toDto(entity.getChatRoom()))
-                .build();
-    }
-
-    public static List<ChatDTO> toDtoList(List<Chat> chats) {
-        return chats.stream()
-                .map(ChatDTO::toDto)
-                .collect(Collectors.toList());
-    }
+//
+//    public static ChatDTO toDto(Chat entity) {
+//        return ChatDTO.builder()
+//                .id(entity.getId())
+//                .message(entity.getMessage())
+//                .user(UserDTO.toDto(entity.getUser()).getNickname())
+//                .userProfile("profile/"+UserDTO.toDto(entity.getUser()).getId())
+////                .chatRoom(ChatRoomDTO.toDto(entity.getChatRoom()))
+//                .build();
+//    }
+//
+//    public static List<ChatDTO> toDtoList(List<Chat> chats) {
+//        return chats.stream()
+//                .map(ChatDTO::toDto)
+//                .collect(Collectors.toList());
+//    }
 }

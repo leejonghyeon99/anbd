@@ -133,16 +133,20 @@ const Header = () => {
       const options = {
         
       }
-      await fetchWithToken(url,options)
-            .then(response => {
-              if(response.status === 200){
-                return response.json();
-              }
-            })
-            .then(data => {
-              console.log(data);
-              setUser(data);
-            })     
+      try{
+        await fetchWithToken(url,options)
+        .then(response => {
+          if(response.status === 200){
+            return response.json();
+          }
+        })
+        .then(data => {
+          console.log(data);
+          setUser(data);
+        })
+      }catch{
+        console.error('not logged in.')
+      }     
     }
     getUser();
   },[])
