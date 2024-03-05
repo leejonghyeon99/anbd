@@ -19,9 +19,9 @@ public class Chat extends BaseEntity{
     private String message;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "sender_id")
     @ToString.Exclude
-    private User user;
+    private User sender;
 
     @ManyToOne
     @JoinColumn(name = "room_id")
