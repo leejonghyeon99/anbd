@@ -1,6 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 
-export const fetchWithToken = async (url, options = {}) => {
+export const fetchWithToken = async (url, options = {},isFormData = false) => {
   let accessToken = localStorage.getItem("accessToken");
 
   // 엑세스 토큰 확인
@@ -54,6 +54,14 @@ export const fetchWithToken = async (url, options = {}) => {
       Authorization: `Bearer ${accessToken}`,
     },
   };
+
+  // isFormData가 true인 경우, Content-Type 헤더를 설정하지 않습니다.
+  if (!isFormData) {
+    fetchOptions.headers['Content-Type'] = 'application/json';
+  } else {
+    // FormData를 사용하는 경우, fetchOptions.headers 객체에서 Content-Type을 삭제합니다.
+    delete fetchOptions.headers['Content-Type'];
+  }
 
   let response = await fetch(url, fetchOptions);
 

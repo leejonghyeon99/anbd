@@ -53,11 +53,11 @@ public class ProductService {
         Category category = categoryRepository.findUnique(product.getCategoryMain(),product.getCategorySub());
         System.out.println(category);
 
-        User user = userRepository.findByUsername(userService.getUser().get().getUsername()).orElse(null);
-//        User user = userRepository.findById(product.getUser_id()).orElse(null);
+//        User user = userRepository.findByUsername(userService.getUser().get().getUsername()).orElse(null);
+        User user = userRepository.findById(product.getUser_id()).orElse(null);
 //        User user = userService.getUser().get();
 //        userRepository.findByUsername(user.getUsername());
-        System.out.println("user~~~~~~~~~~~~~~~~~~~" + user);
+//        System.out.println("user~~~~~~~~~~~~~~~~~~~" + user);
 
         Product productnew = Product.builder()
                 .title(product.getTitle())
@@ -66,7 +66,7 @@ public class ProductService {
                 .status(product.getStatus())
                 .category(category)
                 .location(product.getLocation())
-//                .user(user)
+                .user(user)
                 .fileList(product.getFileList())
                 .build();
         System.out.println("+++++++++++++++++++++++++++++++++++++++++" + productnew);

@@ -13,6 +13,7 @@
 # }  -> postman에 넣어야함 ㅠ 안그럼 비번 인코딩이 안돼서!
 select main from Category as c group by c.main;
 select * from product;
+select * from product_image;
 select * from user;
 update user set auth = 'ROLE_USER' where id =1;
 select * from Product  where category_id = 1;

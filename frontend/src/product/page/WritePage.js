@@ -34,7 +34,7 @@ const WritePage = () => {
     status: "",
     createdAt: "",
     location: "",
-    // user: user.sub
+    user: "",
   });
 
   const [user, setUser] = useState("");
@@ -46,10 +46,14 @@ const WritePage = () => {
       try {
         const url = `${apiUrl}/api/user/info`;
         const response = await fetchWithToken(url);
+        if (!response.ok) {
+          throw new Error('Failed to fetch user info');
+        }
         const data = await response.json();
-          console.log(data);
+        console.log(data); // 로그인한 사용자 정보 확인
+        setUser(data.id); // 사용자 ID를 user 상태에 저장
       } catch (error) {
-        console.log("error");
+        console.error("Error fetching user info:", error);
       }
     };
     getUser();
@@ -314,8 +318,8 @@ const WritePage = () => {
     formData.append('location', product.location);
     formData.append('categoryMain', selectMain);
     formData.append('categorySub', selectSub);
-    // userId
-    // formData.append('user', product.user);
+    formData.append('user', product.user);
+    
     
     // for (let index = 0; index < selectedFiles.length; index++) {
     //   const element = selectedFiles[index];
