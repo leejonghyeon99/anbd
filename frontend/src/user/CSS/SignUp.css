@@ -1,13 +1,20 @@
+.signUpBox {
+    width:100%
+}
 .signUpMain {
-    background-color: #f89f98;
+    background-color: #d0d8e8;
+    border-radius: 15px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     font-family: 'yg-jalnan';
+    width: 80%;
+    padding: 1%;
+    margin-inline: 10%;
 }
 
 .joinTitle {
-    background-color: rgba(255, 3, 3, 0.856);
+    text-align: center;
 }
 
 label {
@@ -15,9 +22,9 @@ label {
 }
 
 input {
-    width: 70%;
-    font-size: 15px;
+    width: 100%;
     padding: 5px;
+    font-size: 0.9rem;
     border: solid 0.5px rgb(173, 173, 173);
     border-radius: 10px;
 }
@@ -34,10 +41,20 @@ Form div {
     margin: 10px;
 }
 
-.emailBtn {
-    margin-left: 15px;
-    color: white;
-    padding: 10px;
+#emailBtn {
+    margin-top: 5px;
+    padding: 5px;
     border-radius: 5px;
+    color: rgb(15, 62, 98);
+    font-size: 0.8rem;
+    float: right;
+}
+
+#emailBtn:hover {
+    color: rgb(255, 255, 255);
+}
+
+#joinBtn{
+    float: right;
 }
 
