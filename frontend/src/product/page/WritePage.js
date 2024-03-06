@@ -39,7 +39,6 @@ const WritePage = () => {
 
   const [user, setUser] = useState("");
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
-  // const token = localStorage.getItem('accessToken');
 
   useEffect(() => {
     const getUser = async () => {
@@ -310,7 +309,8 @@ const WritePage = () => {
     // selectedFiles.forEach((file, index) => {
     //   formData.append(`files${index}`, file.file); // 서버에서 files로 받기로 했으므로 files로 append
     // });
-    formData.append('files', selectedFiles);
+    // formData.append('files', selectedFiles);
+    selectedFiles.forEach((file) => formData.append('files', file.file));
     formData.append('title', product.title);
     formData.append('description', product.description);
     formData.append('price', product.price);
@@ -318,8 +318,7 @@ const WritePage = () => {
     formData.append('location', product.location);
     formData.append('categoryMain', selectMain);
     formData.append('categorySub', selectSub);
-    formData.append('user', product.user);
-    
+    formData.append('user', user);
     
     // for (let index = 0; index < selectedFiles.length; index++) {
     //   const element = selectedFiles[index];

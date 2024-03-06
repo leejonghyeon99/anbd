@@ -133,6 +133,8 @@ public class ProductService {
 //                        file.setProduct(product); // 조회한 Product 객체를 설정
 //                        productImageRepository.saveAndFlush(file);
 //                    }
+
+
     private void addFiles(List<MultipartFile> files, Long productId) {
         if (files != null) {
             for (MultipartFile file : files) {
