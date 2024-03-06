@@ -32,7 +32,7 @@ public class UserDTO {
     private String createdAt;
     private String certification;
     private String thumbnail;
-    private List<Region> regions;
+    private String region;
 
 
     public static UserDTO toDto(User user) {
@@ -42,6 +42,7 @@ public class UserDTO {
                 .name(user.getName())
                 .phone_number(user.getPhone_number())
                 .nickname(user.getNickname())
+                .region(user.getRegion())
                 .provider(user.getProvider())
                 .provider_id(user.getProvider_id())
                 .email(user.getEmail())

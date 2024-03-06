@@ -3,6 +3,7 @@ package com.lec.spring.controller;
 import com.lec.spring.domain.Status;
 import com.lec.spring.domain.User;
 import com.lec.spring.dto.*;
+import com.lec.spring.dto.exception.Response;
 import com.lec.spring.service.UserService;
 import com.lec.spring.service.user.UserInfoService;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -57,8 +59,8 @@ public class UserController {
     }
 
     @GetMapping("/info")
-    public ResponseEntity<User> getUserInfo() {
-        return ResponseEntity.ok(userService.getUser().get());
+    public ResponseEntity<UserDTO> getUserInfo() {
+        return ResponseEntity.ok(UserDTO.toDto(userService.getUser().get()));
     }
 
     @PostMapping("/logout")
@@ -98,9 +100,14 @@ public class UserController {
     @GetMapping("/profile")
     public ResponseEntity<UserDTO> profile(){
         User user = userService.getUser().orElse(null);
+        System.out.println(user);
         if(user == null) {
+            System.out.println("못찾음");
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); //404
         }
+        System.out.println("찾ㅇ므");
+        System.out.println("-------------------------------------------------");
+        System.out.println(UserDTO.toDto(user));
         return new ResponseEntity<>(UserDTO.toDto(user), HttpStatus.OK); // 200
     }
 
@@ -108,8 +115,15 @@ public class UserController {
     @GetMapping("/product-status")
     public ResponseEntity<Page> getProductList(
             @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size,
-            @RequestParam(name = "status", required = false)Status status
+            @RequestParam(name = "status", required = false)String str
             ){
+        Status status;
+        try {
+            status = Status.valueOf(str);
+        }catch (IllegalArgumentException e){
+            status = null;
+        }
+
         return new ResponseEntity<>(userInfoService.getProductList(page, size, status),HttpStatus.OK);
     }
 
@@ -127,7 +141,15 @@ public class UserController {
     }
 
 
-
+    //썸네일 변경
+    @PostMapping("/change/thumbnail")
+    public ResponseEntity<UserDTO> changeImg(@RequestParam("thumbnail") MultipartFile image){
+        System.out.println("받았다"+ image);
+        System.out.println(image.getName());
+        System.out.println(image.getOriginalFilename());
+        System.out.println(image.getSize());
+        return new ResponseEntity<>(userInfoService.changeImg(image), HttpStatus.CREATED);
+    }
 
 
 

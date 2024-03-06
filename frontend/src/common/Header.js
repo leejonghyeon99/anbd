@@ -28,7 +28,7 @@ const Navbar = styled.div`
 const Header = () => {
 
   const headerRef = useRef(null);
-
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const getCurrentDate = () => {
     const today = new Date();
     const year = today.getFullYear();
@@ -41,13 +41,14 @@ const Header = () => {
   const [user, setUser] = useState({
     username: "",
     password: "",
-    repassword: "",
+    // repassword: "",
     name: "",
     nickname: "",
     phone_number: "",
     email: "",
     region: "",
-    auth: "", // 추가: 사용자 권한 정보
+    auth: "", // 추가: 사용자 권한 정보,
+    thumbnail : "",
   });
 
   // 로그인 유무 상태(useEffect로 상태 확인해야함)
@@ -57,6 +58,7 @@ const Header = () => {
     const getUserInfoFromToken = (token) => {
       const decodedToken = atob(token.split(".")[1]);
       const userInfo = JSON.parse(decodedToken);
+      console.log(userInfo)
       return userInfo;
     };
 
@@ -125,6 +127,66 @@ const Header = () => {
     setIsMypageVisible(!isMypageVisible);
   };
 
+  useEffect(() => {
+    const getUser = async () =>{
+      const url = `${process.env.REACT_APP_API_BASE_URL}/api/user/profile`;
+      const options = {
+        
+      }
+      try{
+        await fetchWithToken(url,options)
+        .then(response => {
+          if(response.status === 200){
+            return response.json();
+          }
+        })
+        .then(data => {
+          console.log(data);
+          setUser(data);
+        })
+      }catch{
+        console.error('not logged in.')
+      }     
+    }
+    getUser();
+  },[])
+
+  const  handleChangeImg = (file) => {
+
+    const formData = new FormData();
+    formData.append('thumbnail', file);
+    const changeImg = async () =>{
+      const url = `${process.env.REACT_APP_API_BASE_URL}/api/user/change/thumbnail`;
+      const options = {
+        method : "POST",
+        body: formData,
+      }
+      await fetchWithToken(url,options)
+            .then(response => {
+              if(response.status === 201){
+                return response.json();
+              }
+            })
+            .then(data => {
+              console.log(data);
+              setUser(data);
+            })     
+    }
+    changeImg();
+  }
+
+  const fileInputRef = useRef(null);
+
+  const handleClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    handleChangeImg(file);
+  };
+
+
   return (
     <div className="header">
       <div ref={headerRef}>
@@ -160,7 +222,7 @@ const Header = () => {
               )}
             </div>
           </div>
-
+                
           <Navbar isvisible={isMypageVisible.toString()} id="navbar">
             {" "}
             {/* Navbar의 isVisible 속성에 따라 보이거나 숨김 */}
@@ -186,7 +248,17 @@ const Header = () => {
                 </Link>
               </div>
               <div className="profile">
-                <img src="/icon/userIcon.png" className="profileImg"></img>
+                <input
+                  type="file"
+                  style={{ display: 'none' }}
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                />
+                <img
+                  src={`${apiUrl}/upload/thumbnail/${user.thumbnail}`}
+                  className="profileImg"
+                  onClick={handleClick}
+                />
               </div>
 
               <div className="mypage_auth">
