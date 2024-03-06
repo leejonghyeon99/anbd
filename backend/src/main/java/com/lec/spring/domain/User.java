@@ -62,6 +62,7 @@ public class User extends BaseEntity{
     private String thumbnail;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
+
     private List<Product> products;
 
 

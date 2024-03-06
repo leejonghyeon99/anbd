@@ -100,9 +100,14 @@ public class UserController {
     @GetMapping("/profile")
     public ResponseEntity<UserDTO> profile(){
         User user = userService.getUser().orElse(null);
+        System.out.println(user);
         if(user == null) {
+            System.out.println("못찾음");
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); //404
         }
+        System.out.println("찾ㅇ므");
+        System.out.println("-------------------------------------------------");
+        System.out.println(UserDTO.toDto(user));
         return new ResponseEntity<>(UserDTO.toDto(user), HttpStatus.OK); // 200
     }
 
