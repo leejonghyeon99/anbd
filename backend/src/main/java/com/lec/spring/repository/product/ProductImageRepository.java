@@ -11,5 +11,7 @@ public interface ProductImageRepository extends JpaRepository<ProductImage, Inte
 //    List<ProductImage> findByProduct(Long id);
 
     // 특정 첨부파일(id) 한개 SELECT
-    Optional<ProductImage> findById(Integer id);
+//    Optional<ProductImage> findById(Integer id);
+
+    List<ProductImage> findByProductId(Long productId);
 }

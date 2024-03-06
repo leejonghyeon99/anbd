@@ -53,8 +53,8 @@ public class ProductService {
         Category category = categoryRepository.findUnique(product.getCategoryMain(),product.getCategorySub());
         System.out.println(category);
 
-        User user = userRepository.findByUsername(userService.getUser().get().getUsername()).orElse(null);
-//        User user = userRepository.findById(product.getUser_id()).orElse(null);
+//        User user = userRepository.findByUsername(userService.getUser().get().getUsername()).orElse(null);
+        User user = userRepository.findById(product.getUser_id()).orElse(null);
 //        User user = userService.getUser().get();
 //        userRepository.findByUsername(user.getUsername());
         System.out.println("user~~~~~~~~~~~~~~~~~~~" + user);
@@ -66,7 +66,7 @@ public class ProductService {
                 .status(product.getStatus())
                 .category(category)
                 .location(product.getLocation())
-//                .user(user)
+                .user(user)
                 .fileList(product.getFileList())
                 .build();
         System.out.println("+++++++++++++++++++++++++++++++++++++++++" + productnew);
@@ -133,6 +133,8 @@ public class ProductService {
 //                        file.setProduct(product); // 조회한 Product 객체를 설정
 //                        productImageRepository.saveAndFlush(file);
 //                    }
+
+
     private void addFiles(List<MultipartFile> files, Long productId) {
         if (files != null) {
             for (MultipartFile file : files) {
@@ -150,8 +152,10 @@ public class ProductService {
                     // ProductService를 사용하여 id를 이용하여 Product를 조회
                     // 여기서 문제임
                     Product product = findProductById(productId);
+                    User user = product.getUser();
                     if (product != null) {
                         productImage.setProduct(product); // 조회한 Product 객체를 설정
+                        productImage.setUser(user);
                         productImageRepository.saveAndFlush(productImage);
                     }
                     System.out.println("======== productImage ========" + productImage);
