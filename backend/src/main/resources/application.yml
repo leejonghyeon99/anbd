@@ -59,7 +59,7 @@ app:
   # 파일 업로드 경로
   upload:
     product:
-      path: upload
+      path: upload/product
     thumbnail:
       path: upload
 # 터미널에 입력 자동 생성 - openssl rand -hex 64
