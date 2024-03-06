@@ -26,7 +26,7 @@ insert into category(main, sub) value ('식품', '즉석식품');
 insert into category(main, sub) value ('식품', '가공식품');
 insert into category(main, sub) value ('생활용품', '거실');
 insert into category(main, sub) value ('생활용품', '주방용품');
-insert into category(main, sub) value ('가전', 'TV');
+insert into category(main, sub) value ('전자제품', '가전');
 update Category c set c.sub= '호로로' where c.main = '224' and c.sub='33ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ';
 update user set thumbnail = 'default.png' where id = 3;
 delete from category;
