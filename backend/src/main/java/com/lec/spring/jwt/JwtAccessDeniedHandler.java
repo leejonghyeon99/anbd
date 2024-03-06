@@ -13,8 +13,12 @@ import java.io.IOException;
 public class JwtAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        // 필요한 권한이 없이 접근하려 할때 403
-        response.sendError(HttpServletResponse.SC_FORBIDDEN);
-        System.out.println("필요한 권한이 없이 접근 오류 403");
+
+        // 응답이 이미 커밋된 상태인지 확인
+        if (!response.isCommitted()) {
+            // 필요한 권한이 없이 접근하려 할때 403
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied");
+            System.out.println("필요한 권한이 없이 접근 오류 403");
+        }
     }
 }

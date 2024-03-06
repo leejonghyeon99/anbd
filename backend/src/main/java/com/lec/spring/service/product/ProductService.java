@@ -57,7 +57,7 @@ public class ProductService {
         User user = userRepository.findById(product.getUser_id()).orElse(null);
 //        User user = userService.getUser().get();
 //        userRepository.findByUsername(user.getUsername());
-//        System.out.println("user~~~~~~~~~~~~~~~~~~~" + user);
+        System.out.println("user~~~~~~~~~~~~~~~~~~~" + user);
 
         Product productnew = Product.builder()
                 .title(product.getTitle())
@@ -150,8 +150,10 @@ public class ProductService {
                     // ProductService를 사용하여 id를 이용하여 Product를 조회
                     // 여기서 문제임
                     Product product = findProductById(productId);
+                    User user = product.getUser();
                     if (product != null) {
                         productImage.setProduct(product); // 조회한 Product 객체를 설정
+                        productImage.setUser(user);
                         productImageRepository.saveAndFlush(productImage);
                     }
                     System.out.println("======== productImage ========" + productImage);
