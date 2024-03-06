@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Col, Form, FormControl, Row } from "react-bootstrap";
 import ProductItem from "../components/ProductItem";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -82,13 +82,26 @@ const ListPage = () => {
       <hr />
       {/* 검색 폼 */}
       <Form onSubmit={handleSearchSubmit}>
-        <input
-          type="text"
-          placeholder="검색어를 입력하세요"
-          value={search}
-          onChange={handleSearchChange}
-        />
-      <Button type="submit">검색</Button>
+      <Row className="justify-content-end">
+        <Col xs={3}>
+          <FormControl
+            type="text"
+            placeholder="검색"
+            value={search}
+            onChange={handleSearchChange}
+            className="rounded-pill border-0"
+            style={{
+              width: '100%',
+              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+            }}
+          />
+        </Col>
+        <Col xs={2}>
+          <Button type="submit" variant="outline-secondary" className="rounded-pill" style={{ fontSize: '14px', width: '100%' }}>
+            Go
+          </Button>
+        </Col>
+      </Row>
       </Form>
 
       {/* 검색 결과 메시지 */}
