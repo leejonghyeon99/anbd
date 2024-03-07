@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Form, FormControl, Row } from "react-bootstrap";
 import ProductItem from "../components/ProductItem";
 import { useNavigate, useParams } from "react-router-dom";
+import "../CSS/ListPage.css"
 
 const ListPage = () => {
   const navigate = useNavigate();
@@ -93,10 +94,7 @@ const ListPage = () => {
             />
           </Col>
           <Col xs={2}>
-            <Button
-              type="submit"
-              variant="outline-secondary"
-            >
+            <Button type="submit" variant="outline-secondary">
               Go
             </Button>
           </Col>
@@ -106,16 +104,18 @@ const ListPage = () => {
       {/* 검색 결과 메시지 */}
       {searchMessage && <div>{searchMessage}</div>}
 
-      {/* 상품 목록 */}
-      <div className="">
-      {products.map((product) => (
-        <ProductItem key={product.id} product={product} />
-      ))}
+      <div>
+        <div className="product_container">
+          {/* 상품 목록 */}
+          {products.map((product) => (
+            <ProductItem key={product.id} product={product} />
+          ))}
+        </div>
 
-      {/* 상품 등록 버튼 */}
-      <Button variant="outline-dark mt-3" onClick={WriteOk}>
-        상품 등록
-      </Button>
+        {/* 상품 등록 버튼 */}
+        <Button variant="outline-dark mt-3" onClick={WriteOk}>
+          상품 등록
+        </Button>
       </div>
     </div>
   );

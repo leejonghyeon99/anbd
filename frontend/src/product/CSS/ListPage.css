@@ -1,3 +1,62 @@
 #searchBox {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+/* styles.css */
+.product_container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .product_container > * {
+    flex: 0 0 calc(25% - 10px); /* 원하는 간격으로 조절 */
+    margin: 0 0 20px 10px; /* 오른쪽 및 아래쪽 간격을 추가하고자 하는 경우 */
+  }
+
+  /* 반응형 디자인 추가 */
+@media (max-width: 768px) {
+    .product_container > * {
+      flex: 0 0 calc(50% - 10px); /* 화면이 768px 이하일 때, 2개씩 나타나도록 조절 */
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .product_container > * {
+      flex: 0 0 calc(100% - 10px); /* 화면이 576px 이하일 때, 1개씩 나타나도록 조절 */
+    }
+  }
+
+
+  /*-------------------------------------------------------------------------------------------------*/
+
+  /*ProductItem CSS*/
+
+  .title {
+    font-size: 80%;
+    font-weight: bold;
+    font-family: Arial;
+  }
+
+  .price {
+    font-size: 70%;
+  }
+
+  @media (max-width: 768px) {
+    .title {
+      font-size: 100%;
+    }
+
+    .price {
+      font-size: 100%;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .title {
+      font-size: 140%;
+    }
+
+    .price {
+      font-size: 120%;
+    }
+  }
