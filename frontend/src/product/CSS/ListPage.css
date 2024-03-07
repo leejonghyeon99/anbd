@@ -31,31 +31,52 @@
 
   /*ProductItem CSS*/
 
-  .title {
+  .product-card {
+    padding: 1rem;
+    margin-inline: 2%;
+    max-width: 260px;
+    border: none;
+  }
+  
+  .card-title {
+    font-size: 70%;
+    margin: 2%;
+    text-align: right;
+    font-family: 'NanumSquareNeo-Variable';
+  }
+  
+  .card-img {
+    width: 90%;
+    height: auto;
+    margin: 0 auto;
+    text-align: center;
+    border: solid 1px;
+  }
+  
+  .product-title {
     font-size: 80%;
     font-weight: bold;
-    font-family: Arial;
+    font-family: 'SOYOMapleBoldTTF';
   }
-
+  
   .price {
     font-size: 70%;
+    font-family: 'IBMPlexSansKR-Regular';
   }
-
+  
   @media (max-width: 768px) {
-    .title {
-      font-size: 100%;
-    }
-
-    .price {
+    .product-title,
+    .price,
+    .card-title {
       font-size: 100%;
     }
   }
-
+  
   @media (max-width: 576px) {
-    .title {
+    .product-title {
       font-size: 140%;
     }
-
+  
     .price {
       font-size: 120%;
     }
