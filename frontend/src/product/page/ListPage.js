@@ -82,32 +82,32 @@ const ListPage = () => {
       <hr />
       {/* 검색 폼 */}
       <Form onSubmit={handleSearchSubmit}>
-      <Row className="justify-content-end">
-        <Col xs={3}>
-          <FormControl
-            type="text"
-            placeholder="검색"
-            value={search}
-            onChange={handleSearchChange}
-            className="rounded-pill border-0"
-            style={{
-              width: '100%',
-              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-            }}
-          />
-        </Col>
-        <Col xs={2}>
-          <Button type="submit" variant="outline-secondary" className="rounded-pill" style={{ fontSize: '14px', width: '100%' }}>
-            Go
-          </Button>
-        </Col>
-      </Row>
+        <Row noGutters>
+          <Col xs={3}>
+            <FormControl
+              id="searchBox"
+              type="text"
+              placeholder="검색"
+              value={search}
+              onChange={handleSearchChange}
+            />
+          </Col>
+          <Col xs={2}>
+            <Button
+              type="submit"
+              variant="outline-secondary"
+            >
+              Go
+            </Button>
+          </Col>
+        </Row>
       </Form>
 
       {/* 검색 결과 메시지 */}
       {searchMessage && <div>{searchMessage}</div>}
 
       {/* 상품 목록 */}
+      <div className="">
       {products.map((product) => (
         <ProductItem key={product.id} product={product} />
       ))}
@@ -116,6 +116,7 @@ const ListPage = () => {
       <Button variant="outline-dark mt-3" onClick={WriteOk}>
         상품 등록
       </Button>
+      </div>
     </div>
   );
 };

@@ -246,7 +246,7 @@ const SignUp = () => {
           {/* 아이디 입력란 */}
           <div>
             <label htmlFor="username">
-              아이
+              아이디
             </label>
             <div className="inputContainer">
               <input
