@@ -67,7 +67,9 @@ const Login = () => {
   return (
     <>
       <div className="loginMain">
-        <div className="loginLogo">A N B D</div>
+        <div className="loginLogo">
+          <img src="/img/004-1.png"/>
+        </div>
         <div className="loginBox">
           <Form onSubmit={submitLogin}>
             <div className="idBox">

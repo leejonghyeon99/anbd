@@ -10,9 +10,7 @@
   }
   
   .loginLogo {
-    border: solid 1px black;
-    font-size: 50px;
-    margin-bottom: 20px;
+    width:20%;
     text-align: center;
   }
   
@@ -25,7 +23,7 @@
     align-items: center; /* 중앙 정렬을 위해 추가 */
     justify-content: center;
     text-align: center;
-    width: 400px; /* 로그인 상자 너비를 조정합니다. */
+    width: 25%; /* 로그인 상자 너비를 조정합니다. */
     border-radius: 8px;
   }
   
@@ -69,8 +67,19 @@
   .kakaoBtn, .naverBtn {
     width: 40px;
   }
+  @media screen and (max-width: 1269px) {
+    .loginLogo{
+      width: 30%;
+    }
+    .loginBox {
+      width: 40%; /* 화면 작을 때 로그인 상자의 너비 조정 */
+    }
+  }
 
   @media screen and (max-width: 768px) {
+    .loginLogo{
+      width: 50%;
+    }
     .loginBox {
       width: 80%; /* 화면 작을 때 로그인 상자의 너비 조정 */
     }
