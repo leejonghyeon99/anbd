@@ -79,8 +79,9 @@ const ListPage = () => {
 
   return (
     <div className="ListPageBox">
-      <h2> {sub} 판매 목록</h2>
-      <hr />
+      <div className="list-title">
+        <span> {sub} 판매 목록</span>
+      </div>
       {/* 검색 폼 */}
       <Form onSubmit={handleSearchSubmit} className="search-form">
         <FormControl
@@ -90,13 +91,9 @@ const ListPage = () => {
           value={search}
           onChange={handleSearchChange}
         />
-          <Button
-            type="submit"
-            id="search-button"
-            variant="outline-secondary"
-          >
-            <span className="button-text">Go</span>
-          </Button>
+        <Button type="submit" id="search-button" variant="outline-secondary">
+          <span className="button-text">Go</span>
+        </Button>
       </Form>
 
       {/* 검색 결과 메시지 */}
@@ -111,13 +108,9 @@ const ListPage = () => {
         </div>
 
         {/* 상품 등록 버튼 */}
-          <Button
-            id="write-button"
-            variant="outline-dark mt-3"
-            onClick={WriteOk}
-          >
-            <span className="button-text">상품 등록</span>
-          </Button>
+        <Button id="write-button" variant="outline-dark mt-3" onClick={WriteOk}>
+          <span className="button-text">상품 등록</span>
+        </Button>
       </div>
     </div>
   );
