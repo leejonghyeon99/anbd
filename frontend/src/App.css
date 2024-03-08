@@ -14,15 +14,15 @@
 }
 
 @font-face {
-  font-family: 'IBMPlexSansKR-Regular';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Regular.woff') format('woff');
-  font-weight: normal;
+  font-family: 'TTHakgyoansimUndongjangL';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2402_keris@1.0/TTHakgyoansimUndongjangL.woff2') format('woff2');
+  font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'NanumSquareNeo-Variable';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
+  font-family: 'IBMPlexSansKR-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Regular.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
@@ -47,6 +47,7 @@
 
 .header {
   z-index: 2; /* Header의 z-index 값을 설정 */
+  border-bottom: 2px solid rgba(43, 138, 6, 0.247);
 }
 
 .menu { 
@@ -82,6 +83,7 @@
   .header {
     width: 79%;
     float: right;
+    border-bottom: none;
   }
   .menu{ 
     width: 18%;
@@ -89,7 +91,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 5.5rem;
+    height: 5.5rem; 
   }
   #hamburger {
     display: flex;

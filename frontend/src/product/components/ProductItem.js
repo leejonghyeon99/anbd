@@ -23,8 +23,12 @@ const ProductItem = (props) => {
           </Link>
         </Card.Body>
         <ListGroup>
+        <Link to={`/product/detail/${id}`}>
           <ListGroupItem className="product-title">{title}</ListGroupItem>
+          </Link>
+          <Link to={`/product/detail/${id}`}>
           <ListGroupItem className="price">{price} 원</ListGroupItem>
+          </Link>
         </ListGroup>
       </Card>
     </>

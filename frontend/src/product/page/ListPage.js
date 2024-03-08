@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Form, FormControl, Row } from "react-bootstrap";
 import ProductItem from "../components/ProductItem";
 import { useNavigate, useParams } from "react-router-dom";
-import "../CSS/ListPage.css"
+import "../CSS/ListPage.css";
 
 const ListPage = () => {
   const navigate = useNavigate();
@@ -78,27 +78,25 @@ const ListPage = () => {
   };
 
   return (
-    <div>
+    <div className="ListPageBox">
       <h2> {sub} 판매 목록</h2>
       <hr />
       {/* 검색 폼 */}
-      <Form onSubmit={handleSearchSubmit}>
-        <Row noGutters>
-          <Col xs={3}>
-            <FormControl
-              id="searchBox"
-              type="text"
-              placeholder="검색"
-              value={search}
-              onChange={handleSearchChange}
-            />
-          </Col>
-          <Col xs={2}>
-            <Button type="submit" variant="outline-secondary">
-              Go
-            </Button>
-          </Col>
-        </Row>
+      <Form onSubmit={handleSearchSubmit} className="search-form">
+        <FormControl
+          id="searchBox"
+          type="text"
+          placeholder="검색"
+          value={search}
+          onChange={handleSearchChange}
+        />
+          <Button
+            type="submit"
+            className="custom-button"
+            variant="outline-secondary"
+          >
+            Go
+          </Button>
       </Form>
 
       {/* 검색 결과 메시지 */}
@@ -113,9 +111,13 @@ const ListPage = () => {
         </div>
 
         {/* 상품 등록 버튼 */}
-        <Button variant="outline-dark mt-3" onClick={WriteOk}>
-          상품 등록
-        </Button>
+          <Button
+            className="custom-button"
+            variant="outline-dark mt-3"
+            onClick={WriteOk}
+          >
+            상품 등록
+          </Button>
       </div>
     </div>
   );
