@@ -14,7 +14,7 @@ const ProductItem = (props) => {
           </div>
         <Card.Body>
           {/* 링크를 클릭하면 해당 상품의 상세 페이지로 이동 */}
-          <Link to={`/product/detail/${id}`}>
+          <Link to={`/product/detail/${id}`} className="moveToDetail">
             <Card.Img
               variant="top"
               src="/icon/search.png"
@@ -23,10 +23,10 @@ const ProductItem = (props) => {
           </Link>
         </Card.Body>
         <ListGroup>
-        <Link to={`/product/detail/${id}`}>
+        <Link to={`/product/detail/${id}`} className="moveToDetail">
           <ListGroupItem className="product-title">{title}</ListGroupItem>
           </Link>
-          <Link to={`/product/detail/${id}`}>
+          <Link to={`/product/detail/${id}`} className="moveToDetail">
           <ListGroupItem className="price">{price} 원</ListGroupItem>
           </Link>
         </ListGroup>

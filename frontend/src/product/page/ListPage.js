@@ -86,16 +86,16 @@ const ListPage = () => {
         <FormControl
           id="searchBox"
           type="text"
-          placeholder="검색"
+          placeholder="검색어를 입력하세요"
           value={search}
           onChange={handleSearchChange}
         />
           <Button
             type="submit"
-            className="custom-button"
+            className="search-button"
             variant="outline-secondary"
           >
-            Go
+            <span className="button-text">Go</span>
           </Button>
       </Form>
 
@@ -112,11 +112,11 @@ const ListPage = () => {
 
         {/* 상품 등록 버튼 */}
           <Button
-            className="custom-button"
+            className="write-button"
             variant="outline-dark mt-3"
             onClick={WriteOk}
           >
-            상품 등록
+            <span className="button-text">상품 등록</span>
           </Button>
       </div>
     </div>
