@@ -5,7 +5,12 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  border-bottom: 2px solid rgba(43, 138, 6, 0.247);
+  background-color: #0840741e;
+  padding-inline: 2rem;
+  padding-block: 0.5%;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.2)
+  , rgba(255, 255, 255, 0.2))
+  ,url("../../../public/img/headerBG.jpg");
 }
 /* 카테고리 메뉴 제외하고 감싼 div */
 /* .headerBox {
@@ -16,7 +21,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 6rem;
+  height: 8rem;
   width: 100%;
 }
 
@@ -44,6 +49,9 @@
   /* width: calc(100px + 8vw); */
   width: calc(120px + 3vw);
   margin-top: 1%;
+  border-radius: 50px;
+  background-color: #ffffffa2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.377);
 }
 
 .goHome {
@@ -53,6 +61,9 @@
 .anonymous a{
   font-size: calc(13px + 0.2vw);
   font-family: 'neurimboGothicRegular';
+  text-decoration: none;
+  color: #3a6581;
+  font-weight: bold;
 }
 
 .submenu {
