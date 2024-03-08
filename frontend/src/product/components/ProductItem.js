@@ -8,7 +8,7 @@ const ProductItem = (props) => {
 
   return (
     <>
-      <Card className="product-card">
+      <Card id="product-card">
         <div className="card-title">
           판매자 {user}
           </div>
@@ -23,10 +23,10 @@ const ProductItem = (props) => {
           </Link>
         </Card.Body>
         <ListGroup>
-        <Link to={`/product/detail/${id}`} className="moveToDetail">
+        <Link to={`/product/detail/${id}`} id="moveToDetail">
           <ListGroupItem className="product-title">{title}</ListGroupItem>
           </Link>
-          <Link to={`/product/detail/${id}`} className="moveToDetail">
+          <Link to={`/product/detail/${id}`} id="moveToDetail">
           <ListGroupItem className="price">{price} 원</ListGroupItem>
           </Link>
         </ListGroup>

@@ -92,7 +92,7 @@ const ListPage = () => {
         />
           <Button
             type="submit"
-            className="search-button"
+            id="search-button"
             variant="outline-secondary"
           >
             <span className="button-text">Go</span>
@@ -112,7 +112,7 @@ const ListPage = () => {
 
         {/* 상품 등록 버튼 */}
           <Button
-            className="write-button"
+            id="write-button"
             variant="outline-dark mt-3"
             onClick={WriteOk}
           >
