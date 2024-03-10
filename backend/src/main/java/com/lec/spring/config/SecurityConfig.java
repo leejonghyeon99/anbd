@@ -146,12 +146,12 @@ public class SecurityConfig {
 
         // 권한 규칙 작성
         http.authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN") // 관리자 권한이 필요한 API
-                        .requestMatchers("/api/user/passwordCheck","/api/user/update","/api/user/updatePassword"
-                                ,"/api/user/info", "/api/user/logout", "/api/user/deleteUser").hasRole("USER") // 일반 사용자 권한이 필요한 API
-                        .requestMatchers("/api/product/write","/api/product/update").hasRole("USER") // 일반 사용자 권한이 필요한 API
-//                .requestMatchers("/api/**", "/upload/**").permitAll()
-                        .requestMatchers("/api/user/signup", "/api/user/login","/api/auth/reissue", "/api/product/list/**","/api/product/detail/**", "/upload/**", "/api/product/category/**").permitAll()
+//                        .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN") // 관리자 권한이 필요한 API
+//                        .requestMatchers("/api/user/passwordCheck","/api/user/update","/api/user/updatePassword"
+//                                ,"/api/user/info", "/api/user/logout", "/api/user/deleteUser").hasAuthority("ROLE_USER") // 일반 사용자 권한이 필요한 API
+//                        .requestMatchers("/api/product/write","/api/product/update").hasAuthority("ROLE_USER") // 일반 사용자 권한이 필요한 API
+                .requestMatchers("/api/**", "/upload/**").permitAll()
+//                        .requestMatchers("/api/user/signup", "/api/user/login","/api/auth/reissue", "/api/product/list/**","/api/product/detail/**", "/upload/**", "/api/product/category/**").permitAll()
                         .anyRequest().authenticated()
         );
 

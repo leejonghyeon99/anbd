@@ -333,39 +333,75 @@ const [user_id, setUser_id] = useState("");
     // formData.append('files', selectedFiles);
     console.log("formData : " , ...formData);
 
-    const uploadedFiles = async (formData, options = {},isFormData = false) =>{
-
-      await fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
-      method: "POST",
-      body: formData,  // JSON 형식으로 데이터 전송
-    },true)
-      .then((response) => {
-        // 응답 헤더의 Content-Type 확인
-        const contentType = response.headers.get("Content-Type");
-        console.log("contentType : " + contentType);
-        console.log(response.json());
-        if (response.status === 201) {
-          // console.log(response.status);
-          // 응답이 정상적으로 생성되었다면 JSON 파싱 시도
-          return response.json()
-        } else {
-          // 다른 HTTP 상태 코드 처리
-          return Promise.reject("상품등록 응답 실패");
-        }
-      })
-      .then((data) => {
-        console.log("data: " + data);
-          alert("상품이 등록되었어요!");
-          console.log("data.id : " + data.id);
-          navigate(`/product/detail/${data.id}`); // 상세로 이동
-    })
-      .catch(error => {
-        alert("등록 실패");
-
-      });
-    }
     uploadedFiles(formData, {}, true);
   };
+
+  // 상품 작성 동작 - 폼 데이터 
+  const uploadedFiles = async (formData, options = {},isFormData = false) =>{
+
+  //   await fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
+  //   method: "POST",
+  //   body: formData,  // JSON 형식으로 데이터 전송
+  // },true)
+  //   .then((response) => {
+  //     // 응답 헤더의 Content-Type 확인
+  //     const contentType = response.headers.get("Content-Type");
+  //     console.log("contentType : " + contentType);
+  //     if (response.status === 201) {
+  //       // console.log(response.status);
+  //       // 응답이 정상적으로 생성되었다면 JSON 파싱 시도
+  //       return response.json().then(data=>{
+  //         console.log("성공 응답 JSON: ", data);
+  //       })
+  //     } 
+  //   })
+  //   .then((data) => {
+  //     console.log("data: " + data);
+  //       alert("상품이 등록되었어요!");
+  //       console.log("data.id : " + data.id);
+  //       navigate(`/product/detail/${data.id}`); // 상세로 이동
+  // })
+  //   .catch(error => {
+  //     console.error("등록 과정 중 오류:", error);
+  //     alert("등록 실패");
+  //   });
+
+  try {
+    const response = await fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
+      method: "POST",
+      body: formData,
+    }, true);
+
+    console.log("응답 상태 코드:", response.status);
+    const contentType = response.headers.get("Content-Type");
+    console.log("contentType : " , contentType);
+    const clone = response.clone(); // 응답 복제
+  const text = await clone.text(); // 복제된 응답의 본문을 텍스트로 읽음
+  console.log("응답 본문:", text);
+
+
+    if (response.status === 201) {
+
+      try {
+        const data = await response.json(); // 원본 응답에서 JSON 파싱 시도
+        console.log("성공 응답 JSON:", data);
+        alert("상품이 등록되었어요!");
+        navigate(`/product/detail/${data.id}`); // 상세로 이동
+      } catch (jsonError) {
+        // JSON 파싱 과정에서 오류가 발생한 경우
+        console.error("JSON 파싱 에러:", jsonError);
+      }
+    } else {
+      console.error("등록 실패. 응답 상태 코드가 201이 아닙니다.");
+      alert("등록 실패");
+    }
+  } catch (error) {
+    // fetch 요청 자체에서 오류가 발생한 경우
+    console.error("등록 과정 중 오류:", error);
+    alert("등록 실패");
+  }
+  };
+
   // 목록
   const ListOk = () => {
     navigate("/product/list");

@@ -60,7 +60,10 @@ public class ProductService {
 //        User user = userService.getUser().get();
 //        userRepository.findByUsername(user.getUsername());
 //        System.out.println("user~~~~~~~~~~~~~~~~~~~" + user);
-        String locationValue = product.getLocation().equals("") && product.getLocation().isEmpty() ? null : product.getLocation();
+
+        // location 값이 null이거나 빈 문자열일 때 null로 설정
+        String locationValue = (product.getLocation() == null || product.getLocation().isEmpty()) ? null : product.getLocation();
+
 
         Product productnew = Product.builder()
                 .title(product.getTitle())

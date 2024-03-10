@@ -36,8 +36,6 @@ public class Product extends BaseEntity{
     @Enumerated(value = EnumType.STRING)    //추가
     private Status status;
 
-//    @Column(nullable = false, columnDefinition = "default null")
-//    @JsonIgnore
     private String location;
 
     @Column(nullable = false, columnDefinition = "bigint default 0")
@@ -49,29 +47,29 @@ public class Product extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "category_id")
     @ToString.Exclude
-//    @JsonIgnore
+    @JsonIgnore
     private Category category;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     @ToString.Exclude
-//    @JsonIgnore
+    @JsonIgnore
     private User user;
 
     // 첨부파일
     @OneToMany(cascade = CascadeType.ALL)   //cascade = CascadeType.All 삭제 등의 동작 발생시 child 자동 삭제
     @JoinColumn(name="product_id")
-//    @JsonIgnore
+    @JsonIgnore
     @ToString.Exclude
     @Builder.Default
     private List<ProductImage> fileList = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
-//    @JsonIgnore
+    @JsonIgnore
     private List<WishList> wishList;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
-//    @JsonIgnore
+    @JsonIgnore
     private List<Review> reviews;
 
 //    @OneToMany(mappedBy = "product",cascade = CascadeType.REMOVE)
