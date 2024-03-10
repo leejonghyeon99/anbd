@@ -9,10 +9,11 @@
 #     "auth" : "ROLE_USER","ROLE_ADMIN",
 #     "star" : "0.0",
 #     "certification" : "approved",
-#     "region" : "광진구"
+#     "location" : "광진구"
 # }  -> postman에 넣어야함 ㅠ 안그럼 비번 인코딩이 안돼서!
 select main from Category as c group by c.main;
 select * from product;
+delete from product;
 select * from product_image;
 select * from user;
 update user set auth = 'ROLE_USER' where id =1;
@@ -40,7 +41,7 @@ select * from product;
 select c.id, c.main from Category c group by c.main;
 select * from user;
 update user set auth = 'ROLE_ADMIN' where id=1;
-insert into user (created_at, auth, certification, email, name, nickname, password, phone_number, region, star, username)
+insert into user (created_at, auth, certification, email, name, nickname, password, phone_number, location, star, username)
 values (now(), 'ROLE_ADMIN','APPROVED','test2@email.com','postMAN','NICK POST','$2a$10$0b3NoGkrbHefuZ5NCWNpa.kkt6j0tbstXWa2INhVYhn5mxn4iJLMy','01012341234','서울시 송파구',0.0,'user2');
 desc product;
 /*상품 sample*/

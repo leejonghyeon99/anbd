@@ -48,16 +48,19 @@ public class ProductService {
 
     // 등록
     public Product write(ProductsDTO product, List<MultipartFile> files){
-        System.out.println(product + "저장전");
-        System.out.println(files + "저장전");
+//        System.out.println(product + "저장전");
+//        System.out.println(files + "저장전");
         Category category = categoryRepository.findUnique(product.getCategoryMain(),product.getCategorySub());
-        System.out.println(category);
+//        System.out.println(category);
 
 //        User user = userRepository.findByUsername(userService.getUser().get().getUsername()).orElse(null);
-        User user = userRepository.findById(product.getUser_id()).orElse(null);
+        User user_id = userRepository.findById(product.getUser_id()).orElse(null);
+//        User user_id = productRepository.findByUserId(product.getUser_id());
+        System.out.println("product user_id : " + user_id);
 //        User user = userService.getUser().get();
 //        userRepository.findByUsername(user.getUsername());
-        System.out.println("user~~~~~~~~~~~~~~~~~~~" + user);
+//        System.out.println("user~~~~~~~~~~~~~~~~~~~" + user);
+        String locationValue = product.getLocation().equals("") && product.getLocation().isEmpty() ? null : product.getLocation();
 
         Product productnew = Product.builder()
                 .title(product.getTitle())
@@ -65,20 +68,25 @@ public class ProductService {
                 .price(product.getPrice())
                 .status(product.getStatus())
                 .category(category)
-                .location(product.getLocation())
-                .user(user)
+                .location(locationValue)
+                .user(user_id)
                 .fileList(product.getFileList())
                 .build();
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++" + productnew);
+
+        System.out.println("productnew: " + productnew);
 
         System.out.println("~~~~~~~~~~~");
         Product sProduct = productRepository.save(productnew);
+
         System.out.println(product + "저장 후");
         // 제품을 save 한 후 id값을 가져옴
         Long productId = sProduct.getId();
         System.out.println("productID가 나와야함: " + productId);
         // 파일 추가
         addFiles(files, productId);
+
+        System.out.println("sProduct : " + sProduct);
+
         return sProduct;
     }
 
@@ -240,8 +248,8 @@ public class ProductService {
 //        User user = userRepository.findById(product.getUser().getId()).orElse(null);
 //        product.getUser().getId()
 //        product.setUser(user);
-
-        User user = userService.getUser().get();
+        User user = userRepository.findById(product.getUser().getId()).orElse(null);
+//        User user = userService.getUser().get();
         System.out.println("user~~~~~~~~~~~~~~~~~~~" + user);
 
 //        List<ProductImage> fileList = productImageRepository.findByProduct(product.getId());

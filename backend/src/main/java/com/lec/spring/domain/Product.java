@@ -36,6 +36,8 @@ public class Product extends BaseEntity{
     @Enumerated(value = EnumType.STRING)    //추가
     private Status status;
 
+//    @Column(nullable = false, columnDefinition = "default null")
+//    @JsonIgnore
     private String location;
 
     @Column(nullable = false, columnDefinition = "bigint default 0")

@@ -17,7 +17,9 @@ const DetailPage = () => {
     user:"",
     category:{
       sub:""
-    }
+    },
+    location: "",
+    user_id: "",
   });
 
   const [selectFiles, setSelectFiles] = useState("");
@@ -35,13 +37,13 @@ const DetailPage = () => {
   
   // 리스트 페이지 이동
   const ListOk = () => {
-    navigate('/product/list');
+    navigate('/product/list/' + product.category.sub);
   }
   
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/detail/` + id)
-    .then(response => response.json())
-    .then(data => setProduct(data));
+    .then(response => response.json(), console.log("디테일 응답 성공"))
+    .then(data => setProduct(data), console.log("detailData : " + product))
   }, []);
 
   const DeleteOk = () => {

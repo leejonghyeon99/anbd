@@ -22,6 +22,7 @@ public class CorsConfig {
 
         // 이 요청주소로 오는 모든 출처, 헤더, 요청방식 허용
         source.registerCorsConfiguration("/api/**", corsConfiguration);
+        source.registerCorsConfiguration("/upload/**", corsConfiguration);
 
 
         return new CorsFilter(source);
