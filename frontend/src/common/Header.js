@@ -89,13 +89,13 @@ const Header = () => {
               ...additionalUserInfo,
             }));
           } else {
-            console.error("Failed to fetch additional user info");
+            console.error("Header - Failed to fetch additional user info");
           }
         } else {
           // console.log("No token found, user is not logged in");
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Header - Error fetching data:", error);
       }
     };
 

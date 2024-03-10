@@ -127,8 +127,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.csrf((csrf) -> csrf.disable());
-        http.cors((cors) -> cors.disable());
-//        http.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class);
+        //        http.cors((cors) -> cors.disable());
+        http.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class);
+
 
         // 폼로그인, 베이직http 비활성화
         http.formLogin((form) -> form.disable());
@@ -145,24 +146,24 @@ public class SecurityConfig {
 
         // 권한 규칙 작성
         http.authorizeHttpRequests((authorize) -> authorize
-//                .requestMatchers("/api/admin/**").hasRole("ROLE_ADMIN") // 관리자 권한이 필요한 API
-//                .requestMatchers("/api/user/passwordCheck","/api/user/update","/api/user/updatePassword"
-//                        ,"/api/user/info", "/api/user/logout", "/api/user/deleteUser").hasRole("ROLE_USER") // 일반 사용자 권한이 필요한 API
-//                .requestMatchers("/api/product/write","/api/product/update").hasRole("ROLE_USER") // 일반 사용자 권한이 필요한 API
+//                        .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN") // 관리자 권한이 필요한 API
+//                        .requestMatchers("/api/user/passwordCheck","/api/user/update","/api/user/updatePassword"
+//                                ,"/api/user/info", "/api/user/logout", "/api/user/deleteUser").hasAuthority("ROLE_USER") // 일반 사용자 권한이 필요한 API
+//                        .requestMatchers("/api/product/write","/api/product/update").hasAuthority("ROLE_USER") // 일반 사용자 권한이 필요한 API
                 .requestMatchers("/api/**", "/upload/**").permitAll()
-//                .requestMatchers("/api/user/signup", "/api/user/login", "/api/product/list/**","/api/product/detail/**", "/upload/**", "/api/product/category/**").permitAll()
-                .anyRequest().authenticated()
+//                        .requestMatchers("/api/user/signup", "/api/user/login","/api/auth/reissue", "/api/product/list/**","/api/product/detail/**", "/upload/**", "/api/product/category/**").permitAll()
+                        .anyRequest().authenticated()
         );
 
 
 
-        http.oauth2Login(oauth2Login -> oauth2Login
-                .successHandler(oAuth2LoginSuccessHandler) // 동의하고 계속하기를 눌렀을 때 Handler 설정
-                .failureHandler(oAuth2LoginFailureHandler) // 소셜 로그인 실패 시 핸들러 설정
-                .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
-                        .userService(customOAuth2UserService)
-                )
-        );
+//        http.oauth2Login(oauth2Login -> oauth2Login
+//                .successHandler(oAuth2LoginSuccessHandler) // 동의하고 계속하기를 눌렀을 때 Handler 설정
+//                .failureHandler(oAuth2LoginFailureHandler) // 소셜 로그인 실패 시 핸들러 설정
+//                .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
+//                        .userService(customOAuth2UserService)
+//                )
+//        );
 
         return http.build();
 

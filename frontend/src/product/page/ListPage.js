@@ -22,6 +22,7 @@ const ListPage = () => {
         const url = `${apiUrl}/api/product/list/${sub}`;
         const response = await fetch(url);
         const data = await response.json();
+        console.log("listdata : " + data);
 
         // 서버에서 받은 데이터를 category 상태에 저장
         setProducts(data);

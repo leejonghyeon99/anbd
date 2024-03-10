@@ -5,7 +5,7 @@ export const fetchWithToken = async (url, options = {},isFormData = false) => {
 
   // 엑세스 토큰 확인
   if (!accessToken) {
-    console.error("No access token found.");
+    console.log("No access token found.");
     return null;
   }
 
@@ -14,7 +14,7 @@ export const fetchWithToken = async (url, options = {},isFormData = false) => {
   try {
     decodedToken = jwtDecode(accessToken);
   } catch (error) {
-    console.error("Invalid token:", error);
+    console.log("Invalid token:", error);
     return null;
   }
 
@@ -27,7 +27,7 @@ export const fetchWithToken = async (url, options = {},isFormData = false) => {
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           username: decodedToken.sub,
@@ -39,9 +39,10 @@ export const fetchWithToken = async (url, options = {},isFormData = false) => {
       const reissueData = await reissueResponse.json();
       localStorage.setItem("accessToken", reissueData.accessToken);
       accessToken = reissueData.accessToken;
+      console.log("토큰 재발급 성공");
     } else {
       // 재발급 실패 시 처리
-      console.error("Token reissue failed. Please login again.");
+      console.log("토큰 재발급 실패");
       return null;
     }
   }
@@ -55,20 +56,20 @@ export const fetchWithToken = async (url, options = {},isFormData = false) => {
     },
   };
 
-  // isFormData가 true인 경우, Content-Type 헤더를 설정하지 않습니다.
-  if (!isFormData) {
-    fetchOptions.headers['Content-Type'] = 'application/json';
-  } else {
-    // FormData를 사용하는 경우, fetchOptions.headers 객체에서 Content-Type을 삭제합니다.
+  if (isFormData) {
     delete fetchOptions.headers['Content-Type'];
+    fetchOptions.body = options.body;
+  } else {
+    fetchOptions.headers['Content-Type'] = 'application/json';
   }
 
   let response = await fetch(url, fetchOptions);
 
   // 만약 응답이 401 Unauthorized라면 추가 처리가 필요할 수 있음
   if (response.status === 401) {
+    console.log(JSON.stringify(fetchOptions, null, 2));
     console.error("401 Unauthorized");
-  }
+  } 
 
   return response;
 };

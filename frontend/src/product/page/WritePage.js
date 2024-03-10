@@ -25,7 +25,7 @@ const WritePage = () => {
     }
   }, [location.state]);
 
-  // 상품
+  // 상품 정보 담는 곳
   const [product, setProduct] = useState({
     id: "",
     title: "",
@@ -34,10 +34,11 @@ const WritePage = () => {
     status: "",
     createdAt: "",
     location: "",
-    user: "",
+    user_id: "",
   });
 
-  const [user, setUser] = useState("");
+// 유저id 불러오기
+const [user_id, setUser_id] = useState("");
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
   useEffect(() => {
@@ -49,8 +50,8 @@ const WritePage = () => {
           throw new Error('Failed to fetch user info');
         }
         const data = await response.json();
-        console.log(data); // 로그인한 사용자 정보 확인
-        setUser(data.id); // 사용자 ID를 user 상태에 저장
+        console.log("writepage 유저id : "+ data.id);
+        setUser_id(data.id); // 사용자 ID를 user 상태에 저장
       } catch (error) {
         console.error("Error fetching user info:", error);
       }
@@ -132,9 +133,10 @@ const WritePage = () => {
 
   const [selectMain, setSelectMain] = useState("");
   const [selectSub, setSelectSub] = useState("");
+
   useEffect(()=>{
-    console.log(selectMain);
-    console.log(selectSub);
+    console.log("selectMain: " + selectMain);
+    console.log("selectSub: " + selectSub);
   },[selectMain, selectSub])
   // 이미지 첨부
   // const uploadFile = (e) => {
@@ -191,7 +193,7 @@ const WritePage = () => {
      fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/category/main`)
     .then(response => response.json())
     .then(data => {
-      console.log(data);
+      // console.log(data);
       setMainCategories(data);
     });
   }, []);
@@ -240,9 +242,10 @@ const WritePage = () => {
   const pc = {
     ...product,
     category: {
-      main: selectMain.main,
-      sub: selectSub.sub
+      main: selectMain,
+      sub: selectSub,
     },
+    user_id: user_id,
   };
 
   // 추가버튼
@@ -318,44 +321,87 @@ const WritePage = () => {
     formData.append('location', product.location);
     formData.append('categoryMain', selectMain);
     formData.append('categorySub', selectSub);
-    formData.append('user', user);
+    formData.append('user_id', user_id);
+
+    // pc 객체를 JSON 문자열로 변환하여 formData에 추가
+    formData.append('product', JSON.stringify(pc));
     
     // for (let index = 0; index < selectedFiles.length; index++) {
     //   const element = selectedFiles[index];
     //   console.log("element" + selectedFiles[0], selectedFiles[0].originName);
     // }
     // formData.append('files', selectedFiles);
-    console.log(...formData);
+    console.log("formData : " , ...formData);
 
-    const uploadedFiles = async (formData) =>{
-
-      // await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
-      await fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
-      method: "POST",
-      body: formData,  // JSON 형식으로 데이터 전송
-    })
-      .then((response) => {
-        console.log(`응답하라`, response);
-        if (response.status === 201) {
-          // CREATED
-          return response.json();
-        } else {
-          console.error("Unexpected response status : ", response.status);
-          return null;
-        }
-      })
-      .then((data) => {
-        if (data !== null) {
-          console.log(`작성해라`, data);
-          alert("상품이 등록되었어요!");
-          navigate(`/product/detail/${data.id}`); // 상세로 이동
-        } else {
-          alert("등록 실패");
-        }
-      });
-    }
-    uploadedFiles(formData);
+    uploadedFiles(formData, {}, true);
   };
+
+  // 상품 작성 동작 - 폼 데이터 
+  const uploadedFiles = async (formData, options = {},isFormData = false) =>{
+
+  //   await fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
+  //   method: "POST",
+  //   body: formData,  // JSON 형식으로 데이터 전송
+  // },true)
+  //   .then((response) => {
+  //     // 응답 헤더의 Content-Type 확인
+  //     const contentType = response.headers.get("Content-Type");
+  //     console.log("contentType : " + contentType);
+  //     if (response.status === 201) {
+  //       // console.log(response.status);
+  //       // 응답이 정상적으로 생성되었다면 JSON 파싱 시도
+  //       return response.json().then(data=>{
+  //         console.log("성공 응답 JSON: ", data);
+  //       })
+  //     } 
+  //   })
+  //   .then((data) => {
+  //     console.log("data: " + data);
+  //       alert("상품이 등록되었어요!");
+  //       console.log("data.id : " + data.id);
+  //       navigate(`/product/detail/${data.id}`); // 상세로 이동
+  // })
+  //   .catch(error => {
+  //     console.error("등록 과정 중 오류:", error);
+  //     alert("등록 실패");
+  //   });
+
+  try {
+    const response = await fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
+      method: "POST",
+      body: formData,
+    }, true);
+
+    console.log("응답 상태 코드:", response.status);
+    const contentType = response.headers.get("Content-Type");
+    console.log("contentType : " , contentType);
+    const clone = response.clone(); // 응답 복제
+  const text = await clone.text(); // 복제된 응답의 본문을 텍스트로 읽음
+  console.log("응답 본문:", text);
+
+
+    if (response.status === 201) {
+
+      try {
+        const data = await response.json(); // 원본 응답에서 JSON 파싱 시도
+        console.log("성공 응답 JSON:", data);
+        alert("상품이 등록되었어요!");
+        navigate(`/product/detail/${data.id}`); // 상세로 이동
+      } catch (jsonError) {
+        // JSON 파싱 과정에서 오류가 발생한 경우
+        console.error("JSON 파싱 에러:", jsonError);
+      }
+    } else {
+      console.error("등록 실패. 응답 상태 코드가 201이 아닙니다.");
+      alert("등록 실패");
+    }
+  } catch (error) {
+    // fetch 요청 자체에서 오류가 발생한 경우
+    console.error("등록 과정 중 오류:", error);
+    alert("등록 실패");
+  }
+  };
+
   // 목록
   const ListOk = () => {
     navigate("/product/list");
