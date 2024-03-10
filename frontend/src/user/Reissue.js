@@ -39,9 +39,10 @@ export const fetchWithToken = async (url, options = {},isFormData = false) => {
       const reissueData = await reissueResponse.json();
       localStorage.setItem("accessToken", reissueData.accessToken);
       accessToken = reissueData.accessToken;
+      console.log("토큰 재발급 성공");
     } else {
       // 재발급 실패 시 처리
-      console.log("Token reissue failed. Please login again.");
+      console.log("토큰 재발급 실패");
       return null;
     }
   }
