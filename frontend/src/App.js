@@ -14,17 +14,17 @@ import WritePage from "./product/page/WritePage";
 import DetailPage from "./product/page/DetailPage";
 import UpdatePage from "./product/page/UpdatePage";
 import GoogleMaps from "./product/page/GoogleMaps";
-import ChatPage from "./chat/page/ChatPage";
 import UpdatePassword from "./user/UpdatePassword";
 import { Button } from "react-bootstrap";
 import MyPage from "./user/my/MyPage";
 import { jwtDecode } from "jwt-decode";
 import { fetchWithToken } from "./user/Reissue";
-
+import ChatPage from "./chat/ChatPage";
 
 const App = () => {
   const [menuToggle, setMenuToggle] = useState(true);
   const sidebarRef = useRef(null);
+  const [userInfo, setUserInfo] = useState(); // 이 상태를 App 컴포넌트 전체에서 사용
 
   const toggleSidebar = () => {
     setMenuToggle(!menuToggle);
@@ -49,7 +49,7 @@ useEffect(() => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-  
+
   // 768px 이하인 경우 Sidebar 외의 곳을 클릭하면 닫히는 동작
   useEffect(() => {
     const handleOutsideClick = (event) => {
@@ -114,13 +114,13 @@ function PrivateRoute({ children, allowedRoles }) {
 
   if (allowedRoles.includes(userRole)) {
     if (userRole === 'ROLE_USER' && userId === username) {
-      return children; 
+      return children;
     } else if(userRole === 'ROLE_ADMIN'){
-      return children; 
+      return children;
     } else {
       return <Navigate to="/home" />;
     }
-  } 
+  }
   else {
     return <Navigate to="/home" />; // 권한이 없는 경우
   }
@@ -142,7 +142,7 @@ function PrivateRoute({ children, allowedRoles }) {
           </div>
         </div>
         <div className="content">
-          
+
           {/* 권한 없이 접근 가능 */}
           <Routes>
             <Route path="/" element={<Navigate to="/home"></Navigate>}></Route>
