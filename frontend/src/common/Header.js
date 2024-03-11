@@ -227,13 +227,13 @@ const Header = () => {
             {" "}
             {/* Navbar의 isVisible 속성에 따라 보이거나 숨김 */}
             <nav className="nav-menu">
-              <li className="navbar-toggle">
+              <Link className="navbar-toggle">
                 <img
                   src="/icon/Xmark.png"
                   className="closeMypage"
                   onClick={toggleMypage}
                 />
-              </li>
+              </Link>
               <div className="mypage_nickname">
               <small>Today {getCurrentDate()}</small>
                 <p>

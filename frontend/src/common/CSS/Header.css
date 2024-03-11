@@ -28,6 +28,16 @@
 #navbar {
   z-index: 5;
   border: none;
+  border-radius: 15px;
+  background-color: #ffffff;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.2)
+  , rgba(255, 255, 255, 0.2))
+  ,url("https://i.pinimg.com/564x/f0/34/63/f034632968845633ec399354377f84b3.jpg");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  box-shadow: 0 10px 15px rgba(8, 49, 68, 0.541);
+  
 }
 
 /* auth에 따른 아이콘 크기 설정*/
