@@ -49,6 +49,7 @@ Form div {
 
 #otherBtn {
     width: 20%;
+    max-width: 120px;
     font-size: smaller;
     padding: 0.4rem;
     margin-inline: 0.5rem;
@@ -58,11 +59,20 @@ Form div {
     font-size: smaller;
     padding: 0.4rem;
     width: 20%;
+    max-width: 120px;
     margin-inline: 0.5rem;
     background-color: #6a863d;
     color: #fff;
     border: transparent;
     float: inline-end;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#updateBtn:hover {
+    background-color: #fce085;
+    color: #66a03f;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0.1);
+    border: 1px solid;
 }
 
 #withdraw {

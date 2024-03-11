@@ -62,7 +62,7 @@ const PasswordCheck = () => {
     <>
       <div className="pswdChk">
         <div className="pswdChk_box">
-          <h3>비밀번호 확인</h3>
+          <div className="pswdTitle">비밀번호 확인</div>
           <Form className="text">{username} 님!</Form>
             <Form className="text">비밀번호 : {" "}</Form>
             <input

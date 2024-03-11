@@ -348,7 +348,7 @@ const Update = () => {
               인증번호 확인
             </Button>
           </div>
-        )}
+        )}<br/>
          {/* 인증 성공 메시지 */}
          {isVerified && <div style={{ color: 'blue' }}>[이메일 인증 완료]</div>}
         <div></div>

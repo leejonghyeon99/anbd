@@ -57,6 +57,7 @@
   border-radius: 50px;
   background-color: #ffffffa2;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.377);
+  margin-bottom: 1rem;
 }
 
 .goHome {
@@ -87,18 +88,31 @@
 .submenu li:hover {
   color: #3a6581;
 }
+@media screen and (max-width: 1024px) {
+  .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0;
+  }
+
+}
 
 @media screen and (max-width: 768px) {
   .logo {
     display: flex;
     align-items: center;
     justify-content: center;
-
+    margin-left:4%;
   }
   
   #menuIcon {
     display: inline-block;
     width: 2rem;
+  }
+
+  #adminIcon, #userIcon {
+    margin-left: 70%;
   }
 
 }
