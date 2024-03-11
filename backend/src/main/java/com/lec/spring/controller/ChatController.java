@@ -2,6 +2,7 @@ package com.lec.spring.controller;
 
 
 import com.lec.spring.domain.Chat;
+import com.lec.spring.domain.User;
 import com.lec.spring.dto.UserDTO;
 import com.lec.spring.service.UserService;
 import com.lec.spring.service.chat.ChatService;
@@ -28,7 +29,7 @@ public class ChatController {
         System.out.println("메세지 요청받음");
         String processedMessage = "User in room " + roomId + ": " + message;
         System.out.println(processedMessage);
-        System.out.println(userService.getUser().get().getName());
+
         return processedMessage;
     }
 }
