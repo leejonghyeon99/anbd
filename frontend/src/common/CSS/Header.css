@@ -33,10 +33,14 @@
 /*user auth*/
 #userIcon {
   width: 3rem;
+  border-radius: 30px;
+  background-color: #ffffffad;
 }
 /*admin auth*/
 #adminIcon {
-  width: 2.7rem;
+  width: 3rem;
+  border-radius: 30px;
+  background-color: #ffffffad;
 }
 
 .mypageToggle {
@@ -59,7 +63,7 @@
 }
 
 .anonymous a{
-  font-size: calc(13px + 0.2vw);
+  font-size: calc(13px + 0.5vw);
   font-family: 'neurimboGothicRegular';
   text-decoration: none;
   color: #3a6581;

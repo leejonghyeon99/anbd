@@ -209,7 +209,7 @@ const Header = () => {
               )}
               {user.auth === "ROLE_ADMIN" && (
                 <img
-                  src="/icon/admin.png"
+                  src="/icon/admin2.png"
                   id="adminIcon"
                   onClick={toggleMypage}
                 />
