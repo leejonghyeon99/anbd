@@ -8,23 +8,5 @@ export const AdminpagebarList = [
     path: "/admin",
     icon: <BiBarChartAlt2 />,
     cName: "nav-text",
-  },
-  {
-    title: "어드민",
-    path: "/",
-    icon: <BiBarChart />,
-    cName: "nav-text",
-  },
-  {
-    title: "메뉴입니다",
-    path: "/",
-    icon: <BiBarChart />,
-    cName: "nav-text",
-  },
-  {
-    title: "ㅇㅇㅇㅇㄴㄹㅇㄴㅇㅇ",
-    path: "/",
-    icon: <BiBarChart />,
-    cName: "nav-text",
-  },
+  }
 ];
