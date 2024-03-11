@@ -38,7 +38,7 @@ li,
   font-size: calc(10px + 0.3vw);
   font-weight: 800;
   color: rgb(19, 47, 73);
-  border: 5px double rgba(19, 47, 73, 0.712);
+  border: 5px groove rgba(19, 47, 73, 0.712);
   margin-bottom: 0.4rem;
   padding: 0.5rem;
 }
@@ -75,11 +75,12 @@ li,
 
 .mypageList {
   font-size: 13px;
-  border: 1px solid rgba(24, 84, 107, 0);
-  background-color: rgba(24, 84, 107, 0.281);
+  border: 5px double rgba(24, 84, 107, 0.281);
+  border-radius: 20px;
+  /* background-color: rgba(24, 84, 107, 0.281); */
   transition: color 0.5s ease; /* hover 효과를 부드럽게 만들기 위한 transition 추가 */
-  color: rgb(14, 45, 66);
-  font-family: 'yg-jalnan';
+  color: rgb(32, 76, 114);
+  font-family: 'SOYOMapleBoldTTF';
   margin: 0.5rem;
   z-index: 4;
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.158);
@@ -93,8 +94,8 @@ li,
 
 .mypageList:hover {
   color: rgb(32, 76, 114);
-  border: solid 3px rgba(255, 255, 255, 0);
-  box-shadow: 0 0 20px rgba(32, 76, 114, 0.329);
+  border: double 4px rgba(255, 255, 255, 0);
+  box-shadow: 0 0 10px rgba(32, 76, 114, 0.329);
   background-color: rgba(24, 84, 107, 0.281);
   font-weight: bolder;
 }
