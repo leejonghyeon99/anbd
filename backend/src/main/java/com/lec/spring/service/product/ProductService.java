@@ -6,6 +6,7 @@ import com.lec.spring.domain.ProductImage;
 import com.lec.spring.domain.User;
 import com.lec.spring.dto.CategoryDTO;
 import com.lec.spring.dto.ProductDTO;
+import com.lec.spring.dto.ProductImageDTO;
 import com.lec.spring.dto.ProductsDTO;
 import com.lec.spring.repository.CategoryRepository;
 import com.lec.spring.repository.UserRepository;
@@ -26,6 +27,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +38,6 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
-
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final UserService userService;
@@ -87,7 +88,7 @@ public class ProductService {
         addFiles(files, productId);
 
         System.out.println("sProduct : " + sProduct);
-
+//        ProductDTO.toDto()
         return sProduct;
     }
 
@@ -242,20 +243,45 @@ public class ProductService {
 
     }
 
+//    // 상세
+//    @Transactional
+//    public ProductDTO detail(Long id){
+//        Product product = productRepository.findById(id).orElse(null);
+////        User user = userRepository.findById(product.getUser().getId()).orElse(null);
+////        product.getUser().getId()
+////        product.setUser(user);
+//        User user = userRepository.findById(product.getUser().getId()).orElse(null);
+////        User user_id = userRepository.findById(product.getUser_id()).orElse(null);
+////        User user = userService.getUser().get();
+//        System.out.println("user~~~~~~~~~~~~~~~~~~~" + user);
+//
+////        List<ProductImage> fileList = productImageRepository.findByProduct(product.getId());
+////        product.setFileList(fileList);
+//        return ProductDTO.toDto(product);
+//    }
+
     // 상세
     @Transactional
     public ProductDTO detail(Long id){
-        Product product = productRepository.findById(id).orElse(null);
-//        User user = userRepository.findById(product.getUser().getId()).orElse(null);
-//        product.getUser().getId()
-//        product.setUser(user);
-        User user = userRepository.findById(product.getUser().getId()).orElse(null);
-//        User user = userService.getUser().get();
-        System.out.println("user~~~~~~~~~~~~~~~~~~~" + user);
+        Product product = productRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Product with id " + id + " not found"));
+//        User user = userRepository.findById(product.getUser().getId()).orElseThrow(() -> new IllegalArgumentException("User with id " + product.getUser().getId() + " not found"));
 
-//        List<ProductImage> fileList = productImageRepository.findByProduct(product.getId());
-//        product.setFileList(fileList);
-        return ProductDTO.toDto(product);
+        // 상품 이미지 정보 조회
+        List<ProductImage> productImages = productImageRepository.findByProductId(id);
+
+        // ProductDTO 변환 (기존 로직 유지하며 상품 이미지 정보 추가)
+        ProductDTO productDTO = ProductDTO.toDto(product);
+
+        // ProductDTO에 상품 이미지 정보 설정
+        // 이 부분은 ProductDTO 내에 List<ProductImageDTO> 또는 비슷한 필드가 정의되어 있어야 합니다.
+        // ProductImageDTO는 ProductImage 엔티티를 DTO로 변환하는 클래스입니다. 필요에 따라 구현해야 합니다.
+        List<ProductImageDTO> productImageDTOs = productImages.stream()
+                .map(ProductImageDTO::toDto)
+                .collect(Collectors.toList());
+
+        productDTO.setFileList(productImageDTOs); // 상품 이미지 정보를 DTO에 설정
+
+        return productDTO;
     }
 
     // 수정

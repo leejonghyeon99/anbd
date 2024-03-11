@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
@@ -25,7 +27,7 @@ public class ProductImageController {
     @Value("${app.upload.product.path}")
     private String uploadDir;
 
-    private ProductImageService productImageService;
+    private final ProductImageService productImageService;
 
     @RequestMapping("/product/download")
     public ResponseEntity<Object> download(Integer id) {
@@ -37,7 +39,9 @@ public class ProductImageController {
         String originName = file.getOriginName();  // 원본이름
         String photoName = file.getPhotoName(); // 저장된 파일명
 
-        String path = new File(originName, photoName).getAbsolutePath();
+//        String path = new File(originName, photoName).getAbsolutePath();
+        String path = Paths.get(uploadDir, photoName).toString();
+        System.out.println("path : " + path);
 
         try {
             // 파일 유형 (Mimetype) 추출
@@ -49,6 +53,7 @@ public class ProductImageController {
             }
 
             Path filePath = Paths.get(path);
+            System.out.println("filePath : " + filePath);
             Resource resource = new InputStreamResource(Files.newInputStream(filePath));
 
             // response header 세팅
@@ -65,4 +70,35 @@ public class ProductImageController {
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);  // 409
         }
     }
+
+//    @GetMapping("/product/image")
+//    public ResponseEntity<Resource> showImage(@RequestParam Integer id) {
+//        if (id == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // 400: 잘못된 요청
+//
+//        ProductImage file = productImageService.findByImageId(id);
+//        if (file == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404: 이미지가 데이터베이스에 없음
+//
+//        Path filePath = Paths.get(uploadDir, file.getPhotoName());
+//        if (!Files.exists(filePath)) {
+//            // 파일이 실제로 존재하지 않는 경우
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404: 파일 시스템에 이미지가 없음
+//        }
+//
+//        try {
+//            String mimeType = Files.probeContentType(filePath);
+//            if (mimeType == null) {
+//                mimeType = "application/octet-stream";
+//            }
+//
+//            Resource resource = new InputStreamResource(Files.newInputStream(filePath));
+//
+//            return ResponseEntity.ok()
+//                    .contentType(MediaType.parseMediaType(mimeType))
+//                    .body(resource);
+//
+//        } catch (IOException e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // 500: 서버 내부 오류
+//        }
+//    }
+
 }

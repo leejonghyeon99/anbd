@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ProductImageService {
-    private ProductImageRepository productImageRepository;
+
+    private final ProductImageRepository productImageRepository;
 
     // 이미지 첨부파일
     @Transactional
