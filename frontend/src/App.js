@@ -23,13 +23,12 @@ import { fetchWithToken } from "./user/Reissue";
 
 const App = () => {
   const [menuToggle, setMenuToggle] = useState(true);
-  const sidebarRef = useRef(null);
-  const [userInfo, setUserInfo] = useState(); // 이 상태를 App 컴포넌트 전체에서 사용
-
+  const sidebarRef = useRef(null)
+  
   const toggleSidebar = () => {
     setMenuToggle(!menuToggle);
   };
-
+  
   useEffect(() => {
     // 창 크기 변화를 감지하여 메뉴 상태를 업데이트하는 이벤트 핸들러
     const handleResize = () => {
@@ -37,19 +36,19 @@ const App = () => {
       // 그렇지 않으면 메뉴를 감추도록 설정
       setMenuToggle(window.innerWidth >= 768);
     };
-
+    
     // 컴포넌트가 마운트될 때 초기 값 설정
     handleResize();
-
+    
     // 리사이즈 이벤트에 이벤트 리스너 추가
     window.addEventListener("resize", handleResize);
-
+    
     // 컴포넌트가 언마운트될 때 이벤트 리스너 정리
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
+  
   // 768px 이하인 경우 Sidebar 외의 곳을 클릭하면 닫히는 동작
   useEffect(() => {
     const handleOutsideClick = (event) => {
@@ -60,20 +59,20 @@ const App = () => {
         }
       }
     };
-
+    
     document.addEventListener("click", handleOutsideClick);
-
+    
     return () => {
       document.removeEventListener("click", handleOutsideClick);
     };
   }, []);
-
+  
   // 엑세스 토큰에서 유저 권한, username 가져오기
   function useTokenInfo() {
     const token = localStorage.getItem("accessToken");
-
+    
     if (!token) return { isAuthenticated: false };
-
+    
     try {
       const decoded = jwtDecode(token);
       return {
@@ -87,6 +86,24 @@ const App = () => {
     }
   }
 
+  // 애플리케이션 초기화 시 로컬 스토리지의 토큰에서 username을 동기적으로 추출하여 초기 상태 설정
+  // 새로고침 에러를 막기 위해 작성
+  const initialUserInfo = () => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        return { username: decoded.sub }; // 디코드된 토큰에서 username 반환
+      } catch (error) {
+        console.error("Token decode error:", error);
+        return null; // 디코드 중 에러 발생 시 null 반환
+      }
+    }
+    return null; // 토큰이 없는 경우 null 반환
+  };
+
+  const [userInfo, setUserInfo] = useState(initialUserInfo);
+  
   // 토큰으로 유저 정보 불러오기
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -111,6 +128,7 @@ const App = () => {
     };
     fetchUserInfo();
   }, []);
+
 
   // 조건부 라우팅을 위한 컴포넌트
   function PrivateRoute({ allowedRoles, userInfo }) {
