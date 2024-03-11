@@ -95,13 +95,13 @@ const DetailPage = () => {
       <div className="container mt-3 mb-3 border rounded">
         <div className="mb-3 mt-3">
           <label>첨부파일:</label>
-          {/* <ul className="list-group mb-1">
+           {/* <ul className="list-group mb-1">
             {product.fileList.map((productImage, index) => (
             <li key={index} className="list-group-item">
               <a href={`/product/download?id=${productImage.id}`}>{productImage.originName}</a>
-            </li> */}
-          {/* ))} */}
-          {/* </ul> */}
+            </li> 
+          ))}
+         </ul> */}
           {/* 이미지인 경우 보여주기 */}
         {/* {product.fileList.map((productImage, index) => (
           productImage.image && (

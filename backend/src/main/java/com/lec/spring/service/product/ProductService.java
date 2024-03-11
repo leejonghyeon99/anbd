@@ -12,12 +12,10 @@ import com.lec.spring.repository.UserRepository;
 import com.lec.spring.repository.product.ProductImageRepository;
 import com.lec.spring.repository.product.ProductRepository;
 import com.lec.spring.service.UserService;
-import com.lec.spring.util.Init;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.procedure.ProcedureOutputs;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,10 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +41,9 @@ public class ProductService {
     private final UserRepository userRepository;
     private final UserService userService;
 
+
+
+    @Transactional
     // 등록
     public Product write(ProductsDTO product, List<MultipartFile> files){
 //        System.out.println(product + "저장전");
