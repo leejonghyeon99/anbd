@@ -1,0 +1,76 @@
+.updateBox {
+    width:100%
+}
+.updateMain {
+    background-color: #fce085;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-family: 'yg-jalnan';
+    width: 80%;
+    padding: 1%;
+    margin-inline: 10%;
+}
+
+label {
+    margin-right: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 5px;
+    font-size: 0.9rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 10px rgba(255, 255, 255, 0.25), 0 5px 5px rgba(0, 0, 0, 0.11);
+}
+
+input:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(61, 92, 4, 0.4);
+}
+
+Form div {
+    margin: 10px;
+}
+
+#emailBtn {
+    margin-top: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    color: rgb(15, 62, 98);
+    font-size: 0.8rem;
+    float: right;
+}
+
+#emailBtn:hover {
+    color: rgb(255, 255, 255);
+}
+
+#otherBtn {
+    width: 20%;
+    font-size: smaller;
+    padding: 0.4rem;
+    margin-inline: 0.5rem;
+}
+
+#updateBtn{
+    font-size: smaller;
+    padding: 0.4rem;
+    width: 20%;
+    margin-inline: 0.5rem;
+    background-color: #6a863d;
+    color: #fff;
+    border: transparent;
+    float: inline-end;
+}
+
+#withdraw {
+    width: 10%;
+    padding: 0.1rem;
+    font-size: 0.7rem;
+    -webkit-text-stroke: 1px #6a863db7;
+    background-color: #fce08500;
+    border:transparent;
+    float: inline-end;
+}

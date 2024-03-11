@@ -3,6 +3,7 @@ import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import regionsData from "../api/regionsData.json";
 import { fetchWithToken } from './Reissue';
+import "./CSS/Update.css"
 
 
 const Update = () => {
@@ -251,7 +252,8 @@ const Update = () => {
     }
   };
   return (
-    <div>
+    <div className="updateBox">
+      <div className="updateMain">
       <Form onSubmit={updateUser}>
         {/* 이름 수정 */}
         <div>
@@ -313,6 +315,7 @@ const Update = () => {
             variant="light"
             size="sm"
             className="rounded"
+            id="emailBtn"
           >
             이메일 인증
           </Button>}
@@ -383,11 +386,12 @@ const Update = () => {
             <small className="text-danger">거주지역을 선택해주세요</small>
           </div>
         )}
-        <Button onClick={updateUser}>회원 수정</Button>
-        <Button as={Link} to="/user/updatePassword">비밀번호 수정</Button>
-        <Button onClick={deleteUser}>회원 탈퇴</Button>
-        <Button onClick={() => navigate('/home')}>HOME</Button>
+        <Button id="otherBtn" variant="light" as={Link} to="/user/updatePassword">비밀번호 수정</Button>
+        <Button id="otherBtn" variant="light" onClick={() => navigate('/home')}>HOME</Button>
+        <Button id="updateBtn" onClick={updateUser}>완료</Button>
+        <div><Button id="withdraw" onClick={deleteUser}>회원 탈퇴</Button></div>
       </Form>
+      </div>
     </div>
   );
 };
