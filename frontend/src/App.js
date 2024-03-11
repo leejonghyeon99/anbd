@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
 import Header from "./common/Header";
 import Sidebar from "./common/Sidebar";
-import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import Login from "./user/Login";
 import Admin from "./admin/Admin";
 import Update from "./user/Update";
@@ -24,10 +24,13 @@ import { fetchWithToken } from "./user/Reissue";
 const App = () => {
   const [menuToggle, setMenuToggle] = useState(true);
   const sidebarRef = useRef(null)
+  const location = useLocation();
   
   const toggleSidebar = () => {
     setMenuToggle(!menuToggle);
   };
+
+  const isMenuVisible = !location.pathname.endsWith('/admin');
   
   useEffect(() => {
     // 창 크기 변화를 감지하여 메뉴 상태를 업데이트하는 이벤트 핸들러
@@ -162,7 +165,7 @@ const App = () => {
             <Button id="hamburger" onClick={toggleSidebar}>
               <img src="/icon/menu.png" alt="Toggle Sidebar" />
             </Button>
-            {menuToggle && <Sidebar ref={sidebarRef} />}
+            {isMenuVisible && menuToggle && <Sidebar ref={sidebarRef} />}
           </div>
         </div>
         <div className="content">

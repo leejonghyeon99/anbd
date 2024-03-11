@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { fetchWithToken } from "../user/Reissue";
 import "./CSS/Mypagebar.css";
 
@@ -37,14 +37,14 @@ const Logout = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="logoutBox">
+    <Link className="logoutBox">
       <img
         src="/icon/logout.png"
         onClick={() => handleLogout(navigate)}
         className="logout"
         alt="Logout"
       />
-    </div>
+    </Link>
   );
 };
 
