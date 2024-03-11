@@ -26,7 +26,7 @@ import java.util.Map;
 public class ProductController {
 
     private final ProductService productService;
-    private final ProductImageService productImageService;
+
 
     // 등록
     @PostMapping( "/write")
