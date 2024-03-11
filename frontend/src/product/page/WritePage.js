@@ -339,46 +339,11 @@ const [user_id, setUser_id] = useState("");
   // 상품 작성 동작 - 폼 데이터 
   const uploadedFiles = async (formData, options = {},isFormData = false) =>{
 
-  //   await fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
-  //   method: "POST",
-  //   body: formData,  // JSON 형식으로 데이터 전송
-  // },true)
-  //   .then((response) => {
-  //     // 응답 헤더의 Content-Type 확인
-  //     const contentType = response.headers.get("Content-Type");
-  //     console.log("contentType : " + contentType);
-  //     if (response.status === 201) {
-  //       // console.log(response.status);
-  //       // 응답이 정상적으로 생성되었다면 JSON 파싱 시도
-  //       return response.json().then(data=>{
-  //         console.log("성공 응답 JSON: ", data);
-  //       })
-  //     } 
-  //   })
-  //   .then((data) => {
-  //     console.log("data: " + data);
-  //       alert("상품이 등록되었어요!");
-  //       console.log("data.id : " + data.id);
-  //       navigate(`/product/detail/${data.id}`); // 상세로 이동
-  // })
-  //   .catch(error => {
-  //     console.error("등록 과정 중 오류:", error);
-  //     alert("등록 실패");
-  //   });
-
   try {
     const response = await fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
       method: "POST",
       body: formData,
     }, true);
-
-    console.log("응답 상태 코드:", response.status);
-    const contentType = response.headers.get("Content-Type");
-    console.log("contentType : " , contentType);
-    const clone = response.clone(); // 응답 복제
-  const text = await clone.text(); // 복제된 응답의 본문을 텍스트로 읽음
-  console.log("응답 본문:", text);
-
 
     if (response.status === 201) {
 

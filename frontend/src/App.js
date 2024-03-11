@@ -101,7 +101,6 @@ const App = () => {
               },
             }
           );
-          console.log(response);
           const data = await response.json();
           setUserInfo({ username: data.username }); // userInfo를 객체로 설정
           console.log("app.js : "+ data.username);

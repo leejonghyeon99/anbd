@@ -128,8 +128,7 @@ public class UserService {
     // 현재 유저 정보 가져오기
     public Optional<User> getUser(){
         User user = SecurityUtil.getCurrentUserId().flatMap(userRepository::findOneWithAuthoritiesByUsername).orElse(null);
-        System.out.println("ttt");
-        System.out.println(user);
+        System.out.println("SecurityUtil user: " + user);
         return SecurityUtil.getCurrentUserId().flatMap(userRepository::findOneWithAuthoritiesByUsername);
     }
 

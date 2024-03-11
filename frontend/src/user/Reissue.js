@@ -64,6 +64,8 @@ export const fetchWithToken = async (url, options = {},isFormData = false) => {
   }
 
   let response = await fetch(url, fetchOptions);
+  console.log("url : ", url);
+  console.log("fetchOptions: ", fetchOptions);
 
   // 만약 응답이 401 Unauthorized라면 추가 처리가 필요할 수 있음
   if (response.status === 401) {
