@@ -25,18 +25,23 @@
   width: 100%;
 }
 
-.navbar {
+#navbar {
   z-index: 5;
+  border: none;
 }
 
 /* auth에 따른 아이콘 크기 설정*/
 /*user auth*/
 #userIcon {
   width: 3rem;
+  border-radius: 30px;
+  background-color: #ffffffad;
 }
 /*admin auth*/
 #adminIcon {
-  width: 2.7rem;
+  width: 3rem;
+  border-radius: 30px;
+  background-color: #ffffffad;
 }
 
 .mypageToggle {
@@ -52,6 +57,7 @@
   border-radius: 50px;
   background-color: #ffffffa2;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.377);
+  margin-bottom: 1rem;
 }
 
 .goHome {
@@ -59,7 +65,7 @@
 }
 
 .anonymous a{
-  font-size: calc(13px + 0.2vw);
+  font-size: calc(13px + 0.5vw);
   font-family: 'neurimboGothicRegular';
   text-decoration: none;
   color: #3a6581;
@@ -82,18 +88,31 @@
 .submenu li:hover {
   color: #3a6581;
 }
+@media screen and (max-width: 1024px) {
+  .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0;
+  }
+
+}
 
 @media screen and (max-width: 768px) {
   .logo {
     display: flex;
     align-items: center;
     justify-content: center;
-
+    margin-left:4%;
   }
   
   #menuIcon {
     display: inline-block;
     width: 2rem;
+  }
+
+  #adminIcon, #userIcon {
+    margin-left: 70%;
   }
 
 }

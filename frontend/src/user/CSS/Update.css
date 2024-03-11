@@ -1,7 +1,7 @@
-.signUpBox {
+.updateBox {
     width:100%
 }
-.signUpMain {
+.updateMain {
     background-color: #fce085;
     border-radius: 15px;
     display: flex;
@@ -11,10 +11,6 @@
     width: 80%;
     padding: 1%;
     margin-inline: 10%;
-}
-
-.joinTitle {
-    text-align: center;
 }
 
 label {
@@ -51,7 +47,40 @@ Form div {
     color: rgb(255, 255, 255);
 }
 
-#joinBtn{
-    float: right;
+#otherBtn {
+    width: 20%;
+    max-width: 120px;
+    font-size: smaller;
+    padding: 0.4rem;
+    margin-inline: 0.5rem;
 }
 
+#updateBtn{
+    font-size: smaller;
+    padding: 0.4rem;
+    width: 20%;
+    max-width: 120px;
+    margin-inline: 0.5rem;
+    background-color: #6a863d;
+    color: #fff;
+    border: transparent;
+    float: inline-end;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#updateBtn:hover {
+    background-color: #fce085;
+    color: #66a03f;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0.1);
+    border: 1px solid;
+}
+
+#withdraw {
+    width: 10%;
+    padding: 0.1rem;
+    font-size: 0.7rem;
+    -webkit-text-stroke: 1px #6a863db7;
+    background-color: #fce08500;
+    border:transparent;
+    float: inline-end;
+}

@@ -209,7 +209,7 @@ const Header = () => {
               )}
               {user.auth === "ROLE_ADMIN" && (
                 <img
-                  src="/icon/admin.png"
+                  src="/icon/admin2.png"
                   id="adminIcon"
                   onClick={toggleMypage}
                 />
@@ -293,8 +293,8 @@ const Header = () => {
                 )}
 
                 {user.auth === "ROLE_ADMIN" && (
-                  <div className="adminbar">
-                    <ul>
+                  <div>
+                    <ul id="adminbar">
                       {AdminpagebarList.map((item, index) => (
                         <li key={index} className={item.cName} id="menuTitle">
                           <Link
