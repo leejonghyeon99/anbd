@@ -150,7 +150,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/user/passwordCheck","/api/user/update","/api/user/updatePassword"
                             ,"/api/user/info", "/api/user/logout", "/api/user/deleteUser"
                             ,"/api/product/write","/api/product/update").hasAuthority("ROLE_USER") // 일반 사용자 권한이 필요한 API
-                        .requestMatchers("/api/user/signup", "/api/user/login","/api/auth/reissue", "/api/product/list/**","/api/product/detail/**", "/upload/**", "/api/product/category/**").permitAll()
+                        .requestMatchers("/api/user/signup", "/api/user/login","/api/auth/reissue", "/api/product/list/**","/api/product/detail/**","/product/download/**","/product/image/**", "/upload/**", "/api/product/category/**").permitAll()
 //                      .requestMatchers("/api/**", "/upload/**").permitAll()
                         .anyRequest().authenticated()
         );
