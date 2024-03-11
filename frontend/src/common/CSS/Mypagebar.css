@@ -22,7 +22,7 @@ li,
   display: flex;
   justify-content: center;
   align-items: center;
-  border: solid 1px rgb(19, 47, 73);
+  border: double 4px rgb(19, 47, 73);
   border-radius: 10px;
   padding: 5px; /* 필요에 따라 패딩 조절 */
 }
@@ -56,12 +56,17 @@ li,
   display: flex; /* 초기에는 메뉴 항목을 감추지 않습니다. */
   flex-direction: column; /* 세로 방향으로 나열합니다. */
   width: 100%;
+  padding-right: 1rem;
+}
+
+#adminbar {
+  padding-left: 0;
+  padding-right: 1rem;
 }
 
 #menuTitle {
   margin-bottom: 8px;
   width: 100%;
-  position: relative;
   height: 100%;
 }
 
@@ -83,8 +88,8 @@ li,
 
 .mypageList:hover {
   color: rgb(32, 76, 114);
-  border: solid 3px rgba(32, 76, 114, 0.37);
-  box-shadow: 0 0 6px rgba(32, 76, 114, 0.829);
+  border: solid 3px rgba(255, 255, 255, 0);
+  box-shadow: 0 0 20px rgba(32, 76, 114, 0.329);
   background-color: rgba(205, 224, 241, 0.068);
   font-weight: bolder;
 }

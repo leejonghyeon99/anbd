@@ -14,23 +14,5 @@ export const MypagebarList = [
         path: '/user/mypage',
         icon: <BiBarChartAlt2 /> ,
         cName: 'nav-text'
-    },
-    {
-        title: '이것은',
-        path: '/',
-        icon: <BiBarChart /> ,
-        cName: 'nav-text'
-    },
-    {
-        title: '메뉴입니다',
-        path: '/',
-        icon: <BiBarChart /> ,
-        cName: 'nav-text'
-    },
-    {
-        title: 'ㅇㅇㅇㅇ',
-        path: '/',
-        icon: <BiBarChart /> ,
-        cName: 'nav-text'
-    },
+    }
 ];

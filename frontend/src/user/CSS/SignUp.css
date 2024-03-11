@@ -25,16 +25,14 @@ input {
     width: 100%;
     padding: 5px;
     font-size: 0.9rem;
-    border: solid 0.5px rgb(173, 173, 173);
+
     border-radius: 10px;
+    box-shadow: 0 10px 10px rgba(255, 255, 255, 0.25), 0 5px 5px rgba(0, 0, 0, 0.11);
 }
 
 input:focus {
-    border-color: #617080;
     outline: none;
-    /* 포커스 시 그림자 효과 변경 */
-    box-shadow: 0 0 10px rgba(39, 61, 85, 0.4);
-    /* 다른 포커스 시 스타일 변경 */
+    box-shadow: 0 0 10px rgba(61, 92, 4, 0.4);
 }
 
 Form div {

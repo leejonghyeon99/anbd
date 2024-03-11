@@ -258,7 +258,10 @@ const Update = () => {
           <label htmlFor="name">
             이름 <small>* </small>
           </label>
-          <input name="name" value={userInfo.name} onChange={infoChange} />
+          <input 
+          name="name" 
+          value={userInfo.name} 
+          onChange={infoChange} />
         </div>
         {nameErr && (
           <div>

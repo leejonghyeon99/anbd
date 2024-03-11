@@ -293,8 +293,8 @@ const Header = () => {
                 )}
 
                 {user.auth === "ROLE_ADMIN" && (
-                  <div className="adminbar">
-                    <ul>
+                  <div>
+                    <ul id="adminbar">
                       {AdminpagebarList.map((item, index) => (
                         <li key={index} className={item.cName} id="menuTitle">
                           <Link
