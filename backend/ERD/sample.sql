@@ -16,7 +16,7 @@ select * from product;
 # delete from product;
 select * from product_image;
 select * from user;
-update user set auth = 'ROLE_ADMIN' where id =2;
+update user set auth = 'ROLE_ADMIN' where id =3;
 select * from Product  where category_id = 1;
 select * from refresh_token;
 update user set thumbnail = 'default.png';
