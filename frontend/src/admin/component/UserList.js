@@ -3,6 +3,7 @@ import '../css/UserList.css'
 import styles from '../css/userList.module.css'
 import logoImage from '../image/logo192.png';
 import CustomPagination from '../../components/CustomPagination';
+import { fetchWithToken } from '../../user/Reissue';
 
 
 
@@ -26,7 +27,7 @@ const UserList = () => {
         const userList = async () => {
             try {
                 const url = `${apiUrl}/api/admin/user/list?page=${page.pageNumber}`;
-                const response = await fetch(url);
+                const response = await fetchWithToken(url);
 
                 if(response.status === 200){
                     const data = await response.json();

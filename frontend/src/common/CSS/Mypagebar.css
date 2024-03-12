@@ -22,7 +22,7 @@ li,
   display: flex;
   justify-content: center;
   align-items: center;
-  border: solid 1px rgb(19, 47, 73);
+  border: dashed 1px rgb(19, 47, 73);
   border-radius: 10px;
   padding: 5px; /* 필요에 따라 패딩 조절 */
 }
@@ -34,10 +34,15 @@ li,
 }
 
 .mypage_nickname {
+  font-family: 'SOYOMapleBoldTTF';
   font-size: calc(10px + 0.3vw);
-  margin-bottom: 0.4rem;
   font-weight: 800;
+  color: rgb(19, 47, 73);
+  border: 3px double rgba(19, 47, 73, 0.712);
+  margin-bottom: 0.4rem;
+  padding: 0.5rem;
 }
+
 .mypage_auth:hover .nav-menu-items {
   display: flex; /* .mypage_auth에 호버 시 .nav-menu-items를 표시합니다. */
 }
@@ -50,27 +55,33 @@ li,
 }
 
 .nav-menu-items {
-  background-color: #fff; /* 배경색이 필요하면 추가 */
   padding-inline: 5px; /* 필요에 따라 여백 조절 */
   border-radius: 5px; /* 필요에 따라 테두리 둥글게 조절 */
-  display: flex; /* 초기에는 메뉴 항목을 감추지 않습니다. */
+  display: flex;
   flex-direction: column; /* 세로 방향으로 나열합니다. */
   width: 100%;
+  padding-right: 1rem;
+}
+
+#adminbar {
+  padding-left: 0;
+  padding-right: 1rem;
 }
 
 #menuTitle {
   margin-bottom: 8px;
   width: 100%;
-  position: relative;
   height: 100%;
 }
 
 .mypageList {
   font-size: 13px;
-  border: 1px solid #fff;
+  border: 5px double rgba(24, 84, 107, 0.281);
+  border-radius: 20px;
+  /* background-color: rgba(24, 84, 107, 0.281); */
   transition: color 0.5s ease; /* hover 효과를 부드럽게 만들기 위한 transition 추가 */
-  color: rgb(97, 95, 95);
-  font-weight: bold;
+  color: rgb(32, 76, 114);
+  font-family: 'SOYOMapleBoldTTF';
   margin: 0.5rem;
   z-index: 4;
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.158);
@@ -79,13 +90,14 @@ li,
   padding: 0.3rem;
   padding-block: 0.6rem;
   margin-block: 0.1rem;
+  margin-top: 1rem;
 }
 
 .mypageList:hover {
   color: rgb(32, 76, 114);
-  border: solid 3px rgba(32, 76, 114, 0.37);
-  box-shadow: 0 0 6px rgba(32, 76, 114, 0.829);
-  background-color: rgba(205, 224, 241, 0.068);
+  border: double 4px rgba(255, 255, 255, 0);
+  box-shadow: 0 0 10px rgba(32, 76, 114, 0.329);
+  background-color: rgba(24, 84, 107, 0.281);
   font-weight: bolder;
 }
 

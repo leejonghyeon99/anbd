@@ -58,7 +58,7 @@ const Header = () => {
     const getUserInfoFromToken = (token) => {
       const decodedToken = atob(token.split(".")[1]);
       const userInfo = JSON.parse(decodedToken);
-      console.log(userInfo)
+      console.log("userInfo", userInfo)
       return userInfo;
     };
 
@@ -89,13 +89,13 @@ const Header = () => {
               ...additionalUserInfo,
             }));
           } else {
-            console.error("Failed to fetch additional user info");
+            console.error("Header - Failed to fetch additional user info");
           }
         } else {
           // console.log("No token found, user is not logged in");
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Header - Error fetching data:", error);
       }
     };
 
@@ -124,6 +124,7 @@ const Header = () => {
 
   // mypage show/hide
   const toggleMypage = () => {
+    console.log("user.auth", user.auth);
     setIsMypageVisible(!isMypageVisible);
   };
 
@@ -145,7 +146,7 @@ const Header = () => {
           setUser(data);
         })
       }catch{
-        console.error('not logged in.')
+        console.log('not logged in.')
       }     
     }
     getUser();
@@ -209,7 +210,7 @@ const Header = () => {
               )}
               {user.auth === "ROLE_ADMIN" && (
                 <img
-                  src="/icon/admin.png"
+                  src="/icon/admin2.png"
                   id="adminIcon"
                   onClick={toggleMypage}
                 />
@@ -227,13 +228,13 @@ const Header = () => {
             {" "}
             {/* Navbar의 isVisible 속성에 따라 보이거나 숨김 */}
             <nav className="nav-menu">
-              <li className="navbar-toggle">
+              <Link className="navbar-toggle">
                 <img
                   src="/icon/Xmark.png"
                   className="closeMypage"
                   onClick={toggleMypage}
                 />
-              </li>
+              </Link>
               <div className="mypage_nickname">
               <small>Today {getCurrentDate()}</small>
                 <p>
@@ -243,7 +244,7 @@ const Header = () => {
                 </p>
               </div>
               <div>
-                <Link to={"user/passwordcheck"} className="moveToUpdate" onClick={toggleMypage}>
+                <Link to={"/user/passwordcheck"} className="moveToUpdate" onClick={toggleMypage}>
                   <small>회원정보수정</small>
                 </Link>
               </div>
@@ -293,8 +294,8 @@ const Header = () => {
                 )}
 
                 {user.auth === "ROLE_ADMIN" && (
-                  <div className="adminbar">
-                    <ul>
+                  <div>
+                    <ul id="adminbar">
                       {AdminpagebarList.map((item, index) => (
                         <li key={index} className={item.cName} id="menuTitle">
                           <Link

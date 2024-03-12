@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Col, Form, FormControl, Row } from "react-bootstrap";
 import ProductItem from "../components/ProductItem";
 import { useNavigate, useParams } from "react-router-dom";
+import "../CSS/ListPage.css";
 
 const ListPage = () => {
   const navigate = useNavigate();
@@ -77,32 +78,40 @@ const ListPage = () => {
   };
 
   return (
-    <div>
-      <h2> {sub} 판매 목록</h2>
-      <hr />
+    <div className="ListPageBox">
+      <div className="list-title">
+        <span> {sub} 판매 목록</span>
+      </div>
       {/* 검색 폼 */}
-      <Form onSubmit={handleSearchSubmit}>
-        <input
+      <Form onSubmit={handleSearchSubmit} className="search-form">
+        <FormControl
+          id="searchBox"
           type="text"
           placeholder="검색어를 입력하세요"
           value={search}
           onChange={handleSearchChange}
         />
-      <Button type="submit">검색</Button>
+        <Button type="submit" id="search-button" variant="outline-secondary">
+          <span className="button-text">Go</span>
+        </Button>
       </Form>
 
       {/* 검색 결과 메시지 */}
       {searchMessage && <div>{searchMessage}</div>}
 
-      {/* 상품 목록 */}
-      {products.map((product) => (
-        <ProductItem key={product.id} product={product} />
-      ))}
+      <div>
+        <div className="product_container">
+          {/* 상품 목록 */}
+          {products.map((product) => (
+            <ProductItem key={product.id} product={product} />
+          ))}
+        </div>
 
-      {/* 상품 등록 버튼 */}
-      <Button variant="outline-dark mt-3" onClick={WriteOk}>
-        상품 등록
-      </Button>
+        {/* 상품 등록 버튼 */}
+        <Button id="write-button" variant="outline-dark mt-3" onClick={WriteOk}>
+          <span className="button-text">상품 등록</span>
+        </Button>
+      </div>
     </div>
   );
 };

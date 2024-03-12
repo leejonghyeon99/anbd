@@ -1,7 +1,9 @@
 package com.lec.spring.dto;
 
+import com.lec.spring.domain.Product;
 import com.lec.spring.domain.ProductImage;
 
+import com.lec.spring.domain.User;
 import lombok.*;
 
 @Getter

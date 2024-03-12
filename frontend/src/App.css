@@ -1,29 +1,22 @@
 
 @font-face {
-  font-family: 'yg-jalnan';
+  font-family: 'yg-jalnan'; /*카테고리 대분류, 로그인, 회원가입*/
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'MoiraiOne-Regular';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_JAMO@1.0/MoiraiOne-Regular.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'neurimboGothicRegular';
+  font-family: 'neurimboGothicRegular'; /*로그인 조인 버튼*/ 
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/neurimboGothicRegular.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'TheJamsil5Bold';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
-  font-weight: 700;
+  font-family: 'TTHakgyoansimUndongjangL';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2402_keris@1.0/TTHakgyoansimUndongjangL.woff2') format('woff2');
+  font-weight: 300;
   font-style: normal;
 }
 
@@ -34,12 +27,27 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'SOYOMapleBoldTTF'; /* 상품 title*/
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/SOYOMapleBoldTTF.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'TTHakgyoansimUndongjangL';/*카테고리 중분류*/
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2402_keris@1.0/TTHakgyoansimUndongjangL.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+}
+
 .AppBox {
   margin-inline: 5%;
 }
 
 .header {
   z-index: 2; /* Header의 z-index 값을 설정 */
+  border-bottom: 2px solid rgba(43, 138, 6, 0.247);
 }
 
 .menu { 
@@ -75,14 +83,18 @@
   .header {
     width: 79%;
     float: right;
+    border-bottom: none;
   }
   .menu{ 
-    width: 18%;
+    width: 20%;
     float: left;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 5.5rem;
+    height: 8.2rem;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.2)
+    , rgba(255, 255, 255, 0.2))
+    ,url("../.././frontend/public/img/headerBG.jpg"); 
   }
   #hamburger {
     display: flex;
@@ -97,5 +109,11 @@
     font-size: 12.5px;
   }
 
+}
+
+@media screen and (max-width: 567px) {
+  .menu{ 
+    width: 19%;
+  }
 }
 

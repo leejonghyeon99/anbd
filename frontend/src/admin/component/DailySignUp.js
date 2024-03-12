@@ -13,6 +13,7 @@ import {
 } from "chart.js";
 import { Bar, Line, getElementsAtEvent } from 'react-chartjs-2';
 import moment from 'moment/moment';
+import { fetchWithToken } from '../../user/Reissue';
 
 ChartJS.register(
     CategoryScale,
@@ -53,7 +54,7 @@ const DailySignUp = (props) => {
         const fetchData = async () => {
             try {
                 const url = `${apiUrl}/api/analyze/signup/month`;
-                const response = await fetch(`${url}?year=${currentYear}&month=${currentMonth}`);
+                const response = await fetchWithToken(`${url}?year=${currentYear}&month=${currentMonth}`);
 
                 const data = await response.json();
                 const sortedData = data.sort((a, b) => {

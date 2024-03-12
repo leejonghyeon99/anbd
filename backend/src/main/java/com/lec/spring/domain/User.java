@@ -1,7 +1,7 @@
 package com.lec.spring.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 import lombok.*;
 
 import java.util.List;
@@ -62,18 +62,22 @@ public class User extends BaseEntity{
     private String thumbnail;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private List<Product> products;
 
-
     @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private List<WishList> wishList;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private List<Review> reviews;
 
     @OneToMany(mappedBy = "buyer")
+    @JsonIgnore
     private List<ChatRoom> boughtRooms;
 
     @OneToMany(mappedBy = "seller")
+    @JsonIgnore
     private List<ChatRoom> soldRooms;
 }

@@ -1,0 +1,227 @@
+
+.ListPageBox {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(255, 217, 0, 0.555);
+  /* background-image: linear-gradient(rgba(255, 255, 255, 0.8)
+  , rgba(255, 255, 255, 0.9))
+  ,url("https://i.pinimg.com/564x/f5/2b/99/f52b99a7b56cf273ddee043b773ae3be.jpg");
+  background-size: 100%;
+  background-position: center; */
+}
+
+.list-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  border-bottom: double #12344b46;
+}
+
+.list-title span {
+  font-family: 'SOYOMapleBoldTTF';
+  color: #12344bbb;
+}
+
+#search-button, #write-button {
+  height: 1.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+#search-button {
+  width: 2.8rem;
+}
+
+
+.button-text {
+  font-family: 'TTHakgyoansimUndongjangL';
+  font-size: 0.9rem;
+}
+
+.search-form {
+  display: flex;
+  justify-content: flex-end; /* 자식 요소들을 오른쪽으로 정렬합니다. */
+  align-items: center;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  padding: 1rem;
+}
+
+#searchBox {
+  width: 30%;
+  height: 10%;
+  margin-right: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product_container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.product_container>* {
+  flex: 0 0 calc(25% - 10px);
+  /* 원하는 간격으로 조절 */
+  margin: 0 0 20px 10px;
+  /* 오른쪽 및 아래쪽 간격을 추가하고자 하는 경우 */
+}
+
+
+/*-------------------------------------------------------------------------------------------------*/
+
+/*ProductItem CSS*/
+
+#product-card {
+  padding: 0.3rem;
+  margin-inline: 2.8%;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  max-width: 260px;
+  border: double 4px rgb(32, 76, 114);
+}
+
+.card-title {
+  font-size: 70%;
+  margin: 2%;
+  text-align: right;
+  font-family: 'NanumSquareNeo-Variable';
+}
+
+.card-img {
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#product-title {
+  font-size: 100%;
+  font-weight: bold;
+  font-family: 'SOYOMapleBoldTTF';
+  border: none;
+}
+
+#price {
+  font-size: 90%;
+  font-family: 'IBMPlexSansKR-Regular';
+  border-top: dashed 0.5px #12344b65;
+  border-bottom: none;
+  border-inline: none;
+}
+
+#moveToDetail {
+  text-decoration: none;
+}
+
+/*---------------------- 반응형 디자인 추가 ----------------------*/
+
+@media (max-width: 1024px){
+  .product_container{
+    justify-content: space-between;
+  }
+
+  #searchBox{
+    width: 30%;
+    font-size: 13px;
+  }
+  #search-button, .write-button{
+    margin-right: 1rem;
+    font-size: 13px;
+  }
+
+  #search-button{
+    width: 2.3rem;
+  }
+
+}
+@media (max-width: 768px) {
+  .product_container>* {
+    flex: 0 0 calc(46% - 10px);
+    /* 화면이 768px 이하일 때, 2개씩 나타나도록 조절 */
+    justify-content: space-evenly;
+  }
+  #searchBox{
+    width: 40%;
+  }
+
+  .product-title,
+  .price,
+  .card-title {
+    font-size: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .product_container>* {
+    flex: 0 0 calc(45% - 10px);
+    /* 화면이 576px 이하일 때, 1개씩 나타나도록 조절 */
+    justify-content: space-evenly;
+    font-size: smaller;
+  }
+  #searchBox{
+    width: 50%;
+    height: 1.8rem;
+    font-size: 13px;
+  }
+  #search-button {
+    margin-right: 0.6rem;
+    height:1.6rem;
+    width: 2rem;
+  }
+  #write-button {
+    height:1.6rem;
+    width: 6.3rem;
+  }
+  
+  .button-text{
+    font-size: 13px;
+  }
+
+  .product-title {
+    font-size: 140%;
+  }
+
+  .price {
+    font-size: 120%;
+  }
+  
+}
+
+@media (max-width: 400px){
+  .product_container>* {
+    flex: 0 0 calc(45% - 10px);
+    margin: 1rem;
+    font-size: 9px;
+  }
+
+  #searchBox{
+    width: 50%;
+    font-size: 10px;
+    margin-right: 0.5rem;
+  }
+  #search-button {
+    margin-right: 0.6rem;
+    height:1.6rem;
+    width: 2rem;
+  }
+  #write-button {
+    height:1.6rem;
+    width: 5.5rem;
+  }
+
+  .button-text{
+    font-size: 10px;
+  }
+
+  #searchBox{
+    height:1.6rem;
+  }
+  
+}

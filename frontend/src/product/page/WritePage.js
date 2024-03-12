@@ -1,12 +1,9 @@
-
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import GoogleMaps from "./GoogleMaps";
 
-import { VscClose } from 'react-icons/vsc';
 import { fetchWithToken } from "../../user/Reissue";
-// import * as S from './style';
 
 const WritePage = () => {
   const navigate = useNavigate();
@@ -17,7 +14,7 @@ const WritePage = () => {
   const [showGoogleMaps, setShowGoogleMaps] = useState(false);
 
   // 위치
-  useEffect(() => {
+  useEffect(() =>{
     if (location.state && location.state.location) {
       const {lat, lng} = location.state.location;
       const newLocation = `${lat}, ${lng}`;
@@ -28,7 +25,7 @@ const WritePage = () => {
     }
   }, [location.state]);
 
-  // 상품
+  // 상품 정보 담는 곳
   const [product, setProduct] = useState({
     id: "",
     title: "",
@@ -37,7 +34,96 @@ const WritePage = () => {
     status: "",
     createdAt: "",
     location: "",
+    user_id: "",
   });
+
+// 유저id 불러오기
+const [user_id, setUser_id] = useState("");
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const url = `${apiUrl}/api/user/info`;
+        const response = await fetchWithToken(url);
+        if (!response.ok) {
+          throw new Error('Failed to fetch user info');
+        }
+        const data = await response.json();
+        console.log("writepage 유저id : "+ data.id);
+        setUser_id(data.id); // 사용자 ID를 user 상태에 저장
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    };
+    getUser();
+  },[]);
+
+  // const [user, setUser] = useState({
+  //   username: "",
+  //   password: "",
+  //   repassword: "",
+  //   name: "",
+  //   nickname: "",
+  //   phone_number: "",
+  //   email: "",
+  //   region: "",
+  //   auth: "", // 추가: 사용자 권한 정보
+  // });
+
+  // let token = "";
+
+  // useEffect(() => {
+  //   token = localStorage.getItem("accessToken");
+  //   const getUserInfoFromToken = (token) => {
+  //     const decodedToken = atob(token.split(".")[1]);
+  //     const userInfo = JSON.parse(decodedToken);
+  //     return userInfo;
+  //   };
+
+  //   const userData = async () => {
+  //     try {
+  //       if (token) {
+  //         // 토큰에서 사용자 정보를 추출
+  //         const userInfo = getUserInfoFromToken(token);
+
+  //         // 사용자 정보를 상태값에 설정
+  //         console.log(userInfo)
+  //         setUser(userInfo);
+
+  //         // 서버에 사용자 정보 요청 보내기
+  //         const response = await fetchWithToken(
+  //           `${process.env.REACT_APP_API_BASE_URL}/api/user/info`,
+  //           {
+  //             headers: {
+  //               Authorization: `Bearer ${token}`,
+  //             },
+  //           }
+  //         );
+
+  //         if (response.ok) {
+  //           const additionalUserInfo = await response.json();
+  //           // 서버에서 받은 추가 정보를 기존 사용자 정보에 합치기
+  //           setUser((prevUserInfo) => ({
+  //             ...prevUserInfo,
+  //             ...additionalUserInfo,
+  //           }));
+  //         } else {
+  //           console.error("Failed to fetch additional user info");
+  //         }
+  //       } else {
+  //         // console.log("No token found, user is not logged in");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
+  //   // userData 함수 실행 (컴포넌트가 마운트될 때 한 번만 실행하도록 빈 배열 전달)
+  //   userData();
+  // }, []);
+
+  // useEffect(()=>{console.log(user);},[user])
+
 
   // const [categories, setCategories] = useState([]);
   // const [selectCategory, setSelectCategory] = useState(null);
@@ -48,11 +134,12 @@ const WritePage = () => {
   const [selectMain, setSelectMain] = useState("");
   const [selectSub, setSelectSub] = useState("");
 
-  // 이미지
-  const [files, setFiles] = useState([]);
-
+  useEffect(()=>{
+    console.log("selectMain: " + selectMain);
+    console.log("selectSub: " + selectSub);
+  },[selectMain, selectSub])
   // 이미지 첨부
-  const uploadFile = (e) => {
+  // const uploadFile = (e) => {
 //     const selectedFiles = Array.from(e.target.files); // 선택된 파일 목록을 배열로 변환
 //     const uploadedFiles = selectedFiles.map((file) => ({
 //       originalName: file.name,  // 원본 파일명
@@ -70,70 +157,22 @@ const WritePage = () => {
 //     newFiles.splice(index, 1); // 해당 인덱스의 파일 제거
 //     setFiles(newFiles); // 파일 목록 업데이트
 //   };
-  }
-  //* 화면에 출력될 파일과 서버에 보내질 파일을 구분할 필요없다. 
-  //화면에 출력되는 파일
-  // const [selectedImages, setSelectedImages] = useState([]);
-  // //서버에 보내지는 파일
-  // const [selectedFiles, setSelectedFiles] = useState(null);
+  // }
 
-  // const onSelectFile = (e: any) => {
-  //   e.preventDefault();
-  //   e.persist();
-  //   //선택한 파일 
-  //   const selectedFiles = e.target.files;
-  //   //선택한 파일들을 fileUrlList에 넣어준다. 
-  //   const fileUrlList = [...selectedFiles];
+  // function uploadFile(e) {
+  //     let fileArr = e.target.files;
+  //     setPostImg(Array.from(fileArr));
 
-  //   // 업로드되는 파일에는 url이 있어야 한다. filePath로 보내줄 url이다.
-  //   //획득한 Blob URL Address를 브라우져에서 그대로 호출 시에 이미지는 표시가 되고 ,
-  //   //일반 파일의 경우 다운로드를 할 수 있다.
-  //   for (let i = 0; i < selectedFiles.length; i++) {
-  //     const nowUrl = URL.createObjectURL(selectedFiles[i]);
-  //     fileUrlList.push(nowUrl[i]);
-  //   }
-
-  //   setSelectedFiles(fileUrlList);
-
-  //   //Array.from() 은 문자열 등 유사 배열(Array-like) 객체나 이터러블한 객체를 배열로 만들어주는 메서드이다.
-  //   const selectedFileArray: any = Array.from(selectedFiles);
-
-  //   //브라우저 상에 보여질 파일 이름
-  //   const imageArray = selectedFileArray.map((file: any) => {
-  //     return file.name;
-  //   });
-
-  //   // 첨부파일 삭제시
-  //   setSelectedImages((previousImages: any) => previousImages.concat(imageArray));
-  //   e.target.value = '';
-  // };
-
-  // //브라우저상에 보여질 첨부파일
-  // const attachFile =
-  //   selectedImages &&
-  //   selectedImages.map((image: any) => {
-  //     return (
-  //       <S.DivImg key={image}>
-  //         <div>{image}</div>
-  //         <button onClick={() => setSelectedImages(selectedImages.filter((e) => e !== image))}>
-  //         <VscClose size='30' /> 
-  //         </button>
-  //       </S.DivImg>
-  //     );
-  //   });
-
-  // product와 category 같이
-  const pc = {
-    ...product,
-    category: {
-      main: selectMain.main,
-      sub: selectSub.sub
-    },
-    files: files
-  };
-  useEffect(() => {
-    console.log(`files: ${files.originalName}`);
-  })
+  //     let fileUrl = [];
+  //     for(let i = 0; i < fileArr.length; i++){
+  //         let fileRead = new FileReader();
+  //         fileRead.onload = function(){
+  //             fileUrl[i] = fileRead.result;
+  //             setPreviewImg([...fileUrl]);
+  //             fileRead.readAsDataURL(fileArr[i]);
+  //         }
+  //     };
+  // }
 
   // 위치
   useEffect(() => {
@@ -151,9 +190,10 @@ const WritePage = () => {
 
   // Main목록만 가져오는 카테고리
   useEffect(() => {
-    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/category/main`)
+     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/category/main`)
     .then(response => response.json())
     .then(data => {
+      // console.log(data);
       setMainCategories(data);
     });
   }, []);
@@ -162,7 +202,7 @@ const WritePage = () => {
   const getSub = () => {
     const getByMainForSub = async () => {
       try {
-        const url = `${process.env.REACT_APP_API_BASE_URL}/api/product/category/find?main=${selectMain.main}`;
+        const url = `${process.env.REACT_APP_API_BASE_URL}/api/product/category/find?main=${selectMain}`;
         const response = await fetch(url);
         const data = await response.json();
 
@@ -189,52 +229,144 @@ const WritePage = () => {
   // 선택된 main category 값
   const mainCategoryValue = (e) => {
     console.log("main");
-    setSelectMain({
-      id : e.target.value,
-      main : e.target.options[e.target.selectedIndex].text,
-    });
+    setSelectMain(e.target.options[e.target.selectedIndex].text);
   };
 
   // 선택된 sub category 값
   const subCategoryValue = (e) => {
     console.log("sub");
-    setSelectSub({
-      id : e.target.value,
-      sub : e.target.options[e.target.selectedIndex].text,
-    });
+    setSelectSub(e.target.options[e.target.selectedIndex].text);
   };
+
+  // product와 category 같이
+  const pc = {
+    ...product,
+    category: {
+      main: selectMain,
+      sub: selectSub,
+    },
+    user_id: user_id,
+  };
+
+  // 추가버튼
+  const handleAddFile = () => {
+    // 파일 선택을 위한 input 요소를 클릭합니다.
+    document.getElementById('fileInput').click();
+  };
+
+  const [files, setFiles] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+
+  const handleFileChange = (event) => {
+    const files = event.target.files;
+    // console.log(`files length: ${files.length}`);
+    const newFiles = [...selectedFiles]; // 기존 배열 복사
+    // for (let i = 0; i < files.length; i++) {
+    //     const file = files[i];
+    //     let photoName = file.name;
+
+    //     // 파일명에 현재 시간을 추가하여 중복 방지
+    //     const pos = photoName.lastIndexOf(".");
+    //     if (pos > -1) { // 확장자가 있는 경우
+    //         const name = photoName.substring(0, pos); // 파일 이름
+    //         const ext = photoName.substring(pos + 1); // 파일 확장자
+
+    //         // 현재 시간(ms)을 이용하여 파일명에 추가
+    //         photoName = `${name}_${Date.now()}.${ext}`;
+    //     } else { // 확장자가 없는 경우
+    //         photoName += `_${Date.now()}`;
+    //     }
+    //     console.log(`${photoName}`);
+    //     const newFile = {
+    //         originName: file.name,
+    //         photoName: photoName
+    //     };
+    //     newFiles.push(newFile); // 파일 추가
+    //     // console.log(`originName: ${newFile.originName}`);
+    // }
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const photoName = file.name; // 원본 파일 이름 사용
+
+        const newFile = {
+            originName: file.name,
+            // photoName: photoName // 파일 이름 변경 없이 원본 파일 이름 사용
+            file: file
+        };
+        newFiles.push(newFile); // 파일 추가
+    }
+    setSelectedFiles(newFiles); // 새 배열로 업데이트
+    // console.log(`files: ${newFiles[0].originName}`);
+  };
+
+
 
   // 작성 완료
   const WriteOk = (e) => {
-    console.log(pc, files);
+    console.log(pc);
     e.preventDefault();
-    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-      },
-      body: JSON.stringify(pc),  // JSON 형식으로 데이터 전송
-    })
-      .then((response) => {
-        console.log(`응답하라`, response);
-        if (response.status === 201) {
-          // CREATED
-          return response.json();
-        } else {
-          console.error("Unexpected response status : ", response.status);
-          return null;
-        }
-      })
-      .then((data) => {
-        if (data !== null) {
-          console.log(`작성해라`, data);
-          alert("상품이 등록되었어요!");
-          navigate(`/product/detail/${data.id}`); // 상세로 이동
-        } else {
-          alert("등록 실패");
-        }
-      });
+
+    // formData.append('product', JSON.stringify(pc));
+    const formData = new FormData();
+    // FormData에 파일 추가
+    // selectedFiles.forEach((file, index) => {
+    //   formData.append(`files${index}`, file.file); // 서버에서 files로 받기로 했으므로 files로 append
+    // });
+    // formData.append('files', selectedFiles);
+    selectedFiles.forEach((file) => formData.append('files', file.file));
+    formData.append('title', product.title);
+    formData.append('description', product.description);
+    formData.append('price', product.price);
+    formData.append('status', product.status);
+    formData.append('location', product.location);
+    formData.append('categoryMain', selectMain);
+    formData.append('categorySub', selectSub);
+    formData.append('user_id', user_id);
+
+    // pc 객체를 JSON 문자열로 변환하여 formData에 추가
+    formData.append('product', JSON.stringify(pc));
+    
+    // for (let index = 0; index < selectedFiles.length; index++) {
+    //   const element = selectedFiles[index];
+    //   console.log("element" + selectedFiles[0], selectedFiles[0].originName);
+    // }
+    // formData.append('files', selectedFiles);
+    console.log("formData : " , ...formData);
+
+    uploadedFiles(formData, {}, true);
   };
+
+  // 상품 작성 동작 - 폼 데이터 
+  const uploadedFiles = async (formData, options = {},isFormData = false) =>{
+
+  try {
+    const response = await fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/write`, {
+      method: "POST",
+      body: formData,
+    }, true);
+
+    if (response.status === 201) {
+
+      try {
+        const data = await response.json(); // 원본 응답에서 JSON 파싱 시도
+        console.log("성공 응답 JSON:", data);
+        alert("상품이 등록되었어요!");
+        navigate(`/product/detail/${data.id}`); // 상세로 이동
+      } catch (jsonError) {
+        // JSON 파싱 과정에서 오류가 발생한 경우
+        console.error("JSON 파싱 에러:", jsonError);
+      }
+    } else {
+      console.error("등록 실패. 응답 상태 코드가 201이 아닙니다.");
+      alert("등록 실패");
+    }
+  } catch (error) {
+    // fetch 요청 자체에서 오류가 발생한 경우
+    console.error("등록 과정 중 오류:", error);
+    alert("등록 실패");
+  }
+  };
+
   // 목록
   const ListOk = () => {
     navigate("/product/list");
@@ -247,9 +379,9 @@ const WritePage = () => {
   return (
     <div>
       <h2>글쓰기</h2>
-      <span>이미지 첨부</span>
+      {/* <span>이미지 첨부</span>
       <div className="mb-3">
-        <input type="file" accept="image/*" name='files' id='files' onChange={uploadFile} multiple/>
+        <input type="file" accept="image/*" name='files' id='files'  multiple/>
       </div>
       <div className="mb-2">
         <span>미리보기</span>
@@ -258,7 +390,23 @@ const WritePage = () => {
             <img src={file.url} alt={`Uploaded ${index}`} style={{ width: '100px', height: '100px' }} />
           </div>
         })}
-      </div>
+      </div> */}
+      <div className="mb-3 mt-3">
+            <label>첨부파일:</label>
+            <div id="files">
+                {/* 첨부 파일 목록을 출력 */}
+                {files.map((image, index) => (
+        <div key={index}>{image.originName}</div>
+                ))}
+            </div>
+            {/* 파일 선택을 위한 input 요소 */}
+            <input type="file" name="files" id="fileInput" accept="image/*" onChange={handleFileChange} multiple />
+            {/* 추가 버튼 */}
+            {/* <div id="fileInput" onChange={handleFileChange}> */}
+
+            <button className="btn btn-secondary" onClick={handleAddFile}>파일 추가</button>
+    </div>
+
       <span>위치</span>
       {/* GoogleMaps를 표시하거나 숨기는 버튼 */}
       <button onClick={toggleGoogleMaps}>
@@ -275,7 +423,7 @@ const WritePage = () => {
           }}
         />
       )}
-      <span>선택된 위치: {product.location}</span>
+      <span>선택된 위치: {product.location}</span><br/>
       <span>제목</span>
       <div className="mb-3">
         <input
@@ -291,7 +439,7 @@ const WritePage = () => {
       <div>
         <span>대분류</span>
         <div className="mb-3">
-          <select className="form-select" name="main" value={selectMain.main} onChange={mainCategoryValue}>
+          <select className="form-select" name="main" value={selectMain} onChange={mainCategoryValue}>
             <option>-- 대분류 카테고리를 선택해주세요 --</option>
           {mainCategories.map(category =>
           ( 
@@ -299,7 +447,7 @@ const WritePage = () => {
           )}</select>
       
         <span>중분류</span>
-          <select className="form-select" name='sub' value={selectSub.sub} onChange={subCategoryValue}>          
+          <select className="form-select" name='sub' value={selectSub} onChange={subCategoryValue}>          
           <option>-- 중분류 카테고리를 선택해주세요 --</option>
           {subCategories.map(category => ( 
             <option key={category.id} value={category.sub}>{category.sub}</option>

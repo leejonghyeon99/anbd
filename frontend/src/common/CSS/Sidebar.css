@@ -3,7 +3,7 @@
   flex: 1;
   margin-inline: 4%;
   display: block;
-  border-right: 2px solid rgba(43, 138, 6, 0.247);
+  /* border-right: 2px solid rgba(43, 138, 6, 0.247); */
 }
 
 .sidebarMenu {
@@ -23,8 +23,8 @@
 }
 
 .subCategory {
-  font-family: 'TheJamsil5Bold';
-  color: rgb(83, 114, 25);
+  font-family: 'TTHakgyoansimUndongjangL';
+  color: rgb(82, 109, 32);
 }
 
 @media screen and (max-width: 767px) {

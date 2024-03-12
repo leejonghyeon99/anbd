@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
@@ -58,9 +59,21 @@ public class UserController {
         return ResponseEntity.ok(userService.updatePassword(userRequestDTO));
     }
 
+//    @GetMapping("/info")
+//    public ResponseEntity<UserDTO> getUserInfo() {
+//        return ResponseEntity.ok(UserDTO.toDto(userService.getUser().get()));
+//    }
+
     @GetMapping("/info")
     public ResponseEntity<UserDTO> getUserInfo() {
-        return ResponseEntity.ok(UserDTO.toDto(userService.getUser().get()));
+        Optional<User> userOptional = userService.getUser();
+        System.out.println("userOptional : " + userOptional);
+        if (!userOptional.isPresent()) {
+            return ResponseEntity.notFound().build(); // 유저 정보가 없을 때 404 상태 코드 반환
+        }
+        UserDTO userDTO = UserDTO.toDto(userOptional.get());
+        System.out.println("userDTO : " + userDTO);
+        return ResponseEntity.ok(userDTO); // 유저 정보가 있을 때 해당 정보를 반환
     }
 
     @PostMapping("/logout")
@@ -100,9 +113,14 @@ public class UserController {
     @GetMapping("/profile")
     public ResponseEntity<UserDTO> profile(){
         User user = userService.getUser().orElse(null);
+        System.out.println(user);
         if(user == null) {
+            System.out.println("못찾음");
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); //404
         }
+        System.out.println("찾ㅇ므");
+        System.out.println("-------------------------------------------------");
+        System.out.println(UserDTO.toDto(user));
         return new ResponseEntity<>(UserDTO.toDto(user), HttpStatus.OK); // 200
     }
 

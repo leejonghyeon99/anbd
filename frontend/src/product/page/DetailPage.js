@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Button, Image, Col } from 'react-bootstrap';
 import { json, useNavigate, useParams } from 'react-router-dom';
 import { fetchWithToken } from "../../user/Reissue";
+import { upload } from '@testing-library/user-event/dist/upload';
 
 const DetailPage = () => {
   const navigate = useNavigate();
 
   let {id} = useParams();
-
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const [product, setProduct] = useState({
     id:"",
     title:"",
@@ -17,11 +18,15 @@ const DetailPage = () => {
     user:"",
     category:{
       sub:""
-    }
+    },
+    location: "",
+    user_id: "",
+    fileList: []
   });
 
-  const [files, setFiles] = useState([]);
+  const [selectFiles, setSelectFiles] = useState("");
   
+
 
   // 채팅하기
   const GoChat = () => {
@@ -34,18 +39,14 @@ const DetailPage = () => {
   
   // 리스트 페이지 이동
   const ListOk = () => {
-    navigate('/product/list');
+    navigate('/product/list/' + product.category.sub);
   }
   
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/detail/` + id)
-    .then(response => response.json())
-    .then(data => setProduct(data));
+    .then(response => response.json(), console.log("디테일 응답 성공"))
+    .then(data => setProduct(data))
   }, []);
-
-  useEffect(() =>{
-    console.log(":"+product.createdAt)
-  },[product]);
 
   const DeleteOk = () => {
     if(!window.confirm("정말 삭제하시겠습니까?")) return;
@@ -56,7 +57,7 @@ const DetailPage = () => {
     .then(data => {
       if(data !== 'FAIL'){
         alert("삭제 성공");
-        navigate('/product/list'); // 변경
+        navigate('/product/list/' + product.category.sub);
       } else{
         alert("삭제 실패");
       }
@@ -92,11 +93,28 @@ const DetailPage = () => {
       <h2>상세</h2>
       {/* <Button onClick={LikeOk}>{wishList? '좋아요 취소' : '좋아요'}</Button> */}
       {/* <Heart src={wishList?HeartImg:EmptyHeartImg}/> */}
-      <div className='mb-3'>
-        <span>이미지</span>
-        <Col xs={6} md={4}>
-          <Image src={files} alt='product Image'/>
-        </Col>
+
+      <div className="container mt-3 mb-3 border rounded">
+        <div className="mb-3 mt-3">
+          <label>첨부파일:</label>
+           <ul className="list-group mb-1">
+            {product.fileList.map((productImage, index) => (
+            <li key={index} className="list-group-item">
+              <a href={`${process.env.REACT_APP_API_BASE_URL}/product/download?id=${productImage.id}`}>{productImage.originName}</a>
+            </li> 
+          ))}
+         </ul>
+          {/* 이미지인 경우 보여주기 */}
+          <ul className="list-group mb-1">
+        {product.fileList.map((productImage, index) => (
+          productImage && (
+            <li key={index}>
+              <img src={`${apiUrl}/upload/product/${productImage.photoName}`} className="img" alt="상품 이미지" />
+            </li>
+          )
+        ))}
+        </ul>
+        </div>
       </div>
       <span>title</span>
       <div className='mb-3'>

@@ -4,10 +4,12 @@ import com.lec.spring.domain.Product;
 import com.lec.spring.domain.Status;
 import com.lec.spring.dto.CategoryDTO;
 import com.lec.spring.dto.ProductDTO;
+import com.lec.spring.dto.ProductsDTO;
 import com.lec.spring.service.product.ProductImageService;
 import com.lec.spring.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.WebDataBinder;
@@ -24,12 +26,15 @@ import java.util.Map;
 public class ProductController {
 
     private final ProductService productService;
-    private final ProductImageService productImageService;
+
 
     // 등록
-    @PostMapping("/write")
-    public ResponseEntity<?> write(@RequestBody Product product){
-        return new ResponseEntity<>(productService.write(product), HttpStatus.CREATED);  //201
+    @PostMapping( "/write")
+    public ResponseEntity<?> write(@ModelAttribute ProductsDTO product ,
+                                   @RequestParam(value="files", required=false) List<MultipartFile> files){
+        System.out.println("ProductController.write = " + product);
+        System.out.println("productImage = " + files );
+        return new ResponseEntity<>(productService.write(product, files), HttpStatus.CREATED);  //201
     }
     // 목록
     @GetMapping("/list/{sub}")
@@ -48,7 +53,7 @@ public class ProductController {
     // 수정
     // Map이 아니라 Product 타입을 사용하는 이유는 배열타입인 변수들 때문에
     @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestBody ProductDTO pd){
+    public ResponseEntity<?> update(@RequestBody ProductDTO pd, MultipartFile files, Long[] delfile){
 //        System.out.println("--------------------"+product);
 //        Product pd = new Product();
 //        pd.setId(Long.valueOf(String.valueOf(product.get("id"))));
@@ -62,7 +67,7 @@ public class ProductController {
 //        pd.setCategory((Category) product.get("category"));
 //        System.out.println("수정 "+pd.toString());
 //        new ResponseEntity<>(productService.update(product), HttpStatus.OK);
-        return new ResponseEntity<>(productService.update(pd), HttpStatus.OK);
+        return new ResponseEntity<>(productService.update(pd, files, delfile), HttpStatus.OK);
     }
 
     // 삭제
