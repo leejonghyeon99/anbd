@@ -20,6 +20,9 @@ import { Button } from "react-bootstrap";
 import MyPage from "./user/my/MyPage";
 import { jwtDecode } from "jwt-decode";
 import { fetchWithToken } from "./user/Reissue";
+import MonthSignUp from "./admin/component/MonthSignUp";
+import DailySignUp from "./admin/component/DailySignUp";
+import UserList from "./admin/component/UserList";
 
 const App = () => {
   const [menuToggle, setMenuToggle] = useState(true);
@@ -137,6 +140,8 @@ const App = () => {
   function PrivateRoute({ allowedRoles, userInfo }) {
     const { isAuthenticated, userRole, userName } = useTokenInfo();
     // console.log(userName, userInfo.username); // 확인용, 비회원으로 접근 시 여기서 에러납니다.
+    console.log(`isAuthenticated: ${isAuthenticated}, userRole: ${userRole}, userName: ${userName}, userInfo.username: ${userInfo.username}`);
+
 
     if (!isAuthenticated) {
       return <Navigate to="/user/login" />;
@@ -145,7 +150,7 @@ const App = () => {
     if (allowedRoles.includes(userRole)) {
       if (
         (userRole === "ROLE_USER" && userName === userInfo.username) ||
-        userRole === "ROLE_ADMIN"
+        (userRole === "ROLE_ADMIN" && userName === userInfo.username)
       ) {
         return <Outlet />; // 자식 컴포넌트로 리턴
       } else {
@@ -207,6 +212,18 @@ const App = () => {
               }
             >
               <Route path="/admin" element={<Admin />} />
+              <Route path="/admin/monthsignup" element={<MonthSignUp />} />
+              <Route path="/admin/dailysingup" element={<DailySignUp />} />
+              <Route path="/admin/userlist" element={<UserList />} />
+              <Route path="/user/passwordcheck" element={<PasswordCheck />} />
+              <Route path="/user/update" element={<Update />} />
+              <Route path="/user/updatepassword" element={<UpdatePassword />} />
+              <Route path="/user/mypage" element={<MyPage />} />
+              <Route path="/product/write" element={<WritePage />} />
+              <Route path="/product/update/:id" element={<UpdatePage />} />
+              <Route path="/product/map/:id" element={<GoogleMaps />} />
+              <Route path="/chat" element={<ChatPage />} />
+
             </Route>
           </Routes>
         </div>

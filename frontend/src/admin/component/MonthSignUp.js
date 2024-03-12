@@ -13,6 +13,7 @@ import {
 } from "chart.js";
 import { Bar, Line } from 'react-chartjs-2';
 import moment from 'moment/moment';
+import { fetchWithToken } from '../../user/Reissue';
 
 ChartJS.register(
     CategoryScale,
@@ -43,7 +44,7 @@ const MonthSignUp = () => {
         const fetchData = async () => {
             try {
                 const url = `${apiUrl}/api/analyze/signup/year`;
-                const response = await fetch(`${url}?year=${currentYear}`);
+                const response = await fetchWithToken(`${url}?year=${currentYear}`);
 
                 const data = await response.json();
                 setChartData(data.reverse());
