@@ -187,7 +187,7 @@ const App = () => {
             <Route
               element={
                 <PrivateRoute
-                  allowedRoles={["ROLE_USER"]}
+                  allowedRoles={["ROLE_USER", "ROLE_ADMIN"]}
                   userInfo={userInfo}
                 />
               }
@@ -215,15 +215,6 @@ const App = () => {
               <Route path="/admin/monthsignup" element={<MonthSignUp />} />
               <Route path="/admin/dailysingup" element={<DailySignUp />} />
               <Route path="/admin/userlist" element={<UserList />} />
-              <Route path="/user/passwordcheck" element={<PasswordCheck />} />
-              <Route path="/user/update" element={<Update />} />
-              <Route path="/user/updatepassword" element={<UpdatePassword />} />
-              <Route path="/user/mypage" element={<MyPage />} />
-              <Route path="/product/write" element={<WritePage />} />
-              <Route path="/product/update/:id" element={<UpdatePage />} />
-              <Route path="/product/map/:id" element={<GoogleMaps />} />
-              <Route path="/chat" element={<ChatPage />} />
-
             </Route>
           </Routes>
         </div>

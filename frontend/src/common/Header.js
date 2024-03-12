@@ -244,7 +244,7 @@ const Header = () => {
                 </p>
               </div>
               <div>
-                <Link to={"user/passwordcheck"} className="moveToUpdate" onClick={toggleMypage}>
+                <Link to={"/user/passwordcheck"} className="moveToUpdate" onClick={toggleMypage}>
                   <small>회원정보수정</small>
                 </Link>
               </div>
