@@ -57,7 +57,7 @@ const DetailPage = () => {
     .then(data => {
       if(data !== 'FAIL'){
         alert("삭제 성공");
-        navigate('/product/list'); // 변경
+        navigate('/product/list/' + product.category.sub);
       } else{
         alert("삭제 실패");
       }

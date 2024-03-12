@@ -58,7 +58,7 @@ const Header = () => {
     const getUserInfoFromToken = (token) => {
       const decodedToken = atob(token.split(".")[1]);
       const userInfo = JSON.parse(decodedToken);
-      console.log(userInfo)
+      console.log("userInfo", userInfo)
       return userInfo;
     };
 
@@ -124,6 +124,7 @@ const Header = () => {
 
   // mypage show/hide
   const toggleMypage = () => {
+    console.log("user.auth", user.auth);
     setIsMypageVisible(!isMypageVisible);
   };
 
@@ -145,7 +146,7 @@ const Header = () => {
           setUser(data);
         })
       }catch{
-        console.error('not logged in.')
+        console.log('not logged in.')
       }     
     }
     getUser();

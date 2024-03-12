@@ -16,9 +16,10 @@ select * from product;
 # delete from product;
 select * from product_image;
 select * from user;
-update user set auth = 'ROLE_USER' where id =1;
+update user set auth = 'ROLE_ADMIN' where id =2;
 select * from Product  where category_id = 1;
 select * from refresh_token;
+update user set thumbnail = 'default.png';
 insert into product_image(origin_name, photo_name, product_id, user_id) VALUES ('default.png','default.png',5,1);
 /*카테고리 sample*/
 insert into category(main, sub) value ('의류', '여성의류');
