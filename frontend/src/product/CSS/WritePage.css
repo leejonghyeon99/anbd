@@ -1,0 +1,23 @@
+.write-box {
+    border: 1px solid;
+    padding: 1.5%;
+    padding-top: 0;
+}
+
+#write-title {
+    
+}
+
+#description {
+    border: 1px solid rgba(0, 0, 0, 0.158);
+    border-radius: 7px;
+    width: 100%;
+}
+
+#write-filebtn {
+    font-size: small;
+    width: 5rem;
+    padding: 0;
+    float: right;
+    margin-block: 2%;
+}
