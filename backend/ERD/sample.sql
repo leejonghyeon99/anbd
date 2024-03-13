@@ -11,11 +11,13 @@
 #     "certification" : "approved",
 #     "location" : "광진구"
 # }  -> postman에 넣어야함 ㅠ 안그럼 비번 인코딩이 안돼서!
+select * from user;
+delete from user;
+
 select main from Category as c group by c.main;
 select * from product;
 # delete from product;
 select * from product_image;
-select * from user;
 update user set auth = 'ROLE_ADMIN' where id =3;
 select * from Product  where category_id = 1;
 select * from refresh_token;

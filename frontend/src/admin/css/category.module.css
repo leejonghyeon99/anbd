@@ -22,6 +22,10 @@
   border-bottom: 5px solid rgb(223, 222, 222);
 }
 
+label {
+  font-family: 'SOYOMapleBoldTTF';
+}
+
 .addPointer {
   cursor: pointer;
 }
@@ -70,11 +74,12 @@
   border-radius: 5px;
   width: 300px;
   transition: 0.3s all;
+  font-family: 'TTHakgyoansimUndongjangL';
 }
 
 .addBtn:hover{
   border: none;
-  box-shadow: 1px 1px 3px 3px #808080;
+  box-shadow: 1px 1px 3px 3px #8080809f;
 }
 
 
@@ -110,15 +115,17 @@
   display: flex;
   align-items: center;
   padding-left: 15px;
+  font-family: 'yg-jalnan';
 }
 .category:hover {
   cursor: pointer;
-  background-color: aquamarine;
+  background-color: rgb(50, 70, 15);
+  color: rgb(255, 230, 0);
 }
 
 .active {
-  background-color: aquamarine;
-  color: rgb(43, 143, 236);
+  background-color: rgb(255, 230, 0);
+  color: rgb(11, 52, 90);
 }
 
 .categoryWrite {
@@ -212,14 +219,17 @@
   align-items: center;
   padding-left: 30px;
   cursor: pointer;
+  font-family: 'TTHakgyoansimUndongjangL';
 }
 
 .sub:hover{
-  background-color: rgb(171, 218, 240);
+  background-color: rgb(50, 70, 15);
+  color: rgb(255, 230, 0);
 }
 
 .subActive{
-  background-color: rgb(171, 218, 240);
+  background-color: rgb(8, 39, 59);
+  color: rgb(255, 230, 0);
 }
 
 
@@ -229,10 +239,11 @@
 }
 
 .updateInnerBtn > button {
+  font-family: 'TTHakgyoansimUndongjangL';
   width: 120px;
   margin: 5px 0 5px 3px;
   border-radius: 5px;
-  background-color: #007bff;
+  background-color: #0d2e53;
 }
 
 

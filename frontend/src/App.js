@@ -34,6 +34,7 @@ const App = () => {
   };
 
   const isMenuVisible = !location.pathname.endsWith('/admin');
+  const isAdminRoute = location.pathname.endsWith('/admin');
   
   useEffect(() => {
     // 창 크기 변화를 감지하여 메뉴 상태를 업데이트하는 이벤트 핸들러
@@ -164,16 +165,16 @@ const App = () => {
   return (
     <>
       <div className="AppBox">
-        <div className="HeaderSidebarContainer">
+        <div className="HeaderSidebarContainer" style={{ width: isAdminRoute ? "100%" : "" }}>
           <Header className="header" />
-          <div className="menu">
+          <div className="menu" style={{ width: isAdminRoute ? "0px" : "16%" }}>
             <Button id="hamburger" onClick={toggleSidebar}>
               <img src="/icon/menu.png" alt="Toggle Sidebar" />
             </Button>
             {isMenuVisible && menuToggle && <Sidebar ref={sidebarRef} />}
           </div>
         </div>
-        <div className="content">
+        <div className="content" style={{ marginLeft: isAdminRoute ?"0%" : "" }}>
           <Routes>
             {/* 권한 없이 접근 가능 */}
             <Route path="/" element={<Navigate to="/home" />} />

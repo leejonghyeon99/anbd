@@ -54,7 +54,7 @@
   display: flex;
   border-radius: 5px;
   float: left;
-  width: 16%;
+  /* width: 16%; */
   margin-right: 3px;
   height: calc(100vh - 115px);
 }
