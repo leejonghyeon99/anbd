@@ -113,7 +113,7 @@ const DailySignUp = (props) => {
 
             y:{
                 afterDataLimits: (scale) => {
-                    scale.max = scale.max * 1.2;
+                    scale.max = scale.max * 10;
                 },
                 beginAtZero: true,  
                 title: { 
@@ -121,7 +121,7 @@ const DailySignUp = (props) => {
                     align: 'end',
                     color: '#808080',
                     font: {
-                      size: 12,
+                      size: 10,
                       weight: 300,
                     },
                     text: '단위: 명'
@@ -141,7 +141,8 @@ const DailySignUp = (props) => {
             {
                 data: chartData.map((data) => data.count),
                 borderColor: "rgb(255, 99, 132)",
-                backgroundColor: "rgba(255, 99, 132, 0.5)",                
+                backgroundColor: "rgba(255, 99, 132, 0.5)",
+                width: "1rem"              
             },
         ],
     };

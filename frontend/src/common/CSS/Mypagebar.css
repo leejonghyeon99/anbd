@@ -22,13 +22,12 @@ li,
   display: flex;
   justify-content: center;
   align-items: center;
-  border: dashed 1px rgb(19, 47, 73);
   border-radius: 10px;
-  padding: 5px; /* 필요에 따라 패딩 조절 */
+  padding: 1rem;
 }
 .profileImg {
-  width: 150px;
-  height: 150px;
+  width: 8rem;
+  height: auto;
   cursor: pointer;
   border-radius: 50%;
 }
@@ -38,9 +37,13 @@ li,
   font-size: calc(10px + 0.3vw);
   font-weight: 800;
   color: rgb(19, 47, 73);
-  border: 3px double rgba(19, 47, 73, 0.712);
   margin-bottom: 0.4rem;
   padding: 0.5rem;
+}
+
+.datetime{
+  float: right;
+  font-size: calc(9px + 0.3vw);
 }
 
 .mypage_auth:hover .nav-menu-items {
@@ -75,7 +78,7 @@ li,
 }
 
 .mypageList {
-  font-size: 13px;
+  font-size: 0.7rem;
   border: 5px double rgba(24, 84, 107, 0.281);
   border-radius: 20px;
   /* background-color: rgba(24, 84, 107, 0.281); */
@@ -132,7 +135,7 @@ li,
     font-size: 80%;
   }
   .chatIcon_mp {
-    width: 10%;
+    width: 7%;
   }
 
   .logout{
@@ -142,6 +145,7 @@ li,
   .nav-menu-items {
     margin-top: 30px;
   }
+
 }
 @media screen and (max-width: 600px) {
   li {
@@ -153,8 +157,33 @@ li,
   .logout{
     width: 8%;
   }
-
+  
   .nav-menu-items {
     margin-top: 26px;
+  }
+}
+
+@media screen and (max-height: 655px){
+  
+  .profileImg {
+    width: 4rem;
+    height: auto;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+
+  @media screen and (max-width: 1024px) {
+    .chatIcon_mp {
+      width: 9%;
+  
+    }
+    
+  }
+  @media screen and (max-width: 300px) {
+    .chatIcon_mp {
+      width: 15%;
+  
+    }
+    
   }
 }
