@@ -63,7 +63,7 @@ public class SecurityConfig {
                             ,"/api/user/info", "/api/user/logout", "/api/user/deleteUser"
                             ,"/api/product/write","/api/product/update", "/api/chat/**", "/api/like").hasAnyAuthority("ROLE_USER","ROLE_ADMIN")
                         .requestMatchers("/api/user/signup", "/api/user/login","/api/auth/reissue", "/api/email/**"
-                            , "/api/product/list/**","/api/product/detail/**","/product/download/**","/product/image/**", "/upload/**", "/api/product/category/**").permitAll()
+                            , "/api/product/list/**","/api/product/detail/**","/product/download/**","/product/image/**", "/upload/**", "/api/product/category/**", "/ws/**").permitAll()
                         .anyRequest().authenticated()
         );
 

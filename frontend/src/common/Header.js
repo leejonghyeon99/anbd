@@ -270,7 +270,8 @@ const Header = () => {
 
               <div className="mypage_auth">
                 {user.auth === "ROLE_USER" && (
-                  <div className="userbar">
+                  
+                  <div className="userbar">                    
                     <Link
                       to={"/chat/:id"}
                       onClick={toggleMypage}

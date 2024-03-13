@@ -1,6 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 
-export const fetchWithToken = async (url, options = {},isFormData = false) => {
+export const fetchWithToken = async (url, options = {}, isFormData = false) => {
   let accessToken = localStorage.getItem("accessToken");
 
   // 엑세스 토큰 확인

@@ -21,23 +21,21 @@ public class ChatDTO {
 
     private Integer id;
     private String message;
-    private String user;
-    private String userProfile;
+    private UserDTO sender;
     private ChatRoomDTO chatRoom;
-//
-//    public static ChatDTO toDto(Chat entity) {
-//        return ChatDTO.builder()
-//                .id(entity.getId())
-//                .message(entity.getMessage())
-//                .user(UserDTO.toDto(entity.getUser()).getNickname())
-//                .userProfile("profile/"+UserDTO.toDto(entity.getUser()).getId())
-////                .chatRoom(ChatRoomDTO.toDto(entity.getChatRoom()))
-//                .build();
-//    }
-//
-//    public static List<ChatDTO> toDtoList(List<Chat> chats) {
-//        return chats.stream()
-//                .map(ChatDTO::toDto)
-//                .collect(Collectors.toList());
-//    }
+
+    public static ChatDTO toDto(Chat entity) {
+        return ChatDTO.builder()
+                .id(entity.getId())
+                .sender(UserDTO.toDto(entity.getSender()))
+                .message(entity.getMessage())
+                .chatRoom(ChatRoomDTO.toDto(entity.getChatRoom()))
+                .build();
+    }
+
+    public static List<ChatDTO> toDtoList(List<Chat> chats) {
+        return chats.stream()
+                .map(ChatDTO::toDto)
+                .collect(Collectors.toList());
+    }
 }

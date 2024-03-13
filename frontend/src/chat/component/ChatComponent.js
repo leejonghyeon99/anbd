@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Client } from '@stomp/stompjs';
 import { fetchWithToken } from '../../user/Reissue';
+import { useLocation } from 'react-router-dom';
 
-const ChatComponent = () => {
+const ChatComponent = (props) => {
+
+  const product = props.product;
+
   const [message, setMessage] = useState('');
   const [roomId, setRoomId] = useState(1);
   const [stompClient, setStompClient] = useState(null);
   const [chatMessages, setChatMessages] = useState([]);
 
-
+  console.log(product);
   const [user, setUser] = useState({
     username: "",
     password: "",
@@ -22,8 +26,35 @@ const ChatComponent = () => {
     thumbnail : "",
   });
 
-  useEffect(()=>{
-    const token = localStorage.getItem("accessToken");
+
+  const token = localStorage.getItem("accessToken");
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
+
+  console.log(JSON.stringify({ username: product.userName, productId: product.id }));
+
+useEffect(() => {
+  const createRoom = async () => {
+    console.log(apiUrl);
+    try {
+      const url = `${apiUrl}/api/chat/room`;
+
+      const options = {
+        method: "POST",       
+        body: JSON.stringify({ username: product.userName, productId: product.id })
+      };
+
+      const response = await fetchWithToken(url, options);
+      const data = await response.json();
+
+      console.log(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+  createRoom()
+})
+
+  useEffect(()=>{  
 
     const userData = async () => {
       try {
@@ -71,7 +102,7 @@ const ChatComponent = () => {
     });
 
     
-
+    let headers = {Authorization: token};
     client.onConnect = (frame) => {
       console.log('WebSocket Connected:', frame);
       setStompClient(client);
@@ -105,7 +136,7 @@ const ChatComponent = () => {
       
       stompClient.publish({
         destination: `/room/${roomId}`,
-        body: message,
+        body: JSON.stringify({username:product.userName, message:message}),       
       });
       setMessage('');
     } else {
