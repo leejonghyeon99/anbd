@@ -202,18 +202,22 @@ const Header = () => {
             {/* 로그인한 유저와 비회원의 mypage아이콘 다르게 나오도록 */}
             <div className="mypageToggle" id="menu-bars">
               {user.auth === "ROLE_USER" && (
+                <Link>
                 <img
                   src="/icon/user2.png"
                   id="userIcon"
                   onClick={toggleMypage}
                 />
+                </Link>
               )}
               {user.auth === "ROLE_ADMIN" && (
+                <Link>
                 <img
                   src="/icon/admin2.png"
                   id="adminIcon"
                   onClick={toggleMypage}
                 />
+                </Link>
               )}
               {user.auth !== "ROLE_USER" && user.auth !== "ROLE_ADMIN" && (
                 <div className="anonymous">
@@ -236,7 +240,9 @@ const Header = () => {
                 />
               </Link>
               <div className="mypage_nickname">
-              <small>Today {getCurrentDate()}</small>
+              <p className="datetime">Today {getCurrentDate()}</p>
+              <br/>
+              <br/>
                 <p>
                   ID: {user.username}
                   <br />

@@ -41,6 +41,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'SUIT-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .AppBox {
   margin-inline: 5%;
 }
@@ -54,7 +61,7 @@
   display: flex;
   border-radius: 5px;
   float: left;
-  width: 16%;
+  /* width: 16%; */
   margin-right: 3px;
   height: calc(100vh - 115px);
 }

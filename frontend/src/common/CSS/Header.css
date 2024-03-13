@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Italianno&family=Nanum+Myeongjo:wght@800&display=swap');
+
 /* 모든 요소를 감싼 가장 큰 범위의 div*/
 .header {
   margin-bottom: 5px;
@@ -8,10 +9,9 @@
   background-color: #0840741e;
   padding-inline: 2rem;
   padding-block: 0.5%;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.2)
-  , rgba(255, 255, 255, 0.2))
-  ,url("../../../public/img/headerBG.jpg");
+  background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("../../../public/img/headerBG.jpg");
 }
+
 /* 카테고리 메뉴 제외하고 감싼 div */
 /* .headerBox {
 } */
@@ -24,17 +24,16 @@
   height: 8rem;
   width: 100%;
 }
+
 #navbar {
   z-index: 5;
   border: none;
   background-color: #ffffff;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.2)
-  , rgba(255, 255, 255, 0.2))
-  ,url("https://i.pinimg.com/564x/f0/34/63/f034632968845633ec399354377f84b3.jpg");
-  background-size: 100%;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("https://i.pinimg.com/564x/f0/34/63/f034632968845633ec399354377f84b3.jpg");
+  background-size: 90%;
   background-repeat: no-repeat;
   background-position: bottom;
-  box-shadow: 0 10px 15px rgba(8, 49, 68, 0.541); 
+  box-shadow: 0 10px 15px rgba(8, 49, 68, 0.541);
 }
 
 /* auth에 따른 아이콘 크기 설정*/
@@ -44,6 +43,7 @@
   border-radius: 30px;
   background-color: #ffffffad;
 }
+
 /*admin auth*/
 #adminIcon {
   width: 3rem;
@@ -71,7 +71,7 @@
   width: 100%;
 }
 
-.anonymous a{
+.anonymous a {
   font-size: calc(13px + 0.5vw);
   font-family: 'neurimboGothicRegular';
   text-decoration: none;
@@ -95,6 +95,7 @@
 .submenu li:hover {
   color: #3a6581;
 }
+
 @media screen and (max-width: 1024px) {
   .logo {
     display: flex;
@@ -103,6 +104,8 @@
     margin-bottom: 0;
   }
 
+
+
 }
 
 @media screen and (max-width: 768px) {
@@ -110,16 +113,60 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left:4%;
+    margin-left: 4%;
   }
-  
+
   #menuIcon {
     display: inline-block;
     width: 2rem;
   }
 
-  #adminIcon, #userIcon {
+  #navbar {
+    background-size: 65%;
+  }
+
+  #adminIcon,
+  #userIcon {
     margin-left: 70%;
   }
 
+}
+
+@media screen and (max-height: 800px) {
+  #navbar {
+    background-size: 45%;
+  }
+  @media screen and (max-width: 550px) {
+  
+    #navbar {
+      background-size: 37%;
+    }
+  
+  
+  }
+  @media screen and (max-width: 360px) {
+  
+    #navbar {
+      background-size: 65%;
+    }
+  
+  
+  }
+
+}
+
+@media screen and (max-height: 655px) {
+  #navbar {
+    background-size: 70%;
+  }
+  @media screen and (max-width: 1024px) {
+    #navbar {
+      background-size: 30%;
+    }
+  }
+  @media screen and (max-width: 300px) {
+    #navbar {
+      background-size: 75%;
+    }
+  }
 }
