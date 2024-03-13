@@ -14,6 +14,7 @@ const ListPage = () => {
   const [search, setSearch] = useState("");
   const [searchMessage, setSearchMessage] = useState("");
 
+
   useEffect(() => {
     // 상품목록
     // //중분류 이름으로 목록
@@ -77,6 +78,7 @@ const ListPage = () => {
     navigate("/product/write");
   };
 
+
   return (
     <div className="ListPageBox">
       <div className="list-title">
@@ -108,9 +110,9 @@ const ListPage = () => {
         </div>
 
         {/* 상품 등록 버튼 */}
-        <Button id="write-button" variant="outline-dark mt-3" onClick={WriteOk}>
+        {localStorage.getItem("accessToken") && (<Button id="write-button" variant="outline-dark mt-3" onClick={WriteOk}>
           <span className="button-text">상품 등록</span>
-        </Button>
+        </Button>)}
       </div>
     </div>
   );

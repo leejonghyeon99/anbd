@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../css/category.module.css'
+import { fetchWithToken } from '../../user/Reissue';
 const Category = ({setModalToggle}) => {
 
 
@@ -55,7 +56,7 @@ const Category = ({setModalToggle}) => {
     const categoryList = async () => {
         try {
             const url = `${apiUrl}/api/admin/product/category/list`;
-            const response = await fetch(url);
+            const response = await fetchWithToken(url);
             const data = await response.json();
             setCategories(transformData(data))
         } catch (error) {
@@ -190,7 +191,7 @@ const Category = ({setModalToggle}) => {
                     body: JSON.stringify({main : parentInputValue, sub : childInputValue}),
                 };
     
-                const response = await fetch(url,option);        
+                const response = await fetchWithToken(url,option);        
                 const data = await response.json();
     
                 if(data.resultCode === 'success'){
@@ -228,7 +229,7 @@ const Category = ({setModalToggle}) => {
                   })
             };
 
-            const response = await fetch(url,option);        
+            const response = await fetchWithToken(url,option);        
             const data = await response.json(); 
             if(data.resultCode === 'success'){
                 categoryList();
@@ -261,7 +262,7 @@ const Category = ({setModalToggle}) => {
                       })
                 };
     
-                const response = await fetch(url,option);        
+                const response = await fetchWithToken(url,option);        
                 const data = await response.json(); 
                 if(data.resultCode === 'success'){
                     categoryList();
@@ -292,7 +293,7 @@ const Category = ({setModalToggle}) => {
                     body: JSON.stringify(selectCategory),
                 };
     
-                const response = await fetch(url,option);        
+                const response = await fetchWithToken(url,option);        
                 const data = await response.json();
     
                 if(data.resultCode === 'success'){

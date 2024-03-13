@@ -55,6 +55,7 @@ public class UserService {
         user.setAuth(Auth.ROLE_USER);
         user.setStar(0.0);
         user.setCertification("APPROVED");
+        user.setThumbnail("default.png");
         return UserResponseDTO.of(userRepository.save(user));
 
     }
