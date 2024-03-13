@@ -14,7 +14,6 @@ const ListPage = () => {
   const [search, setSearch] = useState("");
   const [searchMessage, setSearchMessage] = useState("");
 
-
   useEffect(() => {
     // 상품목록
     // //중분류 이름으로 목록
@@ -78,25 +77,44 @@ const ListPage = () => {
     navigate("/product/write");
   };
 
-
   return (
     <div className="ListPageBox">
       <div className="list-title">
         <span> {sub} 판매 목록</span>
       </div>
+
+      <div className="list-headerBox">
+      <div className="list-addBtn">
+
+        {/* 상품 등록 버튼 */}
+        {localStorage.getItem("accessToken") && (
+          <Button
+            id="write-button"
+            variant="outline-dark mt-3"
+            onClick={WriteOk}
+          >
+            <span className="button-text">상품 등록</span>
+          </Button>
+        )}
+      </div>
+      
       {/* 검색 폼 */}
-      <Form onSubmit={handleSearchSubmit} className="search-form">
-        <FormControl
-          id="searchBox"
-          type="text"
-          placeholder="검색어를 입력하세요"
-          value={search}
-          onChange={handleSearchChange}
-        />
-        <Button type="submit" id="search-button" variant="outline-secondary">
-          <span className="button-text">Go</span>
-        </Button>
-      </Form>
+      <div className="list-searchBox">
+        <Form onSubmit={handleSearchSubmit} className="search-form">
+          <FormControl
+            id="searchBox"
+            type="text"
+            placeholder="검색어를 입력하세요"
+            value={search}
+            onChange={handleSearchChange}
+            style={{ border: "1px solid"}}
+          />
+          <Button type="submit" id="search-button" variant="outline-secondary">
+            <span className="button-text">Go</span>
+          </Button>
+        </Form>
+      </div>
+      </div>
 
       {/* 검색 결과 메시지 */}
       {searchMessage && <div>{searchMessage}</div>}
@@ -108,11 +126,6 @@ const ListPage = () => {
             <ProductItem key={product.id} product={product} />
           ))}
         </div>
-
-        {/* 상품 등록 버튼 */}
-        {localStorage.getItem("accessToken") && (<Button id="write-button" variant="outline-dark mt-3" onClick={WriteOk}>
-          <span className="button-text">상품 등록</span>
-        </Button>)}
       </div>
     </div>
   );
