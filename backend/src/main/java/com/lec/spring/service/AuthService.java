@@ -1,5 +1,6 @@
 package com.lec.spring.service;
 
+import com.lec.spring.domain.Auth;
 import com.lec.spring.domain.RefreshToken;
 import com.lec.spring.domain.User;
 import com.lec.spring.dto.TokenDTO;
@@ -50,17 +51,17 @@ public class AuthService {
             newRefreshToken.setUsername(user.getUsername());
         }
 
+        // 사용자의 실제 권한 조회
+        Auth userAuth = user.getAuth(); // 사용자의 역할을 가져오는 가상의 메서드
 
-        // 사용자의 권한을 설정합니다. 이 예제에서는 단순화를 위해 직접 권한을 지정합니다.
-        // 실제 애플리케이션에서는 사용자의 권한에 따라 동적으로 권한을 부여해야 할 수 있습니다.
-        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")); // 실제 권한에 맞게 조정 필요
+        // 사용자의 권한을 설정
+        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(userAuth.getKey()));
 
         // 사용자 정보와 권한 정보로부터 Authentication 객체 생성
         Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), null, authorities);
 
         // 유저네임 기반으로 토큰 재발급
         TokenDTO tokenDTO = tokenProvider.createTokenDto(authentication);
-
 
         // 리프레쉬 토큰 업데이트 및 저장
         newRefreshToken.setValue(tokenDTO.getRefreshToken());
