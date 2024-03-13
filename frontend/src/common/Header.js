@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { MypagebarList } from "../components/MypagebarList";
 import { AdminpagebarList } from "../components/AdminpagebarList";
 import "./CSS/Header.css";
 import "./CSS/Mypagebar.css";
-import Logout from './Logout';
+import Logout from '../user/Logout';
 import { fetchWithToken } from "../user/Reissue";
 
 const Navbar = styled.div`

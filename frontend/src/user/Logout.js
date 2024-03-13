@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { fetchWithToken } from "../user/Reissue";
-import "./CSS/Mypagebar.css";
+import { fetchWithToken } from "./Reissue";
+import "../common/CSS/Mypagebar.css"
 
 // 로그아웃 기능을 로그아웃.js 밖에서 불러서 실행
 export const handleLogout = (navigate) => {
@@ -16,7 +16,7 @@ export const handleLogout = (navigate) => {
   })
     .then((response) => {
       if (response.ok) {
-        return response.json(); // 서버로부터의 응답을 JSON으로 파싱
+        return response.json();
       } else {
         throw new Error("로그아웃 실패");
       }
@@ -29,7 +29,7 @@ export const handleLogout = (navigate) => {
       window.location.reload();
     })
     .catch((error) => {
-      console.error(error); // 오류 처리
+      console.error(error); 
     });
 };
 
