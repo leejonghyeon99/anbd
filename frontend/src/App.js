@@ -23,6 +23,8 @@ import { fetchWithToken } from "./user/Reissue";
 import MonthSignUp from "./admin/component/MonthSignUp";
 import DailySignUp from "./admin/component/DailySignUp";
 import UserList from "./admin/component/UserList";
+import {useAutoLogout} from "./user/AutoLogout"
+
 
 const App = () => {
   const [menuToggle, setMenuToggle] = useState(true);
@@ -160,6 +162,8 @@ const App = () => {
       return <Navigate to="/home" />;
     }
   }
+
+  useAutoLogout();
 
   return (
     <>
