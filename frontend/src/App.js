@@ -14,7 +14,7 @@ import WritePage from "./product/page/WritePage";
 import DetailPage from "./product/page/DetailPage";
 import UpdatePage from "./product/page/UpdatePage";
 import GoogleMaps from "./product/page/GoogleMaps";
-import ChatPage from "./chat/page/ChatPage";
+import ChatPage from "./chat/ChatPage";
 import UpdatePassword from "./user/UpdatePassword";
 import { Button } from "react-bootstrap";
 import MyPage from "./user/my/MyPage";

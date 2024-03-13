@@ -39,6 +39,7 @@ select * from category group by main;
 select sub from category;
 select * from category where main='의류' and sub = '여성의류';
 select * from product;
+select * from product_image;
 select c.id, c.main from Category c group by c.main;
 select * from user;
 update user set auth = 'ROLE_ADMIN' where id=1;

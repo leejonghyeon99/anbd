@@ -47,20 +47,10 @@ public class ProductService {
     @Transactional
     // 등록
     public Product write(ProductsDTO product, List<MultipartFile> files){
-//        System.out.println(product + "저장전");
-//        System.out.println(files + "저장전");
         Category category = categoryRepository.findUnique(product.getCategoryMain(),product.getCategorySub());
-//        System.out.println(category);
-
-//        User user = userRepository.findByUsername(userService.getUser().get().getUsername()).orElse(null);
         User user_id = userRepository.findById(product.getUser_id()).orElse(null);
-//        User user_id = productRepository.findByUserId(product.getUser_id());
         System.out.println("product user_id : " + user_id);
-//        User user = userService.getUser().get();
-//        userRepository.findByUsername(user.getUsername());
-//        System.out.println("user~~~~~~~~~~~~~~~~~~~" + user);
 
-        // location 값이 null이거나 빈 문자열일 때 null로 설정
         String locationValue = (product.getLocation() == null || product.getLocation().isEmpty()) ? null : product.getLocation();
 
 
@@ -75,42 +65,11 @@ public class ProductService {
                 .fileList(product.getFileList())
                 .build();
 
-        System.out.println("productnew: " + productnew);
-
-        System.out.println("~~~~~~~~~~~");
         Product sProduct = productRepository.save(productnew);
-
-        System.out.println(product + "저장 후");
-        // 제품을 save 한 후 id값을 가져옴
         Long productId = sProduct.getId();
-        System.out.println("productID가 나와야함: " + productId);
-        // 파일 추가
         addFiles(files, productId);
-
-        System.out.println("sProduct : " + sProduct);
-//        ProductDTO.toDto()
         return sProduct;
     }
-
-
-//    public ProductDTO write(Product product, List<MultipartFile> files){
-//        System.out.println(product);
-//        String main = product.getCategory().getMain();
-//        String sub = product.getCategory().getSub();
-//        Category category = categoryRepository.findUnique(main, sub);
-//        product.setCategory(category);
-//        productRepository.saveAndFlush(product);
-//        User writer = userRepository.findById(product.getUser().getId()).orElse(null);
-//        product.setUser(writer);
-//        // 파일 추가
-////         addFiles(files, product.getId());
-//        Product sProduct = productRepository.save(product);
-//        // 제품을 save 한 후 id값을 가져옴
-//        Long productId = sProduct.getId();
-//        // 파일 추가
-//        addFiles(files, productId);
-//        return ProductDTO.toDto(product);
-//    }
 
 
     // ProductService에서 Product를 조회하는 메서드 추가
@@ -120,32 +79,9 @@ public class ProductService {
         return productRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("product_id를 못찾아요"));
     }
 
-    // 특정 글(id) 첨부파일(들) 추가
-//    private void addFiles(List<MultipartFile> files, Long id) {
-//        if (files != null) {
-//            for (var e : files) {
-//                // name="upfile##" 인 경우만 첨부파일 등록. (이유, 다른 웹에디터와 섞이지 않도록..ex: summernote)
-////                if (!startsWith("upfile")) continue;
-//
-//                // 첨부 파일 정보 출력
-//                System.out.println("\n첨부파일 정보: " + e);   // name값
-//                Init.printFileInfo(e);   // 파일 정보 출력
-//                System.out.println();
-//
-//                // 물리적인 파일 저장
-//                ProductImage file = upload(e);
-//
-//                // 성공하면 DB 에도 저장
-//                if (file != null) {
-//                    // ProductService를 사용하여 id를 이용하여 Product를 조회
-//                    Product product = findProductById(id);
-//                    if (product != null) {
-//                        file.setProduct(product); // 조회한 Product 객체를 설정
-//                        productImageRepository.saveAndFlush(file);
-//                    }
-
 
     private void addFiles(List<MultipartFile> files, Long productId) {
+        System.out.printf(files.toString());
         if (files != null) {
             for (MultipartFile file : files) {
                 // 첨부 파일 정보 출력
@@ -191,7 +127,7 @@ public class ProductService {
         String photoName = originName;
 
         // 파일명 이 중복되는지 확인
-        File file = new File(uploadDir, originName);
+        File file = new File(uploadDir+"/product", originName);
         if(file.exists()){  // 이미 존재하는 파일명,  중복되면 다름 이름으로 변경하여 저장
             // a.txt => a_2378142783946.txt  : time stamp 값을 활용할거다!
             int pos = photoName.lastIndexOf(".");
@@ -209,7 +145,7 @@ public class ProductService {
         System.out.println("photoName: " + photoName);
 
         // java.nio
-        Path copyOfLocation = Paths.get(new File(uploadDir, photoName).getAbsolutePath());
+        Path copyOfLocation = Paths.get(new File(uploadDir+"/product", photoName).getAbsolutePath());
         System.out.println("저장 경로: " + copyOfLocation);
 
         try {
@@ -243,28 +179,10 @@ public class ProductService {
 
     }
 
-//    // 상세
-//    @Transactional
-//    public ProductDTO detail(Long id){
-//        Product product = productRepository.findById(id).orElse(null);
-////        User user = userRepository.findById(product.getUser().getId()).orElse(null);
-////        product.getUser().getId()
-////        product.setUser(user);
-//        User user = userRepository.findById(product.getUser().getId()).orElse(null);
-////        User user_id = userRepository.findById(product.getUser_id()).orElse(null);
-////        User user = userService.getUser().get();
-//        System.out.println("user~~~~~~~~~~~~~~~~~~~" + user);
-//
-////        List<ProductImage> fileList = productImageRepository.findByProduct(product.getId());
-////        product.setFileList(fileList);
-//        return ProductDTO.toDto(product);
-//    }
-
     // 상세
     @Transactional
     public ProductDTO detail(Long id){
         Product product = productRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Product with id " + id + " not found"));
-//        User user = userRepository.findById(product.getUser().getId()).orElseThrow(() -> new IllegalArgumentException("User with id " + product.getUser().getId() + " not found"));
 
         // 상품 이미지 정보 조회
         List<ProductImage> productImages = productImageRepository.findByProductId(id);
@@ -310,18 +228,6 @@ public class ProductService {
             productEntity.setRefreshedAt(product.getRefreshedAt());  // 끌어올리기
             productRepository.save(productEntity);
         }
-//        addFiles(files, product.getId());
-
-        // 삭제할 첨부파일(들) 삭제
-//        if (delfile != null) {
-//            for (Integer id : delfile) {
-//                ProductImage file = productImageRepository.findById(id);
-//                if (file != null) {
-//                    delFile(file);  // 물리적으로 파일 삭제
-//                    productImageRepository.delete(file);  // DB 에서 삭제
-//                }
-//            }
-//        }
         return ProductDTO.toDto(productEntity);
     }
 
@@ -347,13 +253,6 @@ public class ProductService {
     public String delete(Long id){
         boolean isexists = productRepository.existsById(id);
         if (!isexists) return "FAIL";
-        // 물리적으로 저장된 첨부파일(들) 삭제
-//        List<ProductImage> fileList = productImageRepository.findByProduct(id);
-//        if (fileList != null) {
-//            for (ProductImage file : fileList) {
-//                delFile(file);
-//            }
-//        }
         productRepository.deleteById(id);
         return "OK";
     }
