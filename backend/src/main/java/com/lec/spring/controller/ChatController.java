@@ -48,9 +48,6 @@ public class ChatController {
         return new ResponseEntity<>(chatService.createRoom(rootDto.getUsername(), rootDto.getProductId()), HttpStatus.CREATED); //201
     }
 
-    @PostMapping("/test")
-    public String test(String test){
-        System.out.println(test);
-        return test;
-    }
+
+
 }

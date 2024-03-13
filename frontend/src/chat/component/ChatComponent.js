@@ -102,7 +102,6 @@ useEffect(() => {
     });
 
     
-    let headers = {Authorization: token};
     client.onConnect = (frame) => {
       console.log('WebSocket Connected:', frame);
       setStompClient(client);
