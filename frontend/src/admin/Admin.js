@@ -21,15 +21,6 @@ const Admin = () => {
         </div>
 
         <div className="admin-content">
-          <div className="admin-chart">
-            <DailySignUp/>
-          </div>
-          <div className="admin-chart">
-            <MonthSignUp width={800} height={200}/>
-          </div>
-          <div className="admin-user-list">
-            <UserList/>
-          </div>
 
           <div onClick={(e) => e.stopPropagation()}>
             
@@ -38,6 +29,7 @@ const Admin = () => {
                   onClick={() => {
                     setModalToggle(!modalToggle);
                   }}
+                  id="admin-categoryBtn"
                 >
                   카테고리 관리
                 </Button>
@@ -47,6 +39,15 @@ const Admin = () => {
                   <Category setModalToggle={setModalToggle} />
                 </div>
               )}
+          <div className="admin-chart">
+            <DailySignUp/>
+          </div>
+          <div className="admin-chart">
+            <MonthSignUp width={800} height={200}/>
+          </div>
+          <div className="admin-user-list">
+            <UserList/>
+          </div>
 
           </div>
         </div>

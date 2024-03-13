@@ -26,6 +26,7 @@ public class ProductDTO {
     private LocalDateTime refreshedAt;
     private CategoryDTO category;
     private String user;
+    private String userName;
     private long viewCnt;
     private LocalDateTime createdAt;
     private List<ProductImageDTO> fileList;
@@ -45,6 +46,7 @@ public class ProductDTO {
                 .fileList(entity.getFileList().stream().map(ProductImageDTO::toDto).collect(Collectors.toList()))
                 .category(CategoryDTO.toDto(entity.getCategory()))
                 .user(UserDTO.toDto(entity.getUser()).getNickname())
+                .userName(UserDTO.toDto(entity.getUser()).getUsername())
                 .build();
     }
 

@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { MypagebarList } from "../components/MypagebarList";
 import { AdminpagebarList } from "../components/AdminpagebarList";
 import "./CSS/Header.css";
 import "./CSS/Mypagebar.css";
-import Logout from './Logout';
+import Logout from '../user/Logout';
 import { fetchWithToken } from "../user/Reissue";
 
 const Navbar = styled.div`
@@ -202,18 +202,22 @@ const Header = () => {
             {/* 로그인한 유저와 비회원의 mypage아이콘 다르게 나오도록 */}
             <div className="mypageToggle" id="menu-bars">
               {user.auth === "ROLE_USER" && (
+                <Link>
                 <img
                   src="/icon/user2.png"
                   id="userIcon"
                   onClick={toggleMypage}
                 />
+                </Link>
               )}
               {user.auth === "ROLE_ADMIN" && (
+                <Link>
                 <img
                   src="/icon/admin2.png"
                   id="adminIcon"
                   onClick={toggleMypage}
                 />
+                </Link>
               )}
               {user.auth !== "ROLE_USER" && user.auth !== "ROLE_ADMIN" && (
                 <div className="anonymous">
@@ -236,7 +240,9 @@ const Header = () => {
                 />
               </Link>
               <div className="mypage_nickname">
-              <small>Today {getCurrentDate()}</small>
+              <p className="datetime">Today {getCurrentDate()}</p>
+              <br/>
+              <br/>
                 <p>
                   ID: {user.username}
                   <br />
@@ -264,7 +270,8 @@ const Header = () => {
 
               <div className="mypage_auth">
                 {user.auth === "ROLE_USER" && (
-                  <div className="userbar">
+                  
+                  <div className="userbar">                    
                     <Link
                       to={"/chat/:id"}
                       onClick={toggleMypage}

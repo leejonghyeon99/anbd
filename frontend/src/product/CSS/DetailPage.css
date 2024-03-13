@@ -1,0 +1,35 @@
+.detail_box {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+.detail-category {
+    font-family: 'TTHakgyoansimUndongjangL';  
+    font-size: smaller;
+    color: rgb(146, 146, 146);
+}
+
+#detail-userbox {
+    border-bottom: 1px solid rgb(146, 146, 146);
+
+}
+.detail-user {
+    font-family: 'IBMPlexSansKR-Regular';
+    font-weight: bold;
+    font-size: small;
+}
+
+.detail-price {
+    font-family: 'yg-jalnan';
+}
+
+.detail-title {
+    font-family: 'TTHakgyoansimUndongjangL';
+    font-size: 1.5rem;
+}
+
+#detail-description {
+    font-family: 'SUIT-Regular';
+    min-height: 20rem;
+    overflow-y: auto;
+}

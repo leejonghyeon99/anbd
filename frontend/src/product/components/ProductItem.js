@@ -9,25 +9,24 @@ const ProductItem = (props) => {
   return (
     <>
       <Card id="product-card">
-        <div className="card-title">
-          판매자 {user}
-          </div>
-        <Card.Body>
+        <div className="card-user">
+          <small>작성자-</small>  {user}
+        </div>
+
           {/* 링크를 클릭하면 해당 상품의 상세 페이지로 이동 */}
           <Link to={`/product/detail/${id}`} className="moveToDetail">
             <Card.Img
-              variant="top"
-              src="/icon/search.png"
+              src="https://news.samsungdisplay.com/wp-content/uploads/2018/08/8.jpg"
               className="card-img"
             />
           </Link>
-        </Card.Body>
+
         <ListGroup>
-        <Link to={`/product/detail/${id}`} id="moveToDetail">
-          <ListGroupItem id="product-title">{title}</ListGroupItem>
+          <Link to={`/product/detail/${id}`} id="moveToDetail">
+            <ListGroupItem id="product-title" >{title}</ListGroupItem>
           </Link>
           <Link to={`/product/detail/${id}`} id="moveToDetail">
-          <ListGroupItem id="price">{price} 원</ListGroupItem>
+            <ListGroupItem id="price">{price} 원</ListGroupItem>
           </Link>
         </ListGroup>
       </Card>
