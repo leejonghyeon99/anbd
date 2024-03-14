@@ -212,6 +212,7 @@ const Update = () => {
             console.log(data);
             setUserInfo(data); // 응답 데이터로 상태 업데이트
             navigate("/home");
+            window.location.reload();
           })
           .catch((error) => {
             console.error("회원정보 수정오류", error);
@@ -258,7 +259,7 @@ const Update = () => {
         {/* 이름 수정 */}
         <div>
           <label htmlFor="name">
-            이름 <small>* </small>
+            이름
           </label>
           <input 
           name="name" 
@@ -273,7 +274,7 @@ const Update = () => {
         <div>
           {/* 닉네임 수정 */}
           <label htmlFor="nickname">
-            닉네임 <small>* </small>
+            닉네임
           </label>
           <input
             name="nickname"
@@ -290,7 +291,7 @@ const Update = () => {
         <div>
           {/* 연락처 수정 */}
           <label htmlFor="phone_number">
-            연락처 <small>* </small>
+            연락처
           </label>
           <input
             name="phone_number"
@@ -307,7 +308,7 @@ const Update = () => {
         <div>
           {/* 이메일 수정 */}
           <label htmlFor="email">
-            이메일 <small>* </small>
+            이메일
           </label>
           <input name="email" value={userInfo.email} onChange={infoChange} /> 
           {!isVerified && <Button
@@ -335,7 +336,7 @@ const Update = () => {
         {isVerificationVisible && !isVerified && (
           <div>
             <label htmlFor="verificationCode">
-              인증번호 <small>* </small>
+              인증번호
             </label>
             <input
               type="text"
@@ -354,7 +355,7 @@ const Update = () => {
         <div></div>
           {/* 주소 수정 */}
           <label htmlFor="region">
-            주소 <small>* (최대 3개) </small>
+            주소
           </label>
 
           {/*

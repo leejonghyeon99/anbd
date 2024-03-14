@@ -42,6 +42,7 @@
   width: 3rem;
   border-radius: 30px;
   background-color: #ffffffad;
+  cursor: pointer;
 }
 
 /*admin auth*/
@@ -49,6 +50,7 @@
   width: 3rem;
   border-radius: 30px;
   background-color: #ffffffad;
+  cursor: pointer;
 }
 
 .mypageToggle {

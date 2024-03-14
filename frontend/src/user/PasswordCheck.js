@@ -28,7 +28,9 @@ const PasswordCheck = () => {
     setPassword(e.target.value);
   };
 
-  const confirmPassword = () => {
+  const confirmPassword = (e) => {
+    e.preventDefault(); // 폼 제출 이벤트의 기본 동작 방지
+    
     const token = localStorage.getItem("accessToken");
 
     fetchWithToken(
@@ -49,7 +51,6 @@ const PasswordCheck = () => {
           navigate("/user/update");
         } else {
           alert("비밀번호가 일치하지 않습니다.");
-
         }
       })
       .catch((error) => {
@@ -63,15 +64,19 @@ const PasswordCheck = () => {
       <div className="pswdChk">
         <div className="pswdChk_box">
           <div className="pswdTitle">비밀번호 확인</div>
-          <Form className="text">{username} 님!</Form>
-            <Form className="text">비밀번호 : {" "}</Form>
+          <Form  onSubmit={confirmPassword}>
+            <div className="text">{username} 님!</div>
+            <div className="text">비밀번호 : </div>
             <input
               type="password"
               name="password"
               value={password}
               onChange={inputPassword}
             />
-          <Button id="submitBtn" onClick={confirmPassword}>확인</Button>
+            <Button id="submitBtn" type="submit">
+              확인
+            </Button>
+          </Form>
         </div>
       </div>
     </>
