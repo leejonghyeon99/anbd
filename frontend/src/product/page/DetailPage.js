@@ -179,8 +179,7 @@ const DetailPage = () => {
       </div>
 
       <div className="mb-3">    
-      {product.id}
-        {(userrole === "ROLE_USER" || userrole === "ROLE_ADMIN") && (        
+        {((userrole === "ROLE_USER" || userrole === "ROLE_ADMIN") && (product.userName !== username)) && (        
           <Link to={"/chat"} state={{product : product}}>
             <Button variant="outline-dark mb-3">
               채팅하기

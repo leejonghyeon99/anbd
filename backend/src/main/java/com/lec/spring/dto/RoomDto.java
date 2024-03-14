@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RoomDto {
 
+    private int id;
     private String username;
     private String message;
     private Long productId;
