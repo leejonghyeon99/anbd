@@ -72,4 +72,10 @@ public class ChatService {
         ChatRoom room = chatRoomRepository.findById(roomId).orElse(null);
         return ChatDTO.toDtoList(room.getChats());
     }
+
+    public List<ChatRoomDTO> chatRooms(){
+        User user = userService.getUser().orElseThrow();
+        List<ChatRoom> rooms = chatRoomRepository.findBySellerId(user.getId()).orElseThrow();
+        return ChatRoomDTO.toDtoList(rooms);
+    }
 }

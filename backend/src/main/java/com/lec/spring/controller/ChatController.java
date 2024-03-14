@@ -30,7 +30,6 @@ public class ChatController {
         System.out.println("메세지 요청받음");
         String processedMessage = "User in room " + roomId + ": " + roomDto.getMessage();
         System.out.println(processedMessage);
-
         return new ResponseEntity<>(chatService.createChat(roomDto.getMessage(), roomId, roomDto.getUsername()), HttpStatus.OK);
     }
 
@@ -44,6 +43,11 @@ public class ChatController {
     @GetMapping("/room")
     public ResponseEntity<List<ChatDTO>> chatLog(Integer roomId){
         return new ResponseEntity<>(chatService.logChats(roomId),HttpStatus.OK);
+    }
+
+    @GetMapping("/rooms")
+    private ResponseEntity<List<ChatRoomDTO>> rooms(){
+        return new ResponseEntity<>(chatService.chatRooms(), HttpStatus.OK);
     }
 
 

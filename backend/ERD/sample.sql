@@ -20,6 +20,7 @@ select * from chat_room;
 select * from refresh_token;
 select * from chat;
 
+
 select main
 from Category as c
 group by c.main;

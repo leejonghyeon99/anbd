@@ -26,6 +26,7 @@ ChartJS.register(
     Legend
 );
 
+// ??월 회원가입수 차트
 const DailySignUp = (props) => {
     const chartX = props.width;
     const chartY = props.height;
@@ -153,8 +154,7 @@ const DailySignUp = (props) => {
             <Line
                 options={options} 
                 data={data}
-             
-                // ref={chartRef}
+            
             />
         </>
     );

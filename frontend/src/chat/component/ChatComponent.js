@@ -3,13 +3,14 @@ import { Client } from '@stomp/stompjs';
 import { fetchWithToken } from '../../user/Reissue';
 import { useLocation } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import styles from '../css/chat.module.css'
 
 const ChatComponent = (props) => {
 
   const product = props.product;
 
   const [message, setMessage] = useState('');
-  const [roomId, setRoomId] = useState(1);
+  const [roomId, setRoomId] = useState("");
   const [stompClient, setStompClient] = useState(null);
   const [chatMessages, setChatMessages] = useState([]);
 
@@ -32,28 +33,8 @@ const ChatComponent = (props) => {
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const decodedToken = jwtDecode(token);
   const username = decodedToken.sub;
+  console.log(decodedToken);
   console.log(JSON.stringify({ username: product.userName, productId: product.id }));
-
-  useEffect(() => {
-    const getChatLog = async () => {
-      console.log(apiUrl);
-      try {
-        const url = `${apiUrl}/api/chat/room?roomId=${roomId}`;
-  
-        const options = {
-          method: "GET",                 
-        };
-        
-        const response = await fetchWithToken(url, options);
-        const data = await response.json();
-  
-        console.log(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
-    getChatLog()
-  })
 
 useEffect(() => {
   const createRoom = async () => {
@@ -70,12 +51,44 @@ useEffect(() => {
       const data = await response.json();
 
       console.log(data);
+      setRoomId(data.id);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   }
+
   createRoom()
+  
 },[])
+  
+  useEffect(()=>{
+    const getChatLog = async () => {
+      console.log(apiUrl);
+      try {
+        const url = `${apiUrl}/api/chat/room?roomId=${roomId}`;
+  
+        const options = {
+          method: "GET",                 
+        };
+        
+        const response = await fetchWithToken(url, options);
+        const data = await response.json();
+  
+        console.log([data.map( m => ({
+          message:m.message,
+          sender:m.sender.nickname
+        }))]);
+        setChatMessages(data.map( m => ({
+          message:m.message,
+          sender:m.sender.nickname
+        })))
+        
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+    getChatLog()
+  },[roomId])
 
   useEffect(()=>{  
 
@@ -132,8 +145,8 @@ useEffect(() => {
       // 원하는 방에 구독
         client.subscribe(`/send/${roomId}`, (message) => {
         const receivedMessage = JSON.parse(message.body);
-        console.log(receivedMessage)
-        setChatMessages((prevMessages) => [...prevMessages, receivedMessage]);
+        console.log(receivedMessage.body)
+        setChatMessages((prevMessages) => [...prevMessages, {sender:receivedMessage.body.sender.nickname, message: receivedMessage.body.message}]);
       });
       
       // 성공적으로 구독했을 때 로그 출력
@@ -170,7 +183,16 @@ useEffect(() => {
     <div>
       <div>
         {chatMessages.map((msg, index) => (
-          <div key={index}>{msg}</div>
+          <div key={index}>
+            <div 
+              className={`${msg.sender === user.nickname ? styles.right : styles.left}`}
+            >
+              <label htmlFor={`${index}msg`}>
+                {msg.sender}
+              </label>
+              <p id={`${index}msg`}>{msg.message}</p>
+            </div>
+          </div>
         ))}
       </div>
       <input

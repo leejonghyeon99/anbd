@@ -273,7 +273,7 @@ const Header = () => {
                   
                   <div className="userbar">                    
                     <Link
-                      to={"/chat/:id"}
+                      to={"/chat/room"}
                       onClick={toggleMypage}
                     >
                       <img
