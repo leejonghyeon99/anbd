@@ -1,23 +1,27 @@
-.write-box {
+.update-box {
     border: 1px solid;
     padding: 1.5%;
     padding-top: 0;
 }
 
-#write-title {
+#update-title {
     
 }
 
-#write-description {
+#update-description {
     border: 1px solid rgba(0, 0, 0, 0.158);
     border-radius: 7px;
     width: 100%;
 }
 
-#write-filebtn {
+#update-filebtn {
     font-size: small;
     width: 5rem;
     padding: 0;
     float: right;
     margin-block: 2%;
+}
+
+#pushBtn {
+    margin: 1%;
 }
