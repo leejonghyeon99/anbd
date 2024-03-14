@@ -392,6 +392,7 @@ const WritePage = () => {
         })}
       </div> */}
 
+
       <br />
       <div>제목</div>
       <div className="mb-3">
