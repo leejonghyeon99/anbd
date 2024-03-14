@@ -16,6 +16,10 @@ from user;
 delete
 from user;
 
+select * from chat_room;
+select * from refresh_token;
+select * from chat;
+
 select main
 from Category as c
 group by c.main;
@@ -25,8 +29,8 @@ from product;
 select *
 from product_image;
 update user
-set auth = 'ROLE_ADMIN'
-where id = 3;
+set auth = 'ROLE_USER'
+where id = 1;
 select *
 from Product
 where category_id = 1;
@@ -51,7 +55,7 @@ where c.main = '224'
   and c.sub = '33ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ';
 update user
 set thumbnail = 'default.png'
-where id = 3;
+where 1 = 1;
 delete
 from category;
 select *
@@ -79,9 +83,9 @@ from user;
 update user
 set auth = 'ROLE_ADMIN'
 where id = 1;
-insert into user (created_at, auth, certification, email, name, nickname, password, phone_number, location, star,
+insert into user (created_at, auth, certification, email, name, nickname, password, phone_number,region, star,
                   username)
-values (now(), 'ROLE_ADMIN', 'APPROVED', 'test2@email.com', 'postMAN', 'NICK POST',
+values (now(), 'ROLE_ADMIN', 'APPROVED', 'test21@email.com', 'postMAN1', 'NICK1 POST',
         '$2a$10$0b3NoGkrbHefuZ5NCWNpa.kkt6j0tbstXWa2INhVYhn5mxn4iJLMy', '01012341234', '서울시 송파구', 0.0, 'user2');
 desc product;
 /*상품 sample*/

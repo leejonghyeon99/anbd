@@ -73,11 +73,5 @@ public class User extends BaseEntity{
     @JsonIgnore
     private List<Review> reviews;
 
-    @OneToMany(mappedBy = "buyer")
-    @JsonIgnore
-    private List<ChatRoom> boughtRooms;
 
-    @OneToMany(mappedBy = "seller")
-    @JsonIgnore
-    private List<ChatRoom> soldRooms;
 }

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Button, Image, Col } from "react-bootstrap";
-import { json, useNavigate, useParams } from "react-router-dom";
+import { Link, json, useNavigate, useParams } from "react-router-dom";
 import { fetchWithToken } from "../../user/Reissue";
 import { upload } from "@testing-library/user-event/dist/upload";
 import { jwtDecode } from "jwt-decode";
 import "../CSS/DetailPage.css";
+import ChatComponent from "../../chat/component/ChatComponent";
 
 const DetailPage = () => {
   const navigate = useNavigate();
@@ -31,8 +32,6 @@ const DetailPage = () => {
   const [username, setUsername] = useState();
   const [userrole, setUserrole] = useState();
 
-  // 채팅하기
-  const GoChat = () => {};
 
   const UpdateOk = () => {
     navigate("/product/update/" + id);
@@ -179,11 +178,14 @@ const DetailPage = () => {
         </div>
       </div>
 
-      <div className="mb-3">
-        {(userrole === "ROLE_USER" || userrole === "ROLE_ADMIN") && (
-          <Button variant="outline-dark mb-3" onClick={GoChat}>
-            채팅하기
-          </Button>
+      <div className="mb-3">    
+      {product.id}
+        {(userrole === "ROLE_USER" || userrole === "ROLE_ADMIN") && (        
+          <Link to={"/chat"} state={{product : product}}>
+            <Button variant="outline-dark mb-3">
+              채팅하기
+            </Button>
+          </Link>
         )}
       </div>
       <div className="mb-3">

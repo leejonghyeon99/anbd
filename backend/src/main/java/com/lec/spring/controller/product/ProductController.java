@@ -50,23 +50,9 @@ public class ProductController {
         return new ResponseEntity<>(productService.detail(id), HttpStatus.OK);
     }
 
-    // 수정
-    // Map이 아니라 Product 타입을 사용하는 이유는 배열타입인 변수들 때문에
+
     @PutMapping("/update")
     public ResponseEntity<?> update(@RequestBody ProductDTO pd, MultipartFile files, Long[] delfile){
-//        System.out.println("--------------------"+product);
-//        Product pd = new Product();
-//        pd.setId(Long.valueOf(String.valueOf(product.get("id"))));
-//        pd.setTitle((String) product.get("title"));
-//        pd.setMiddleCategory((String) product.get("middleCategory"));
-//        pd.setPrice(Integer.parseInt((String) product.get("price")));
-//        pd.setDescription((String) product.get("description"));
-//        pd.setStatus(Status.valueOf((String) product.get("status")));
-//        pd.setLocation((String) product.get("location"));
-//        pd.setRefreshedAt(LocalDateTime.parse(String.valueOf(product.get("refreshedAt"))));  // 끌어올리기
-//        pd.setCategory((Category) product.get("category"));
-//        System.out.println("수정 "+pd.toString());
-//        new ResponseEntity<>(productService.update(product), HttpStatus.OK);
         return new ResponseEntity<>(productService.update(pd, files, delfile), HttpStatus.OK);
     }
 
@@ -83,6 +69,7 @@ public class ProductController {
 
         return new ResponseEntity<>(productService.findByMainForList(), HttpStatus.OK);
     }
+
 
     // 특정 main으로 검색한 sub 카테고리 목록
     @GetMapping("/category/find")

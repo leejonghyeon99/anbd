@@ -1,31 +1,20 @@
 package com.lec.spring.controller;
 
-import com.lec.spring.domain.Chat;
-import com.lec.spring.domain.ChatRoom;
-import com.lec.spring.domain.User;
+
 import com.lec.spring.dto.ChatDTO;
 import com.lec.spring.dto.ChatRoomDTO;
-import com.lec.spring.repository.ChatRoomRepository;
-import com.lec.spring.repository.UserRepository;
+import com.lec.spring.dto.RoomDto;
 import com.lec.spring.service.UserService;
 import com.lec.spring.service.chat.ChatService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/chat")
@@ -35,11 +24,27 @@ public class ChatController {
     private final ChatService chatService;
     private final UserService userService;
 
-    @MessageMapping("/{roomId}") //여기로 전송되면 메서드 호출 -> WebSocketConfig prefixes 에서 적용한건 앞에 생략
-    @SendTo("/room/{roomId}")   //구독하고 있는 장소로 메시지 전송 (목적지)  -> WebSocketConfig Broker 에서 적용한건 앞에 붙어줘야됨
-    public Chat chat(@DestinationVariable Integer roomId, String message) {
-        System.out.printf(String.valueOf(roomId));
-        System.out.printf(message);
-        return null;
+    @MessageMapping("/{roomId}")
+    @SendTo("/send/{roomId}")
+    public ResponseEntity<ChatDTO> handleChatMessage(@DestinationVariable Integer roomId, @RequestBody RoomDto roomDto) {
+        System.out.println("메세지 요청받음");
+        String processedMessage = "User in room " + roomId + ": " + roomDto.getMessage();
+        System.out.println(processedMessage);
+
+        return new ResponseEntity<>(chatService.createChat(roomDto.getMessage(), roomId, roomDto.getUsername()), HttpStatus.OK);
     }
+
+    @PostMapping("/room")
+    public ResponseEntity<ChatRoomDTO> createRoom(@RequestBody RoomDto roomDto){
+        System.out.println("-".repeat(50));
+        System.out.println(roomDto.getUsername() + " / " + roomDto.getProductId());
+        return new ResponseEntity<>(chatService.createRoom(roomDto.getUsername(), roomDto.getProductId()), HttpStatus.CREATED); //201
+    }
+
+    @GetMapping("/room")
+    public ResponseEntity<List<ChatDTO>> chatLog(Integer roomId){
+        return new ResponseEntity<>(chatService.logChats(roomId),HttpStatus.OK);
+    }
+
+
 }

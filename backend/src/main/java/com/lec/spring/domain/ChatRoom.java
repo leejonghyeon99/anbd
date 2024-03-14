@@ -33,8 +33,4 @@ public class ChatRoom {
 
     @OneToMany(mappedBy = "chatRoom")
     private List<Chat> chats;
-
-
-    @OneToMany(mappedBy = "chatRoom")
-    private List<Chat> chat;
 }
