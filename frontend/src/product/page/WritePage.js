@@ -517,10 +517,10 @@ const WritePage = () => {
 
         <button
           id="write-filebtn"
-          className="btn btn-secondary"
+          className="btn"
           onClick={handleAddFile}
         >
-          파일 추가
+          + 사진 추가
         </button>
       </div>
       <Button variant="outline-dark me-2" onClick={WriteOk}>

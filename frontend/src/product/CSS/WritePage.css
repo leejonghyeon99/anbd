@@ -13,6 +13,14 @@
     font-size: small;
     width: 5rem;
     padding: 0;
-    float: right;
-    margin-block: 2%;
+    margin-block: 1%;
+    background-color: rgba(149, 226, 6, 0.685);
+    border:0.1px rgba(149, 226, 6, 0.685) solid;
+    font-family: 'IBMPlexSansKR-Regular';
+    font-weight: bold;
+}
+
+#write-filebtn:hover {
+    background-color: rgba(255, 255, 255, 0);
+    border:0.1px rgba(69, 87, 36, 0.685) solid;
 }
