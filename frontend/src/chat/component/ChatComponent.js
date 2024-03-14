@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Client } from '@stomp/stompjs';
 import { fetchWithToken } from '../../user/Reissue';
 import { useLocation } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 
 const ChatComponent = (props) => {
 
@@ -29,8 +30,30 @@ const ChatComponent = (props) => {
 
   const token = localStorage.getItem("accessToken");
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
-
+  const decodedToken = jwtDecode(token);
+  const username = decodedToken.sub;
   console.log(JSON.stringify({ username: product.userName, productId: product.id }));
+
+  useEffect(() => {
+    const getChatLog = async () => {
+      console.log(apiUrl);
+      try {
+        const url = `${apiUrl}/api/chat/room?roomId=${roomId}`;
+  
+        const options = {
+          method: "GET",                 
+        };
+        
+        const response = await fetchWithToken(url, options);
+        const data = await response.json();
+  
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+    getChatLog()
+  })
 
 useEffect(() => {
   const createRoom = async () => {
@@ -52,7 +75,7 @@ useEffect(() => {
     }
   }
   createRoom()
-})
+},[])
 
   useEffect(()=>{  
 
@@ -108,7 +131,7 @@ useEffect(() => {
 
       // 원하는 방에 구독
         client.subscribe(`/send/${roomId}`, (message) => {
-        const receivedMessage = message.body;
+        const receivedMessage = JSON.parse(message.body);
         console.log(receivedMessage)
         setChatMessages((prevMessages) => [...prevMessages, receivedMessage]);
       });
@@ -135,7 +158,7 @@ useEffect(() => {
       
       stompClient.publish({
         destination: `/room/${roomId}`,
-        body: JSON.stringify({username:product.userName, message:message}),       
+        body: JSON.stringify({username:username, message:message}),       
       });
       setMessage('');
     } else {

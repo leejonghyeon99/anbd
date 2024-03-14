@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RootDto {
+public class RoomDto {
 
     private String username;
     private String message;

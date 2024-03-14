@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ChatService {
@@ -31,7 +33,8 @@ public class ChatService {
             return null;
         }
 
-        User sender = userRepository.findByUsername(username).orElse(null);
+        User sender = userRepository.findByUsername(username).orElseThrow();
+
         Chat chat = Chat.builder()
                 .chatRoom(room)
                 .sender(sender)
@@ -46,22 +49,27 @@ public class ChatService {
 
     @Transactional
     public ChatRoomDTO createRoom(String username, Long productId){
-        User buyer = userService.getUser().get();
-        User seller = userRepository.findByUsername(username).orElse(null);
-        Product product = productRepository.findById(productId).orElse(null);
+        User buyer = userService.getUser().orElseThrow();
+        User seller = userRepository.findByUsername(username).orElseThrow();
+        Product product = productRepository.findById(productId).orElseThrow();
 
-        ChatRoom room = chatRoomRepository.findByBuyerIdAndSellerIdAndProductId(buyer.getId(), seller.getId(), productId).orElse(null);
+        ChatRoom room = chatRoomRepository.findByBuyerIdAndSellerIdAndProductId(buyer.getId(), seller.getId(), productId)
+                .orElseGet(() -> {
+                    ChatRoom newRoom = ChatRoom.builder()
+                            .buyer(buyer)
+                            .seller(seller)
+                            .product(product)
+                            .build();
+                    return chatRoomRepository.save(newRoom);
+                });
 
-        if(room != null){
-            return ChatRoomDTO.toDto(room);
-        }
-        room = ChatRoom.builder()
-                .buyer(buyer)
-                .seller(seller)
-                .product(product)
-                .build();
-
-        chatRoomRepository.save(room);
         return ChatRoomDTO.toDto(room);
+    }
+
+
+
+    public List<ChatDTO> logChats(int roomId){
+        ChatRoom room = chatRoomRepository.findById(roomId).orElse(null);
+        return ChatDTO.toDtoList(room.getChats());
     }
 }
