@@ -16,9 +16,9 @@ const Admin = () => {
         className={`admin-wrapper ${modalToggle ? "modalBackground" : ""}`}
         onClick={() => setModalToggle(false)}
       >
-        <div className="admin-menu">
+        {/* <div className="admin-menu">
           <Menu />
-        </div>
+        </div> */}
 
         <div className="admin-content">
 
