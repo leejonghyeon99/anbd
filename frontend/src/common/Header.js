@@ -277,7 +277,7 @@ const Header = () => {
                       onClick={toggleMypage}
                     >
                       <img
-                        src="/icon/chatting.png"
+                        src="/icon/colorChat.png"
                         className="chatIcon_mp"
                       />
                     </Link>

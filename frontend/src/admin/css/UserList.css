@@ -1,9 +1,8 @@
 /* styles.css */
 
-ul, li {
-    list-style: none;
-    padding: 0;
+#userList-ul {
     margin: 0;
+    padding: 1%;
 }
 
 .pagination {
