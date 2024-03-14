@@ -3,6 +3,7 @@ import { Button } from "react-bootstrap";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import GoogleMaps from "./GoogleMaps";
 import { fetchWithToken } from "../../user/Reissue";
+import "../CSS/UpdatePage.css";
 
 const UpdatePage = () => {
   let { id } = useParams();
@@ -76,7 +77,9 @@ const UpdatePage = () => {
 
   // Main목록만 가져오는 카테고리
   useEffect(() => {
-    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/category/main`)
+    fetchWithToken(
+      `${process.env.REACT_APP_API_BASE_URL}/api/product/category/main`
+    )
       .then((response) => response.json())
       .then((data) => {
         setMainCategories(data);
@@ -106,8 +109,8 @@ const UpdatePage = () => {
   const mainCategoryValue = (e) => {
     console.log("main");
     setSelectMain({
-      id : e.target.value,
-      main : e.target.options[e.target.selectedIndex].text,
+      id: e.target.value,
+      main: e.target.options[e.target.selectedIndex].text,
     });
   };
 
@@ -115,8 +118,8 @@ const UpdatePage = () => {
   const subCategoryValue = (e) => {
     console.log("sub");
     setSelectSub({
-      id : e.target.value,
-      sub : e.target.options[e.target.selectedIndex].text,
+      id: e.target.value,
+      sub: e.target.options[e.target.selectedIndex].text,
     });
   };
 
@@ -157,7 +160,9 @@ const UpdatePage = () => {
 
   // 상세
   useEffect(() => {
-    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/detail/` + id)
+    fetchWithToken(
+      `${process.env.REACT_APP_API_BASE_URL}/api/product/detail/` + id
+    )
       .then((response) => response.json())
       .then((data) => setProduct(data));
   }, []);
@@ -193,13 +198,99 @@ const UpdatePage = () => {
   };
 
   return (
-    <div>
+    <div className="update-box">
       {/* <GoogleMaps props={id}></GoogleMaps> */}
-      <h2>상품 수정</h2>
-      <span>이미지 첨부</span>
+      <h2>수정</h2>
+      <div>제목</div>
       <div className="mb-3">
-        <input type="file" name="productImage" />
+        <input
+          type="text"
+          className="form-control"
+          name="title"
+          id="update-title"
+          placeholder="제목을 입력하세요"
+          value={product.title}
+          onChange={UpdateValue}
+        />
       </div>
+
+      {/* 대분류 선택후 중분류 선택 */}
+      <div>
+        <div>카테고리</div>
+        <div className="mb-3">
+          <select
+            id="update-categorybg"
+            className="form-select"
+            name="main"
+            value={selectMain.main}
+            onChange={mainCategoryValue}
+          >
+            <option>-- 대분류 카테고리를 선택해주세요 --</option>
+            {mainCategories.map((category) => (
+              <option key={category.id} value={category.main}>
+                {category.main}
+              </option>
+            ))}
+          </select>
+          <select
+            id="update-categorymid"
+            className="form-select"
+            name="sub"
+            value={selectSub.sub}
+            onChange={subCategoryValue}
+          >
+            <option>-- 중분류 카테고리를 선택해주세요 --</option>
+            {subCategories.map((category) => (
+              <option key={category.id} value={category.sub}>
+                {category.sub}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <span>가격</span>
+      <div className="mb-3">
+        <input
+          type="number"
+          className="form-control"
+          name="price"
+          id="update-price"
+          value={product.price}
+          placeholder="가격을 입력하세요"
+          onChange={UpdateValue}
+        />
+      </div>
+
+      {/* 상태 */}
+      <div>
+        <select
+          className="form-select"
+          id="update-status"
+          name="status"
+          value={product.status}
+          onChange={UpdateValue}
+        >
+          <option selected>-- 판매 상태를 선택해주세요 --</option>
+          <option value="SALE">판매중</option>
+          <option value="RESERVED">예약중</option>
+          <option value="SOLD">판매완료</option>
+        </select>
+      </div>
+
+      {/* 내용 */}
+      <div className="mb-3 mt-3">
+        <textarea
+          cols="90"
+          rows="10"
+          id="update-description"
+          name="description"
+          value={product.description}
+          placeholder="게시글 내용을 작성해주세요. 가품 및 판매금지품목은 게시가 제한될 수 있어요"
+          onChange={UpdateValue}
+        />
+      </div>
+
       <span>위치</span>
       <button onClick={toggleGoogleMaps}>
         {showGoogleMaps ? "GoogleMaps 숨기기" : "GoogleMaps 표시하기"}
@@ -218,77 +309,17 @@ const UpdatePage = () => {
       <span>선택된 위치: {product.location}</span>
 
       {/* <input type="button" name="location" id="location" value={product.location} onClick={MapOk}></input><br/> */}
-      <span>제목</span>
-      <div className="mb-3">
-        <input
-          type="text"
-          className="form-control"
-          name="title"
-          id="title"
-          placeholder="제목을 입력하세요"
-          value={product.title}
-          onChange={UpdateValue}
-        />
-      </div>
-      {/* 대분류 선택후 중분류 선택 */}
-      <div>
-        <span>대분류</span>
-        <div className="mb-3">
-          <select className="form-select" name="main" value={selectMain.main} onChange={mainCategoryValue}>
-            <option>-- 대분류 카테고리를 선택해주세요 --</option>
-          {mainCategories.map(category =>
-          ( 
-            <option key={category.id} value={category.main}>{category.main}</option>)
-          )}</select>
+
       
-        <span>중분류</span>
-          <select className="form-select" name='sub' value={selectSub.sub} onChange={subCategoryValue}>          
-          <option>-- 중분류 카테고리를 선택해주세요 --</option>
-          {subCategories.map(category => ( 
-            <option key={category.id} value={category.sub}>{category.sub}</option>
-          ))}
-          </select>
-        </div>
-      </div>
-      <span>가격</span>
+      <span>이미지 첨부</span>
       <div className="mb-3">
-        <input
-          type="number"
-          className="form-control"
-          name="price"
-          id="price"
-          value={product.price}
-          placeholder="가격을 입력하세요"
-          onChange={UpdateValue}
-        />
+        <input type="file" name="productImage" />
       </div>
-      <span>설명</span>
-      <div className="mb-3">
-        <textarea
-          cols="90"
-          rows="10"
-          name="description"
-          value={product.description}
-          placeholder="게시글 내용을 작성해주세요. 가품 및 판매금지품목은 게시가 제한될 수 있어요"
-          onChange={UpdateValue}
-        />
-      </div>
-      <span>상태</span>
+
+      
       <div>
-        <select
-          className="form-select"
-          name="status"
-          value={product.status}
-          onChange={UpdateValue}
-        >
-          <option selected>-- 판매 상태를 선택해주세요 --</option>
-          <option value="SALE">판매중</option>
-          <option value="RESERVED">예약중</option>
-          <option value="SOLD">판매완료</option>
-        </select>
-      </div>
-      <div className="">
         <Button
+        id="pushBtn"
           variant="outline-dark"
           name="refreshedAt"
           onClick={refreshedAtValue}

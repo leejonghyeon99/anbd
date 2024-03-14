@@ -448,10 +448,11 @@ const WritePage = () => {
         />
       </div>
 
+      {/* 상태 */}
       <div>
         <select
           className="form-select"
-          id="status"
+          id="write-status"
           name="status"
           onChange={WriteValue}
         >
@@ -462,18 +463,17 @@ const WritePage = () => {
         </select>
       </div>
 
+      {/* 내용 */}
       <div className="mb-3 mt-3">
         <textarea
           cols="90"
           rows="10"
-          id="description"
+          id="write-description"
           name="description"
           placeholder="게시글 내용을 작성해주세요. 가품 및 판매금지품목은 게시가 제한될 수 있어요."
           onChange={WriteValue}
         />
       </div>
-
-
 
       <div className="write-map">
         {/* GoogleMaps를 표시하거나 숨기는 버튼 */}
@@ -494,7 +494,7 @@ const WritePage = () => {
         <span>선택된 위치: {product.location}</span>
       </div>
 
-      <div id= "write-file" className="mb-3 mt-3">
+      <div id="write-file" className="mb-3 mt-3">
         <label>첨부파일:</label>
         <div id="files">
           {/* 첨부 파일 목록을 출력 */}
@@ -514,7 +514,11 @@ const WritePage = () => {
         {/* 추가 버튼 */}
         {/* <div id="fileInput" onChange={handleFileChange}> */}
 
-        <button id="write-filebtn" className="btn btn-secondary" onClick={handleAddFile}>
+        <button
+          id="write-filebtn"
+          className="btn btn-secondary"
+          onClick={handleAddFile}
+        >
           파일 추가
         </button>
       </div>
