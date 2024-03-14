@@ -108,14 +108,14 @@ const ListPage = () => {
               placeholder="검색어를 입력하세요"
               value={search}
               onChange={handleSearchChange}
-              style={{ border: "1px solid" }}
+
             />
             <Button
               type="submit"
               id="search-button"
               variant="outline-secondary"
             >
-              <span className="button-text">Go</span>
+              <img className="button-text" src="/icon/search.png" />
             </Button>
           </Form>
         </div>

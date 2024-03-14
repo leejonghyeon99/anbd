@@ -62,7 +62,7 @@ const UserList = () => {
     return (
         <>
             <div className={styles.userList}>
-                <ul>
+                <ul id='userList-ul'>
                     {usersData.map((user) => (
                         <li key={user.id}>
                             <div className={`${styles.userBox}`}>
