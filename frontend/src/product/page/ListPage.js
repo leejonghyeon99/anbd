@@ -84,36 +84,41 @@ const ListPage = () => {
       </div>
 
       <div className="list-headerBox">
-      <div className="list-addBtn">
+        <div className="list-addBtn">
+          {/* 상품 등록 버튼 */}
+          {localStorage.getItem("accessToken") && (
+            <Button
+              id="write-button"
+              variant="outline-dark mt-3"
+              onClick={WriteOk}
+            >
+              <span className="button-text">
+                <img src="/icon/put.png" />
+              </span>
+            </Button>
+          )}
+        </div>
 
-        {/* 상품 등록 버튼 */}
-        {localStorage.getItem("accessToken") && (
-          <Button
-            id="write-button"
-            variant="outline-dark mt-3"
-            onClick={WriteOk}
-          >
-            <span className="button-text">상품 등록</span>
-          </Button>
-        )}
-      </div>
-      
-      {/* 검색 폼 */}
-      <div className="list-searchBox">
-        <Form onSubmit={handleSearchSubmit} className="search-form">
-          <FormControl
-            id="searchBox"
-            type="text"
-            placeholder="검색어를 입력하세요"
-            value={search}
-            onChange={handleSearchChange}
-            style={{ border: "1px solid"}}
-          />
-          <Button type="submit" id="search-button" variant="outline-secondary">
-            <span className="button-text">Go</span>
-          </Button>
-        </Form>
-      </div>
+        {/* 검색 폼 */}
+        <div className="list-searchBox">
+          <Form onSubmit={handleSearchSubmit} className="search-form">
+            <FormControl
+              id="searchBox"
+              type="text"
+              placeholder="검색어를 입력하세요"
+              value={search}
+              onChange={handleSearchChange}
+              style={{ border: "1px solid" }}
+            />
+            <Button
+              type="submit"
+              id="search-button"
+              variant="outline-secondary"
+            >
+              <span className="button-text">Go</span>
+            </Button>
+          </Form>
+        </div>
       </div>
 
       {/* 검색 결과 메시지 */}
