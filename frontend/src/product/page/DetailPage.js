@@ -169,8 +169,9 @@ const DetailPage = () => {
           <small>{product.category.sub}</small>
         </div>
       </div>
+      {/*가격 */}
       <div className="mb-3">
-        <div className="detail-price">{product.price} 원</div>
+        <div className="detail-price">{product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원</div>
       </div>
       <div className="mb-3">
         <div id="detail-description" className="form-control">

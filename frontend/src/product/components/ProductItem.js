@@ -26,7 +26,7 @@ const ProductItem = (props) => {
             <ListGroupItem id="product-title" >{title}</ListGroupItem>
           </Link>
           <Link to={`/product/detail/${id}`} id="moveToDetail">
-            <ListGroupItem id="price">{price} 원</ListGroupItem>
+            <ListGroupItem id="price">{price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원</ListGroupItem>
           </Link>
         </ListGroup>
       </Card>
