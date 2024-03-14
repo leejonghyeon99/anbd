@@ -1,38 +1,106 @@
 #homeView {
-    background-color: rgba(255, 255, 255, 0.13);
-    height: calc(100vh - 120px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-image: linear-gradient(rgba(255, 255, 255, 0.5)
-  , rgba(255, 255, 255, 0.7))
-  ,url("https://i.pinimg.com/564x/2a/84/73/2a84733e85c53dce2fab27ffb953d3e5.jpg");
-  background-size: 100%;
+  background-color: rgba(255, 255, 255, 0.13);
+  height: calc(100vh - 120px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.7)), url("https://i.pinimg.com/564x/2a/84/73/2a84733e85c53dce2fab27ffb953d3e5.jpg");
+  background-size: 85%;
   background-repeat: no-repeat;
   background-position: center;
 }
 
 
 @media (max-width: 1042px) {
+  #slogan {
+    order: 1;
+    /* 순서 변경하여 위로 이동 */
+  }
+
+  #main {
+    order: 2;
+    /* 순서 변경하여 아래로 이동 */
+  }
+
+  @media screen and (min-height: 1180px) {
     #slogan {
-      order: 2; /* 순서 변경하여 위로 이동 */
+      width: 100%;
+
     }
-  
+
     #main {
-      order: 1; /* 순서 변경하여 아래로 이동 */
+      width: 100%;
+    }
+    #homeView {
+      padding-top: 0;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  
+  #homeView {
+    display: block;
+    padding-top: 15%;
+  }
+
+  #slogan {
+    padding: 20px;
+
+  }
+
+  #main {
+    padding: 20px;
+
+  }
+
+  @media screen and (min-height: 1024px) {
+    #slogan {
+      width: 100%;
+
+    }
+
+    #main {
+      width: 100%;
+
+    }
+    #homeView {
+      padding-top: 0;
     }
   }
 
-@media screen and (max-width: 768px) {
-    #homeView {
-        display: block;
-        padding-top: 15%;
-    }
-    #slogan {
-        padding: 20px;
-    }
-    #main{
-        padding: 20px;
-
-    }
 }
+
+  @media screen and (max-width: 600px){
+    @media screen and (max-height: 720px){
+      #homeView {
+        padding-top: 0;
+      }
+      #slogan {
+        width: 80%;
+      }
+  
+      #main {
+        width: 80%;
+      }
+    }
+  }
+
+  @media screen and (max-height: 670px) {
+
+    #homeView {
+      padding-top: 0;
+    }
+
+    @media screen and (max-width: 300px){
+  
+      #slogan {
+        width: 100%;
+      }
+  
+      #main {
+        width: 100%;
+      }
+    }
+  }
+
