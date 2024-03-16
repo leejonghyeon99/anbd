@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-const GoogleMaps = () => {
+const GoogleMaps = ({setLocation}) => {
   const navigate = useNavigate();
   const {id} = useParams();
   const location = useLocation();
@@ -10,23 +10,24 @@ const GoogleMaps = () => {
   
   useEffect(() => {
     if (location.state && location.state.location) {
-      setSelectedLocation(location.state.location);
+      const {lat, lng} = location.state.location;
+      console.log("lat:", lat); // 확인용 콘솔 출력
+      console.log("lng:", lng); // 확인용 콘솔 출력
+      const newLocation = JSON.stringify({lat, lng}); //객체를 문자열로
+      console.log("newLocation" + newLocation);
+      setSelectedLocation(newLocation);
     }
   }, [location.state]);
 
   // 수정시 지도에서 수정페이지로 이동이 되지않음, 작성페이지로 이동됨
   const GoWrite = useCallback(() => {
     if (selectedLocation) {
-      console.log(`sssssssssssssssssssssssssssss: ${id}`);
-      if (id) {
-        navigate(`/product/update/${id}`, { state: { location: selectedLocation } });
-      } else {
-        navigate("/product/write", { state: { location: selectedLocation } });
-      }
+      alert('위치 선택 완료');
+      setLocation(selectedLocation); // 선택된 위치가 상태값에 설정됨
     } else {
       alert("위치를 선택해주세요!");
     }
-  }, [navigate, selectedLocation, id]);
+  }, [selectedLocation, setLocation]);
 
   const mapRef = useRef(null);
   const markerRef = useRef(null);
@@ -40,9 +41,11 @@ const GoogleMaps = () => {
     // 클릭이벤트리스너 추가
     map.addListener("click", (event) => {
       addMarker(event.latLng, map);
+      const roundLat = parseFloat(event.latLng.lat()).toFixed(5);
+      const roundLng = parseFloat(event.latLng.lng()).toFixed(5);
       setSelectedLocation({
-        lat: event.latLng.lat(),
-        lng: event.latLng.lng(),
+        lat: roundLat,
+        lng: roundLng,
       }); // 클릭한 좌표를 상태 변수에 설정
     });
   }, []);
@@ -53,14 +56,12 @@ const GoogleMaps = () => {
     if(markerRef.current){
       markerRef.current.setMap(null);
     }
-    
-    //2024.02.21 부로 Marker -> AdvancedMarkerElement 
     const marker = new window.google.maps.Marker({
       position:location,
       map: map,
     });
     marker.addListener("click", () => {
-      // 클릭한 좌표(더블클릭 해야 함)
+      // 클릭한 좌표
       console.log(`lat:${marker.getPosition().lat()}, lng:${marker.getPosition().lng()}`);
     })
     // 새로운 마커를 참조에 할당
