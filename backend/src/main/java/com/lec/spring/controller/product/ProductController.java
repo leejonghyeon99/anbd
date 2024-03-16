@@ -52,7 +52,7 @@ public class ProductController {
 
 
     @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestBody ProductDTO pd, MultipartFile files, Long[] delfile){
+    public ResponseEntity<?> update(@RequestBody ProductDTO pd, List<MultipartFile> files, Long[] delfile){
         return new ResponseEntity<>(productService.update(pd, files, delfile), HttpStatus.OK);
     }
 

@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProductService {
 
-    @Value("${app.upload.product.path}")
+    @Value("${app.upload.product.path}/")
     private String uploadDir;
 
     private final ProductRepository productRepository;
@@ -41,8 +41,6 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final UserService userService;
-
-
 
     @Transactional
     // 등록
@@ -204,7 +202,7 @@ public class ProductService {
 
     // 수정
     @Transactional
-    public ProductDTO update(ProductDTO product, MultipartFile files, Long[] delfile) {
+    public ProductDTO update(ProductDTO product, List<MultipartFile> files, Long[] delfile) {
         System.out.println(product.toString());
         Product productEntity = productRepository.findById(product.getId()).orElse(null);
 //        Category category = categoryRepository.findById(product.getCategory().getId()).orElse(null);
@@ -226,14 +224,32 @@ public class ProductService {
             productEntity.setDescription(product.getDescription());
             productEntity.setCategory(category);
             productEntity.setRefreshedAt(product.getRefreshedAt());  // 끌어올리기
-            productRepository.save(productEntity);
+//            productRepository.save(productEntity);
+
+            Product sProduct = productRepository.save(productEntity);
+            Long productId = sProduct.getId();
+            addFiles(files, productId);
+
+            // 삭제할 첨부파일(들) 삭제
+            if(delfile != null){
+                for(Long fileId : delfile){
+                    ProductImage file = productImageRepository.findById(Math.toIntExact(fileId)).orElse(null);
+                    if(file != null){
+                        delFile(file);   // 물리적으로 파일 삭제
+                        // DB 에서 삭제
+                        productImageRepository.delete(file);
+                    }
+                }
+                System.out.println(" ======== 삭제 진행 ");
+            }
         }
         return ProductDTO.toDto(productEntity);
     }
 
     // 특정 첨부파일(id) 를 물리적으로 삭제
     private void delFile(ProductImage file) {
-        String saveDirectory = new File(uploadDir).getAbsolutePath();
+        String saveDirectory = new File(uploadDir+"/product").getAbsolutePath();
+        System.out.println("saveDirectory = " + saveDirectory);
         File f = new File(saveDirectory, file.getPhotoName());   // 물리적으로 저장된 파일들이 삭제 대상
         System.out.println("삭제시도 --> " + f.getAbsolutePath());
 
@@ -253,6 +269,14 @@ public class ProductService {
     public String delete(Long id){
         boolean isexists = productRepository.existsById(id);
         if (!isexists) return "FAIL";
+        List<ProductImage> fileList = productImageRepository.findByProductId(id);
+        if (fileList != null && fileList.size() > 0){
+            for (ProductImage file : fileList) {
+                delFile(file);
+            }
+            System.out.println("ProductService.delete 실행");
+        }
+        // 글 삭제
         productRepository.deleteById(id);
         return "OK";
     }
