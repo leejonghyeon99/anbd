@@ -33,3 +33,21 @@
     min-height: 20rem;
     overflow-y: auto;
 }
+
+#productChat-btn{
+    margin-top: 1rem;
+    background-color: transparent;
+    border-radius: 100px;
+    border: transparent;
+    width: 4rem;
+}
+
+#productChat-btn:hover{
+    border: 0.5px solid rgb(255, 196, 0);
+
+}
+
+.chatIcon_dp {
+    width: 100%;
+
+}
