@@ -261,11 +261,12 @@ const Header = () => {
                   ref={fileInputRef}
                   onChange={handleFileChange}
                 />
-                <img
+                {user.thumbnail && <img
                   src={`${apiUrl}/upload/thumbnail/${user.thumbnail}`}
                   className="profileImg"
                   onClick={handleClick}
-                />
+                  alt='썸네일'
+                />}
               </div>
 
               <div className="mypage_auth">
