@@ -52,7 +52,7 @@ public class UserService {
         // 사용자 객체 생성 및 속성 설정
         User user = userRequestDTO.toUser(passwordEncoder);
 
-        user.setAuth(Auth.ROLE_ADMIN);
+        user.setAuth(Auth.ROLE_USER);
         user.setStar(0.0);
         user.setCertification("APPROVED");
         user.setThumbnail("default.png");

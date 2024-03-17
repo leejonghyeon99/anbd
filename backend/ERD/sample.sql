@@ -24,14 +24,12 @@ select * from chat;
 select main
 from Category as c
 group by c.main;
-select *
-from product;
+select * from product;
 # delete from product;
-select *
-from product_image;
-update user
-set auth = 'ROLE_USER'
-where id = 1;
+select * from product_image;
+update user set auth = 'ROLE_ADMIN' where id = 2;
+select * from user;
+
 select *
 from Product
 where category_id = 1;
