@@ -215,8 +215,11 @@ const DetailPage = () => {
       <div className="mb-3">    
         {((userrole === "ROLE_USER" || userrole === "ROLE_ADMIN") && (product.userName !== username)) && (        
           <Link to={"/chat"} state={{product : product}}>
-            <Button variant="outline-dark mb-3">
-              채팅하기
+            <Button id="productChat-btn">
+            <img
+                        src="/icon/colorChat.png"
+                        className="chatIcon_dp"
+                      />
             </Button>
           </Link>
         )}
@@ -233,7 +236,7 @@ const DetailPage = () => {
           </Button>
         )}
 
-        <Button variant="outline-dark me-2" onClick={ListOk}>
+        <Button variant="outline-dark me-2 float-end" onClick={ListOk}>
           목록
         </Button>
       </div>

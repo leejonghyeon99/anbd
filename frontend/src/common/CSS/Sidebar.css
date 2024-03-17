@@ -27,6 +27,12 @@
   color: rgb(82, 109, 32);
 }
 
+@media (min-width: 768px) {
+  .subMenuItem {
+    padding-left: 0.5rem; /* 원하는 패딩 값 설정 */
+  }
+}
+
 @media screen and (max-width: 767px) {
   .sidebarMenu {
     margin-top: 0;
