@@ -3,7 +3,7 @@ import { Client } from '@stomp/stompjs';
 import { fetchWithToken } from '../../user/Reissue';
 import { useLocation } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
-import styles from '../css/chat.module.css'
+// import styles from '../css/chat.module.css'
 
 const ChatComponent = (props) => {
 
@@ -185,7 +185,7 @@ useEffect(() => {
         {chatMessages.map((msg, index) => (
           <div key={index}>
             <div 
-              className={`${msg.sender === user.nickname ? styles.right : styles.left}`}
+              // className={`${msg.sender === user.nickname ? styles.right : styles.left}`}
             >
               <label htmlFor={`${index}msg`}>
                 {msg.sender}

@@ -59,74 +59,6 @@ const WritePage = () => {
     getUser();
   }, []);
 
-  // const [user, setUser] = useState({
-  //   username: "",
-  //   password: "",
-  //   repassword: "",
-  //   name: "",
-  //   nickname: "",
-  //   phone_number: "",
-  //   email: "",
-  //   region: "",
-  //   auth: "", // 추가: 사용자 권한 정보
-  // });
-
-  // let token = "";
-
-  // useEffect(() => {
-  //   token = localStorage.getItem("accessToken");
-  //   const getUserInfoFromToken = (token) => {
-  //     const decodedToken = atob(token.split(".")[1]);
-  //     const userInfo = JSON.parse(decodedToken);
-  //     return userInfo;
-  //   };
-
-  //   const userData = async () => {
-  //     try {
-  //       if (token) {
-  //         // 토큰에서 사용자 정보를 추출
-  //         const userInfo = getUserInfoFromToken(token);
-
-  //         // 사용자 정보를 상태값에 설정
-  //         console.log(userInfo)
-  //         setUser(userInfo);
-
-  //         // 서버에 사용자 정보 요청 보내기
-  //         const response = await fetchWithToken(
-  //           `${process.env.REACT_APP_API_BASE_URL}/api/user/info`,
-  //           {
-  //             headers: {
-  //               Authorization: `Bearer ${token}`,
-  //             },
-  //           }
-  //         );
-
-  //         if (response.ok) {
-  //           const additionalUserInfo = await response.json();
-  //           // 서버에서 받은 추가 정보를 기존 사용자 정보에 합치기
-  //           setUser((prevUserInfo) => ({
-  //             ...prevUserInfo,
-  //             ...additionalUserInfo,
-  //           }));
-  //         } else {
-  //           console.error("Failed to fetch additional user info");
-  //         }
-  //       } else {
-  //         // console.log("No token found, user is not logged in");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
-  //   // userData 함수 실행 (컴포넌트가 마운트될 때 한 번만 실행하도록 빈 배열 전달)
-  //   userData();
-  // }, []);
-
-  // useEffect(()=>{console.log(user);},[user])
-
-  // const [categories, setCategories] = useState([]);
-  // const [selectCategory, setSelectCategory] = useState(null);
-
   const [mainCategories, setMainCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
 
@@ -175,11 +107,17 @@ const WritePage = () => {
 
   // 위치
   useEffect(() => {
-    setProduct((prevProduct) => ({
-      ...prevProduct,
-      location: selectedLocation, // 선택된 위치 업데이트
-    }));
-    console.log("::" + selectedLocation);
+    if (selectedLocation) {
+      const {lat, lng} = selectedLocation;
+      const roundLat = parseFloat(lat).toFixed(5);  // 5자리
+      const roundLng = parseFloat(lng).toFixed(5);
+      const newLocation = `${roundLat}, ${roundLng}`;
+      setProduct((prevProduct) => ({
+        ...prevProduct,
+        location: newLocation, // 선택된 위치 업데이트
+      }));
+      console.log("선택된 위치: " + newLocation);
+    }
   }, [selectedLocation]);
 
   // GoogleMaps의 표시 여부를 토글
@@ -262,29 +200,7 @@ const WritePage = () => {
     const files = event.target.files;
     // console.log(`files length: ${files.length}`);
     const newFiles = [...selectedFiles]; // 기존 배열 복사
-    // for (let i = 0; i < files.length; i++) {
-    //     const file = files[i];
-    //     let photoName = file.name;
-
-    //     // 파일명에 현재 시간을 추가하여 중복 방지
-    //     const pos = photoName.lastIndexOf(".");
-    //     if (pos > -1) { // 확장자가 있는 경우
-    //         const name = photoName.substring(0, pos); // 파일 이름
-    //         const ext = photoName.substring(pos + 1); // 파일 확장자
-
-    //         // 현재 시간(ms)을 이용하여 파일명에 추가
-    //         photoName = `${name}_${Date.now()}.${ext}`;
-    //     } else { // 확장자가 없는 경우
-    //         photoName += `_${Date.now()}`;
-    //     }
-    //     console.log(`${photoName}`);
-    //     const newFile = {
-    //         originName: file.name,
-    //         photoName: photoName
-    //     };
-    //     newFiles.push(newFile); // 파일 추가
-    //     // console.log(`originName: ${newFile.originName}`);
-    // }
+    
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const photoName = file.name; // 원본 파일 이름 사용
@@ -307,11 +223,6 @@ const WritePage = () => {
 
     // formData.append('product', JSON.stringify(pc));
     const formData = new FormData();
-    // FormData에 파일 추가
-    // selectedFiles.forEach((file, index) => {
-    //   formData.append(`files${index}`, file.file); // 서버에서 files로 받기로 했으므로 files로 append
-    // });
-    // formData.append('files', selectedFiles);
     selectedFiles.forEach((file) => formData.append("files", file.file));
     formData.append("title", product.title);
     formData.append("description", product.description);
@@ -325,11 +236,6 @@ const WritePage = () => {
     // pc 객체를 JSON 문자열로 변환하여 formData에 추가
     formData.append("product", JSON.stringify(pc));
 
-    // for (let index = 0; index < selectedFiles.length; index++) {
-    //   const element = selectedFiles[index];
-    //   console.log("element" + selectedFiles[0], selectedFiles[0].originName);
-    // }
-    // formData.append('files', selectedFiles);
     console.log("formData : ", ...formData);
 
     uploadedFiles(formData, {}, true);
@@ -393,7 +299,6 @@ const WritePage = () => {
       </div> */}
 
 
-      <br />
       <div>제목</div>
       <div className="mb-3">
         <input
@@ -459,8 +364,8 @@ const WritePage = () => {
         >
           <option selected>-- 판매 상태를 선택해주세요 --</option>
           <option value="SALE">판매중</option>
-          <option value="RESERVED">예약중</option>
-          <option value="SOLD">판매완료</option>
+          {/* <option value="RESERVED">예약중</option>
+          <option value="SOLD">판매완료</option> */}
         </select>
       </div>
 
@@ -490,19 +395,19 @@ const WritePage = () => {
               key: "value",
               anotherProp: "anotherValue",
             }}
+            setLocation={setSelectedLocation}
           />
         )}
-        <span>선택된 위치: {product.location}</span>
+        <span>선택된 위치:  {selectedLocation ? `${selectedLocation.lat}, ${selectedLocation.lng}` : ''}</span>
       </div>
 
       <div id="write-file" className="mb-3 mt-3">
-        <label>첨부파일:</label>
-        <div id="files">
+        <label>첨부파일</label><br/>
+        
           {/* 첨부 파일 목록을 출력 */}
-          {files.map((image, index) => (
-            <div key={index}>{image.originName}</div>
+          {files.map((files, index) => (
+            <div key={index}>{files.photoName}</div>
           ))}
-        </div>
         {/* 파일 선택을 위한 input 요소 */}
         <input
           type="file"
@@ -514,14 +419,14 @@ const WritePage = () => {
         />
         {/* 추가 버튼 */}
         {/* <div id="fileInput" onChange={handleFileChange}> */}
-
-        <button
+        
+        {/* <button
           id="write-filebtn"
-          className="btn"
+          className="btn btn-secondary"
           onClick={handleAddFile}
         >
-          + 사진 추가
-        </button>
+          파일 추가
+        </button> */}
       </div>
       <Button variant="outline-dark me-2" onClick={WriteOk}>
         완료
