@@ -252,6 +252,7 @@ public class ProductService {
     public Product update(ProductsDTO product, List<MultipartFile> files, Long[] delfile) {
         // 업데이트할 제품 정보 가져오기
         Product productEntity = productRepository.findById(product.getId()).orElse(null);
+        System.out.println("productEntity = " + productEntity);
         if (productEntity == null) {
             // 업데이트할 제품이 없으면 null 반환
             return null;
@@ -264,10 +265,12 @@ public class ProductService {
             category.setMain(product.getCategoryMain());
             category.setSub(product.getCategorySub());
             categoryRepository.save(category);
+            System.out.println("category = " + category);
         }
 
         // 업데이트할 사용자 정보 가져오기
         User user_id = userRepository.findById(product.getUser_id()).orElse(null);
+        System.out.println("user_id = " + user_id);
 
         // 위치 정보 설정
         String locationValue = (product.getLocation() == null || product.getLocation().isEmpty()) ? null : product.getLocation();
@@ -284,6 +287,7 @@ public class ProductService {
 
         // 제품 엔터티 저장
         Product updatedProduct = productRepository.save(productEntity);
+        System.out.println("updatedProduct = " + updatedProduct);
         Long productId = updatedProduct.getId();
 
         // 새로운 첨부 파일 추가
@@ -293,6 +297,7 @@ public class ProductService {
         if (delfile != null) {
             for (Long fileId : delfile) {
                 ProductImage file = productImageRepository.findById(Math.toIntExact(fileId)).orElse(null);
+                System.out.println("file = " + file);
                 if (file != null) {
                     delFile(file); // 물리적으로 파일 삭제
                     // DB 에서 삭제

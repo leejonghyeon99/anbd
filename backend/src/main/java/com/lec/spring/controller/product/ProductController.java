@@ -52,7 +52,8 @@ public class ProductController {
 
     @PutMapping("/update")
     public ResponseEntity<?> update(@RequestBody ProductsDTO pd,
-                                    @RequestParam(value="files", required=false)  List<MultipartFile> files, Long[] delfile){
+                                    @RequestParam(value="files", required=false)  List<MultipartFile> files,
+                                    @RequestParam(value = "delfile", required=false) Long[] delfile){
         System.out.println("ProductController.update");
         return new ResponseEntity<>(productService.update(pd, files, delfile), HttpStatus.OK);
     }

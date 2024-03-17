@@ -331,12 +331,12 @@ const UpdatePage = () => {
   // }
   // 파일 삭제 요청을 서버로 전송하는 함수
 const handleDeleteFile = (fileId) => {
-  setProduct((prevProduct) => ({
-    ...prevProduct,
-    deleteFile:[...(prevProduct.deleteFile || []), fileId]
-  }))
   console.log(`클릭은 되나`);
   alert('삭제하시겠습니까?')
+  setProduct((prevProduct) => ({
+    ...prevProduct,
+    deleteFile:[...prevProduct.deleteFile || [], fileId]
+  }))
 };
 
   return (
