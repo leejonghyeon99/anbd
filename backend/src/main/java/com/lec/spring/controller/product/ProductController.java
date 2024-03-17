@@ -27,7 +27,6 @@ public class ProductController {
 
     private final ProductService productService;
 
-
     // 등록
     @PostMapping( "/write")
     public ResponseEntity<?> write(@ModelAttribute ProductsDTO product ,
@@ -52,7 +51,9 @@ public class ProductController {
 
 
     @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestBody ProductDTO pd, List<MultipartFile> files, Long[] delfile){
+    public ResponseEntity<?> update(@RequestBody ProductsDTO pd,
+                                    @RequestParam(value="files", required=false)  List<MultipartFile> files, Long[] delfile){
+        System.out.println("ProductController.update");
         return new ResponseEntity<>(productService.update(pd, files, delfile), HttpStatus.OK);
     }
 

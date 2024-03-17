@@ -398,7 +398,7 @@ const WritePage = () => {
             setLocation={setSelectedLocation}
           />
         )}
-        <span>선택된 위치:  {selectedLocation ? `${selectedLocation.lat}, ${selectedLocation.lng}` : ''}</span>
+        <span>선택된 위치: {selectedLocation ? `${selectedLocation.lat}, ${selectedLocation.lng}` : ''}</span>
       </div>
 
       <div id="write-file" className="mb-3 mt-3">
@@ -418,15 +418,15 @@ const WritePage = () => {
           multiple
         />
         {/* 추가 버튼 */}
-        {/* <div id="fileInput" onChange={handleFileChange}> */}
+        <div id="fileInput" onChange={handleFileChange}>
         
-        {/* <button
+        <button
           id="write-filebtn"
           className="btn btn-secondary"
           onClick={handleAddFile}
         >
           파일 추가
-        </button> */}
+        </button>
       </div>
       <Button variant="outline-dark me-2" onClick={WriteOk}>
         완료
@@ -434,6 +434,7 @@ const WritePage = () => {
       <Button variant="outline-dark" onClick={ListOk}>
         취소
       </Button>
+      </div>
     </div>
   );
 };
