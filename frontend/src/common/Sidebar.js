@@ -155,6 +155,7 @@ function Sidebar() {
                   key={s}
                   onClick={() => handleSubMenuClick(s)}
                   style={{ display: isSubMenuOpen(m.main) ? "block" : "none" }}
+                  className="subMenuItem"
                 >
                   <span className="subCategory">{s}</span>
                 </li>
