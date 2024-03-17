@@ -6,6 +6,7 @@ import { upload } from "@testing-library/user-event/dist/upload";
 import { jwtDecode } from "jwt-decode";
 import "../CSS/DetailPage.css";
 import ChatComponent from "../../chat/component/ChatComponent";
+import GoogleMaps from "./GoogleMaps";
 
 const DetailPage = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const DetailPage = () => {
   });
 
   const [selectFiles, setSelectFiles] = useState("");
-
+  const [mapLocation, setMapLocation] = useState(null);
   const [username, setUsername] = useState();
   const [userrole, setUserrole] = useState();
 
@@ -43,11 +44,36 @@ const DetailPage = () => {
   };
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/detail/` + id)
-      .then((response) => response.json(), console.log("디테일 응답 성공"))
-      .then((data) => setProduct(data), console.log("detailData", product));
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product/detail/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setProduct(data);
+        // 상품 위치 정보가 있는 경우, 지도 위치를 설정합니다.
+        if (data.location) {
+          // 예를 들어, data.location 형식이 "lat,lng" 문자열이라고 가정
+          const [lat, lng] = data.location.split(',').map(Number);
+          setMapLocation({ lat, lng });
+        }
+      });
   }, []);
 
+
+  function GoogleMaps({ location, zoom }) {
+    useEffect(() => {
+      const map = new window.google.maps.Map(document.getElementById("map"), {
+        center: location,
+        zoom: zoom,
+      });
+  
+      new window.google.maps.Marker({
+        position: location,
+        map: map,
+      });
+    }, [location, zoom]);
+  
+    return <div id="map" style={{ height: '100%', width: '100%' }}></div>;
+  }
+  
   const DeleteOk = () => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
     fetchWithToken(
@@ -178,6 +204,13 @@ const DetailPage = () => {
           {product.description}
         </div>
       </div>
+
+            {/* Google 지도 컴포넌트를 렌더링합니다. */}
+            {mapLocation && (
+        <div className="google-map-container" style={{ height: '300px', width: '100%' }}>
+          <GoogleMaps location={mapLocation} zoom={15}/>
+        </div>
+      )}
 
       <div className="mb-3">    
         {((userrole === "ROLE_USER" || userrole === "ROLE_ADMIN") && (product.userName !== username)) && (        
