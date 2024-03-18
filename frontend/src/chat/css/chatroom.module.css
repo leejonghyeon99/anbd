@@ -1,0 +1,14 @@
+.roomsContainer{
+    display: flex;
+    padding-top: 30px;
+    justify-content: center;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.rooms{
+    outline: 1px solid black;
+    margin: 0 10px;
+    width: 500px;
+}
