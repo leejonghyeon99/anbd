@@ -26,6 +26,7 @@ ChartJS.register(
     Legend
 );
 
+//  ??년 회원 가입수 차트
 const MonthSignUp = () => {
 
     const apiUrl = process.env.REACT_APP_API_BASE_URL;
