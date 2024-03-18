@@ -1,6 +1,10 @@
+.second-box {
+    overflow-y: scroll;
+}
+
 .msg-send-box {
     border-top: 2px dashed rgba(0, 0, 0, 0.105);
-    padding-top: 1%;
+    padding-block: 1%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -8,27 +12,58 @@
 
 #chat-msg-box {
     flex: 3;
-    border: 2px solid rgba(255, 170, 0, 0.338);
+    border: 2px solid rgba(255, 170, 0, 0.338); 
+}
+
+#chat-msg-box:focus {
+    box-shadow: 2px 2px 6px rgba(107, 69, 0, 0.516);
 }
 
 
 .send-btn {
     background-color: rgb(255, 179, 0);
+    border: 0.1px solid rgb(255, 179, 0);
+    padding: 1%;
     border-radius: 30px;
-    font-family: 'TTHakgyoansimUndongjangL';
-    font-size: 90%;
     flex: 0.1;
     margin-inline: 1%;
+    display: flex;
+    justify-content: center;
+    max-width: 3.8%;
 }
+
+.send-btn img{
+    width: 4rem;
+}
+
+.send-btn:hover {
+    border: 2px solid rgba(255, 170, 0, 0.338);
+    background-color: rgba(240, 248, 255, 0);
+}
+
+#me{
+    color: rgb(56, 108, 24);
+}
+
 
 @media screen and (max-width:786px) {
     .send-btn {
-        min-width: 3.5rem;
+        min-width: 2rem;
     }
+}
+
+@media screen and (max-width:430px) {
+    .send-btn {
+        padding: 2%;
+    }
+    
 }
 
 @media screen and (max-width:300px) {
     #chat-msg-box {
         max-width: 15rem;
+    }
+    .send-btn {
+        padding: 3%;
     }
 }

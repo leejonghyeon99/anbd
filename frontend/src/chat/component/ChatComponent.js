@@ -190,7 +190,7 @@ const ChatComponent = (props) => {
             <div
             // className={`${msg.sender === user.nickname ? styles.right : styles.left}`}
             >
-              <label htmlFor={`${index}msg`}>
+              <label id='me' htmlFor={`${index}msg`}>
                 {msg.sender}
               </label>
               <p id={`${index}msg`}>{msg.message}</p>
@@ -211,7 +211,7 @@ const ChatComponent = (props) => {
             }
           }}
         />
-        <button className='send-btn' onClick={sendMessage}>전송</button>
+        <button className='send-btn' onClick={sendMessage}><img src='/icon/send-btn.png'/></button>
       </div>
     </div>
   );
