@@ -1,7 +1,34 @@
-.box {
-    border: 1px solid;
+.msg-send-box {
+    border-top: 2px dashed rgba(0, 0, 0, 0.105);
+    padding-top: 1%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
-.second-box {
-    border: 1px solid;
 
+#chat-msg-box {
+    flex: 3;
+    border: 2px solid rgba(255, 170, 0, 0.338);
+}
+
+
+.send-btn {
+    background-color: rgb(255, 179, 0);
+    border-radius: 30px;
+    font-family: 'TTHakgyoansimUndongjangL';
+    font-size: 90%;
+    flex: 0.1;
+    margin-inline: 1%;
+}
+
+@media screen and (max-width:786px) {
+    .send-btn {
+        min-width: 3.5rem;
+    }
+}
+
+@media screen and (max-width:300px) {
+    #chat-msg-box {
+        max-width: 15rem;
+    }
 }
