@@ -3,7 +3,7 @@ import { Client } from '@stomp/stompjs';
 import { fetchWithToken } from '../../user/Reissue';
 import { useLocation } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
-// import styles from '../css/chat.module.css'
+import styles from '../css/chat.module.css'
 
 const ChatComponent = (props) => {
 
@@ -187,26 +187,28 @@ useEffect(() => {
 
   return (
     <div>
-      <div>
+      <div className={`${styles.chatList}`}>
         {chatMessages.map((msg, index) => (
           <div key={index}>
             <div 
-              // className={`${msg.sender === user.nickname ? styles.right : styles.left}`}
+              className={`${msg.sender === user.nickname ? styles.right : styles.left} ${styles.message}`}
             >
               <label htmlFor={`${index}msg`}>
                 {msg.sender}
               </label>
-              <p id={`${index}msg`}>{msg.message}</p>
+              <div id={`${index}msg`}>{msg.message}</div>
             </div>
           </div>
         ))}
       </div>
-      <input
-        type="text"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-      />
-      <button onClick={sendMessage}>전송</button>
+      <div className={`${styles.chatSubmit}`}>
+        <input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
+        <button onClick={sendMessage}>전송</button>
+      </div>
     </div>
   );
 };
