@@ -6,10 +6,11 @@ const ChatPage = () => {
 
     const location = useLocation();
     const product = location.state.product;
-
+    const roomNum = location.state.roomNum;
+    
     return (
         <div>
-            <ChatComponent product={product}></ChatComponent>
+            <ChatComponent product={product} roomNum={roomNum}></ChatComponent>
         </div>
     );
 };

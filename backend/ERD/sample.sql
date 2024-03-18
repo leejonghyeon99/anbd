@@ -23,6 +23,11 @@ select * from chat_room;
 select * from refresh_token;
 select * from chat;
 
+select * from product where user_id = 5;
+insert into chat(room_id, user_id, created_at, message, sender_id) values (37, 5, now(), '네고 가능합니까2', 1);
+
+insert into product_image(user_id, product_id, origin_name, photo_name)
+values(1, 5, 'default.png', 'default.png');
 
 select main
 from Category as c

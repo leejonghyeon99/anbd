@@ -37,7 +37,7 @@ public class ChatController {
     public ResponseEntity<ChatRoomDTO> createRoom(@RequestBody RoomDto roomDto){
         System.out.println("-".repeat(50));
         System.out.println(roomDto.getUsername() + " / " + roomDto.getProductId());
-        return new ResponseEntity<>(chatService.createRoom(roomDto.getUsername(), roomDto.getProductId()), HttpStatus.CREATED); //201
+        return new ResponseEntity<>(chatService.createRoom(roomDto.getId(), roomDto.getUsername(), roomDto.getProductId()), HttpStatus.CREATED); //201
     }
 
     @GetMapping("/room")

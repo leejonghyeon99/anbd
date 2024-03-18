@@ -9,7 +9,4 @@ import java.util.List;
 
 public interface ChatRepository extends JpaRepository<Chat, Integer> {
 
-//    List<ChatDTO> findAllByChatRoom(ChatRoomDTO chatRoomDTO);
-
-//    List<ChatDTO> findAllByMessage(String message);
 }

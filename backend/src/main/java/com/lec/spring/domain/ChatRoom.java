@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -32,5 +33,5 @@ public class ChatRoom {
     private Product product;
 
     @OneToMany(mappedBy = "chatRoom")
-    private List<Chat> chats;
+    private List<Chat> chats = new ArrayList<>();
 }
