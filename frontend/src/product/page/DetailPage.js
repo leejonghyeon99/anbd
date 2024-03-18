@@ -186,7 +186,7 @@ const DetailPage = () => {
 
       <div className="mb-3">    
         {((userrole === "ROLE_USER" || userrole === "ROLE_ADMIN") && (product.userName !== username)) && (        
-          <Link to={"/chat"} state={{product : product}}>
+          <Link to={`/chat`} state={{product : product}}>
             <Button id="productChat-btn">
             <img
                         src="/icon/colorChat.png"

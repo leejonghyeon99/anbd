@@ -22,14 +22,12 @@ public class ChatDTO {
     private Integer id;
     private String message;
     private UserDTO sender;
-    private ChatRoomDTO chatRoom;
 
     public static ChatDTO toDto(Chat entity) {
         return ChatDTO.builder()
                 .id(entity.getId())
                 .sender(UserDTO.toDto(entity.getSender()))
                 .message(entity.getMessage())
-                .chatRoom(ChatRoomDTO.toDto(entity.getChatRoom()))
                 .build();
     }
 

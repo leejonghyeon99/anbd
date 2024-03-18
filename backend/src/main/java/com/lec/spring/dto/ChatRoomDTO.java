@@ -20,7 +20,7 @@ public class ChatRoomDTO {
     private Integer id;
     private String seller;
     private String buyer;
-    private Long productId;
+    private ProductDTO productDTO;
     private List<ChatDTO> chats;
 
     public static ChatRoomDTO toDto(ChatRoom entity) {
@@ -28,7 +28,8 @@ public class ChatRoomDTO {
                 .id(entity.getId())
                 .seller(entity.getSeller().getUsername())
                 .buyer(entity.getBuyer().getUsername())
-                .productId(entity.getProduct().getId())
+                .productDTO(ProductDTO.toDto(entity.getProduct()))
+                .chats(ChatDTO.toDtoList(entity.getChats()))
                 .build();
     }
 
@@ -36,6 +37,15 @@ public class ChatRoomDTO {
         return chatRooms.stream()
                 .map(ChatRoomDTO::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public static ChatRoomDTO create(ChatRoom entity) {
+        return ChatRoomDTO.builder()
+                .id(entity.getId())
+                .seller(entity.getSeller().getUsername())
+                .buyer(entity.getBuyer().getUsername())
+                .productDTO(ProductDTO.toDto(entity.getProduct()))
+                .build();
     }
 
 }

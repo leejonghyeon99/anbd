@@ -24,7 +24,7 @@ import MonthSignUp from "./admin/component/MonthSignUp";
 import DailySignUp from "./admin/component/DailySignUp";
 import UserList from "./admin/component/UserList";
 import {useAutoLogout} from "./user/AutoLogout"
-// import ChatRoomPage from "./chat/ChatRoomPage";
+import ChatRoomPage from "./chat/ChatRoomPage";
 
 const App = () => {
   const [menuToggle, setMenuToggle] = useState(true);
@@ -205,7 +205,7 @@ const App = () => {
               <Route path="/product/update/:id" element={<UpdatePage />} />
               <Route path="/product/map/:id" element={<GoogleMaps />} />
               <Route path="/chat" element={<ChatPage />} />
-              {/* <Route path="/chat/room" element={<ChatRoomPage />} /> */}
+              <Route path="/chat/room" element={<ChatRoomPage />} />
             </Route>
 
             {/* 관리자 권한 접근 가능 */}
