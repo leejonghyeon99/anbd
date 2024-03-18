@@ -194,7 +194,7 @@ useEffect(() => {
             <div
             className={msg.sender === user.nickname ? 'my-message' : 'other-message'}
             >
-              <label id='me' htmlFor={`${index}msg`}>
+              <label htmlFor={`${index}msg`}>
                 {msg.sender}
               </label>
               <p id={`${index}msg`}>{msg.message}</p>

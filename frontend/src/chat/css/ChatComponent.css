@@ -41,7 +41,7 @@
 }
 
 .my-message {
-    float: right;
+    text-align: right;
 }
 
 .my-message label{
