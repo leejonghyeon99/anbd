@@ -162,7 +162,7 @@ const Header = () => {
         method : "POST",
         body: formData,
       }
-      await fetchWithToken(url,options)
+      await fetchWithToken(url,options,true)
             .then(response => {
               if(response.status === 201){
                 return response.json();
