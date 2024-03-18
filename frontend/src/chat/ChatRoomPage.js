@@ -1,12 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import styles from './css/chatroom.module.css'
 import { fetchWithToken } from '../user/Reissue';
+import { useNavigate } from 'react-router-dom';
 
 
 const ChatRoomPage = () => {
 
-
-    const [rooms, setRooms] = useState([]);
+    const navigate = useNavigate();
+    const [rooms, setRooms] = useState([
+      {
+        id : 0,
+        buyer : "",
+        seller : "",
+        chats : [
+          {
+            message : ""
+          }
+        ],        
+        productDTO : {
+          id : 0,
+          title : "",
+          description : "",
+          price : 0,          
+          category : [],
+          status : "",                    
+          createdAt : "",
+        }
+      }
+    ]);
     const [mySellRooms, setMySellRooms] = useState([]);
     const [myBuyRooms, setMyBuyRooms] = useState([]);
 
@@ -83,7 +104,7 @@ const ChatRoomPage = () => {
                   }
                 );
                 let data = await response.json();
-
+                console.log(data);
                 setRooms(data);                    
               } 
             } catch (error) {
@@ -94,22 +115,38 @@ const ChatRoomPage = () => {
           getRooms();   
     },[])
     
-    useEffect(()=>{console.log(user,"-----------");},[user])
-    useEffect(()=>{console.log(mySellRooms,"-----------");},[mySellRooms])
-    useEffect(()=>{console.log(myBuyRooms,"###########");},[myBuyRooms])
+    const moveChat = (m) => {
+      navigate(`/chat`,{state:{product : m.productDTO, roomNum:m.id}})
+    }
 
+    useEffect(()=>{console.log(rooms);},[rooms])
+    useEffect(()=>{console.log(myBuyRooms);},[myBuyRooms])
     return (
         <div className={`${styles.roomsContainer}`}>
             <div className={`${styles.buyerRooms} ${styles.rooms}`}>
-                <h3>내가 판매중인 상품 채팅목록</h3>
-                {myBuyRooms.map(m => 
-                    <div className={`${styles.chatItem}`}>{m.seller}</div>
+                <h3 className={`${styles.title}`}>구매중인 물건</h3>
+                {myBuyRooms.map((m, index) => 
+                  <div key={index} className={`${styles.chatItem}`} onClick={() => moveChat(m)}>
+                    <img className={`${styles.productPhoto}`} src={`${apiUrl}/upload/product/${m.productDTO.fileList[0].photoName}`}></img>
+                    <div className={`${styles.content}`}>
+                      <strong>{m.productDTO.title}</strong>
+                      <span>대화상대 {m.seller}</span>
+                      {m.chats[m.chats.length-1].message}
+                    </div>                                    
+                  </div>
                 )}
             </div>
             <div className={`${styles.sellerRooms} ${styles.rooms}`}>
-                <h3>내가 구매중인 상품 채팅목록</h3>
-                {mySellRooms.map(m => 
-                   <div className={`${styles.chatItem}`}>{m.seller}</div>
+                <h3 className={`${styles.title}`}>판매중인 물건</h3>
+                {mySellRooms.map((m, index) =>                   
+                  <div key={index} className={`${styles.chatItem}`} onClick={() => moveChat(m)}>
+                    <img className={`${styles.productPhoto}`} src={`${apiUrl}/upload/product/${m.productDTO.fileList[0].photoName}`}></img>
+                    <div className={`${styles.content}`}>
+                      <strong>{m.productDTO.title}</strong>
+                      <span>대화상대 {m.buyer}</span>
+                      {m.chats[m.chats.length-1].message}
+                    </div>                                    
+                  </div>
                 )}
             </div>
             

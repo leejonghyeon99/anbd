@@ -7,14 +7,16 @@ import { jwtDecode } from 'jwt-decode';
 
 const ChatComponent = (props) => {
 
-  const product = props.product;
+  let product = props.product;
+  let roomNum = props.roomNum;
+
 
   const [message, setMessage] = useState('');
   const [roomId, setRoomId] = useState("");
   const [stompClient, setStompClient] = useState(null);
   const [chatMessages, setChatMessages] = useState([]);
 
-  console.log(product);
+  console.log(product.id, product.userName);
   const [user, setUser] = useState({
     username: "",
     password: "",
@@ -34,17 +36,21 @@ const ChatComponent = (props) => {
   const decodedToken = jwtDecode(token);
   const username = decodedToken.sub;
   console.log(decodedToken);
-  console.log(JSON.stringify({ username: product.userName, productId: product.id }));
 
-useEffect(() => {
+
+  
+  console.log(JSON.stringify({ username: product.userName, productId: product.id}));
+
+useEffect(() => { 
   const createRoom = async () => {
     console.log(apiUrl);
+    console.log(roomNum);
     try {
       const url = `${apiUrl}/api/chat/room`;
 
       const options = {
         method: "POST",       
-        body: JSON.stringify({ username: product.userName, productId: product.id })
+        body: JSON.stringify({ id : roomNum, username: product.userName, productId: product.id })
       };
 
       const response = await fetchWithToken(url, options);

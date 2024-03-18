@@ -48,20 +48,29 @@ public class ChatService {
     }
 
     @Transactional
-    public ChatRoomDTO createRoom(String username, Long productId){
+    public ChatRoomDTO createRoom(Integer roomId, String username, Long productId){
+        System.out.println("-".repeat(50));
+        System.out.println(roomId);
         User buyer = userService.getUser().orElseThrow();
         User seller = userRepository.findByUsername(username).orElseThrow();
         Product product = productRepository.findById(productId).orElseThrow();
 
-        ChatRoom room = chatRoomRepository.findByBuyerIdAndSellerIdAndProductId(buyer.getId(), seller.getId(), productId)
-                .orElseGet(() -> {
-                    ChatRoom newRoom = ChatRoom.builder()
-                            .buyer(buyer)
-                            .seller(seller)
-                            .product(product)
-                            .build();
-                    return chatRoomRepository.save(newRoom);
-                });
+        ChatRoom room;
+
+        if(roomId == 0){
+            room = ChatRoom.builder()
+                    .buyer(buyer)
+                    .seller(seller)
+                    .product(product)
+                    .build();
+            return ChatRoomDTO.create(chatRoomRepository.save(room));
+        }else{
+            room = chatRoomRepository.findById(roomId).orElseThrow();
+        }
+
+
+        System.out.println("-".repeat(50));
+
 
         return ChatRoomDTO.toDto(room);
     }
@@ -75,7 +84,7 @@ public class ChatService {
 
     public List<ChatRoomDTO> chatRooms(){
         User user = userService.getUser().orElseThrow();
-        List<ChatRoom> rooms = chatRoomRepository.findBySellerId(user.getId()).orElseThrow();
+        List<ChatRoom> rooms = chatRoomRepository.findBySellerIdOrBuyerId(user.getId(), user.getId()).orElseThrow();
         return ChatRoomDTO.toDtoList(rooms);
     }
 }
