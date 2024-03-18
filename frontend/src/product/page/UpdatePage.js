@@ -7,9 +7,7 @@ import "../CSS/UpdatePage.css";
 
 const UpdatePage = () => {
   let { id } = useParams();
-
   const navigate = useNavigate();
-
   const location = useLocation();
   const [selectedLocation, setSelectedLocation] = useState(""); // 기본 선택
 
@@ -19,7 +17,9 @@ const UpdatePage = () => {
   useEffect(() => {
     if (location.state && location.state.location) {
       const { lat, lng } = location.state.location;
-      setSelectedLocation(`${lat}, ${lng}`);
+      const newLocation = `${lat}, ${lng}`;
+      console.log("nl: " + newLocation);
+      setSelectedLocation(newLocation); // 위도, 경도형식으로 문자열 저장 
       console.log("위경도: " + setSelectedLocation(`${lat}, ${lng}`)); // 위도, 경도형식으로 문자열 저장
     }
   }, [location.state]);
@@ -32,11 +32,33 @@ const UpdatePage = () => {
     status: "",
     refreshedAt: "",
     location: "",
+    user_id: "",
+    fileList:[],
+    deleteFile:[]
   });
   console.log("product: " + product);
 
-  const [categories, setCategories] = useState([]);
-  const [selectCategory, setSelectCategory] = useState({});
+  // 유저id 불러오기
+  const [user_id, setUser_id] = useState("");
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const url = `${apiUrl}/api/user/info`;
+        const response = await fetchWithToken(url);
+        if (!response.ok) {
+          throw new Error("Failed to fetch user info");
+        }
+        const data = await response.json();
+        console.log("updatePage 유저id : " + data.id);
+        setUser_id(data.id); // 사용자 ID를 user 상태에 저장
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    };
+    getUser();
+  }, []);
 
   const [mainCategories, setMainCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
@@ -48,18 +70,25 @@ const UpdatePage = () => {
   const pc = {
     ...product,
     category: {
-      main: selectMain.main,
-      sub: selectSub.sub,
+      main: selectMain,
+      sub: selectSub,
     },
+    user_id: user_id,
   };
 
   // 위치
   useEffect(() => {
-    setProduct((prevProduct) => ({
-      ...prevProduct,
-      location: selectedLocation, // 선택된 위치 업데이트
-    }));
-    console.log("::" + selectedLocation);
+    if (selectedLocation) {
+      const {lat, lng} = selectedLocation;
+      const roundLat = parseFloat(lat).toFixed(5);  // 5자리
+      const roundLng = parseFloat(lng).toFixed(5);
+      const newLocation = `${roundLat}, ${roundLng}`;
+      setProduct((prevProduct) => ({
+        ...prevProduct,
+        location: newLocation, // 선택된 위치 업데이트
+      }));
+      console.log("선택된 위치: " + newLocation);
+    }
   }, [selectedLocation]);
 
   const toggleGoogleMaps = () => {
@@ -77,7 +106,7 @@ const UpdatePage = () => {
 
   // Main목록만 가져오는 카테고리
   useEffect(() => {
-    fetchWithToken(
+    fetch(
       `${process.env.REACT_APP_API_BASE_URL}/api/product/category/main`
     )
       .then((response) => response.json())
@@ -90,12 +119,14 @@ const UpdatePage = () => {
   const getSub = () => {
     const getByMainForSub = async () => {
       try {
-        const url = `${process.env.REACT_APP_API_BASE_URL}/api/product/category/find?main=${selectMain.main}`;
+        const url = `${process.env.REACT_APP_API_BASE_URL}/api/product/category/find?main=${selectMain}`;
         const response = await fetch(url);
         const data = await response.json();
 
         setSubCategories(data);
-      } catch (error) {}
+      } catch (error) {
+        console.log(`error`);
+      }
     };
     getByMainForSub();
   };
@@ -106,26 +137,67 @@ const UpdatePage = () => {
   }, [selectMain]);
 
   // 선택된 main category 값
+  // const mainCategoryValue = (e) => {
+  //   console.log("main");
+  //   setSelectMain({
+  //     id: e.target.value,
+  //     main: e.target.options[e.target.selectedIndex].text,
+  //   });
+  // };
+
+  // // 선택된 sub category 값
+  // const subCategoryValue = (e) => {
+  //   console.log("sub");
+  //   setSelectSub({
+  //     id: e.target.value,
+  //     sub: e.target.options[e.target.selectedIndex].text,
+  //   });
+  // };
+
+  // 선택된 main category 값
   const mainCategoryValue = (e) => {
     console.log("main");
-    setSelectMain({
-      id: e.target.value,
-      main: e.target.options[e.target.selectedIndex].text,
-    });
+    setSelectMain(e.target.options[e.target.selectedIndex].text);
   };
 
   // 선택된 sub category 값
   const subCategoryValue = (e) => {
     console.log("sub");
-    setSelectSub({
-      id: e.target.value,
-      sub: e.target.options[e.target.selectedIndex].text,
-    });
+    setSelectSub(e.target.options[e.target.selectedIndex].text);
   };
 
   // 지도
   const MapOk = () => {
     navigate("/product/map/" + id);
+  };
+
+
+  // 이미지
+  // 추가버튼
+  const handleAddFile = () => {
+    // 파일 선택을 위한 input 요소를 클릭합니다.
+    document.getElementById("fileInput").click();
+  };
+  
+  const [files, setFiles] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+
+  const handleFileChange = (event) => {
+    const files = event.target.files;
+    const newFiles = [...selectedFiles]; // 기존 배열 복사
+    
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const photoName = file.name; // 원본 파일 이름 사용
+
+      const newFile = {
+        originName: file.name,
+        // photoName: photoName // 파일 이름 변경 없이 원본 파일 이름 사용
+        file: file,
+      };
+      newFiles.push(newFile); // 파일 추가
+    }
+    setSelectedFiles(newFiles); // 새 배열로 업데이트\
   };
 
   // 끌어올리기
@@ -168,38 +240,112 @@ const UpdatePage = () => {
   }, []);
 
   // 수정
-  const UpdateOk = (e) => {
-    e.preventDefault();
-    console.log(product);
+  // const UpdateOk = (e) => {
+  //   e.preventDefault();
+  //   console.log(pc);
 
-    fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/update`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json;charset-utf-8",
-      },
-      body: JSON.stringify(pc),
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          console.log(`수정되나`, response);
-          return response.json();
-        } else {
-          return null;
+  //   fetchWithToken(`${process.env.REACT_APP_API_BASE_URL}/api/product/update`, {
+  //     method: "PUT",
+  //     headers: {
+  //       "Content-Type": "application/json;charset-utf-8",
+  //     },
+  //     body: JSON.stringify(pc),
+  //   })
+  //     .then((response) => {
+  //       if (response.status === 200) {
+  //         console.log(`수정되나`, response);
+  //         return response.json();
+  //       } else {
+  //         return null;
+  //       }
+  //     })
+  //     .then((data) => {
+  //       if (data !== null) {
+  //         alert("수정 완료");
+  //         navigate(`/product/detail/${id}`);
+  //       } else {
+  //         alert("수정 실패");
+  //       }
+  //     });
+  // };
+  const UpdateOk = (e) => {
+    const formData = new FormData();
+    selectedFiles.forEach((file) => formData.append("files", file.file));
+    formData.append('delfile', product.deleteFile.join(","));
+    formData.append("title", product.title);
+    formData.append("description", product.description);
+    formData.append("price", product.price);
+    formData.append("status", product.status);
+    formData.append("location", product.location);
+    formData.append("categoryMain", selectMain);
+    formData.append("categorySub", selectSub);
+    formData.append("refeshed_at", product.refreshedAt)
+    formData.append("user_id", user_id);
+
+    // pc 객체를 JSON 문자열로 변환하여 formData에 추가
+    formData.append("product", JSON.stringify(pc));
+
+    console.log("formData : ", ...formData);
+
+    uploadedFiles(formData, {}, true);
+  }
+
+  // 상품 작성 동작 - 폼 데이터
+  const uploadedFiles = async (formData, options = {}, isFormData = false) => {
+    const token = localStorage.getItem("accessToken");
+    
+    try {
+      const response = await fetchWithToken(
+        `${process.env.REACT_APP_API_BASE_URL}/api/product/update`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`, // JWT를 Authorization 헤더에 추가
+          },
+          body: formData,
+        },
+        true
+      );
+
+      if (response.status === 200) {
+        try {
+          const data = await response.json(); // 원본 응답에서 JSON 파싱 시도
+          console.log("성공 응답 JSON:", data);
+          alert("상품이 수정되었어요!");
+          navigate(`/product/detail/${data.id}`); // 상세로 이동
+        } catch (jsonError) {
+          // JSON 파싱 과정에서 오류가 발생한 경우
+          console.error("JSON 파싱 에러:", jsonError);
         }
-      })
-      .then((data) => {
-        if (data !== null) {
-          alert("수정 완료");
-          navigate(`/product/detail/${id}`);
-        } else {
-          alert("수정 실패");
-        }
-      });
+      } else {
+        console.error("수정 실패. 응답 상태 코드가 200이 아닙니다.");
+        alert("수정 실패");
+      }
+    } catch (error) {
+      // fetch 요청 자체에서 오류가 발생한 경우
+      console.error("수정 과정 중 오류:", error);
+      alert("수정 실패");
+    }
   };
+
+  // 이미지 삭제
+  // const deleteFile = (index) =>{
+  //   const newFiles = [...files];
+  //   newFiles.splice(index, 1);
+  //   setFiles(newFiles);
+  // }
+  // 파일 삭제 요청을 서버로 전송하는 함수
+const handleDeleteFile = (fileId) => {
+  console.log(`클릭은 되나`);
+  alert('삭제하시겠습니까?')
+  setProduct((prevProduct) => ({
+    ...prevProduct,
+    deleteFile:[...prevProduct.deleteFile || [], fileId]
+  }))
+};
 
   return (
     <div className="update-box">
-      {/* <GoogleMaps props={id}></GoogleMaps> */}
       <h2>수정</h2>
       <div>제목</div>
       <div className="mb-3">
@@ -222,13 +368,13 @@ const UpdatePage = () => {
             id="update-categorybg"
             className="form-select"
             name="main"
-            value={selectMain.main}
+            value={selectMain}
             onChange={mainCategoryValue}
           >
             <option>-- 대분류 카테고리를 선택해주세요 --</option>
             {mainCategories.map((category) => (
-              <option key={category.id} value={category.main}>
-                {category.main}
+              <option value={category}>
+                {category}
               </option>
             ))}
           </select>
@@ -236,7 +382,7 @@ const UpdatePage = () => {
             id="update-categorymid"
             className="form-select"
             name="sub"
-            value={selectSub.sub}
+            value={selectSub}
             onChange={subCategoryValue}
           >
             <option>-- 중분류 카테고리를 선택해주세요 --</option>
@@ -248,7 +394,6 @@ const UpdatePage = () => {
           </select>
         </div>
       </div>
-
       <span>가격</span>
       <div className="mb-3">
         <input
@@ -304,19 +449,47 @@ const UpdatePage = () => {
             key: "value",
             anotherProp: "anotherValue",
           }}
+          setLocation={setSelectedLocation}
         />
       )}
-      <span>선택된 위치: {product.location}</span>
+      <br/>
+      <span>선택된 위치: {selectedLocation ? `${selectedLocation.lat}, ${selectedLocation.lng}` : ''}</span>
 
       {/* <input type="button" name="location" id="location" value={product.location} onClick={MapOk}></input><br/> */}
 
-      
-      <span>이미지 첨부</span>
+      <br/>
       <div className="mb-3">
         <input type="file" name="productImage" />
       </div>
+      <div className="mb-3 mt-3">
+    <label>기존 첨부파일:</label>
+    {product.fileList.map((productImage) => (
+        <div key={productImage.id} className="input-group mb-2">
+            <input className="form-control col-xs-3" type="text" readOnly value={productImage.photoName} />
+            <button type="button" className="btn btn-outline-danger" data-fileid-del={productImage.id} onClick={() => handleDeleteFile(productImage.id)}>
+                삭제
+            </button>
+        </div>
+    ))}
+    <div class="container mt-3 mb-3 border rounded">
+                <div class="mb-3 mt-3">
+                    <label>새로운 첨부파일:</label>
+                    {/* <div id="files">
 
-      
+                    </div> */}
+                    {/* <button type="button" id="btnAdd" class="btn btn-secondary">추가</button> */}
+                    <div id="fileInput" onChange={handleFileChange}>
+                    <button
+          id="write-filebtn"
+          className="btn btn-secondary"
+          onClick={handleAddFile}
+        >
+          파일 추가
+        </button>
+        </div>
+                </div>
+            </div>
+</div>
       <div>
         <Button
         id="pushBtn"

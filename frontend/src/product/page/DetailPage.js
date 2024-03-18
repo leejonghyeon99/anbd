@@ -92,30 +92,6 @@ const DetailPage = () => {
         }
       });
   };
-  // 좋아요
-  // const [wishList, setWishList] = useState({
-  //   productId:id,
-  //   userId:wishList.userId
-  // });
-
-  // 좋아요 상태 확인
-  // useEffect(() => {
-  //   fetch(`${process.env.REACT_APP_API_BASE_URL}/api/like`)
-  //   .then(response => response.json())
-  //   .then(data => setWishList(data.wishList));
-  // }, [wishList.userId, wishList.productId]);
-
-  // const LikeOk = () => {
-  //   fetch(`${process.env.REACT_APP_API_BASE_URL}/api/like`,{
-  //     method:"POST",
-  //     headers:{
-  //       "Content-Type": "application/json;charset-utf-8",
-  //     },
-  //     body:JSON.stringify(wishList),
-  //   })
-  //   .then(response => response.json())
-  //   .then(data => setWishList(data))
-  // }
 
   // 로컬 스토리지에서 JWT 토큰을 가져옵니다.
   const token = localStorage.getItem("accessToken");
@@ -143,10 +119,6 @@ const DetailPage = () => {
 
   return (
     <div className="detail_box">
-      {/* <span className='form-control'>수정일자: {product.refreshedAt}</span> */}
-      {/* <Button onClick={LikeOk}>{wishList? '좋아요 취소' : '좋아요'}</Button> */}
-      {/* <Heart src={wishList?HeartImg:EmptyHeartImg}/> */}
-
       {/* 작성자 */}
       <div id="detail-userbox" className="mb-3">
         <div className="detail-user">{product.user}</div>

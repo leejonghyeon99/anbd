@@ -51,7 +51,6 @@ public class ProductService {
 
         String locationValue = (product.getLocation() == null || product.getLocation().isEmpty()) ? null : product.getLocation();
 
-
         Product productnew = Product.builder()
                 .title(product.getTitle())
                 .description(product.getDescription())
@@ -201,49 +200,114 @@ public class ProductService {
     }
 
     // 수정
+//    @Transactional
+//    public ProductDTO update(ProductDTO product, List<MultipartFile> files, Long[] delfile) {
+//        System.out.println(product.toString());
+//
+//        Product productEntity = productRepository.findById(product.getId()).orElse(null);
+////        Category category = categoryRepository.findById(product.getCategory().getId()).orElse(null);
+//
+//        String main = product.getCategory().getMain();
+//        String sub = product.getCategory().getSub();
+//        Category category = categoryRepository.findUnique(main, sub);
+//        User user_id = userRepository.findById(product.getUser_id()).orElse(null);
+//        System.out.println("update product user_id : " + user_id);
+//
+//        if (category != null) {
+//            category.setMain(product.getCategory().getMain());
+//            category.setSub(product.getCategory().getSub());
+//
+//            categoryRepository.save(category);
+//
+//            productEntity.setLocation(product.getLocation());   // 위치
+//            productEntity.setTitle(product.getTitle());
+//            productEntity.setPrice(product.getPrice());
+//            productEntity.setStatus(product.getStatus());
+//            productEntity.setDescription(product.getDescription());
+//            productEntity.setCategory(category);
+//            productEntity.setRefreshedAt(product.getRefreshedAt());  // 끌어올리기
+////            productRepository.save(productEntity);
+//
+//            Product sProduct = productRepository.save(productEntity);
+//            Long productId = sProduct.getId();
+//            addFiles(files, productId);
+//
+//            // 삭제할 첨부파일(들) 삭제
+//            if(delfile != null){
+//                for(Long fileId : delfile){
+//                    ProductImage file = productImageRepository.findById(Math.toIntExact(fileId)).orElse(null);
+//                    if(file != null){
+//                        delFile(file);   // 물리적으로 파일 삭제
+//                        // DB 에서 삭제
+//                        productImageRepository.delete(file);
+//                    }
+//                }
+//                System.out.println(" ======== 삭제 진행 ");
+//            }
+//        }
+//        return ProductDTO.toDto(productEntity);
+//    }
     @Transactional
-    public ProductDTO update(ProductDTO product, List<MultipartFile> files, Long[] delfile) {
-        System.out.println(product.toString());
+    public Product update(ProductsDTO product, List<MultipartFile> files, Long[] delfile) {
+        // 업데이트할 제품 정보 가져오기
         Product productEntity = productRepository.findById(product.getId()).orElse(null);
-//        Category category = categoryRepository.findById(product.getCategory().getId()).orElse(null);
-
-        String main = product.getCategory().getMain();
-        String sub = product.getCategory().getSub();
-        Category category = categoryRepository.findUnique(main, sub);
-
-        if (category != null) {
-            category.setMain(product.getCategory().getMain());
-            category.setSub(product.getCategory().getSub());
-
-            categoryRepository.save(category);
-
-            productEntity.setLocation(product.getLocation());   // 위치
-            productEntity.setTitle(product.getTitle());
-            productEntity.setPrice(product.getPrice());
-            productEntity.setStatus(product.getStatus());
-            productEntity.setDescription(product.getDescription());
-            productEntity.setCategory(category);
-            productEntity.setRefreshedAt(product.getRefreshedAt());  // 끌어올리기
-//            productRepository.save(productEntity);
-
-            Product sProduct = productRepository.save(productEntity);
-            Long productId = sProduct.getId();
-            addFiles(files, productId);
-
-            // 삭제할 첨부파일(들) 삭제
-            if(delfile != null){
-                for(Long fileId : delfile){
-                    ProductImage file = productImageRepository.findById(Math.toIntExact(fileId)).orElse(null);
-                    if(file != null){
-                        delFile(file);   // 물리적으로 파일 삭제
-                        // DB 에서 삭제
-                        productImageRepository.delete(file);
-                    }
-                }
-                System.out.println(" ======== 삭제 진행 ");
-            }
+        System.out.println("productEntity = " + productEntity);
+        if (productEntity == null) {
+            // 업데이트할 제품이 없으면 null 반환
+            return null;
         }
-        return ProductDTO.toDto(productEntity);
+
+        // 업데이트할 카테고리 정보 가져오기
+        Category category = categoryRepository.findUnique(product.getCategoryMain(), product.getCategorySub());
+        if (category != null) {
+            // 카테고리 정보가 유효한 경우에만 업데이트 수행
+            category.setMain(product.getCategoryMain());
+            category.setSub(product.getCategorySub());
+            categoryRepository.save(category);
+            System.out.println("category = " + category);
+        }
+
+        // 업데이트할 사용자 정보 가져오기
+        User user_id = userRepository.findById(product.getUser_id()).orElse(null);
+        System.out.println("user_id = " + user_id);
+
+        // 위치 정보 설정
+        String locationValue = (product.getLocation() == null || product.getLocation().isEmpty()) ? null : product.getLocation();
+
+        // 제품 필드 업데이트
+        productEntity.setTitle(product.getTitle());
+        productEntity.setDescription(product.getDescription());
+        productEntity.setPrice(product.getPrice());
+        productEntity.setStatus(product.getStatus());
+        productEntity.setCategory(category);
+        productEntity.setLocation(locationValue);
+        productEntity.setUser(user_id);
+        productEntity.setRefreshedAt(product.getRefreshed_at());
+
+        // 제품 엔터티 저장
+        Product updatedProduct = productRepository.save(productEntity);
+        System.out.println("updatedProduct = " + updatedProduct);
+        Long productId = updatedProduct.getId();
+
+        // 새로운 첨부 파일 추가
+        addFiles(files, productId);
+
+        // 삭제할 첨부 파일 삭제
+        if (delfile != null) {
+            for (Long fileId : delfile) {
+                ProductImage file = productImageRepository.findById(Math.toIntExact(fileId)).orElse(null);
+                System.out.println("file = " + file);
+                if (file != null) {
+                    delFile(file); // 물리적으로 파일 삭제
+                    // DB 에서 삭제
+                    productImageRepository.delete(file);
+                }
+            }
+            System.out.println(" ======== 삭제 진행 ");
+        }
+        System.out.println("ProductService.update");
+        // 업데이트된 제품 반환
+        return updatedProduct;
     }
 
     // 특정 첨부파일(id) 를 물리적으로 삭제
