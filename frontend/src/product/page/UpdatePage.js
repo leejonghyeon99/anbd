@@ -292,11 +292,16 @@ const UpdatePage = () => {
 
   // 상품 작성 동작 - 폼 데이터
   const uploadedFiles = async (formData, options = {}, isFormData = false) => {
+    const token = localStorage.getItem("accessToken");
+    
     try {
       const response = await fetchWithToken(
         `${process.env.REACT_APP_API_BASE_URL}/api/product/update`,
         {
           method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`, // JWT를 Authorization 헤더에 추가
+          },
           body: formData,
         },
         true

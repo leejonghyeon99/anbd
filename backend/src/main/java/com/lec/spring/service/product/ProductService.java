@@ -51,7 +51,6 @@ public class ProductService {
 
         String locationValue = (product.getLocation() == null || product.getLocation().isEmpty()) ? null : product.getLocation();
 
-
         Product productnew = Product.builder()
                 .title(product.getTitle())
                 .description(product.getDescription())
