@@ -8,7 +8,38 @@
 }
 
 .rooms{
-    outline: 1px solid black;
+    border: 1px solid rgb(199, 198, 198);
+    border-radius: 10px;
     margin: 0 10px;
     width: 500px;
+}
+
+.chatItem{
+    display: flex;
+    margin: 5px;    
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.chatItem:hover{
+    box-shadow: 1px 1px 2px 2px gray;    
+}
+
+.title{
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.rooms:hover .title{
+    background-color: #c7c5c5;
+}
+
+.productPhoto{
+    width: 100px;
+    height: 100px;    
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
 }
