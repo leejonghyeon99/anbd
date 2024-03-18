@@ -3,6 +3,8 @@ import { Client } from '@stomp/stompjs';
 import { fetchWithToken } from '../../user/Reissue';
 import { useLocation } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import "../css/ChatComponent.css"
+import { Button } from 'react-bootstrap';
 // import styles from '../css/chat.module.css'
 
 const ChatComponent = (props) => {
@@ -167,6 +169,7 @@ useEffect(() => {
   }, [roomId]);
 
   const sendMessage = () => {
+
     if (stompClient && stompClient.connected) {
       
       stompClient.publish({
@@ -180,8 +183,8 @@ useEffect(() => {
   };
 
   return (
-    <div>
-      <div>
+    <div className='box'>
+      <div className='second-box'>
         {chatMessages.map((msg, index) => (
           <div key={index}>
             <div 
@@ -199,6 +202,12 @@ useEffect(() => {
         type="text"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            sendMessage();
+          }
+        }}
       />
       <button onClick={sendMessage}>전송</button>
     </div>

@@ -13,6 +13,9 @@
 # }  -> postman에 넣어야함 ㅠ 안그럼 비번 인코딩이 안돼서!
 select *
 from user;
+
+update user SET auth = 'ROLE_USER' where id=1;
+
 delete
 from user;
 
