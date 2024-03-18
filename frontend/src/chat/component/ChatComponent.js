@@ -3,6 +3,8 @@ import { Client } from '@stomp/stompjs';
 import { fetchWithToken } from '../../user/Reissue';
 import { useLocation } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import "../css/ChatComponent.css"
+import { Button } from 'react-bootstrap';
 // import styles from '../css/chat.module.css'
 
 const ChatComponent = (props) => {
@@ -27,7 +29,7 @@ const ChatComponent = (props) => {
     email: "",
     region: "",
     auth: "", // 추가: 사용자 권한 정보,
-    thumbnail : "",
+    thumbnail: "",
   });
 
 
@@ -36,6 +38,7 @@ const ChatComponent = (props) => {
   const decodedToken = jwtDecode(token);
   const username = decodedToken.sub;
   console.log(decodedToken);
+
 
 
   
@@ -53,55 +56,56 @@ useEffect(() => {
         body: JSON.stringify({ id : roomNum, username: product.userName, productId: product.id })
       };
 
-      const response = await fetchWithToken(url, options);
-      const data = await response.json();
 
-      console.log(data);
-      setRoomId(data.id);
-    } catch (error) {
-      console.error("Error fetching data:", error);
+        const response = await fetchWithToken(url, options);
+        const data = await response.json();
+
+        console.log(data);
+        setRoomId(data.id);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     }
-  }
 
-  createRoom()
-  
-},[])
-  
-  useEffect(()=>{
+    createRoom()
+
+  }, [])
+
+  useEffect(() => {
     const getChatLog = async () => {
       console.log(apiUrl);
       try {
         const url = `${apiUrl}/api/chat/room?roomId=${roomId}`;
-  
+
         const options = {
-          method: "GET",                 
+          method: "GET",
         };
-        
+
         const response = await fetchWithToken(url, options);
         const data = await response.json();
-  
-        console.log([data.map( m => ({
-          message:m.message,
-          sender:m.sender.nickname
+
+        console.log([data.map(m => ({
+          message: m.message,
+          sender: m.sender.nickname
         }))]);
-        setChatMessages(data.map( m => ({
-          message:m.message,
-          sender:m.sender.nickname
+        setChatMessages(data.map(m => ({
+          message: m.message,
+          sender: m.sender.nickname
         })))
-        
+
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     }
     getChatLog()
-  },[roomId])
+  }, [roomId])
 
-  useEffect(()=>{  
+  useEffect(() => {
 
     const userData = async () => {
       try {
         if (token) {
-        
+
           // 서버에 사용자 정보 요청 보내기
           const response = await fetchWithToken(
             `${process.env.REACT_APP_API_BASE_URL}/api/user/info`,
@@ -133,7 +137,7 @@ useEffect(() => {
 
     // userData 함수 실행 (컴포넌트가 마운트될 때 한 번만 실행하도록 빈 배열 전달)
     userData();
-  },[])
+  }, [])
   useEffect(() => {
     const socket = new WebSocket('ws://localhost:8080/ws');
     const client = new Client({
@@ -143,18 +147,18 @@ useEffect(() => {
       heartbeatOutgoing: 4000,
     });
 
-    
+
     client.onConnect = (frame) => {
       console.log('WebSocket Connected:', frame);
       setStompClient(client);
 
       // 원하는 방에 구독
-        client.subscribe(`/send/${roomId}`, (message) => {
+      client.subscribe(`/send/${roomId}`, (message) => {
         const receivedMessage = JSON.parse(message.body);
         console.log(receivedMessage.body)
-        setChatMessages((prevMessages) => [...prevMessages, {sender:receivedMessage.body.sender.nickname, message: receivedMessage.body.message}]);
+        setChatMessages((prevMessages) => [...prevMessages, { sender: receivedMessage.body.sender.nickname, message: receivedMessage.body.message }]);
       });
-      
+
       // 성공적으로 구독했을 때 로그 출력
       console.log(`/room/${roomId} 구독 성공적으로 완료됨`);
     };
@@ -173,11 +177,12 @@ useEffect(() => {
   }, [roomId]);
 
   const sendMessage = () => {
+
     if (stompClient && stompClient.connected) {
-      
+
       stompClient.publish({
         destination: `/room/${roomId}`,
-        body: JSON.stringify({username:username, message:message}),       
+        body: JSON.stringify({ username: username, message: message }),
       });
       setMessage('');
     } else {
@@ -186,14 +191,14 @@ useEffect(() => {
   };
 
   return (
-    <div>
-      <div>
+    <div className='box'>
+      <div className='second-box'>
         {chatMessages.map((msg, index) => (
           <div key={index}>
-            <div 
-              // className={`${msg.sender === user.nickname ? styles.right : styles.left}`}
+            <div
+            // className={`${msg.sender === user.nickname ? styles.right : styles.left}`}
             >
-              <label htmlFor={`${index}msg`}>
+              <label id='me' htmlFor={`${index}msg`}>
                 {msg.sender}
               </label>
               <p id={`${index}msg`}>{msg.message}</p>
@@ -201,12 +206,21 @@ useEffect(() => {
           </div>
         ))}
       </div>
-      <input
-        type="text"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-      />
-      <button onClick={sendMessage}>전송</button>
+      <div className='msg-send-box'>
+        <input
+          id='chat-msg-box'
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              sendMessage();
+            }
+          }}
+        />
+        <button className='send-btn' onClick={sendMessage}><img src='/icon/send-btn.png'/></button>
+      </div>
     </div>
   );
 };
