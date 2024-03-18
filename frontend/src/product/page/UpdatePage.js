@@ -271,7 +271,13 @@ const UpdatePage = () => {
   const UpdateOk = (e) => {
     const formData = new FormData();
     selectedFiles.forEach((file) => formData.append("files", file.file));
-    formData.append('delfile', product.deleteFile.join(","));
+    if (product.deleteFile && product.deleteFile.length > 0) {
+      formData.append('delfile', product.deleteFile.join(","));
+    } else {
+      // deleteFile이 undefined이거나 빈 배열인 경우 처리
+      // 필요에 따라 formData.append를 생략하거나, 빈 문자열을 추가하는 등의 조치를 취할 수 있습니다.
+      formData.append('delfile', '');
+    }
     formData.append("title", product.title);
     formData.append("description", product.description);
     formData.append("price", product.price);
