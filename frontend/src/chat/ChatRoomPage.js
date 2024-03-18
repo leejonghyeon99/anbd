@@ -138,7 +138,7 @@ const ChatRoomPage = () => {
                   <img className={`${styles.productPhoto}`} src={`${apiUrl}/upload/product/${m.productDTO.fileList[0].photoName}`}></img>
                   <div className={`${styles.content}`}>
                     <span className={`${styles.productName}`}>{m.productDTO.title}</span>
-                    <span className={`${styles.user}`}><span>대화상대</span>{m.buyer}</span>
+                    <span className={`${styles.user}`}><span>대화상대</span>{m.seller}</span>
                     <span className={`${styles.text}`}>{truncateString(m.chats[m.chats.length-1].message)}</span>
                   </div>                                    
                 </div>

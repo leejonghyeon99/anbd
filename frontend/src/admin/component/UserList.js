@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import '../css/UserList.css'
-import styles from '../css/userList.module.css'
 import logoImage from '../image/logo192.png';
 import CustomPagination from '../../components/CustomPagination';
 import { fetchWithToken } from '../../user/Reissue';
@@ -61,15 +60,15 @@ const UserList = () => {
 
     return (
         <>
-            <div className={styles.userList}>
+            <div className='userList'>
                 <ul id='userList-ul'>
                     {usersData.map((user) => (
                         <li key={user.id}>
-                            <div className={`${styles.userBox}`}>
-                                <img className={`${styles.userIcon}`} src={logoImage} alt="Logo" />
-                                <span className={`${styles.nickname}`}>{user.nickname}</span>
-                                <span className={`${styles.userEmail}`}>이메일 {user.email}</span>
-                                <span className={`${styles.signupDate}`}>가입일시 {user.createdAt}</span>
+                            <div className='userBox'>
+                                <img className='userIcon' src={logoImage} alt="Logo" />
+                                <span className='nickname'>{user.nickname}</span>
+                                <span className='userEmail'>이메일 {user.email}</span>
+                                <span className='signupDate'>가입일시 {user.createdAt}</span>
                             </div>
                             <hr />
                         </li>
@@ -77,7 +76,7 @@ const UserList = () => {
                 </ul>
             </div>
 
-            <CustomPagination 
+            <CustomPagination
                 currentPage={page.pageNumber} 
                 totalPages={page.total} 
                 onPageChange={changePageNumber}
