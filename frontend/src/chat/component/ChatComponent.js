@@ -192,7 +192,7 @@ useEffect(() => {
         {chatMessages.map((msg, index) => (
           <div key={index}>
             <div
-            // className={`${msg.sender === user.nickname ? styles.right : styles.left}`}
+            className={msg.sender === user.nickname ? 'my-message' : 'other-message'}
             >
               <label id='me' htmlFor={`${index}msg`}>
                 {msg.sender}
@@ -215,7 +215,7 @@ useEffect(() => {
             }
           }}
         />
-        <button className='send-btn' onClick={sendMessage}><img src='/icon/send-btn.png'/></button>
+        <button className='send-btn' onClick={sendMessage}><img src='/icon/chat-send-btn.png'/></button>
       </div>
     </div>
   );
