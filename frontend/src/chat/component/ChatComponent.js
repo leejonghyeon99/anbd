@@ -3,6 +3,7 @@ import { Client } from '@stomp/stompjs';
 import { fetchWithToken } from '../../user/Reissue';
 import { useLocation } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import "../css/ChatComponent.css"
 // import styles from '../css/chat.module.css'
 
 const ChatComponent = (props) => {
@@ -27,7 +28,7 @@ const ChatComponent = (props) => {
     email: "",
     region: "",
     auth: "", // 추가: 사용자 권한 정보,
-    thumbnail : "",
+    thumbnail: "",
   });
 
 
@@ -38,10 +39,10 @@ const ChatComponent = (props) => {
   console.log(decodedToken);
 
 
-  
+
   console.log(JSON.stringify({ username: product.userName, productId: product.id}));
 
-useEffect(() => { 
+useEffect(() => {
   const createRoom = async () => {
     console.log(apiUrl);
     console.log(roomNum);
@@ -186,14 +187,14 @@ useEffect(() => {
   };
 
   return (
-    <div>
-      <div>
+    <div className='box'>
+      <div className='second-box'>
         {chatMessages.map((msg, index) => (
           <div key={index}>
-            <div 
-              // className={`${msg.sender === user.nickname ? styles.right : styles.left}`}
+            <div
+            // className={`${msg.sender === user.nickname ? styles.right : styles.left}`}
             >
-              <label htmlFor={`${index}msg`}>
+              <label id='me' htmlFor={`${index}msg`}>
                 {msg.sender}
               </label>
               <p id={`${index}msg`}>{msg.message}</p>
@@ -201,12 +202,21 @@ useEffect(() => {
           </div>
         ))}
       </div>
-      <input
-        type="text"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-      />
-      <button onClick={sendMessage}>전송</button>
+      <div className='msg-send-box'>
+        <input
+          id='chat-msg-box'
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              sendMessage();
+            }
+          }}
+        />
+        <button className='send-btn' onClick={sendMessage}><img src='/icon/send-btn.png'/></button>
+      </div>
     </div>
   );
 };
