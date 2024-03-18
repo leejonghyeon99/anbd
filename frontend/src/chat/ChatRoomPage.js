@@ -121,19 +121,27 @@ const ChatRoomPage = () => {
 
     useEffect(()=>{console.log(rooms);},[rooms])
     useEffect(()=>{console.log(myBuyRooms);},[myBuyRooms])
+
+    function truncateString(str) {
+      if (str.length > 20) {
+          return str.substring(0, 20) + '...';
+      } else {
+          return str;
+      }
+  }
     return (
         <div className={`${styles.roomsContainer}`}>
             <div className={`${styles.buyerRooms} ${styles.rooms}`}>
                 <h3 className={`${styles.title}`}>구매중인 물건</h3>
                 {myBuyRooms.map((m, index) => 
                   <div key={index} className={`${styles.chatItem}`} onClick={() => moveChat(m)}>
-                    <img className={`${styles.productPhoto}`} src={`${apiUrl}/upload/product/${m.productDTO.fileList[0].photoName}`}></img>
-                    <div className={`${styles.content}`}>
-                      <strong>{m.productDTO.title}</strong>
-                      <span>대화상대 {m.seller}</span>
-                      {m.chats[m.chats.length-1].message}
-                    </div>                                    
-                  </div>
+                  <img className={`${styles.productPhoto}`} src={`${apiUrl}/upload/product/${m.productDTO.fileList[0].photoName}`}></img>
+                  <div className={`${styles.content}`}>
+                    <span className={`${styles.productName}`}>{m.productDTO.title}</span>
+                    <span className={`${styles.user}`}><span>대화상대</span>{m.buyer}</span>
+                    <span className={`${styles.text}`}>{truncateString(m.chats[m.chats.length-1].message)}</span>
+                  </div>                                    
+                </div>
                 )}
             </div>
             <div className={`${styles.sellerRooms} ${styles.rooms}`}>
@@ -142,9 +150,9 @@ const ChatRoomPage = () => {
                   <div key={index} className={`${styles.chatItem}`} onClick={() => moveChat(m)}>
                     <img className={`${styles.productPhoto}`} src={`${apiUrl}/upload/product/${m.productDTO.fileList[0].photoName}`}></img>
                     <div className={`${styles.content}`}>
-                      <strong>{m.productDTO.title}</strong>
-                      <span>대화상대 {m.buyer}</span>
-                      {m.chats[m.chats.length-1].message}
+                      <span className={`${styles.productName}`}>{m.productDTO.title}</span>
+                      <span className={`${styles.user}`}><span>대화상대</span>{m.buyer}</span>
+                      <span className={`${styles.text}`}>{truncateString(m.chats[m.chats.length-1].message)}</span>
                     </div>                                    
                   </div>
                 )}

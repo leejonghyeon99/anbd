@@ -1,7 +1,26 @@
-.right{
-    color: red;
+
+.chatList{
+    display: flex;
+    flex-direction: column;
+}
+
+.message {    
+    display: flex;
+    flex-direction: column;
+}
+
+.right{       
+    justify-content: flex-end;
+    max-width: 50%;
+    color: red; 
 }
 
 .left{
     color: blue;
+}
+
+.chatSubmit{
+    position: fixed;
+    bottom: 5px;
+    width: 80%;
 }

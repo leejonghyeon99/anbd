@@ -18,6 +18,7 @@
     display: flex;
     margin: 5px;    
     cursor: pointer;
+    border: 1px solid gray;
     transition: all 0.3s;
 }
 
@@ -34,6 +35,10 @@
     background-color: #c7c5c5;
 }
 
+.productName{
+
+}
+
 .productPhoto{
     width: 100px;
     height: 100px;    
@@ -42,4 +47,20 @@
 .content{
     display: flex;
     flex-direction: column;
+    margin-left: 5px;
+}
+
+.user{
+    color: rgb(180, 205, 241);
+    font-size: 0.8em;
+}
+
+.user > span{
+    color: rgb(129, 130, 131);
+    margin: 0 8px 0 0;    
+}
+
+.text{
+    margin-top: 20px;
+    font-size: 0.9em;
 }
