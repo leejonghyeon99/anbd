@@ -52,16 +52,6 @@ insert into category(main, sub) value ('도서', '일반도서');
 insert into category(main, sub) value ('도서', '유아도서');
 insert into category(main, sub) value ('도서', '학습교재');
 
-
-update Category c
-set c.sub= '호로로'
-where c.main = '224'
-  and c.sub = '33ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ';
-update user
-set thumbnail = 'default.png'
-where 1 = 1;
-delete
-from category;
 select *
 from category;
 /*정렬*/
