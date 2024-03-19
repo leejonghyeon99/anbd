@@ -40,7 +40,18 @@ insert into category(main, sub) value ('식품', '가공식품');
 insert into category(main, sub) value ('생활용품', '거실');
 insert into category(main, sub) value ('생활용품', '주방용품');
 insert into category(main, sub) value ('전자제품', '가전');
-/* 카테고리 전체 조회 */
+insert into category(main, sub) value ('전자제품', '디지털기기');
+insert into category(main, sub) value ('스포츠/레저', '스포츠');
+insert into category(main, sub) value ('스포츠/레저', '레저');
+insert into category(main, sub) value ('취미/게임/음반', '취미');
+insert into category(main, sub) value ('취미/게임/음반', '게임');
+insert into category(main, sub) value ('취미/게임/음반', '음반');
+insert into category(main, sub) value ('뷰티/미용', '뷰티');
+insert into category(main, sub) value ('뷰티/미용', '미용');
+insert into category(main, sub) value ('도서', '일반도서');
+insert into category(main, sub) value ('도서', '유아도서');
+insert into category(main, sub) value ('도서', '학습교재');
+
 select *
 from category;
 /*정렬*/
