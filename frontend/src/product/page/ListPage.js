@@ -7,12 +7,14 @@ import "../CSS/ListPage.css";
 const ListPage = () => {
   const navigate = useNavigate();
 
-  const { sub } = useParams();
+  const { sub } = useParams();// URL에서 중분류(sub) 파라미터 가져오기
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
-  const [products, setProducts] = useState([]);
-  const [search, setSearch] = useState("");
-  const [searchMessage, setSearchMessage] = useState("");
+  const [initialProducts, setInitialProducts] = useState([]); // 초기 상품 목록을 저장하는 변수 추가
+  const [products, setProducts] = useState([]); // 전체 상품 목록 상태
+  const [search, setSearch] = useState(""); // 검색어 상태
+  const [searchMessage, setSearchMessage] = useState(""); // 검색 결과 메시지 상태
+
 
   useEffect(() => {
     // 상품목록
@@ -25,6 +27,8 @@ const ListPage = () => {
 
         // 서버에서 받은 데이터를 category 상태에 저장
         setProducts(data);
+        // 초기 상품 목록 저장(말머리 필터링 위해)
+        setInitialProducts(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -54,19 +58,19 @@ const ListPage = () => {
       const data = await response.json();
 
       // 검색어가 포함된 title을 가진 product만 필터링
-      const filteredProducts = data.filter((product) =>
+      const searchedProducts = data.filter((product) =>
         product.title.includes(search)
       );
 
       // 결과가 없을 때 빈 목록으로 설정
-      if (filteredProducts.length === 0) {
+      if (searchedProducts.length === 0) {
         // 검색 결과가 없다는 메시지를 사용자에게 알리기
         setSearchMessage("검색된 목록이 없습니다.");
       } else {
         setSearchMessage(""); // 결과가 있으면 메시지 초기화
       }
 
-      setProducts(filteredProducts);
+      setProducts(searchedProducts);
     } catch (error) {
       console.error("Error searching products:", error);
     }
@@ -76,6 +80,35 @@ const ListPage = () => {
   const WriteOk = () => {
     navigate("/product/write");
   };
+  
+  // 상태 필터링을 수행하는 함수
+  const handleStatusFilter = (e) => {
+    const status = e.target.value; // 선택된 상태 값을 변수에 저장합니다.
+    let filteredProducts = []; // 필터링된 상품 목록을 초기화합니다.
+
+    // 선택된 상태에 따라 적절한 필터링을 수행합니다.
+    switch (status) {
+        case "SALE":
+            filteredProducts = initialProducts.filter((product) => product.status === "SALE");
+            break;
+        case "RESERVED":
+            filteredProducts = initialProducts.filter((product) => product.status === "RESERVED");
+            break;
+        case "SOLD":
+            filteredProducts = initialProducts.filter((product) => product.status === "SOLD");
+            break;
+        default:
+            // 상태가 선택되지 않은 경우, 전체 상품 목록을 유지합니다.
+            filteredProducts = [...initialProducts];
+            break;
+    }
+
+    // 필터링된 상품 목록을 콘솔에 출력합니다.
+    console.log("필터링 확인 = ", filteredProducts);
+    // 필터링된 상품 목록 상태를 업데이트합니다.
+    setProducts(filteredProducts);
+  };
+
 
   return (
     <div className="ListPageBox">
@@ -98,6 +131,15 @@ const ListPage = () => {
             </Button>
           )}
         </div>
+
+        <div className="status-filter">
+        <Form.Select onChange={handleStatusFilter}>
+          <option value="">전체</option>
+          <option value="SALE">판매중</option>
+          <option value="RESERVED">예약중</option>
+          <option value="SOLD">판매완료</option>
+        </Form.Select>
+      </div>
 
         {/* 검색 폼 */}
         <div className="list-searchBox">
