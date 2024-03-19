@@ -137,17 +137,19 @@ const ListPage = () => {
           )}
         </div>
 
+
+        {/* 검색 폼 */}
+        <div className="list-searchBox">
         <div className="status-filter">
-          <Form.Select onChange={handleStatusFilter}>
+          <Form.Select 
+          id="select-box" 
+          onChange={handleStatusFilter}>
             <option value="">전체</option>
             <option value="SALE">판매중</option>
             <option value="RESERVED">예약중</option>
             <option value="SOLD">판매완료</option>
           </Form.Select>
         </div>
-
-        {/* 검색 폼 */}
-        <div className="list-searchBox">
           <Form onSubmit={handleSearchSubmit} className="search-form">
             <FormControl
               id="searchBox"
