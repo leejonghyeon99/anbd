@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import "../CSS/ListPage.css";
 
 const ProductItem = (props) => {
-  const { id, user, title, price, fileList} = props.product;
+  const { id, user, title, price, fileList, status} = props.product;
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
   return (
     <>
@@ -49,7 +49,7 @@ const ProductItem = (props) => {
           </Link>
         <ListGroup>
           <Link to={`/product/detail/${id}`} id="moveToDetail">
-            <ListGroupItem id="product-title" >{title}</ListGroupItem>
+            <ListGroupItem id="product-title" >[{status === 'SALE' ? '판매중' : status === 'RESERVED' ? '예약중' : status === 'SOLD' ? '판매완료' : ''}] {title}</ListGroupItem>
           </Link>
           <Link to={`/product/detail/${id}`} id="moveToDetail">
             <ListGroupItem id="price">{price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원</ListGroupItem>
