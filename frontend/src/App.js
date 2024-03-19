@@ -37,6 +37,7 @@ const App = () => {
 
   const isMenuVisible = !location.pathname.endsWith('/admin');
   const isAdminRoute = location.pathname.endsWith('/admin');
+  const isChatRoute = location.pathname.endsWith('/chat');
   
   useEffect(() => {
     // 창 크기 변화를 감지하여 메뉴 상태를 업데이트하는 이벤트 핸들러
@@ -178,7 +179,7 @@ const App = () => {
             {isMenuVisible && menuToggle && <Sidebar ref={sidebarRef} />}
           </div>
         </div>
-        <div className="content" style={{ marginLeft: isAdminRoute ?"0%" : "" }}>
+        <div className="content" id={isChatRoute ? 'chatPage' : ''} style={{ marginLeft: isAdminRoute ?"0%" : "" }}>
           <Routes>
             {/* 권한 없이 접근 가능 */}
             <Route path="/" element={<Navigate to="/home" />} />

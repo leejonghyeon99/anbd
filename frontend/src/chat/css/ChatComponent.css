@@ -1,5 +1,14 @@
+
+
 .second-box {
+    border-radius: 30px;
     overflow-y: scroll;
+    background-image: linear-gradient(rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.8)),url('../../../public/img/006.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    
+    height: calc(80vh - 115px);
+    padding: 1%;
 }
 
 .msg-send-box {
@@ -11,7 +20,6 @@
 }
 
 #chat-msg-box {
-    flex: 3;
     border: 2px solid rgba(255, 170, 0, 0.338); 
 }
 
@@ -25,7 +33,6 @@
     border: 0.1px solid rgb(255, 179, 0);
     padding: 1%;
     border-radius: 30px;
-    flex: 0.1;
     margin-inline: 1%;
     display: flex;
     justify-content: center;
@@ -41,7 +48,11 @@
     background-color: rgba(240, 248, 255, 0);
 }
 
-#me{
+.my-message {
+    text-align: right;
+}
+
+.my-message label{
     color: rgb(56, 108, 24);
 }
 

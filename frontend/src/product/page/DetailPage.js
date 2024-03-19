@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Image, Col } from "react-bootstrap";
+import { Button, Image, Col, Carousel } from "react-bootstrap";
 import { Link, json, useNavigate, useParams } from "react-router-dom";
 import { fetchWithToken } from "../../user/Reissue";
 import { upload } from "@testing-library/user-event/dist/upload";
@@ -33,7 +33,6 @@ const DetailPage = () => {
   const [username, setUsername] = useState();
   const [userrole, setUserrole] = useState();
 
-
   const UpdateOk = () => {
     navigate("/product/update/" + id);
   };
@@ -51,12 +50,11 @@ const DetailPage = () => {
         // 상품 위치 정보가 있는 경우, 지도 위치를 설정합니다.
         if (data.location) {
           // 예를 들어, data.location 형식이 "lat,lng" 문자열이라고 가정
-          const [lat, lng] = data.location.split(',').map(Number);
+          const [lat, lng] = data.location.split(",").map(Number);
           setMapLocation({ lat, lng });
         }
       });
   }, []);
-
 
   function GoogleMaps({ location, zoom }) {
     useEffect(() => {
@@ -64,16 +62,16 @@ const DetailPage = () => {
         center: location,
         zoom: zoom,
       });
-  
+
       new window.google.maps.Marker({
         position: location,
         map: map,
       });
     }, [location, zoom]);
-  
-    return <div id="map" style={{ height: '100%', width: '100%' }}></div>;
+
+    return <div id="map" style={{ height: "100%", width: "100%" }}></div>;
   }
-  
+
   const DeleteOk = () => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
     fetchWithToken(
@@ -124,39 +122,6 @@ const DetailPage = () => {
         <div className="detail-user">{product.user}</div>
       </div>
 
-      {/* 첨부파일 */}
-      <div className="container mt-3 mb-3 border rounded">
-        <div className="mb-3 mt-3">
-          <label>*</label>
-          <ul className="list-group mb-1">
-            {product.fileList.map((productImage, index) => (
-              <li key={index} className="list-group-item">
-                <a
-                  href={`${process.env.REACT_APP_API_BASE_URL}/product/download?id=${productImage.id}`}
-                >
-                  {productImage.originName}
-                </a>
-              </li>
-            ))}
-          </ul>
-          {/* 이미지인 경우 보여주기 */}
-          <ul className="list-group mb-1">
-            {product.fileList.map(
-              (productImage, index) =>
-                productImage && (
-                  <li key={index}>
-                    <img
-                      src={`${apiUrl}/upload/product/${productImage.photoName}`}
-                      className="img"
-                      alt="상품 이미지"
-                    />
-                  </li>
-                )
-            )}
-          </ul>
-        </div>
-      </div>
-
       {/* 제목 */}
       <div>
         <div className="detail-title">{product.title}</div>
@@ -169,32 +134,55 @@ const DetailPage = () => {
       </div>
       {/*가격 */}
       <div className="mb-3">
-        <div className="detail-price">{product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원</div>
+        <div className="detail-price">
+          {product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 원
+        </div>
       </div>
+
+      {/* 첨부파일 */}
+      <div className="container mt-3 mb-3 border rounded">
+        <div className="mb-3 mt-3">
+          <Carousel>
+            {product.fileList.map((productImage, index) => (
+              <Carousel.Item key={index}>
+                <img
+                  className="d-block w-100"
+                  src={`${apiUrl}/upload/product/${productImage.photoName}`}
+                  alt={`상품 이미지 ${index + 1}`}
+                  style={{maxWidth: "30rem",maxHeight:'30rem'}}
+                />
+              </Carousel.Item>
+            ))}
+          </Carousel>
+        </div>
+      </div>
+
+      {/* 설명 */}
       <div className="mb-3">
         <div id="detail-description" className="form-control">
           {product.description}
         </div>
       </div>
 
-            {/* Google 지도 컴포넌트를 렌더링합니다. */}
-            {mapLocation && (
-        <div className="google-map-container" style={{ height: '300px', width: '100%' }}>
-          <GoogleMaps location={mapLocation} zoom={15}/>
+      {/* Google 지도 컴포넌트를 렌더링합니다. */}
+      {mapLocation && (
+        <div
+          className="google-map-container"
+          style={{ height: "300px", width: "100%" }}
+        >
+          <GoogleMaps location={mapLocation} zoom={15} />
         </div>
       )}
 
-      <div className="mb-3">    
-        {((userrole === "ROLE_USER" || userrole === "ROLE_ADMIN") && (product.userName !== username)) && (        
-          <Link to={`/chat`} state={{product : product}}>
-            <Button id="productChat-btn">
-            <img
-                        src="/icon/colorChat.png"
-                        className="chatIcon_dp"
-                      />
-            </Button>
-          </Link>
-        )}
+      <div className="mb-3">
+        {(userrole === "ROLE_USER" || userrole === "ROLE_ADMIN") &&
+          product.userName !== username && (
+            <Link to={`/chat`} state={{ product: product }}>
+              <Button id="productChat-btn">
+                <img src="/icon/colorChat.png" className="chatIcon_dp" />
+              </Button>
+            </Link>
+          )}
       </div>
       <div className="mb-3">
         {currentUsername === product.userName && (

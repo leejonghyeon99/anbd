@@ -27,6 +27,13 @@ const Navbar = styled.div`
 
 const Header = () => {
 
+  const [isNewMessage, setIsNewMessage] = useState(false); // 새로운 메시지가 도착했는지 여부를 상태로 관리
+
+  useEffect(() => {
+    // 새로운 메시지가 도착했을 때 실행되는 부분
+    // 예를 들어, 상대방으로부터 새로운 메시지를 받으면 setIsNewMessage(true); 로 설정
+  }, [/* isNewMessage가 바뀌는 조건을 설정 */]);
+
   const headerRef = useRef(null);
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const getCurrentDate = () => {
@@ -204,7 +211,7 @@ const Header = () => {
               {user.auth === "ROLE_USER" && (
                 
                 <img
-                  src="/icon/user2.png"
+                  src={`/icon/${isNewMessage ? 'notificationUser' : 'user2'}.png`}
                   id="userIcon"
                   onClick={toggleMypage}
                 />
@@ -278,7 +285,7 @@ const Header = () => {
                       onClick={toggleMypage}
                     >
                       <img
-                        src="/icon/colorChat.png"
+                        src={`/icon/${isNewMessage ? 'notificationChat' : 'colorChat'}.png`}
                         className="chatIcon_mp"
                       />
                     </Link>
