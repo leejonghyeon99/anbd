@@ -223,7 +223,8 @@ const ChatComponent = (props) => {
         <input
           id="chat-msg-box"
           type="text"
-          value={message}
+          value
+          ={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
