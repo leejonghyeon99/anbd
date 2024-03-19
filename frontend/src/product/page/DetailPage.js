@@ -149,7 +149,7 @@ const DetailPage = () => {
                   className="d-block w-100"
                   src={`${apiUrl}/upload/product/${productImage.photoName}`}
                   alt={`상품 이미지 ${index + 1}`}
-                  style={{maxHeight:'30rem'}}
+                  style={{maxWidth: "30rem",maxHeight:'30rem'}}
                 />
               </Carousel.Item>
             ))}

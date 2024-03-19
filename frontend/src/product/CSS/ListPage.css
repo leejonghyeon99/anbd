@@ -27,6 +27,7 @@
 .list-addBtn {
   display: flex;
   flex: 0.5;
+  background-color: rgb(255, 213, 76);
 }
 
 .list-searchBox {
@@ -60,6 +61,15 @@
   width: 100%;
   height: auto;
   object-fit: cover;
+}
+
+.status-filter {
+  background-color: rgb(255, 76, 76);
+  border: 1px solid;
+}
+
+.list-searchBox {
+  background-color: rgb(0, 255, 34);
 }
 
 #search-button {
