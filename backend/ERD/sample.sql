@@ -51,7 +51,7 @@ insert into category(main, sub) value ('뷰티/미용', '미용');
 insert into category(main, sub) value ('도서', '일반도서');
 insert into category(main, sub) value ('도서', '유아도서');
 insert into category(main, sub) value ('도서', '학습교재');
-
+/* 카테고리 전체 조회*/
 select *
 from category;
 /*정렬*/
