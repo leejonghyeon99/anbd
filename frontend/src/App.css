@@ -77,11 +77,15 @@
   height: calc(100vh - 115px);
   overflow-y: auto;
   overflow-x: hidden;
-    /* 스크롤바 스타일링 */
-    
-    /* scrollbar-width: thin; */
-    scrollbar-color: #ffffff #b9b9b9a4; /* Firefox */
+  /* 스크롤바 스타일링 */
+  
+  /* scrollbar-width: thin; */
+  scrollbar-color: #ffffff #b9b9b9a4; /* Firefox */
+  
+}
 
+#chatPage {
+  overflow: hidden;
 }
 
 
