@@ -129,13 +129,20 @@ const ChatRoomPage = () => {
           return str;
       }
   }
+
+  
     return (
         <div className={`${styles.roomsContainer}`}>
             <div className={`${styles.buyerRooms} ${styles.rooms}`}>
                 <h3 className={`${styles.title}`}style={{color:'LightSlateGray'}}>구매중인 물건</h3>
                 {myBuyRooms.map((m, index) => 
                   <div key={index} className={`${styles.chatItem}`} onClick={() => moveChat(m)}>
-                  <img className={`${styles.productPhoto}`} src={`${apiUrl}/upload/product/${m.productDTO.fileList[0].photoName}`}></img>
+                    {m.productDTO.fileList[0] ? 
+                    <img className={`${styles.productPhoto}`} src={`${apiUrl}/upload/product/${m.productDTO.fileList[0].photoName}`}></img>
+                    : 
+                    <img className={`${styles.productPhoto}`} src={`${apiUrl}/upload/product/NoImage.png`}></img>
+                    }
+                  
                   <div className={`${styles.content}`}>
                     <span className={`${styles.productName}`}>{m.productDTO.title}</span>
                     <span className={`${styles.user}`}><span>대화상대</span>{m.buyer}</span>
@@ -148,7 +155,11 @@ const ChatRoomPage = () => {
                 <h3 className={`${styles.title}`} style={{color:'IndianRed'}}>판매중인 물건</h3>
                 {mySellRooms.map((m, index) =>                   
                   <div key={index} className={`${styles.chatItem}`} onClick={() => moveChat(m)}>
+                    {m.productDTO.fileList[0] ? 
                     <img className={`${styles.productPhoto}`} src={`${apiUrl}/upload/product/${m.productDTO.fileList[0].photoName}`}></img>
+                    : 
+                    <img className={`${styles.productPhoto}`} src={`${apiUrl}/upload/product/NoImage.png`}></img>
+                    }
                     <div className={`${styles.content}`}>
                       <span className={`${styles.productName}`}>{m.productDTO.title}</span>
                       <span className={`${styles.user}`}><span>대화상대</span>{m.buyer}</span>

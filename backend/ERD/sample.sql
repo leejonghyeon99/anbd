@@ -61,6 +61,8 @@ desc category;
 delete
 from category;
 
+insert into user(created_at, phone_number, provider, nickname, name, username, password, region, email, provider_id, thumbnail) VALUES
+(now(),'01012341234','','USER2','USER2','USER2', '$2a$10$jsEuJ4.Mc/iMGHRa7kB04.9t6PmuGaYKKWfomTgyGcFmfntRtFv0q','서울시 동작구','test@email.com','','default.png');
 
 /*-----------------------------------상품 sample-----------------------------------*/
 insert into product(category_id, price, status, user_id, created_at, title, description, location)
@@ -113,6 +115,9 @@ VALUES (7, 20000, 'SALE', 1, now(), '테스트 상품7-1', '테스트 상품입�
 insert into product(category_id, price, status, user_id, created_at, title, description, location)
 VALUES (8, 20000, 'SALE', 1, now(), 'LG QLED', '테스트 상품입니다3.', '0000, 0000');
 
+
+select *
+from product_image;
 /* 상품 전체 조회*/
 select *
 from product;
