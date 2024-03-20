@@ -1,9 +1,6 @@
 package com.lec.spring.service.admin;
 
-import com.lec.spring.domain.Category;
-import com.lec.spring.domain.Product;
-import com.lec.spring.domain.Report;
-import com.lec.spring.domain.User;
+import com.lec.spring.domain.*;
 import com.lec.spring.dto.CategoryDTO;
 import com.lec.spring.dto.ProductDTO;
 import com.lec.spring.dto.ReportDTO;
@@ -64,6 +61,8 @@ public class AdminService {
         Report report = null;
         User user = userRepository.findById(id).orElse(null);
         if(user != null){
+            user.setAuth(Auth.ROLE_BLOCK);
+            userRepository.save(user);
             report = new Report();
             report.setUser(user);
             return reportRepository.save(report);
@@ -72,11 +71,15 @@ public class AdminService {
         return null;
     }
 
+    //차단 해제
     @Transactional
     public String unlock(int id) {
         Report report = reportRepository.findById(id).orElse(null);
+        User user = userRepository.findById(id).orElse(null);
         if (report != null) {
-            reportRepository.deleteById(id);// 차단 성공
+            user.setAuth(Auth.ROLE_USER);
+            userRepository.save(user);
+            reportRepository.deleteById(id);// 차단해제 성공
             return "OK";
         }
         return "FAIL";

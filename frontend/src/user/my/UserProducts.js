@@ -133,7 +133,7 @@ const UserProducts = () => {
                     />
                 ) : (
                     <img  
-                        src={`${apiUrl}/upload/product/default.png`} 
+                        src={`${apiUrl}/upload/product/NoImage.png`} 
                         className={`${styles.thumbnail}`}
                     />
                 )}

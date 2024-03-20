@@ -1,5 +1,16 @@
+
+
 .userList{
-    margin-top: 50px;
+    margin-top: 20px;
+}
+
+
+.userList h4{    
+    margin: 0px 0px 10px 30px;
+}
+
+.userList h5{    
+    margin: 0px 0px 30px 30px;
 }
 
 .userBox {
@@ -15,6 +26,8 @@
 
 .nickname {
     margin-left: 8px;
+    width: 100px;
+    margin-right: 40px;
 }
 
 .userEmail{
@@ -30,7 +43,31 @@
 }
 
 
+.boxbox{
+    display: flex;
+    flex-direction: column;
+}
 
+.authTag{
+    display: inline-block;
+    font-style: italic;
+    text-align: center;
+    font-size: 1.1em;
+    color: rgb(58, 57, 57);
+    padding: 2px 5px;
+    border: 1px solid transparent;    
+    background-color: rgb(83, 162, 236);
+    border-radius: 15px;
+    cursor: default;
+}
 
+.info{
+    display: flex;
+}
 
-
+.pageBar{
+    position: absolute;
+    bottom: -400px;
+    left: 50%;
+    transform: translate(-50%);
+}

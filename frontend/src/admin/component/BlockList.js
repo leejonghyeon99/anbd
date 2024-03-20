@@ -26,7 +26,7 @@ const UserList = () => {
     useEffect(() => {
         const userList = async () => {
             try {
-                const url = `${apiUrl}/api/admin/user/list?page=${page.pageNumber}`;
+                const url = `${apiUrl}/api/admin/report/list?page=${page.pageNumber}`;
                 const response = await fetchWithToken(url);
 
                 if(response.status === 200){
@@ -65,10 +65,10 @@ const UserList = () => {
 
 
     return (
-        <div >
+        <div>
             <div className={styles.userList}>
-                <h4>회원 목록</h4>
-                <h5>총 회원 수 {pageInfo.totalElements}명</h5>
+                <h4>신고 목록</h4>
+                <h5>신고된 유저 {pageInfo.totalElements}명</h5>
                 <div className={`${styles.boxbox}`}>
                     <ul>
                         {usersData.map((user) => (
@@ -97,18 +97,17 @@ const UserList = () => {
                                 <hr />
                             </li>
                         ))}
-                    </ul>                    
+                    </ul>
                     
                 </div>
-                <div className={`${styles.pageBar}`}>
+            </div>
+            <div className={`${styles.pageBar}`}>
                     <CustomPagination                     
                     currentPage={page.pageNumber} 
                     totalPages={page.total} 
                     onPageChange={changePageNumber}
                     /> 
-                    </div>
-            </div>
-                      
+                    </div>  
         </div>
     );
 };

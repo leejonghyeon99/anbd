@@ -4,6 +4,7 @@ import { Button, Container } from "react-bootstrap";
 import DailySignUp from "./component/DailySignUp";
 import MonthSignUp from "./component/MonthSignUp";
 import UserList from "./component/UserList";
+import BlockList from "./component/BlockList";
 import Menu from "./component/Menu";
 import Category from "./component/Category";
 
@@ -40,13 +41,13 @@ const Admin = () => {
                 </div>
               )}
           <div className="admin-chart">
-            <DailySignUp/>
+            <div><DailySignUp/></div>
+            <div><MonthSignUp/></div>
           </div>
-          <div className="admin-chart">
-            <MonthSignUp width={800} height={200}/>
-          </div>
+          
           <div className="admin-user-list">
-            <UserList/>
+            <div className="list"><UserList/></div>
+            <div className="list"><BlockList/></div>
           </div>
 
           </div>
