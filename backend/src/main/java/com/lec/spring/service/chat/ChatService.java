@@ -57,6 +57,11 @@ public class ChatService {
 
         ChatRoom room;
 
+        if(chatRoomRepository.findByBuyerIdAndSellerIdAndProductId(buyer.getId(), seller.getId(), productId).isPresent()){
+            room = chatRoomRepository.findByBuyerIdAndSellerIdAndProductId(buyer.getId(), seller.getId(), productId).orElseThrow();
+            return ChatRoomDTO.toDto(room);
+        }
+
         if(roomId == 0){
             room = ChatRoom.builder()
                     .buyer(buyer)

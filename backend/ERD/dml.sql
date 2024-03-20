@@ -30,7 +30,13 @@ create database db_anbd;
 
 select * from chat_room;
 select count(*) from user;
-
-
+select * from chat;
+select * from chat_room;
+delete
+from chat_room
+where id = 3;
+select * from product;
+select *
+from category;
 # $2a$10$jsEuJ4.Mc/iMGHRa7kB04.9t6PmuGaYKKWfomTgyGcFmfntRtFv0q
 

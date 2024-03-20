@@ -210,19 +210,19 @@ const App = () => {
             </Route>
 
             {/* 관리자 권한 접근 가능 */}
-            <Route
+            {/* <Route
               element={
                 <PrivateRoute
                   allowedRoles={["ROLE_ADMIN"]}
                   userInfo={userInfo}
                 />
               }
-            >
+            > */}
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/monthsignup" element={<MonthSignUp />} />
               <Route path="/admin/dailysingup" element={<DailySignUp />} />
               <Route path="/admin/userlist" element={<UserList />} />
-            </Route>
+            {/* </Route> */}
           </Routes>
         </div>
       </div>
