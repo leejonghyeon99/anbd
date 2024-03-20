@@ -132,7 +132,7 @@ const ChatRoomPage = () => {
     return (
         <div className={`${styles.roomsContainer}`}>
             <div className={`${styles.buyerRooms} ${styles.rooms}`}>
-                <h3 className={`${styles.title}`}>구매중인 물건</h3>
+                <h3 className={`${styles.title}`}style={{color:'LightSlateGray'}}>구매중인 물건</h3>
                 {myBuyRooms.map((m, index) => 
                   <div key={index} className={`${styles.chatItem}`} onClick={() => moveChat(m)}>
                   <img className={`${styles.productPhoto}`} src={`${apiUrl}/upload/product/${m.productDTO.fileList[0].photoName}`}></img>
@@ -145,7 +145,7 @@ const ChatRoomPage = () => {
                 )}
             </div>
             <div className={`${styles.sellerRooms} ${styles.rooms}`}>
-                <h3 className={`${styles.title}`}>판매중인 물건</h3>
+                <h3 className={`${styles.title}`} style={{color:'IndianRed'}}>판매중인 물건</h3>
                 {mySellRooms.map((m, index) =>                   
                   <div key={index} className={`${styles.chatItem}`} onClick={() => moveChat(m)}>
                     <img className={`${styles.productPhoto}`} src={`${apiUrl}/upload/product/${m.productDTO.fileList[0].photoName}`}></img>

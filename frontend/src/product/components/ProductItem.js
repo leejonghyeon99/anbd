@@ -27,17 +27,17 @@ const ProductItem = (props) => {
               alt="upload-img"
             />
           ))} */}
-           <ul className="list-group mb-1">
+           <ul className="list-group mb-1" >
             {fileList.length > 0 ? (
-              <li>
+              <li id="card-img">
                 <img
                   src={`${apiUrl}/upload/product/${fileList[0].photoName}`}
                   className="img"
                   alt="상품 이미지"
-                />
+                  />
               </li>
             ) : (
-              <li>
+              <li id="card-img">
                 <img
                   src={`${apiUrl}/upload/product/NoImage.png`}
                   className="img"
