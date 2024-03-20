@@ -27,6 +27,24 @@
     font-family: 'TTHakgyoansimUndongjangL';
     font-size: 1.5rem;
 }
+#photo-box {
+    height: 30rem; /* 부모 요소의 높이를 30rem으로 고정합니다. */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#photo {
+    height: 30rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-item img {
+    border: 1px solid;
+    height: 30rem;
+}
 
 #detail-description {
     font-family: 'SUIT-Regular';

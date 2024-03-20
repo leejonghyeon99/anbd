@@ -140,21 +140,18 @@ const DetailPage = () => {
       </div>
 
       {/* 첨부파일 */}
-      <div className="container mt-3 mb-3 border rounded">
-        <div className="mb-3 mt-3">
-          <Carousel>
+      <div className="container mt-3 mb-3 border rounded" id="photo-box">
+          <Carousel id="photo">
             {product.fileList.map((productImage, index) => (
               <Carousel.Item key={index}>
                 <img
-                  className="d-block w-100"
+                  className="d-block"
                   src={`${apiUrl}/upload/product/${productImage.photoName}`}
                   alt={`상품 이미지 ${index + 1}`}
-                  style={{maxWidth: "30rem",maxHeight:'30rem'}}
                 />
               </Carousel.Item>
             ))}
           </Carousel>
-        </div>
       </div>
 
       {/* 설명 */}

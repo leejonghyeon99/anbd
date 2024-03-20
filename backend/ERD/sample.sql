@@ -38,7 +38,7 @@ insert into category(main, sub) value ('의류', '아동의류');
 insert into category(main, sub) value ('식품', '즉석식품');
 insert into category(main, sub) value ('식품', '가공식품');
 insert into category(main, sub) value ('생활용품', '거실');
-insert into category(main, sub) value ('생활용품', '주방용품');
+insert into category(main, sub) value ('생활용품', '주방');
 insert into category(main, sub) value ('전자제품', '가전');
 insert into category(main, sub) value ('전자제품', '디지털기기');
 insert into category(main, sub) value ('스포츠/레저', '스포츠');
