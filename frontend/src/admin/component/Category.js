@@ -315,7 +315,7 @@ const Category = ({ setModalToggle }) => {
             allReset();
           }}
         >
-          취소
+          확인
         </span>
       </div>
 

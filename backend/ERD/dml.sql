@@ -32,9 +32,11 @@ select * from chat_room;
 select count(*) from user;
 select * from chat;
 select * from chat_room;
+
 delete
-from chat_room
-where id = 3;
+from chat;
+delete
+from chat_room where 1=1;
 select * from product;
 select *
 from category;

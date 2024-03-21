@@ -47,7 +47,7 @@ const Admin = () => {
           
           <div className="admin-user-list">
             <div className="list"><UserList/></div>
-            <div className="list"><BlockList/></div>
+            {/* <div className="list"><BlockList/></div> */}
           </div>
 
           </div>

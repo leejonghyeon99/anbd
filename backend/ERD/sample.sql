@@ -128,7 +128,8 @@ desc product;
 delete
 from product;
 
-update product SET status = 'SOLD' where id=6;
+update product SET status = 'SOLD' where id=1;
+update product SET status = 'RESERVED' where id=16;
 
 insert into wish_list(product_id, user_id)
 VALUES (9, 1);
