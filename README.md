@@ -26,7 +26,7 @@
 |  |  | 구글맵API를 이용한 거래장소 구현         |
 
 ## 🛠 **기술 스텍**
-![](readme/skillstack.png)
+<img width="844" alt="기술스택" src="https://github.com/leejonghyeon99/anbd/assets/151723087/8f6cef76-e8fc-4d06-a389-5afc6e6e8bbf">
 
 ## 📆 **개발 기간**
 
