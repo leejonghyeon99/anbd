@@ -71,3 +71,8 @@
 
 ### 반응형 웹
 ![](readme/)
+
+## **프로젝트 발표 영상**
+
+| YuTube URL |
+https://www.youtube.com/watch?v=54-fBDTxFR8&list=PLedGoSru794_gV9NDzrzhk2PsJGThG23p
